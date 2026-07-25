@@ -1,0 +1,29 @@
+@model WEBTechnologies_Final.Models.Car
+@{
+    var username = Context.Session.GetString(WEBTechnologies_Final.Services.SessionKeys.Username);
+    var loggedIn = !string.IsNullOrEmpty(username);
+    var isFav = ViewData["IsFav_" + Model.Id] is true;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+    var extra = ViewData["FavBtnClass"] as string ?? "";
+}
+
+@if (loggedIn)
+{
+    <form asp-controller="Favorites" asp-action="Toggle" method="post" style="display:contents">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.Id" />
+        <input type="hidden" name="returnUrl" value="@returnUrl" />
+        <button type="submit"
+                class="btn @(isFav ? "btn-danger" : "btn-outline-danger") @extra"
+                title="@(isFav ? "Remove from favourites" : "Save to favourites")">
+            @(isFav ? "♥ Saved" : "♡ Favourite")
+        </button>
+    </form>
+}
+else
+{
+    <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@returnUrl"
+       class="btn btn-outline-danger @extra" title="Log in to save favourites">
+        ♡ Favourite
+    </a>
+}

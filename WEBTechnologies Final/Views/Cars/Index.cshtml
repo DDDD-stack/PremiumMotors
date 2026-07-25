@@ -1,0 +1,120 @@
+@model CarListViewModel
+@{
+    ViewData["Title"] = "Browse Auctions";
+}
+
+<div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+    <div>
+        <h1 class="h3 mb-0">Live Car Auctions</h1>
+        <p class="text-muted mb-0">@Model.Cars.Count car(s) found</p>
+    </div>
+</div>
+
+<div class="row g-4">
+
+    <div class="col-lg-3">
+        <form asp-action="Index" method="get" class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h6 text-uppercase text-muted">Search &amp; Filter</h2>
+
+                <div class="mb-3">
+                    <label class="form-label" for="search">Search</label>
+                    <input type="text" id="search" name="search" value="@Model.Search"
+                           class="form-control" placeholder="Make, model, keyword..." />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="type">Type</label>
+                    <select id="type" name="type" class="form-select" asp-items="Model.TypeOptions">
+                        <option value="">Any type</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="make">Make</label>
+                    <select id="make" name="make" class="form-select" asp-items="Model.MakeOptions">
+                        <option value="">Any make</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="model">Model</label>
+                    <select id="model" name="model" class="form-select" asp-items="Model.ModelOptions">
+                        <option value="">Any model</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="year">Model Year</label>
+                    <select id="year" name="year" class="form-select" asp-items="Model.YearOptions">
+                        <option value="">Any year</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="sortBy">Sort by</label>
+                    <select id="sortBy" name="sortBy" class="form-select" asp-items="Model.SortOptions"></select>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Apply</button>
+                    @if (Model.HasActiveFilters)
+                    {
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Clear filters</a>
+                    }
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col-lg-9">
+        @if (Model.Cars.Count == 0)
+        {
+            <div class="alert alert-info">
+                No cars match your search. Try clearing some filters.
+            </div>
+        }
+        else
+        {
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+                @foreach (var car in Model.Cars)
+                {
+                    <div class="col">
+                        <div class="card h-100 shadow-sm car-card">
+                            <a asp-action="Details" asp-route-id="@car.Id" class="text-decoration-none">
+                                <img src="@car.PrimaryImage" class="card-img-top car-thumb" alt="@car.Title" />
+                            </a>
+                            <div class="card-body d-flex flex-column">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <h3 class="h6 mb-1">
+                                        <a asp-action="Details" asp-route-id="@car.Id"
+                                           class="text-dark text-decoration-none">@car.Title</a>
+                                    </h3>
+                                    <span class="badge bg-secondary">@car.Type</span>
+                                </div>
+                                <p class="text-muted small mb-2 text-truncate">@car.Description</p>
+
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-end mb-2">
+                                        <div>
+                                            <div class="small text-muted">Asking price</div>
+                                            <div class="fw-bold text-primary">@car.StartingPrice.ToString("C")</div>
+                                        </div>
+                                        @if (car.IsClosed)
+                                        {
+                                            <span class="badge bg-danger">Closed</span>
+                                        }
+                                    </div>
+                                    <div class="d-flex gap-2">
+                                        <a asp-action="Details" asp-route-id="@car.Id" class="btn btn-sm btn-primary flex-grow-1">View</a>
+                                        <partial name="_FavoriteButton" model="car" view-data='new ViewDataDictionary(ViewData) { ["FavBtnClass"] = "btn-sm" }' />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>

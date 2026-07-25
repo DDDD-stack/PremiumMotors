@@ -1,0 +1,33 @@
+@model Payment
+@{
+    var paid = Model.Status == PaymentStatus.Paid;
+    ViewData["Title"] = paid ? "Listing published" : "Payment not confirmed";
+}
+
+<div class="card shadow-sm mx-auto" style="max-width: 560px;">
+    <div class="card-body text-center">
+        <div class="display-6 mb-2">@(paid ? "✅" : "⚠️")</div>
+        <h1 class="h4">@(paid ? "Your listing is live" : "We couldn't confirm your payment")</h1>
+        <p class="text-muted">
+            @if (paid)
+            {
+                <text>Your listing fee is confirmed and <strong>@(Model.Car?.Title)</strong> is now live.</text>
+            }
+            else
+            {
+                <text>
+                    We couldn't confirm your PayPal payment for <strong>@(Model.Car?.Title)</strong>.
+                    If you completed it on PayPal, refresh this page in a moment; otherwise your listing
+                    is saved as a draft and you can try paying again.
+                </text>
+            }
+        </p>
+        <div class="d-flex gap-2 justify-content-center">
+            @if (Model.CarId is not null)
+            {
+                <a asp-controller="Cars" asp-action="Details" asp-route-id="@Model.CarId" class="btn btn-primary">View my listing</a>
+            }
+            <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-secondary">Back to auctions</a>
+        </div>
+    </div>
+</div>

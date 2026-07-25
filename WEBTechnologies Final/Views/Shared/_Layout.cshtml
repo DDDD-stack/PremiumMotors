@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PremiumMotors</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/WEBTechnologies_Final.styles.css" asp-append-version="true" />
+</head>
+<body>
+    @{
+        var isAdmin = Context.Session.GetString(SessionKeys.IsAdmin) == "true";
+        var currentUser = Context.Session.GetString(SessionKeys.Username);
+        var isLoggedIn = !string.IsNullOrEmpty(currentUser);
+    }
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand fw-bold" asp-controller="Cars" asp-action="Index">
+                    🏁 Premium<span class="text-warning">Motors</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-controller="Cars" asp-action="Index">Browse Auctions</a>
+                        </li>
+                        @if (isLoggedIn && !isAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-success" asp-controller="Sell" asp-action="Create">+ Sell your car</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Favorites" asp-action="Index">♥ My Favourites</a>
+                            </li>
+                        }
+                        @if (isAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-warning" asp-controller="Admin" asp-action="Index">Manage Listings</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-success" asp-controller="Admin" asp-action="Create">+ Post a Car</a>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="navbar-nav">
+                        @if (isLoggedIn)
+                        {
+                            <li class="nav-item d-flex align-items-center text-light me-2">
+                                @if (isAdmin)
+                                {
+                                    <span class="badge bg-warning text-dark me-1">Admin</span>
+                                }
+                                <span class="small">Hi, <strong>@currentUser</strong></span>
+                            </li>
+                            <li class="nav-item">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-sm btn-outline-light">Log out</button>
+                                </form>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-controller="Account" asp-action="Login">Log in</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-warning" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <partial name="_Alerts" />
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container d-flex flex-wrap justify-content-between">
+            <span>&copy; 2026 - PremiumMotors</span>
+            <span>
+                <a asp-controller="Home" asp-action="Terms" class="text-muted">Terms</a>
+                <span class="mx-1">·</span>
+                <a asp-controller="Home" asp-action="Privacy" class="text-muted">Privacy</a>
+            </span>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
