@@ -1,0 +1,104 @@
+@model PublicSellerViewModel
+@{
+    var total = Model.RatingCount;
+}
+
+<div class="row g-4">
+    <div class="col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <div class="pm-rating-summary">
+                    <div class="pm-rating-big">@Model.RatingAverage.ToString("0.0")</div>
+                    <partial name="_Stars" model="@((Model.RatingAverage, Model.RatingCount))" />
+                </div>
+
+                @* The breakdown, not just the mean. Twenty fives and five ones average the
+                   same as twenty-five fours and mean something completely different. *@
+                <div class="pm-rating-bars mt-3">
+                    @for (var stars = 5; stars >= 1; stars--)
+                    {
+                        var count = Model.Distribution[stars - 1];
+                        var pct = total == 0 ? 0 : (int)Math.Round(count * 100.0 / total);
+                        <div class="pm-rating-bar">
+                            <span class="pm-rating-bar-label">@stars ★</span>
+                            <span class="pm-rating-bar-track">
+                                <span class="pm-rating-bar-fill" style="width:@pct%"></span>
+                            </span>
+                            <span class="pm-rating-bar-count">@count</span>
+                        </div>
+                    }
+                </div>
+
+                <p class="small pm-muted mt-3 mb-0">
+                    Only buyers who completed a purchase from this seller can leave a review,
+                    and only once per car.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-8">
+        @if (Model.Reviews.Count == 0)
+        {
+            <div class="pm-empty">
+                <h2 class="h5">No reviews yet</h2>
+                <p class="pm-muted mb-0">
+                    Reviews appear here once someone has bought a car from this seller.
+                </p>
+            </div>
+        }
+        else
+        {
+            <div class="pm-review-list pm-stagger">
+                @foreach (var review in Model.Reviews)
+                {
+                    <article class="card shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                                <div>
+                                    <span class="pm-star-row" aria-hidden="true">
+                                        @for (var i = 1; i <= 5; i++)
+                                        {
+                                            <span class="@(i <= review.Rating ? "is-on" : "")">@(i <= review.Rating ? "★" : "☆")</span>
+                                        }
+                                    </span>
+                                    <strong class="ms-2">@review.AuthorUsername</strong>
+                                    <span class="visually-hidden">@review.Rating out of 5</span>
+                                </div>
+                                <span class="small pm-muted">@review.CreatedUtc.ToString("d MMM yyyy")</span>
+                            </div>
+
+                            @if (review.Car is not null)
+                            {
+                                <div class="small pm-muted mt-1">
+                                    Bought
+                                    <a asp-controller="Cars" asp-action="Details" asp-route-id="@review.Car.Id">
+                                        @review.Car.Title
+                                    </a>
+                                </div>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(review.Comment))
+                            {
+                                <p class="mt-2 mb-0 pm-wrap">@review.Comment</p>
+                            }
+
+                            @if (!string.IsNullOrWhiteSpace(review.SellerReply))
+                            {
+                                <div class="pm-review-reply mt-3">
+                                    <div class="small fw-semibold">
+                                        Reply from @Model.DisplayName
+                                        <span class="pm-muted fw-normal">
+                                            · @review.SellerRepliedUtc?.ToString("d MMM yyyy")
+                                        </span>
+                                    </div>
+                                    <p class="mb-0 mt-1 pm-wrap">@review.SellerReply</p>
+                                </div>
+                            }
+                        </div>
+                    </article>
+                }
+            </div>
+        }
+    </div>
+</div>

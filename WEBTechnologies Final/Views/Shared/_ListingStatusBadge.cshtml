@@ -1,0 +1,15 @@
+@model ListingStatus
+@{
+    @* One place decides how a listing status looks, so the browse grid, the seller
+       panel and the admin table can never disagree about what "Reserved" means. *@
+    var (css, label, title) = Model switch
+    {
+        ListingStatus.Draft    => ("bg-secondary", "Draft", "Not visible to buyers yet"),
+        ListingStatus.Active   => ("bg-success", "Available", "Accepting offers"),
+        ListingStatus.Reserved => ("bg-warning text-dark", "Reserved", "The seller has accepted an offer"),
+        ListingStatus.Sold     => ("bg-dark", "Sold", "This car has been sold"),
+        ListingStatus.Archived => ("bg-secondary", "Archived", "Taken off the market by the seller"),
+        _                      => ("bg-secondary", Model.ToString(), "")
+    };
+}
+<span class="badge @css" title="@title">@label</span>

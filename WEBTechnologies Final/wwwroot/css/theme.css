@@ -1,0 +1,94 @@
+/* ------------------------------------------------------------------
+   PremiumMotors design tokens.
+   Loaded before site.css so components can consume the variables, and
+   after bootstrap so the --bs-* overrides at the bottom actually win.
+   ------------------------------------------------------------------ */
+
+:root {
+    color-scheme: light;
+
+    /* Brand ------------------------------------------------------- */
+    --pm-ink:            #0b1220;
+    --pm-ink-soft:       #46536b;
+    --pm-ink-faint:      #7c889e;
+    --pm-primary:        #1f5fd0;
+    --pm-primary-dark:   #17489e;
+    --pm-primary-soft:   #eaf1ff;
+    --pm-accent:         #f5a524;
+    --pm-danger:         #d92d20;
+    --pm-success:        #12805c;
+
+    /* Surfaces ---------------------------------------------------- */
+    --pm-bg:             #f4f6fa;
+    --pm-surface:        #ffffff;
+    --pm-surface-sunken: #eef1f7;
+    /* Matches the logo artwork exactly (sampled from Premium Motors.png), so the wordmark
+       sits on the header with no visible box around it. */
+    --pm-header:         #173042;
+    --pm-border:         #e3e8f0;
+
+    /* Elevation --------------------------------------------------- */
+    --pm-shadow-sm: 0 1px 2px rgba(11, 18, 32, .06), 0 1px 3px rgba(11, 18, 32, .04);
+    --pm-shadow-md: 0 4px 12px rgba(11, 18, 32, .07), 0 2px 4px rgba(11, 18, 32, .04);
+    --pm-shadow-lg: 0 16px 40px rgba(11, 18, 32, .13), 0 4px 10px rgba(11, 18, 32, .05);
+
+    /* Geometry ---------------------------------------------------- */
+    --pm-radius-sm: .5rem;
+    --pm-radius:    .85rem;
+    --pm-radius-lg: 1.15rem;
+
+    /* Motion. Every transition in the app references one of these so
+       the reduced-motion override below can flatten all of them. ---- */
+    --pm-ease:        cubic-bezier(.22, .61, .36, 1);
+    --pm-ease-spring: cubic-bezier(.34, 1.4, .64, 1);
+    --pm-dur-fast:    120ms;
+    --pm-dur:         220ms;
+    --pm-dur-slow:    380ms;
+
+    /* Layout ------------------------------------------------------ */
+    --pm-header-h:  60px;
+    /* Safe-area insets still matter for a normal page: a fixed header must clear the
+       notch, and the footer must clear the home indicator. They are zero everywhere else. */
+    --pm-safe-b:    env(safe-area-inset-bottom, 0px);
+    --pm-safe-t:    env(safe-area-inset-top, 0px);
+}
+
+/* Fluid type: 15px on a 360px phone up to 16px on a 1200px desktop.
+   Replaces the old hard 14px/16px breakpoint jump. */
+html {
+    font-size: clamp(15px, 0.92rem + 0.18vw, 16.5px);
+}
+
+/* Bootstrap variable overrides ---------------------------------- */
+:root {
+    --bs-body-bg:          var(--pm-bg);
+    --bs-body-color:       var(--pm-ink);
+    --bs-border-color:     var(--pm-border);
+    --bs-primary:          var(--pm-primary);
+    --bs-primary-rgb:      31, 95, 208;
+    --bs-link-color:       var(--pm-primary);
+    --bs-link-color-rgb:   31, 95, 208;
+    --bs-link-hover-color: var(--pm-primary-dark);
+    --bs-border-radius:    var(--pm-radius-sm);
+    --bs-border-radius-lg: var(--pm-radius);
+    --bs-body-font-family: system-ui, -apple-system, "Segoe UI", Roboto,
+                           "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Users who ask their OS for less motion get none of ours. Keeping the
+   durations near-zero rather than removing the rules means state still
+   settles correctly, it just settles instantly. */
+@media (prefers-reduced-motion: reduce) {
+    :root {
+        --pm-dur-fast: 1ms;
+        --pm-dur:      1ms;
+        --pm-dur-slow: 1ms;
+    }
+
+    *, *::before, *::after {
+        animation-duration: 1ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 1ms !important;
+        scroll-behavior: auto !important;
+    }
+}

@@ -1,0 +1,18 @@
+@model (string? Path, string Initials, string Size)
+@{
+    @* One avatar everywhere. A missing picture falls back to a coloured monogram rather than
+       a broken image or a grey silhouette: initials identify the seller, a generic icon does
+       not, and most accounts will never upload a photo. *@
+    var cls = "pm-avatar pm-avatar-" + Model.Size;
+}
+
+@if (!string.IsNullOrWhiteSpace(Model.Path))
+{
+    <span class="@cls">
+        <img src="@Model.Path" alt="" loading="lazy" decoding="async" />
+    </span>
+}
+else
+{
+    <span class="@cls pm-avatar-initials" aria-hidden="true">@Model.Initials</span>
+}

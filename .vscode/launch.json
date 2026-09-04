@@ -1,0 +1,52 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run PremiumMotors (https)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/WEBTechnologies Final/bin/Debug/net9.0/WEBTechnologies Final.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/WEBTechnologies Final",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\bNow listening on:\s+(https?://\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://localhost:7007;http://localhost:5084"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/WEBTechnologies Final/Views"
+      }
+    },
+    {
+      "name": "Run PremiumMotors (http only)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/WEBTechnologies Final/bin/Debug/net9.0/WEBTechnologies Final.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/WEBTechnologies Final",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\bNow listening on:\s+(https?://\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "http://localhost:5084"
+      },
+      "sourceFileMap": {
+        "/Views": "${workspaceFolder}/WEBTechnologies Final/Views"
+      }
+    },
+    {
+      "name": "Attach to process",
+      "type": "coreclr",
+      "request": "attach"
+    }
+  ]
+}

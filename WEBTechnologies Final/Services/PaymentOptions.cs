@@ -14,7 +14,7 @@ namespace WEBTechnologies_Final.Services
         // Webhook id from the PayPal dashboard, used to verify incoming webhook signatures.
         public string WebhookId { get; set; } = string.Empty;
 
-        public string BrandName { get; set; } = "Car Auctions";
+        public string BrandName { get; set; } = "PremiumMotors";
 
         public string BaseUrl =>
             string.Equals(Mode, "live", StringComparison.OrdinalIgnoreCase)

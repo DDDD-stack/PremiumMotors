@@ -8,8 +8,8 @@ namespace WEBTechnologies_Final.Services
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var username = context.HttpContext.Session.GetString(SessionKeys.Username);
-            if (string.IsNullOrEmpty(username))
+
+            if (context.HttpContext.Session.GetInt32(SessionKeys.UserId) is null)
             {
                 var returnUrl = context.HttpContext.Request.Path + context.HttpContext.Request.QueryString;
                 context.Result = new RedirectToActionResult(

@@ -8,27 +8,46 @@
 
 <div class="row justify-content-center">
     <div class="col-lg-7">
-        <div class="card shadow-sm">
-            <img src="@Model.PrimaryImage" class="card-img-top detail-img" alt="@Model.Title" />
+        <div class="card overflow-hidden">
+            <div class="pm-media">
+                <img src="@Model.PrimaryImage" class="card-img-top detail-img" alt="@Model.Title" decoding="async" />
+            </div>
             <div class="card-body">
                 <h1 class="h4">Share “@Model.Title”</h1>
-                <p class="text-muted">Asking price: <strong>@Model.StartingPrice.ToString("C")</strong></p>
+                <p class="pm-muted">Asking price: <strong>@Model.Price.ToString("C")</strong></p>
 
-                <label class="form-label fw-semibold">Listing link</label>
+                @* On a phone this opens the OS share sheet — WhatsApp,
+                   Messages, AirDrop and everything else the device has.
+                   site.js hides the button where navigator.share is
+                   missing, leaving the explicit links below as the path. *@
+                <button type="button" class="btn btn-primary w-100 mb-3"
+                        data-pm-share="@url" data-pm-share-title="@Model.Title">
+                    📤 Share…
+                </button>
+
+                <label class="form-label" for="shareUrl">Listing link</label>
                 <div class="input-group mb-3">
                     <input type="text" id="shareUrl" class="form-control" value="@url" readonly />
-                    <button class="btn btn-primary" type="button" onclick="copyShareUrl()">Copy</button>
+                    <button class="btn btn-outline-secondary" type="button" data-pm-copy="#shareUrl">Copy</button>
                 </div>
 
-                <div class="d-flex flex-wrap gap-2">
-                    <a class="btn btn-outline-primary"
-                       href="https://www.facebook.com/sharer/sharer.php?u=@encodedUrl" target="_blank" rel="noopener">Facebook</a>
-                    <a class="btn btn-outline-info"
-                       href="https://twitter.com/intent/tweet?url=@encodedUrl&text=@encodedText" target="_blank" rel="noopener">X / Twitter</a>
-                    <a class="btn btn-outline-success"
-                       href="https://wa.me/?text=@encodedText%20@encodedUrl" target="_blank" rel="noopener">WhatsApp</a>
-                    <a class="btn btn-outline-secondary"
-                       href="mailto:?subject=@Uri.EscapeDataString(Model.Title)&body=@encodedText%20@encodedUrl">Email</a>
+                <div class="row row-cols-2 row-cols-sm-4 g-2">
+                    <div class="col d-grid">
+                        <a class="btn btn-outline-primary"
+                           href="https://www.facebook.com/sharer/sharer.php?u=@encodedUrl" target="_blank" rel="noopener">Facebook</a>
+                    </div>
+                    <div class="col d-grid">
+                        <a class="btn btn-outline-info"
+                           href="https://twitter.com/intent/tweet?url=@encodedUrl&text=@encodedText" target="_blank" rel="noopener">X</a>
+                    </div>
+                    <div class="col d-grid">
+                        <a class="btn btn-outline-success"
+                           href="https://wa.me/?text=@encodedText%20@encodedUrl" target="_blank" rel="noopener">WhatsApp</a>
+                    </div>
+                    <div class="col d-grid">
+                        <a class="btn btn-outline-secondary"
+                           href="mailto:?subject=@Uri.EscapeDataString(Model.Title)&body=@encodedText%20@encodedUrl">Email</a>
+                    </div>
                 </div>
 
                 <hr />
@@ -37,16 +56,3 @@
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <script>
-        function copyShareUrl() {
-            const input = document.getElementById('shareUrl');
-            input.select();
-            input.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(input.value).then(function () {
-                alert('Link copied to clipboard!');
-            });
-        }
-    </script>
-}

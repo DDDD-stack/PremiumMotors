@@ -1,14 +1,15 @@
-
+@* Flash messages. data-pm-autodismiss lets site.js retire them after a
+   few seconds so they do not linger over the content on a small screen. *@
 @if (TempData["Success"] is string success)
 {
-    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert" data-pm-autodismiss>
         @success
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 }
 @if (TempData["Error"] is string error)
 {
-    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert">
+    <div class="alert alert-danger alert-dismissible fade show mt-3" role="alert" data-pm-autodismiss>
         @error
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>

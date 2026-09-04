@@ -1,0 +1,32 @@
+@model (decimal Average, int Count)
+@{
+    @* Rating display, shared by cards, bylines, dealership pages and seller profiles so the
+       stars are drawn one way everywhere. Half stars are deliberately not drawn: at 14px they
+       read as a rendering glitch, and the numeral next to them already carries the precision. *@
+    var rounded = (int)Math.Round(Model.Average, MidpointRounding.AwayFromZero);
+    var label = Model.Count == 0
+        ? "No ratings yet"
+        : $"{Model.Average:0.0} out of 5, from {Model.Count} review{(Model.Count == 1 ? "" : "s")}";
+}
+
+@if (Model.Count == 0)
+{
+    <span class="pm-stars pm-stars-empty" title="No ratings yet">
+        <span class="pm-star-row" aria-hidden="true">☆☆☆☆☆</span>
+        <span class="small pm-muted">No ratings yet</span>
+    </span>
+}
+else
+{
+    <span class="pm-stars" title="@label">
+        <span class="pm-star-row" aria-hidden="true">
+            @for (var i = 1; i <= 5; i++)
+            {
+                <span class="@(i <= rounded ? "is-on" : "")">@(i <= rounded ? "★" : "☆")</span>
+            }
+        </span>
+        <span class="pm-rating-value">@Model.Average.ToString("0.0")</span>
+        <span class="small pm-muted">(@Model.Count)</span>
+        <span class="visually-hidden">@label</span>
+    </span>
+}

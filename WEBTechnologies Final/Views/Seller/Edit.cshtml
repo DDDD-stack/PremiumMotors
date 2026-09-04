@@ -1,0 +1,40 @@
+@model Car
+@{
+    ViewData["Title"] = "Edit " + Model.Title;
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>Edit listing</h1>
+        <p class="pm-muted mb-0 small">@Model.Title</p>
+    </div>
+    <a asp-controller="Cars" asp-action="Details" asp-route-id="@Model.Id"
+       class="btn btn-outline-secondary btn-sm">View listing</a>
+</div>
+
+<partial name="_ProfileNav" />
+
+@if (Model.Status == ListingStatus.Reserved || Model.Status == ListingStatus.Sold)
+{
+    <div class="alert alert-warning">
+        <strong>Careful.</strong> This listing is @Model.Status.ToString().ToLower() — a buyer has
+        already agreed a price against these details. Editing them now changes what they see.
+    </div>
+}
+
+<div class="card">
+    <div class="card-body">
+        <form asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+            @Html.AntiForgeryToken()
+            <partial name="_CarForm" model="Model" />
+            <div class="mt-4 d-grid d-sm-flex gap-2">
+                <button type="submit" class="btn btn-primary">Save changes</button>
+                <a asp-action="Listings" class="btn btn-outline-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

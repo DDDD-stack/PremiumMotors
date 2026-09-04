@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="WEBTechnologies Final/WEBTechnologies Final.csproj" />
+  <Project Path="tests/PremiumMotors.Tests/PremiumMotors.Tests.csproj" />
 </Solution>

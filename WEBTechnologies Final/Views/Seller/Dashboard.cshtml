@@ -1,0 +1,110 @@
+@using WEBTechnologies_Final.Services.Marketplace
+@{
+    ViewData["Title"] = "Seller panel";
+    var d = ViewData["Dashboard"] as SellerDashboard;
+    var pending = ViewData["Recent"] as List<Offer> ?? new();
+}
+
+<div class="pm-page-head">
+    <h1>Seller panel</h1>
+    <a asp-controller="Sell" asp-action="Create" class="btn btn-success">+ List a car</a>
+</div>
+
+<partial name="_ProfileNav" />
+
+@if (d is not null)
+{
+    <div class="row row-cols-2 row-cols-md-4 g-2 g-md-3 mb-4 pm-stagger">
+        <div class="col">
+            <a class="card h-100 text-decoration-none" asp-action="Listings" asp-route-status="@ListingStatus.Active">
+                <div class="pm-stat">
+                    <div class="pm-stat-value text-success">@d.ActiveListings</div>
+                    <div class="pm-stat-label">Live</div>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a class="card h-100 text-decoration-none" asp-action="Offers" asp-route-status="@OfferStatus.Pending">
+                <div class="pm-stat">
+                    <div class="pm-stat-value text-primary">@d.PendingOffers</div>
+                    <div class="pm-stat-label">Offers to answer</div>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a class="card h-100 text-decoration-none" asp-action="Listings" asp-route-status="@ListingStatus.Reserved">
+                <div class="pm-stat">
+                    <div class="pm-stat-value text-warning">@d.Reserved</div>
+                    <div class="pm-stat-label">Reserved</div>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a class="card h-100 text-decoration-none" asp-controller="Messages" asp-action="Index">
+                <div class="pm-stat">
+                    <div class="pm-stat-value">@d.UnreadMessages</div>
+                    <div class="pm-stat-label">Unread messages</div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-3 mb-4">
+        <div class="col-sm-4">
+            <div class="card h-100"><div class="pm-stat">
+                <div class="pm-stat-value">@d.Sold</div>
+                <div class="pm-stat-label">Sold</div>
+            </div></div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card h-100"><div class="pm-stat">
+                <div class="pm-stat-value">@d.SoldValue.ToString("C0")</div>
+                <div class="pm-stat-label">Total sold value</div>
+            </div></div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card h-100"><div class="pm-stat">
+                <div class="pm-stat-value">@d.Drafts</div>
+                <div class="pm-stat-label">Drafts</div>
+            </div></div>
+        </div>
+    </div>
+}
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Offers waiting on you</span>
+        <a asp-action="Offers" class="small">See all</a>
+    </div>
+
+    @if (pending.Count == 0)
+    {
+        <div class="card-body pm-muted small">
+            Nothing to answer right now. New offers land here and in your messages.
+        </div>
+    }
+    else
+    {
+        <ul class="list-group list-group-flush">
+            @foreach (var offer in pending.Take(6))
+            {
+                <li class="list-group-item d-flex justify-content-between align-items-center gap-2">
+                    <div class="min-w-0">
+                        <a asp-controller="Cars" asp-action="Details" asp-route-id="@offer.CarId"
+                           class="fw-semibold text-decoration-none d-block text-truncate">
+                            @(offer.Car?.Title ?? "Listing")
+                        </a>
+                        <div class="small pm-muted text-truncate">
+                            @offer.BuyerUsername · @AppTime.ToDisplay(offer.CreatedUtc).ToString("dd/MM HH:mm")
+                        </div>
+                    </div>
+                    <div class="text-end flex-shrink-0">
+                        <div class="pm-price">@offer.Amount.ToString("C")</div>
+                        <a asp-action="Offers" asp-route-status="@OfferStatus.Pending"
+                           class="small">Review</a>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+</div>

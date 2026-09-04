@@ -1,0 +1,125 @@
+@using WEBTechnologies_Final.Services.Marketplace
+@model List<SellerListingRow>
+@{
+    ViewData["Title"] = "My listings";
+    var filter = ViewData["StatusFilter"] as ListingStatus?;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+}
+
+<div class="pm-page-head">
+    <h1>My listings</h1>
+    <a asp-controller="Sell" asp-action="Create" class="btn btn-success">+ List a car</a>
+</div>
+
+<partial name="_ProfileNav" />
+
+<div class="pm-subnav mb-3 border-0">
+    <a class="pm-chip @(filter is null ? "is-active" : "")" asp-action="Listings">All</a>
+    <a class="pm-chip @(filter == ListingStatus.Active ? "is-active" : "")"
+       asp-action="Listings" asp-route-status="@ListingStatus.Active">Live</a>
+    <a class="pm-chip @(filter == ListingStatus.Draft ? "is-active" : "")"
+       asp-action="Listings" asp-route-status="@ListingStatus.Draft">Drafts</a>
+    <a class="pm-chip @(filter == ListingStatus.Reserved ? "is-active" : "")"
+       asp-action="Listings" asp-route-status="@ListingStatus.Reserved">Reserved</a>
+    <a class="pm-chip @(filter == ListingStatus.Sold ? "is-active" : "")"
+       asp-action="Listings" asp-route-status="@ListingStatus.Sold">Sold</a>
+    <a class="pm-chip @(filter == ListingStatus.Archived ? "is-active" : "")"
+       asp-action="Listings" asp-route-status="@ListingStatus.Archived">Archived</a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="pm-empty">
+        <div class="pm-empty-icon" aria-hidden="true">🚗</div>
+        <h2 class="h5">Nothing here yet</h2>
+        <p class="pm-muted mb-3">List your first car and buyers can start sending you offers.</p>
+        <a asp-controller="Sell" asp-action="Create" class="btn btn-success">+ List a car</a>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3 pm-stagger">
+        @foreach (var row in Model)
+        {
+            var car = row.Car;
+            <div class="col">
+                <div class="card h-100">
+                    <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id"
+                       class="car-thumb pm-media">
+                        <img src="@car.PrimaryImage" alt="@car.Title" loading="lazy" decoding="async" />
+                        <span class="pm-badge-float">
+                            <partial name="_ListingStatusBadge" model="car.Status" />
+                        </span>
+                    </a>
+                    <div class="card-body d-flex flex-column">
+                        <h3 class="h6 car-title mb-1">
+                            <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id">@car.Title</a>
+                        </h3>
+                        <ul class="pm-spec-line">
+                            <li>@car.Mileage.ToString("N0") km</li>
+                            <li>@car.FuelType</li>
+                        </ul>
+
+                        <div class="d-flex justify-content-between align-items-end mb-2">
+                            <div>
+                                <div class="small pm-muted">Asking</div>
+                                <div class="pm-price">@car.Price.ToString("C")</div>
+                            </div>
+                            <div class="text-end">
+                                <div class="small pm-muted">Offers</div>
+                                <div class="fw-bold">
+                                    @row.OfferCount
+                                    @if (row.PendingOffers > 0)
+                                    {
+                                        <span class="badge bg-primary">@row.PendingOffers new</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (row.BestPendingOffer is decimal best)
+                        {
+                            <div class="small pm-muted mb-2">Best pending offer: <strong>@best.ToString("C")</strong></div>
+                        }
+                        @if (car.Status == ListingStatus.Sold && car.SoldPrice is decimal sold)
+                        {
+                            <div class="small pm-muted mb-2">Sold for <strong>@sold.ToString("C")</strong> to @car.SoldTo</div>
+                        }
+
+                        <div class="mt-auto d-flex flex-wrap gap-2">
+                            <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id"
+                               class="btn btn-sm btn-outline-secondary flex-fill">View</a>
+                            <a asp-action="Edit" asp-route-id="@car.Id"
+                               class="btn btn-sm btn-outline-primary flex-fill">Edit</a>
+
+                            @if (car.Status == ListingStatus.Active)
+                            {
+                                <form asp-action="Archive" method="post" class="flex-fill d-grid">
+                                    <input type="hidden" name="carId" value="@car.Id" />
+                                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Archive</button>
+                                </form>
+                            }
+                            else if (car.Status is ListingStatus.Archived or ListingStatus.Draft)
+                            {
+                                <form asp-action="Relist" method="post" class="flex-fill d-grid">
+                                    <input type="hidden" name="carId" value="@car.Id" />
+                                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                    <button type="submit" class="btn btn-sm btn-success">Publish</button>
+                                </form>
+                            }
+                            else if (car.Status == ListingStatus.Reserved)
+                            {
+                                <form asp-action="MarkSold" method="post" class="flex-fill d-grid">
+                                    <input type="hidden" name="carId" value="@car.Id" />
+                                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                    <button type="submit" class="btn btn-sm btn-success">Mark sold</button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

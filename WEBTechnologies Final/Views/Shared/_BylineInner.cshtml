@@ -1,0 +1,28 @@
+@model SellerBadge
+@{
+    var compact = (ViewData["BylineCompact"] as bool?) ?? false;
+}
+
+<partial name="_Avatar" model="@((Model.AvatarPath, Model.Initials, compact ? "sm" : "md"))" />
+<span class="pm-byline-text">
+    <span class="pm-byline-name">
+        @Model.Name
+        @if (Model.Verified)
+        {
+            <span class="pm-verified" title="Verified dealer">✓</span>
+        }
+    </span>
+    <span class="pm-byline-meta">
+        <span class="pm-seller-type @(Model.IsDealer ? "is-dealer" : "is-private")">
+            @Model.TypeLabel
+        </span>
+        @if (Model.HasRating)
+        {
+            <span class="pm-byline-rating">
+                <span class="pm-star-row" aria-hidden="true">★</span>
+                @Model.RatingAverage.ToString("0.0")
+                <span class="pm-muted">(@Model.RatingCount)</span>
+            </span>
+        }
+    </span>
+</span>

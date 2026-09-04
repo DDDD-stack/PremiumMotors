@@ -1,0 +1,85 @@
+@using WEBTechnologies_Final.Services.Marketplace
+@model Car
+@{
+    @* Shared by the browse grid and the favourites grid so the two can never drift apart.
+       view-transition-name pairs this photo with the hero image on the detail page, which
+       is what makes the card appear to expand into the listing. *@
+    var favClass = ViewData["FavBtnClass"] as string ?? "btn-sm";
+
+    @* Seller identity and price history come from ListingExtrasService, built once for the
+       whole page. A page that does not supply them renders exactly as before rather than
+       failing - the byline is extra information, not part of the card's contract. *@
+    var sellers = ViewData["SellerBadges"] as IReadOnlyDictionary<int, SellerBadge>;
+    var drops = ViewData["PriceDrops"] as IReadOnlyDictionary<int, decimal>;
+
+    SellerBadge? seller = null;
+    if (sellers != null && Model.OwnerId is int ownerId) sellers.TryGetValue(ownerId, out seller);
+
+    decimal? wasPrice = null;
+    if (drops != null && drops.TryGetValue(Model.Id, out var high)) wasPrice = high;
+}
+
+<div class="card h-100 car-card">
+    <a asp-controller="Cars" asp-action="Details" asp-route-id="@Model.Id"
+       class="car-thumb pm-media" aria-label="View @Model.Title">
+        <img src="@Model.PrimaryImage" alt="@Model.Title" loading="lazy" decoding="async"
+             style="view-transition-name: car-photo-@Model.Id" />
+        @if (Model.Status != ListingStatus.Active)
+        {
+            <span class="pm-badge-float">
+                <partial name="_ListingStatusBadge" model="Model.Status" />
+            </span>
+        }
+        @if (Model.Status == ListingStatus.Active && wasPrice != null)
+        {
+            <span class="pm-badge-float pm-badge-drop">Price drop</span>
+        }
+    </a>
+    <div class="card-body d-flex flex-column">
+        <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+            <h3 class="h6 mb-0 car-title">
+                <a asp-controller="Cars" asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a>
+            </h3>
+            <span class="badge bg-secondary flex-shrink-0">@Model.Type</span>
+        </div>
+
+        @* The spec line replaces the old description snippet: mileage, fuel and gearbox are
+           what a buyer scans a results grid for. *@
+        <ul class="pm-spec-line">
+            <li>@Model.Mileage.ToString("N0") km</li>
+            <li>@Model.FuelType</li>
+            <li>@Model.Transmission</li>
+            @if (!string.IsNullOrWhiteSpace(Model.City))
+            {
+                <li>@Model.City</li>
+            }
+        </ul>
+
+        @if (seller != null)
+        {
+            <div class="mb-2">
+                <partial name="_SellerByline" model="seller"
+                         view-data='new ViewDataDictionary(ViewData) { ["BylineCompact"] = true }' />
+            </div>
+        }
+
+        <div class="mt-auto">
+            <div class="small pm-muted">Asking price</div>
+            <div class="pm-price mb-2">
+                @Model.Price.ToString("C")
+                @if (wasPrice is decimal was)
+                {
+                    <span class="pm-price-was" title="Reduced from @was.ToString("C")">
+                        @was.ToString("C")
+                    </span>
+                }
+            </div>
+            <div class="d-flex gap-2">
+                <a asp-controller="Cars" asp-action="Details" asp-route-id="@Model.Id"
+                   class="btn btn-sm btn-primary flex-grow-1">View</a>
+                <partial name="_FavoriteButton" model="Model"
+                         view-data='new ViewDataDictionary(ViewData) { ["FavBtnClass"] = favClass }' />
+            </div>
+        </div>
+    </div>
+</div>

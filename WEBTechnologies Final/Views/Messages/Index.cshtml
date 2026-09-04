@@ -1,0 +1,77 @@
+@using WEBTechnologies_Final.Services.Marketplace
+@model List<ConversationSummary>
+@{
+    ViewData["Title"] = "Messages";
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>Messages</h1>
+        <p class="pm-muted mb-0 small">Conversations about cars you are buying or selling.</p>
+    </div>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="pm-empty">
+        <div class="pm-empty-icon" aria-hidden="true">💬</div>
+        <h2 class="h5">No conversations yet</h2>
+        <p class="pm-muted mb-3">
+            Message a seller from any listing, or reply to a buyer who has sent you an offer.
+        </p>
+        <a asp-controller="Cars" asp-action="Index" class="btn btn-primary">Browse cars</a>
+    </div>
+}
+else
+{
+    <div class="card">
+        <ul class="list-group list-group-flush pm-stagger">
+            @foreach (var c in Model)
+            {
+                <li class="list-group-item p-0">
+                    <a asp-action="Thread" asp-route-id="@c.Id" class="pm-thread-row">
+                        <img src="@c.CarImage" alt="" class="pm-thread-thumb" loading="lazy" decoding="async" />
+                        <div class="min-w-0 flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-baseline gap-2">
+                                <span class="fw-semibold text-truncate">@c.CarTitle</span>
+                                <span class="small pm-muted flex-shrink-0">
+                                    @AppTime.ToDisplay(c.LastMessageUtc).ToString("dd/MM HH:mm")
+                                </span>
+                            </div>
+                            <div class="small pm-muted text-truncate">
+                                @if (c.LastMessage is null)
+                                {
+                                    <em>No messages yet</em>
+                                }
+                                else
+                                {
+                                    <text>@c.LastSender: @c.LastMessage</text>
+                                }
+                            </div>
+                            <div class="d-flex gap-2 align-items-center mt-1">
+                                <span class="badge bg-light text-dark border">
+                                    @(c.ViewerRole == "buyer" ? "You are buying" : "You are selling")
+                                </span>
+                                @if (c.IsClosed)
+                                {
+                                    <span class="badge bg-secondary">Closed</span>
+                                }
+                            </div>
+                        </div>
+                        @if (c.UnreadCount > 0)
+                        {
+                            <span class="badge bg-primary rounded-pill flex-shrink-0">@c.UnreadCount</span>
+                        }
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+
+    @* Delivery is request-response for now, so say so rather than letting someone sit on
+       this page waiting for a message to appear. *@
+    <p class="small pm-muted mt-3 mb-0">
+        New messages appear when you open or refresh a conversation. Push notifications are
+        on the roadmap.
+    </p>
+}

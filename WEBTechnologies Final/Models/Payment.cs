@@ -19,7 +19,10 @@ namespace WEBTechnologies_Final.Models
     {
         public int Id { get; set; }
 
-        // Seller who owns this token.
+        // Stable identity of the seller who owns this token.
+        public int? UserId { get; set; }
+
+        // Denormalized display copy of the seller's username.
         public string Username { get; set; } = string.Empty;
 
         // The listing this token is currently applied to (null once a closed listing releases it).

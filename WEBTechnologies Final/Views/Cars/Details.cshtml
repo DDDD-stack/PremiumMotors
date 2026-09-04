@@ -1,182 +1,550 @@
 @model Car
 @{
     ViewData["Title"] = Model.Title;
+
+    var currentUserId = Context.Session.GetInt32(SessionKeys.UserId);
     var currentUser = Context.Session.GetString(SessionKeys.Username);
-    var isAdmin = Context.Session.GetString(SessionKeys.IsAdmin) == "true";
-    var isSeller = isAdmin || (currentUser != null && string.Equals(currentUser, Model.OwnerUsername, StringComparison.OrdinalIgnoreCase));
+    var isSeller = ViewData["IsSeller"] is true;
+    var myOffer = ViewData["MyOffer"] as Offer;
+    var myThreadId = ViewData["MyConversationId"] as int?;
+    var threads = ViewData["Threads"] as Dictionary<int, int> ?? new();
+    // True when the signed-in viewer is the buyer whose offer the seller accepted.
+    var isWinningBuyer = currentUserId is not null && Model.SoldToUserId == currentUserId;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+
+    var images = Model.ImagePaths.Count > 0 ? Model.ImagePaths : new List<string> { Model.PrimaryImage };
+
+    var sellerBadge = ViewData["SellerBadge"] as SellerBadge;
+    var wasPrice = ViewData["PreviousPrice"] as decimal?;
+    var similar = ViewData["Similar"] as List<Car> ?? new();
+    var recentlyViewed = ViewData["RecentlyViewed"] as List<Car> ?? new();
+    var priceHistory = ViewData["PriceHistory"] as List<CarPriceChange> ?? new();
 }
 
 <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-action="Index">Auctions</a></li>
-        <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+    <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a asp-action="Index">Cars for sale</a></li>
+        <li class="breadcrumb-item active text-truncate" style="max-width:60vw" aria-current="page">@Model.Title</li>
     </ol>
 </nav>
 
-<div class="row g-4">
+<div class="row g-3 g-lg-4">
 
     <div class="col-lg-7">
-        @{
-            var images = Model.ImagePaths.Count > 0 ? Model.ImagePaths : new List<string> { Model.PrimaryImage };
-        }
-        <div id="carGallery" class="carousel slide shadow-sm rounded overflow-hidden" data-bs-ride="false">
+        <div id="carGallery" class="carousel slide card overflow-hidden" data-bs-ride="false">
             <div class="carousel-inner">
                 @for (var i = 0; i < images.Count; i++)
                 {
                     <div class="carousel-item @(i == 0 ? "active" : "")">
-                        <img src="@images[i]" class="d-block w-100 detail-img" alt="@Model.Title" />
+                        @* Only the first photo carries the transition name: it is the one the
+                           grid card morphs into, and a name may appear once per document. *@
+                        <div class="pm-media">
+                            <img src="@images[i]" class="d-block w-100 detail-img" alt="@Model.Title"
+                                 loading="@(i == 0 ? "eager" : "lazy")" decoding="async"
+                                 @(i == 0 ? Html.Raw($"style=\"view-transition-name: car-photo-{Model.Id}\"") : null) />
+                        </div>
                     </div>
                 }
             </div>
             @if (images.Count > 1)
             {
                 <button class="carousel-control-prev" type="button" data-bs-target="#carGallery" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon"></span>
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous photo</span>
                 </button>
                 <button class="carousel-control-next" type="button" data-bs-target="#carGallery" data-bs-slide="next">
-                    <span class="carousel-control-next-icon"></span>
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next photo</span>
                 </button>
+                <div class="carousel-indicators">
+                    @for (var i = 0; i < images.Count; i++)
+                    {
+                        <button type="button" data-bs-target="#carGallery" data-bs-slide-to="@i"
+                                class="@(i == 0 ? "active" : "")" aria-label="Photo @(i + 1)"></button>
+                    }
+                </div>
             }
         </div>
 
-        <div class="card mt-4 shadow-sm">
+        <div class="card mt-3 mt-lg-4">
+            <div class="card-body">
+                <h2 class="h5 mb-3">Specification</h2>
+                <div class="pm-spec-grid">
+                    <dl class="pm-spec-item"><dt>Mileage</dt><dd>@Model.Mileage.ToString("N0") km</dd></dl>
+                    <dl class="pm-spec-item"><dt>Fuel</dt><dd>@Model.FuelType</dd></dl>
+                    <dl class="pm-spec-item"><dt>Gearbox</dt><dd>@Model.Transmission</dd></dl>
+                    <dl class="pm-spec-item"><dt>Drivetrain</dt><dd>@Model.Drivetrain</dd></dl>
+                    <dl class="pm-spec-item"><dt>Year</dt><dd>@Model.Year</dd></dl>
+                    <dl class="pm-spec-item"><dt>Condition</dt><dd>@Model.Condition</dd></dl>
+                    @if (Model.EngineSizeCc is int cc)
+                    {
+                        <dl class="pm-spec-item"><dt>Engine</dt><dd>@cc.ToString("N0") cc</dd></dl>
+                    }
+                    @if (Model.PowerHp is int hp)
+                    {
+                        <dl class="pm-spec-item"><dt>Power</dt><dd>@hp hp</dd></dl>
+                    }
+                    @if (Model.Doors is int doors)
+                    {
+                        <dl class="pm-spec-item"><dt>Doors</dt><dd>@doors</dd></dl>
+                    }
+                    @if (Model.Seats is int seats)
+                    {
+                        <dl class="pm-spec-item"><dt>Seats</dt><dd>@seats</dd></dl>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.ExteriorColour))
+                    {
+                        <dl class="pm-spec-item"><dt>Colour</dt><dd>@Model.ExteriorColour</dd></dl>
+                    }
+                    @if (Model.PreviousOwners is int owners)
+                    {
+                        <dl class="pm-spec-item"><dt>Previous owners</dt><dd>@owners</dd></dl>
+                    }
+                    @if (Model.FirstRegistration is DateTime reg)
+                    {
+                        <dl class="pm-spec-item"><dt>First registered</dt><dd>@reg.ToString("MM/yyyy")</dd></dl>
+                    }
+                    <dl class="pm-spec-item"><dt>Service history</dt><dd>@Model.ServiceHistory</dd></dl>
+                    <dl class="pm-spec-item">
+                        <dt>Accident history</dt>
+                        <dd>@(Model.HasAccidentHistory ? "Declared" : "None declared")</dd>
+                    </dl>
+                    @if (!string.IsNullOrWhiteSpace(Model.Vin))
+                    {
+                        @* The VIN itself is never rendered — only that the seller recorded one. *@
+                        <dl class="pm-spec-item"><dt>VIN</dt><dd>On file — ask the seller</dd></dl>
+                    }
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(Model.ServiceHistoryNotes))
+                {
+                    <h3 class="h6 mt-4">Service record</h3>
+                    <p class="mb-0 pm-break" style="white-space: pre-line">@Model.ServiceHistoryNotes</p>
+                }
+            </div>
+        </div>
+
+        <div class="card mt-3 mt-lg-4">
             <div class="card-body">
                 <h2 class="h5">Description</h2>
-                <p class="mb-0" style="white-space: pre-line">@Model.Description</p>
+                <p class="mb-0 pm-break" style="white-space: pre-line">@Model.Description</p>
             </div>
         </div>
     </div>
 
     <div class="col-lg-5">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <div class="d-flex justify-content-between align-items-start">
-                    <h1 class="h4">@Model.Title</h1>
-                    <span class="badge bg-secondary">@Model.Type</span>
-                </div>
-
-                <dl class="row small text-muted mb-3">
-                    <dt class="col-5">Make</dt><dd class="col-7">@Model.Make</dd>
-                    <dt class="col-5">Model</dt><dd class="col-7">@Model.Model</dd>
-                    <dt class="col-5">Year</dt><dd class="col-7">@Model.Year</dd>
-                    @if (!string.IsNullOrEmpty(Model.Country))
-                    {
-                        <dt class="col-5">Country</dt><dd class="col-7">@Model.Country</dd>
-                    }
-                    @if (Model.AuctionEnd.HasValue)
-                    {
-                        <dt class="col-5">Auction ends</dt>
-                        <dd class="col-7">@Model.AuctionEnd.Value.ToString("dd/MM/yyyy HH:mm")</dd>
-                    }
-                </dl>
-
-                <div class="bg-light rounded p-3 mb-3">
-                    <div class="d-flex justify-content-between">
-                        <span class="text-muted">Asking price</span>
-                        <span class="fw-bold text-primary fs-5">@Model.StartingPrice.ToString("C")</span>
+        <div class="pm-sticky-aside">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-start gap-2">
+                        <h1 class="h4 mb-2">@Model.Title</h1>
+                        <partial name="_ListingStatusBadge" model="Model.Status" />
                     </div>
-                </div>
 
-                @if (Model.IsClosed)
-                {
-                    <div class="alert alert-secondary mb-3">
-                        This auction is closed.
-                        @if (Model.IsSold && Model.SoldTo is not null)
-                        {
-                            <strong>Sold to @Model.SoldTo.</strong>
-                        }
+                    <ul class="pm-spec-line mb-3">
+                        <li>@Model.Mileage.ToString("N0") km</li>
+                        <li>@Model.FuelType</li>
+                        <li>@Model.Transmission</li>
+                        <li>@Model.Country@(string.IsNullOrWhiteSpace(Model.City) ? "" : " · " + Model.City)</li>
+                    </ul>
+
+                    <div class="pm-price-box mb-3 d-flex justify-content-between align-items-center">
+                        <span class="pm-muted small">Asking price</span>
+                        <span class="text-end">
+                            <span class="fw-bold text-primary fs-4">@Model.Price.ToString("C")</span>
+                            @if (wasPrice is decimal was)
+                            {
+                                <span class="d-block small">
+                                    <span class="pm-price-was">@was.ToString("C")</span>
+                                    <span class="pm-drop-amount">
+                                        &minus;@((was - Model.Price).ToString("C"))
+                                    </span>
+                                </span>
+                            }
+                        </span>
                     </div>
-                }
-                else
-                {
-                    @if (string.IsNullOrEmpty(currentUser))
-                    {
 
-                        <div class="alert alert-warning">
-                            <strong>Log in to make an offer.</strong>
-                            <div class="small">Offers are only available to registered users.</div>
+                    @if (sellerBadge is not null)
+                    {
+                        <div class="pm-byline-box mb-3">
+                            <partial name="_SellerByline" model="sellerBadge" />
                         </div>
-                        <a asp-controller="Account" asp-action="Login"
-                           asp-route-returnUrl="@(Context.Request.Path + Context.Request.QueryString)"
-                           class="btn btn-primary w-100 mb-2">Log in to make an offer</a>
-                        <a asp-controller="Account" asp-action="Register" class="btn btn-outline-primary w-100 mb-3">
-                            Create an account
-                        </a>
+                    }
+
+                    @if (Model.ViewCount > 0)
+                    {
+                        <p class="small pm-muted mb-3">
+                            @Model.ViewCount.ToString("N0") view@(Model.ViewCount == 1 ? "" : "s")
+                        </p>
+                    }
+
+                    @if (Model.Status == ListingStatus.Sold)
+                    {
+                        <div class="alert @(isWinningBuyer ? "alert-success" : "alert-secondary") mb-3">
+                            <strong>
+                                @(isWinningBuyer ? "You bought this car." : "This car has been sold.")
+                            </strong>
+                            @if ((isSeller || isWinningBuyer) && Model.SoldPrice is decimal sp)
+                            {
+                                <div class="small">
+                                    Agreed at @sp.ToString("C")@(isSeller ? " with " + Model.SoldTo : "").
+                                </div>
+                            }
+                        </div>
+                    }
+                    else if (Model.Status == ListingStatus.Reserved)
+                    {
+                        @if (isWinningBuyer)
+                        {
+                            <div class="alert alert-success mb-3">
+                                <strong>Your offer was accepted.</strong>
+                                <div class="small">
+                                    @if (Model.SoldPrice is decimal agreed)
+                                    {
+                                        <text>Agreed at @agreed.ToString("C"). </text>
+                                    }
+                                    Contact the seller below to arrange payment and collection.
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="alert alert-warning mb-3">
+                                <strong>Reserved.</strong>
+                                <div class="small">
+                                    The seller has accepted an offer and is completing the sale.
+                                </div>
+                            </div>
+                        }
+                        @if (isSeller)
+                        {
+                            <div class="d-grid gap-2 mb-3">
+                                <form asp-controller="Seller" asp-action="MarkSold" method="post">
+                                    <input type="hidden" name="carId" value="@Model.Id" />
+                                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                    <button type="submit" class="btn btn-success w-100">Mark as sold</button>
+                                </form>
+                                <form asp-controller="Seller" asp-action="Reopen" method="post">
+                                    <input type="hidden" name="carId" value="@Model.Id" />
+                                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                    <button type="submit" class="btn btn-outline-secondary w-100">
+                                        Sale fell through — relist
+                                    </button>
+                                </form>
+                            </div>
+                        }
                     }
                     else if (isSeller)
                     {
-                        <div class="alert alert-info mb-3">This is your listing. Offers from buyers appear below.</div>
+                        <div class="alert alert-info mb-3">
+                            This is your listing. Offers from buyers appear below.
+                        </div>
+                    }
+                    else if (string.IsNullOrEmpty(currentUser))
+                    {
+                        <div class="alert alert-warning">
+                            <strong>Log in to make an offer.</strong>
+                            <div class="small">You can also message the seller once signed in.</div>
+                        </div>
+                        <div class="d-grid gap-2 mb-3">
+                            <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@returnUrl"
+                               class="btn btn-primary">Log in to make an offer</a>
+                            <a asp-controller="Account" asp-action="Signup" class="btn btn-outline-primary">
+                                Create an account
+                            </a>
+                        </div>
+                    }
+                    else if (myOffer is not null && myOffer.IsPending)
+                    {
+                        @* The buyer already has an offer in. Showing the form again would only
+                           let them stack duplicates on the seller's inbox. *@
+                        <div class="alert alert-primary mb-3">
+                            <div class="d-flex justify-content-between align-items-center gap-2">
+                                <strong>Your offer: @myOffer.Amount.ToString("C")</strong>
+                                <partial name="_OfferStatusBadge" model="myOffer.Status" />
+                            </div>
+                            <div class="small mt-1">The seller can accept, decline, or message you first.</div>
+                        </div>
+                        <form asp-action="WithdrawOffer" method="post" class="d-grid mb-3">
+                            <input type="hidden" name="offerId" value="@myOffer.Id" />
+                            <input type="hidden" name="carId" value="@Model.Id" />
+                            <button type="submit" class="btn btn-outline-secondary btn-sm">Withdraw my offer</button>
+                        </form>
                     }
                     else
                     {
+                        @if (myOffer is not null)
+                        {
+                            <div class="alert alert-secondary mb-3">
+                                <div class="d-flex justify-content-between align-items-center gap-2">
+                                    <span>Your last offer: @myOffer.Amount.ToString("C")</span>
+                                    <partial name="_OfferStatusBadge" model="myOffer.Status" />
+                                </div>
+                                @if (!string.IsNullOrWhiteSpace(myOffer.SellerResponse))
+                                {
+                                    <div class="small mt-1 fst-italic">&ldquo;@myOffer.SellerResponse&rdquo;</div>
+                                }
+                            </div>
+                        }
 
-                        <form asp-action="Bid" method="post" class="mb-3">
+                        <form asp-action="Offer" method="post" class="mb-3">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.Id" />
-                            <label class="form-label fw-semibold">Make a private offer as @currentUser</label>
-                            <div class="input-group">
+                            <label class="form-label" for="offerAmount">Make an offer</label>
+                            <div class="input-group mb-2">
                                 <span class="input-group-text">€</span>
-                                <input type="number" name="amount" class="form-control" step="0.01"
-                                       min="1" value="@Model.StartingPrice" required />
-                                <button type="submit" class="btn btn-primary">Send offer</button>
+                                <input type="number" id="offerAmount" name="amount" class="form-control"
+                                       step="0.01" min="1" inputmode="decimal"
+                                       value="@Model.Price" required />
                             </div>
-                            <div class="form-text">Your offer is private — only the seller can see it.</div>
+                            <label class="form-label small" for="offerMessage">Add a note (optional)</label>
+                            <textarea id="offerMessage" name="message" class="form-control mb-2" rows="2"
+                                      maxlength="1000"
+                                      placeholder="e.g. Can collect this weekend, cash ready."></textarea>
+                            <button type="submit" class="btn btn-primary w-100">Send offer</button>
+                            <div class="form-text">
+                                Private to the seller. A note starts a chat so they can ask you questions.
+                            </div>
                         </form>
                     }
-                }
 
-                <div class="d-grid gap-2">
-                    <partial name="_FavoriteButton" model="Model" view-data='new ViewDataDictionary(ViewData) { ["FavBtnClass"] = "w-100" }' />
-                    <a asp-action="Share" asp-route-id="@Model.Id" class="btn btn-outline-secondary w-100">
-                        🔗 Share this listing
-                    </a>
+                    <div class="d-grid gap-2">
+                        @if (!isSeller && !string.IsNullOrEmpty(currentUser))
+                        {
+                            @if (myThreadId is int tid)
+                            {
+                                <a asp-controller="Messages" asp-action="Thread" asp-route-id="@tid"
+                                   class="btn btn-outline-primary">💬 Open chat with the seller</a>
+                            }
+                            else
+                            {
+                                <form asp-action="StartChat" method="post" class="d-grid">
+                                    <input type="hidden" name="carId" value="@Model.Id" />
+                                    <button type="submit" class="btn btn-outline-primary">
+                                        💬 Message the seller
+                                    </button>
+                                </form>
+                            }
+                        }
+                        <partial name="_FavoriteButton" model="Model"
+                                 view-data='new ViewDataDictionary(ViewData) { ["FavBtnClass"] = "w-100" }' />
+                        <a asp-action="Share" asp-route-id="@Model.Id" class="btn btn-outline-secondary w-100">
+                            🔗 Share this listing
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
 
-        @if (isSeller && Model.IsSold && ViewData["WinnerEmail"] is string winnerEmail)
+        @if (isWinningBuyer && ViewData["SellerEmail"] is string sellerEmail)
         {
-            <div class="card shadow-sm mt-4 border-success">
-                <div class="card-header bg-success text-white">Winning bidder — contact details</div>
+            <div class="card mt-3 mt-lg-4 border-success">
+                <div class="card-header bg-success text-white">Seller contact details</div>
                 <div class="card-body">
-                    <p class="small text-muted mb-2">
-                        Your auction has closed. Reach out to arrange inspection and payment directly — the sale happens between you and the buyer.
+                    <p class="small pm-muted mb-2">
+                        The seller accepted your offer. Arrange inspection, payment and handover
+                        directly — PremiumMotors does not handle the money.
                     </p>
-                    <dl class="row small mb-0">
-                        <dt class="col-4">Bidder</dt><dd class="col-8">@Model.SoldTo</dd>
-                        <dt class="col-4">Email</dt><dd class="col-8"><a href="mailto:@winnerEmail">@winnerEmail</a></dd>
-                        @if (ViewData["WinnerPhone"] is string winnerPhone && !string.IsNullOrWhiteSpace(winnerPhone))
+                    <dl class="row small mb-0 pm-break">
+                        <dt class="col-4">Seller</dt><dd class="col-8">@ViewData["SellerName"]</dd>
+                        <dt class="col-4">Email</dt><dd class="col-8"><a href="mailto:@sellerEmail">@sellerEmail</a></dd>
+                        @if (ViewData["SellerPhone"] is string sellerPhone && !string.IsNullOrWhiteSpace(sellerPhone))
                         {
-                            <dt class="col-4">Phone</dt><dd class="col-8"><a href="tel:@winnerPhone">@winnerPhone</a></dd>
+                            <dt class="col-4">Phone</dt><dd class="col-8"><a href="tel:@sellerPhone">@sellerPhone</a></dd>
+                        }
+                        @if (Model.SoldPrice is decimal myPrice)
+                        {
+                            <dt class="col-4">Agreed price</dt><dd class="col-8">@myPrice.ToString("C")</dd>
+                        }
+                    </dl>
+                    @if (myThreadId is int chatId)
+                    {
+                        <a asp-controller="Messages" asp-action="Thread" asp-route-id="@chatId"
+                           class="btn btn-sm btn-outline-primary mt-3">💬 Continue the chat</a>
+                    }
+                </div>
+            </div>
+        }
+
+        @if (isSeller && Model.SoldToUserId is not null && ViewData["BuyerEmail"] is string buyerEmail)
+        {
+            <div class="card mt-3 mt-lg-4 border-success">
+                <div class="card-header bg-success text-white">Buyer contact details</div>
+                <div class="card-body">
+                    <p class="small pm-muted mb-2">
+                        You accepted this buyer's offer. Arrange inspection, payment and handover
+                        directly — the sale happens between you and the buyer.
+                    </p>
+                    <dl class="row small mb-0 pm-break">
+                        <dt class="col-4">Buyer</dt><dd class="col-8">@Model.SoldTo</dd>
+                        <dt class="col-4">Email</dt><dd class="col-8"><a href="mailto:@buyerEmail">@buyerEmail</a></dd>
+                        @if (ViewData["BuyerPhone"] is string buyerPhone && !string.IsNullOrWhiteSpace(buyerPhone))
+                        {
+                            <dt class="col-4">Phone</dt><dd class="col-8"><a href="tel:@buyerPhone">@buyerPhone</a></dd>
+                        }
+                        @if (Model.SoldPrice is decimal agreed)
+                        {
+                            <dt class="col-4">Agreed price</dt><dd class="col-8">@agreed.ToString("C")</dd>
                         }
                     </dl>
                 </div>
             </div>
         }
 
-        <div class="card shadow-sm mt-4">
-            <div class="card-header">Offers @(isSeller ? $"({Model.Bids.Count})" : "")</div>
-            @if (!isSeller)
-            {
-                <div class="card-body text-muted">
-                    Offers are private. Only the seller can see who has made an offer and for how much.
-                </div>
-            }
-            else if (Model.Bids.Count == 0)
-            {
-                <div class="card-body text-muted">No offers yet.</div>
-            }
-            else
-            {
-                <ul class="list-group list-group-flush">
-                   @foreach (var bid in Model.Bids.OrderByDescending(b => b.Amount))
+        @* Offers are private: only the seller (or an admin) ever sees this card. A buyer sees
+           their own offer in the panel above and nothing about anyone else's. *@
+        @if (isSeller)
+        {
+            var pending = Model.Offers.Where(o => o.Status == OfferStatus.Pending)
+                                      .OrderByDescending(o => o.Amount).ToList();
+            var answered = Model.Offers.Where(o => o.Status != OfferStatus.Pending)
+                                       .OrderByDescending(o => o.CreatedUtc).ToList();
+
+            <div class="card mt-3 mt-lg-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Offers (@Model.Offers.Count)</span>
+                    @if (pending.Count > 0)
                     {
-                        <li class="list-group-item d-flex justify-content-between">
-                            <span>@bid.BidderUsername</span> <span class="fw-semibold">@bid.Amount.ToString("C")</span>
-                        </li>
+                        <span class="badge bg-primary">@pending.Count awaiting reply</span>
                     }
-                </ul>
-            }
-        </div>
+                </div>
+
+                @if (Model.Offers.Count == 0)
+                {
+                    <div class="card-body pm-muted small">
+                        No offers yet. Buyers can send you a private offer from this page.
+                    </div>
+                }
+                else
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var offer in pending.Concat(answered))
+                        {
+                            var threadId = offer.BuyerId is int bid && threads.TryGetValue(bid, out var t)
+                                ? (int?)t : null;
+
+                            <li class="list-group-item">
+                                <div class="d-flex justify-content-between align-items-start gap-2">
+                                    <div class="min-w-0">
+                                        <div class="fw-semibold text-truncate">@offer.BuyerUsername</div>
+                                        <div class="small pm-muted">
+                                            @AppTime.ToDisplay(offer.CreatedUtc).ToString("dd/MM/yyyy HH:mm")
+                                        </div>
+                                    </div>
+                                    <div class="text-end flex-shrink-0">
+                                        <div class="pm-price">@offer.Amount.ToString("C")</div>
+                                        <partial name="_OfferStatusBadge" model="offer.Status" />
+                                    </div>
+                                </div>
+
+                                @if (!string.IsNullOrWhiteSpace(offer.Message))
+                                {
+                                    <p class="small mt-2 mb-0 fst-italic pm-break">&ldquo;@offer.Message&rdquo;</p>
+                                }
+
+                                <div class="d-flex flex-wrap gap-2 mt-2">
+                                    @* Chat before deciding: the seller can ask about collection,
+                                       payment method or a viewing before committing. *@
+                                    @if (threadId is int existing)
+                                    {
+                                        <a asp-controller="Messages" asp-action="Thread" asp-route-id="@existing"
+                                           class="btn btn-sm btn-outline-primary">💬 Chat</a>
+                                    }
+                                    else if (offer.BuyerId is int buyerId)
+                                    {
+                                        <form asp-action="StartChat" method="post" class="d-inline">
+                                            <input type="hidden" name="carId" value="@Model.Id" />
+                                            <input type="hidden" name="buyerId" value="@buyerId" />
+                                            <button type="submit" class="btn btn-sm btn-outline-primary">💬 Chat</button>
+                                        </form>
+                                    }
+
+                                    @if (offer.Status == OfferStatus.Pending)
+                                    {
+                                        <form asp-controller="Seller" asp-action="AcceptOffer" method="post" class="d-inline">
+                                            <input type="hidden" name="offerId" value="@offer.Id" />
+                                            <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                            <button type="submit" class="btn btn-sm btn-success">Accept</button>
+                                        </form>
+                                        <form asp-controller="Seller" asp-action="DeclineOffer" method="post" class="d-inline">
+                                            <input type="hidden" name="offerId" value="@offer.Id" />
+                                            <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Decline</button>
+                                        </form>
+                                    }
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
     </div>
 </div>
+
+@* One change is already worth showing: it is the difference between "17,500" and
+   "17,500, down from 20,000 last week", which is the whole reason to keep the table. *@
+@if (priceHistory.Count > 0)
+{
+    <section class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h2 class="pm-section-title mb-3">Price history</h2>
+            <ul class="pm-price-history">
+                @foreach (var change in priceHistory)
+                {
+                    <li>
+                        <span class="pm-history-date">@change.ChangedUtc.ToString("d MMM yyyy")</span>
+                        <span class="pm-history-price">@change.Price.ToString("C")</span>
+                        @if (change.PreviousPrice is decimal prev)
+                        {
+                            var down = change.Price < prev;
+                            <span class="pm-history-delta @(down ? "is-down" : "is-up")">
+                                @(down ? "↓" : "↑") @Math.Abs(change.Price - prev).ToString("C")
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="pm-muted small">listed</span>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+    </section>
+}
+
+@if (similar.Count > 0)
+{
+    <section class="mt-5">
+        <div class="pm-page-head">
+            <div>
+                <h2 class="h5 mb-0">Similar cars</h2>
+                <p class="pm-muted small mb-0">Same body type, around the same money.</p>
+            </div>
+        </div>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3 g-md-4 pm-stagger">
+            @foreach (var car in similar)
+            {
+                <div class="col"><partial name="_CarCard" model="car" /></div>
+            }
+        </div>
+    </section>
+}
+
+@if (recentlyViewed.Count > 0)
+{
+    <section class="mt-5">
+        <div class="pm-page-head">
+            <div>
+                <h2 class="h5 mb-0">Recently viewed</h2>
+                <p class="pm-muted small mb-0">Cars you looked at earlier in this visit.</p>
+            </div>
+        </div>
+        <div class="row row-cols-2 row-cols-xl-4 g-3 pm-stagger">
+            @foreach (var car in recentlyViewed)
+            {
+                <div class="col"><partial name="_CarCard" model="car" /></div>
+            }
+        </div>
+    </section>
+}

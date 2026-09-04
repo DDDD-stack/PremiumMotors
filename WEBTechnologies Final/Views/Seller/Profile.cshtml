@@ -1,0 +1,85 @@
+@model SellerProfileViewModel
+@{
+    ViewData["Title"] = "Seller profile";
+}
+
+<div class="pm-page-head">
+    <h1>Seller profile</h1>
+</div>
+
+<partial name="_ProfileNav" />
+
+<div class="row">
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div>
+                        <div class="small pm-muted">Selling since</div>
+                        <div class="fw-semibold">
+                            @(Model.SellerSinceUtc is DateTime s
+                                ? AppTime.ToDisplay(s).ToString("dd MMMM yyyy") : "—")
+                        </div>
+                    </div>
+                    @if (Model.IsVerified)
+                    {
+                        <span class="badge bg-success">Verified</span>
+                    }
+                    else
+                    {
+                        @* Nothing sets SellerVerified yet — the document-check flow is not built. *@
+                        <span class="badge bg-secondary" title="Document verification is not live yet">
+                            Unverified
+                        </span>
+                    }
+                </div>
+
+                <form asp-action="Profile" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="SellerType" class="form-label"></label>
+                        <select asp-for="SellerType" class="form-select"
+                                asp-items="Html.GetEnumSelectList<SellerType>()"></select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="DisplayName" class="form-label"></label>
+                        <input asp-for="DisplayName" class="form-control" autocapitalize="words" />
+                        <div class="form-text">Shown on your listings. Blank falls back to your username.</div>
+                        <span asp-validation-for="DisplayName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Location" class="form-label"></label>
+                        <input asp-for="Location" class="form-control" autocapitalize="words" />
+                        <span asp-validation-for="Location" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5 mt-3 mt-lg-0">
+        <div class="card">
+            <div class="card-header">Coming soon</div>
+            <div class="card-body small pm-muted">
+                @* Written down here rather than left implicit so the gaps are visible to
+                   anyone using the panel, not just to whoever reads the code. *@
+                <ul class="mb-0 ps-3">
+                    <li>Dealer verification (business registration, VAT number)</li>
+                    <li>A public seller page listing all your cars</li>
+                    <li>Buyer ratings and reviews</li>
+                    <li>Paid listing boosts</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

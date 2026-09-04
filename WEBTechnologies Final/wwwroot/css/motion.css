@@ -1,0 +1,493 @@
+/* ------------------------------------------------------------------
+   Page transitions and micro-interactions.
+
+   The cross-page animation is done with the native cross-document View
+   Transitions API, which needs no JavaScript and no SPA router: the
+   browser snapshots the outgoing page, loads the new document, and
+   animates between the two. Chrome/Edge 126+ and Safari 18.2+ run it.
+   Firefox ignores the at-rule entirely and simply navigates -- which is
+   why site.js also applies a plain CSS fade there (see .pm-nav-leaving).
+   ------------------------------------------------------------------ */
+
+@view-transition {
+    navigation: auto;
+}
+
+/* --- The default root cross-fade ------------------------------- */
+::view-transition-old(root) {
+    animation: pm-fade-out var(--pm-dur) var(--pm-ease) both;
+}
+
+::view-transition-new(root) {
+    animation: pm-slide-up var(--pm-dur-slow) var(--pm-ease) both;
+}
+
+/* Going back should feel like going back, so the incoming page slides
+   from the opposite side. site.js sets data-pm-nav="back" on <html>
+   before a popstate-driven navigation. */
+html[data-pm-nav="back"]::view-transition-new(root) {
+    animation: pm-slide-down var(--pm-dur-slow) var(--pm-ease) both;
+}
+
+/* --- Persistent chrome ----------------------------------------- */
+/* Naming the header, footer and tab bar lifts them out of the root
+   snapshot so they stay put instead of cross-fading with the content --
+   the single biggest thing that makes the navigation read as "app"
+   rather than "page reload". */
+.pm-header  { view-transition-name: pm-header; }
+.pm-footer  { view-transition-name: pm-footer; }
+
+::view-transition-group(pm-header),
+::view-transition-group(pm-footer) {
+    animation-duration: var(--pm-dur-fast);
+}
+
+/* --- Shared element: card photo morphs into the detail hero ------
+   Views tag the <img> with style="view-transition-name: car-photo-{id}"
+   on both the grid card and the detail gallery. Matching names on the
+   two documents make the browser tween position, size and radius. */
+::view-transition-group(*) {
+    animation-timing-function: var(--pm-ease);
+}
+
+/* --- Keyframes -------------------------------------------------- */
+@keyframes pm-fade-out {
+    to { opacity: 0; }
+}
+
+@keyframes pm-fade-in {
+    from { opacity: 0; }
+}
+
+@keyframes pm-slide-up {
+    from { opacity: 0; transform: translateY(14px); }
+}
+
+@keyframes pm-slide-down {
+    from { opacity: 0; transform: translateY(-14px); }
+}
+
+@keyframes pm-rise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes pm-spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pm-shimmer {
+    to { background-position: -200% 0; }
+}
+
+/* --- Fallback fade for browsers without View Transitions ---------
+   site.js adds .pm-nav-leaving to <html> on link click and removes it
+   on pageshow (which also covers the back/forward cache). */
+html.pm-nav-fallback main {
+    animation: pm-rise var(--pm-dur-slow) var(--pm-ease) both;
+}
+
+html.pm-nav-fallback.pm-nav-leaving main {
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity var(--pm-dur-fast) var(--pm-ease),
+                transform var(--pm-dur-fast) var(--pm-ease);
+}
+
+/* --- Top-of-page navigation progress bar ------------------------ */
+.pm-progress {
+    position: fixed;
+    inset: 0 auto auto 0;
+    z-index: 2000;
+    height: 3px;
+    width: 100%;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    background: linear-gradient(90deg, var(--pm-primary), var(--pm-accent));
+    opacity: 0;
+    pointer-events: none;
+    transition: transform var(--pm-dur-slow) var(--pm-ease),
+                opacity var(--pm-dur-fast) linear;
+}
+
+.pm-progress.is-active {
+    opacity: 1;
+    /* Creeps toward 90% and waits: the last 10% lands on page swap. */
+    transform: scaleX(.9);
+    transition-duration: 2.4s, var(--pm-dur-fast);
+}
+
+.pm-progress.is-done {
+    opacity: 0;
+    transform: scaleX(1);
+    transition-duration: var(--pm-dur), var(--pm-dur);
+}
+
+/* --- Content entrance ------------------------------------------- */
+/* Staggered card reveal on first paint. The delay is capped so a page
+   of 24 listings does not take two seconds to finish arriving. */
+.pm-stagger > * {
+    animation: pm-rise var(--pm-dur-slow) var(--pm-ease) both;
+    animation-delay: calc(var(--pm-i, 0) * 45ms);
+}
+
+/* --- Busy buttons ----------------------------------------------- */
+/* site.js flips this on submit so a slow POST cannot be double-fired
+   and the user gets immediate feedback. */
+.btn.is-busy {
+    position: relative;
+    color: transparent !important;
+    pointer-events: none;
+}
+
+.btn.is-busy::after {
+    content: "";
+    position: absolute;
+    inset: 50% auto auto 50%;
+    width: 1em;
+    height: 1em;
+    margin: -.5em 0 0 -.5em;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    color: #fff;
+    animation: pm-spin .6s linear infinite;
+}
+
+.btn-outline-secondary.is-busy::after,
+.btn-outline-primary.is-busy::after,
+.btn-outline-danger.is-busy::after,
+.btn-light.is-busy::after {
+    color: var(--pm-ink-soft);
+}
+
+/* --- Image loading ---------------------------------------------- */
+/* Photos fade in over a shimmer instead of popping in, which hides the
+   reflow on slow mobile connections. The shimmer is opt-in via
+   .is-pending, which site.js adds only to images that were not already
+   complete -- an image held at opacity 0 while it decodes would also be
+   captured at opacity 0 by a cross-document view transition, so the
+   card-to-hero morph would arrive invisible. */
+.pm-media {
+    background: var(--pm-surface-sunken);
+}
+
+.pm-media.is-pending {
+    background: linear-gradient(90deg,
+                var(--pm-surface-sunken) 25%,
+                #f7f9fc 37%,
+                var(--pm-surface-sunken) 63%);
+    background-size: 200% 100%;
+    animation: pm-shimmer 1.4s linear infinite;
+}
+
+.pm-media.is-pending img {
+    opacity: 0;
+    transition: opacity var(--pm-dur) var(--pm-ease);
+}
+
+.pm-media.is-loaded {
+    animation: none;
+    background: var(--pm-surface-sunken);
+}
+
+.pm-media.is-loaded img {
+    opacity: 1;
+}
+
+/* ==================================================================
+   ARRIVAL — the first-visit intro and the entrance choreography.
+
+   Both are gated on <html data-pm-intro> + <html class="pm-arrive">,
+   set by a small inline script in <head> ONLY when all of these hold:
+
+     * the user has not asked for reduced motion,
+     * this is a fresh navigation (not a reload, not back/forward),
+     * and it is the first page of this browsing session.
+
+   That last condition is the point: this fires when you ENTER the
+   site, not on every click. A splash that replays on each page is the
+   single fastest way to make a site unpleasant to use.
+
+   SAFETY: every animation here ends at the element's natural resting
+   state (opacity 1, no transform) and the curtain animates itself to
+   visibility:hidden with fill-mode forwards. So if the JavaScript that
+   tidies up never runs -- blocked, errored, slow -- the page still
+   ends up correct and interactive on CSS alone. Nothing here can trap
+   the user behind an overlay.
+   ================================================================== */
+
+/* --- The curtain ------------------------------------------------- */
+
+/* Absent the attribute this costs nothing: it is never laid out. */
+.pm-intro { display: none; }
+
+html[data-pm-intro] .pm-intro {
+    display: grid;
+    place-items: center;
+    position: fixed;
+    inset: 0;
+    z-index: 3000;
+    /* Flat, and exactly the header colour. The wordmark PNG carries its own
+       opaque navy rectangle, so ANY brightness variation behind it -- a glow,
+       a vignette, a gradient -- draws the outline of that rectangle. */
+    background: var(--pm-header);
+    /* Never intercepts input, so a click during the intro still reaches
+       the link underneath instead of being swallowed. */
+    pointer-events: none;
+    animation:
+        pm-intro-curtain 1000ms var(--pm-ease) forwards,
+        pm-intro-retire  1ms    linear   1000ms forwards;
+}
+
+/* Lifts into the header rather than fading flat, which reads as the
+   page being uncovered instead of a loading screen giving up. */
+@keyframes pm-intro-curtain {
+    0%, 55% { clip-path: inset(0 0 0 0); }
+    100%    { clip-path: inset(0 0 100% 0); }
+}
+
+@keyframes pm-intro-retire {
+    to { visibility: hidden; }
+}
+
+/* --- The wordmark ------------------------------------------------ */
+
+.pm-intro-mark {
+    position: relative;
+    overflow: hidden;
+    padding: .5rem 1.25rem;
+    text-align: center;
+}
+
+.pm-intro-mark img {
+    display: block;
+    /* Fluid so it fills a phone without overflowing, and stays sane on a
+       27-inch monitor. */
+    width: clamp(190px, 46vw, 340px);
+    height: auto;
+}
+
+html[data-pm-intro] .pm-intro-mark {
+    animation: pm-intro-mark 1000ms var(--pm-ease) both;
+}
+
+/* Ends by shrinking upward: the mark appears to tuck into the header
+   the curtain is uncovering, so the two movements read as one. */
+@keyframes pm-intro-mark {
+    0%   { opacity: 0; transform: scale(.86) translateY(10px); }
+    26%  { opacity: 1; transform: scale(1)   translateY(0); }
+    55%  { opacity: 1; transform: scale(1)   translateY(0); }
+    100% { opacity: 0; transform: scale(.5)  translateY(-13vh); }
+}
+
+/* A light sweep across the artwork -- the one flourish that makes this
+   feel deliberate rather than like a slow page load. */
+html[data-pm-intro] .pm-intro-mark::after {
+    content: "";
+    position: absolute;
+    inset: -25% -45%;
+    background: linear-gradient(105deg,
+                transparent 42%,
+                rgba(255, 255, 255, .28) 50%,
+                transparent 58%);
+    transform: translateX(-115%);
+    animation: pm-intro-sheen 850ms var(--pm-ease) 160ms both;
+}
+
+@keyframes pm-intro-sheen {
+    to { transform: translateX(115%); }
+}
+
+/* --- The rule under the wordmark --------------------------------- */
+
+.pm-intro-rule {
+    display: block;
+    width: min(58vw, 260px);
+    height: 2px;
+    margin: 1rem auto 0;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--pm-primary), var(--pm-accent));
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+}
+
+html[data-pm-intro] .pm-intro-rule {
+    animation: pm-intro-rule 620ms var(--pm-ease) 240ms both;
+}
+
+@keyframes pm-intro-rule {
+    to { transform: scaleX(1); }
+}
+
+/* --- Entrance choreography --------------------------------------- */
+
+/* The delays are timed against the curtain above: the header is already
+   dropping as the curtain clears it, so the page assembles as it is
+   revealed instead of appearing pre-built underneath. */
+
+html.pm-arrive .pm-header {
+    animation: pm-drop 520ms var(--pm-ease) 560ms both;
+}
+
+html.pm-arrive .pm-brand img {
+    animation: pm-pop 460ms var(--pm-ease-spring) 660ms both;
+}
+
+/* main covers every page, so no view needs a class of its own. */
+html.pm-arrive main {
+    animation: pm-rise 480ms var(--pm-ease) 700ms both;
+}
+
+/* The browse filters arrive from the edge they live on. */
+html.pm-arrive .pm-filter-rail,
+html.pm-arrive .pm-filter-bar {
+    animation: pm-slide-in-left 520ms var(--pm-ease) 780ms both;
+}
+
+/* Rebases the existing card stagger so it runs after the reveal rather
+   than underneath the curtain, where nobody would see it. */
+html.pm-arrive .pm-stagger > * {
+    animation-delay: calc(800ms + var(--pm-i, 0) * 50ms);
+}
+
+html.pm-arrive .pm-footer {
+    animation: pm-rise 420ms var(--pm-ease) 880ms both;
+}
+
+@keyframes pm-drop {
+    from { opacity: 0; transform: translateY(-100%); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes pm-pop {
+    from { opacity: 0; transform: scale(.8); }
+    to   { opacity: 1; transform: none; }
+}
+
+@keyframes pm-slide-in-left {
+    from { opacity: 0; transform: translateX(-18px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* --- Skipping ----------------------------------------------------- */
+
+/* site.js switches the attribute to "out" on the first tap, key or
+   scroll. The choreography class is dropped at the same time, so the
+   whole page is present immediately -- "skip" has to mean the content,
+   not just the overlay. */
+html[data-pm-intro="out"] .pm-intro,
+html[data-pm-intro="out"] .pm-intro-mark,
+html[data-pm-intro="out"] .pm-intro-mark::after {
+    animation: none;
+}
+
+html[data-pm-intro="out"] .pm-intro {
+    opacity: 0;
+    transition: opacity 170ms linear;
+}
+
+/* Belt and braces: theme.css already collapses every duration under
+   reduced motion, but a 900ms DELAY with fill-mode both would still
+   hold content invisible. The head script does not opt in at all when
+   reduced motion is set; this covers the setting being changed while
+   the page is open. */
+@media (prefers-reduced-motion: reduce) {
+    html[data-pm-intro] .pm-intro { display: none; }
+
+    html.pm-arrive *,
+    html.pm-arrive *::before,
+    html.pm-arrive *::after {
+        animation-delay: 0s !important;
+    }
+}
+
+/* ==================================================================
+   ONGOING INTERACTIVITY — what the page does after it has arrived.
+   ================================================================== */
+
+/* --- Scroll-driven reveal ----------------------------------------
+   Scroll timelines let the browser tie an animation to an element's
+   position in the viewport with no scroll listener and no observer, so
+   this costs nothing on the main thread. Chrome/Edge 115+ run it;
+   everywhere else the @supports block is skipped entirely and the load
+   stagger below remains the behaviour.
+
+   It deliberately does NOT apply during the arrival: html.pm-arrive
+   keeps its timed stagger, because on first paint the cards are above
+   the fold and a view timeline would simply show them all at once. */
+@supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+        html:not(.pm-arrive) .pm-stagger > *,
+        .pm-reveal {
+            animation-name: pm-rise;
+            animation-duration: auto;
+            animation-timing-function: linear;
+            animation-fill-mode: both;
+            animation-delay: 0s;
+            animation-timeline: view();
+            /* Finishes well before the element reaches the middle of the
+               screen, so nothing is still fading in while you read it. */
+            animation-range: entry 5% cover 25%;
+        }
+    }
+}
+
+/* --- Current-section marker --------------------------------------
+   A small accent bar that grows under the active nav item. Purely a
+   sense of place; the background pill already carries the meaning. */
+.pm-header .nav-link {
+    position: relative;
+}
+
+.pm-header .nav-link.is-current::after {
+    content: "";
+    position: absolute;
+    left: .7rem;
+    right: .7rem;
+    bottom: .18rem;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--pm-accent);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    animation: pm-underline 340ms var(--pm-ease) 120ms both;
+}
+
+@keyframes pm-underline {
+    to { transform: scaleX(1); }
+}
+
+/* --- Call-to-action sheen ----------------------------------------
+   Hover only, and only on a real pointer: on a phone :hover sticks
+   after a tap and the button would keep glinting. */
+@media (hover: hover) and (pointer: fine) {
+    .btn-primary:not(.dropdown-toggle),
+    .btn-warning:not(.dropdown-toggle) {
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Bootstrap draws the dropdown caret with ::after, so exclude toggles. */
+    .btn-primary:not(.dropdown-toggle)::after,
+    .btn-warning:not(.dropdown-toggle)::after {
+        content: "";
+        position: absolute;
+        inset: 0 -60%;
+        background: linear-gradient(105deg,
+                    transparent 40%,
+                    rgba(255, 255, 255, .35) 50%,
+                    transparent 60%);
+        transform: translateX(-120%);
+        pointer-events: none;
+    }
+
+    .btn-primary:not(.dropdown-toggle):hover::after,
+    .btn-warning:not(.dropdown-toggle):hover::after {
+        animation: pm-sheen 620ms var(--pm-ease);
+    }
+}
+
+@keyframes pm-sheen {
+    to { transform: translateX(120%); }
+}

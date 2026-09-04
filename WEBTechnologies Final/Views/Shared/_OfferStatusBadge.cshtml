@@ -1,0 +1,12 @@
+@model OfferStatus
+@{
+    var (css, label) = Model switch
+    {
+        OfferStatus.Pending   => ("bg-primary", "Awaiting reply"),
+        OfferStatus.Accepted  => ("bg-success", "Accepted"),
+        OfferStatus.Declined  => ("bg-secondary", "Declined"),
+        OfferStatus.Withdrawn => ("bg-light text-dark border", "Withdrawn"),
+        _                     => ("bg-secondary", Model.ToString())
+    };
+}
+<span class="badge @css">@label</span>

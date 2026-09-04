@@ -1,0 +1,134 @@
+@model DealershipListViewModel
+@{
+    ViewData["Title"] = "Dealerships";
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>Dealerships</h1>
+        <p class="pm-muted mb-0 small">
+            @Model.TotalCount registered dealer@(Model.TotalCount == 1 ? "" : "s")
+            @if (Model.TotalPages > 1)
+            {
+                <text>· page @Model.Page of @Model.TotalPages</text>
+            }
+        </p>
+    </div>
+</div>
+
+<form asp-action="Index" method="get" class="card shadow-sm mb-4">
+    <div class="card-body row g-2 align-items-end">
+        <div class="col-12 col-md-5">
+            <label class="form-label" for="search">Search</label>
+            <input type="search" id="search" name="search" value="@Model.Search"
+                   class="form-control" placeholder="Dealer name or town..." />
+        </div>
+        <div class="col-6 col-md-3">
+            <label class="form-label" for="city">City</label>
+            <select id="city" name="city" class="form-select">
+                <option value="">Anywhere</option>
+                @foreach (var city in Model.Cities)
+                {
+                    <option value="@city" selected="@(city == Model.City)">@city</option>
+                }
+            </select>
+        </div>
+        <div class="col-6 col-md-2">
+            <label class="form-label" for="sort">Sort by</label>
+            <select id="sort" name="sort" class="form-select">
+                <option value="stock" selected="@(Model.Sort == "stock")">Most stock</option>
+                <option value="rating" selected="@(Model.Sort == "rating")">Best rated</option>
+                <option value="newest" selected="@(Model.Sort == "newest")">Newest</option>
+                <option value="name" selected="@(Model.Sort == "name")">Name</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-2 d-grid">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+</form>
+
+@if (Model.Dealerships.Count == 0)
+{
+    <div class="pm-empty">
+        <h2 class="h5">No dealerships found</h2>
+        <p class="pm-muted">
+            @if (Model.HasActiveFilters)
+            {
+                <text>Nothing matches those filters.</text>
+                <a asp-action="Index">Clear them</a>
+            }
+            else
+            {
+                <text>No dealers have registered yet. Businesses get a page here automatically
+                when they register a business account.</text>
+            }
+        </p>
+        <a class="btn btn-outline-primary" asp-controller="Account" asp-action="RegisterBusiness">
+            Register as a business
+        </a>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3 g-md-4 pm-stagger">
+        @foreach (var dealer in Model.Dealerships)
+        {
+            <div class="col">
+                <a class="card h-100 pm-dealer-card"
+                   asp-action="Details" asp-route-slug="@dealer.Slug">
+                    <div class="card-body">
+                        <div class="pm-dealer-head">
+                            <partial name="_Avatar" model="@((dealer.LogoPath, InitialsOf(dealer.Name), "md"))" />
+                            <div class="pm-dealer-title">
+                                <h2 class="h6 mb-0">
+                                    @dealer.Name
+                                    @if (dealer.Verified)
+                                    {
+                                        <span class="pm-verified" title="Verified dealer">✓</span>
+                                    }
+                                </h2>
+                                @if (!string.IsNullOrWhiteSpace(dealer.Location))
+                                {
+                                    <div class="small pm-muted">@dealer.Location</div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="mt-3">
+                            <partial name="_Stars" model="@((dealer.RatingAverage, dealer.RatingCount))" />
+                        </div>
+
+                        <div class="pm-dealer-counts mt-3">
+                            <span><strong>@dealer.ListingCount</strong> in stock</span>
+                            <span><strong>@dealer.SoldCount</strong> sold</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav class="pm-pager" aria-label="Dealership pages">
+            @for (var p = 1; p <= Model.TotalPages; p++)
+            {
+                <a class="pm-page @(p == Model.Page ? "is-current" : "")"
+                   asp-action="Index" asp-route-page="@p" asp-route-search="@Model.Search"
+                   asp-route-city="@Model.City" asp-route-sort="@Model.Sort">@p</a>
+            }
+        </nav>
+    }
+}
+
+@functions {
+    static string InitialsOf(string name)
+    {
+        var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 0) return "?";
+        return parts.Length == 1
+            ? parts[0][..Math.Min(2, parts[0].Length)].ToUpperInvariant()
+            : $"{parts[0][0]}{parts[1][0]}".ToUpperInvariant();
+    }
+}

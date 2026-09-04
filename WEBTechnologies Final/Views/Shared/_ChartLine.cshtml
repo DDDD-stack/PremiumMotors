@@ -1,0 +1,57 @@
+@using System.Globalization
+@model ChartSeries
+@{
+    @* Daily views over a month: 30 bars would be too fine to read, so this is an area
+       chart. Inline SVG with a viewBox and preserveAspectRatio="none" so it stretches to
+       whatever width the card ends up being, on any screen, with no measuring code. *@
+    var pts = Model.Points;
+    var max = Model.Max <= 0 ? 1 : Model.Max;
+    string X(int i) => (pts.Count <= 1 ? 0 : i * 100.0 / (pts.Count - 1))
+        .ToString("0.##", CultureInfo.InvariantCulture);
+    string Y(double v) => (100 - v / max * 100).ToString("0.##", CultureInfo.InvariantCulture);
+
+    var line = string.Join(" ", pts.Select((p, i) => $"{X(i)},{Y(p.Value)}"));
+    var area = pts.Count == 0 ? "" : $"0,100 {line} {X(pts.Count - 1)},100";
+}
+
+<figure class="pm-chart">
+    <figcaption>
+        <span class="pm-chart-title">@Model.Title</span>
+        @if (!string.IsNullOrWhiteSpace(Model.Subtitle))
+        {
+            <span class="pm-chart-sub">@Model.Subtitle</span>
+        }
+    </figcaption>
+
+    @if (Model.IsEmpty)
+    {
+        <div class="pm-chart-empty">No views recorded yet.</div>
+    }
+    else
+    {
+        <svg class="pm-sparkline" viewBox="0 0 100 100" preserveAspectRatio="none"
+             role="img" aria-label="@Model.Title">
+            <polygon points="@area" fill="@Model.Accent" opacity=".16" />
+            <polyline points="@line" fill="none" stroke="@Model.Accent"
+                      stroke-width="1.4" vector-effect="non-scaling-stroke"
+                      stroke-linejoin="round" stroke-linecap="round" />
+        </svg>
+
+        <div class="pm-chart-axis">
+            <span>@pts[0].Label</span>
+            <span class="pm-chart-peak">peak @Model.Max.ToString("N0")</span>
+            <span>@pts[^1].Label</span>
+        </div>
+
+        <table class="visually-hidden">
+            <caption>@Model.Title</caption>
+            <thead><tr><th>Day</th><th>Views</th></tr></thead>
+            <tbody>
+                @foreach (var point in pts)
+                {
+                    <tr><td>@point.Label</td><td>@point.Display</td></tr>
+                }
+            </tbody>
+        </table>
+    }
+</figure>

@@ -1,54 +1,1539 @@
+/* ------------------------------------------------------------------
+   PremiumMotors component + layout styles. Mobile-first: the base
+   rules describe the phone, media queries add back desktop affordances.
+   Depends on theme.css for every colour, radius and duration.
+   ------------------------------------------------------------------ */
+
+/* === Page shell ================================================= */
+
+/* Sticky footer via flex column. The previous position:absolute footer
+   overlapped content on any page shorter than the viewport and clipped
+   its own text on narrow screens because of white-space: nowrap. */
 html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+    min-height: 100%;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    background: var(--pm-bg);
+    color: var(--pm-ink);
+    overflow-x: hidden;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+.pm-main {
+    flex: 1 0 auto;
+    width: 100%;
+    padding-top: 1rem;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+@media (min-width: 768px) {
+    .pm-main { padding-top: 1.5rem; }
 }
 
-.car-thumb {
-  height: 190px;
-  object-fit: cover;
+/* Nothing should ever be able to push the document sideways on a
+   phone -- the single most common mobile layout bug. */
+img, svg, video, table, pre { max-width: 100%; }
+img { height: auto; }
+
+h1, h2, h3, h4 {
+    letter-spacing: -.015em;
+    text-wrap: balance;
 }
+
+/* === Header ===================================================== */
+
+.pm-header {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    padding-top: var(--pm-safe-t);
+    background: var(--pm-header);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .06), var(--pm-shadow-sm);
+}
+
+.pm-header .navbar {
+    --bs-navbar-padding-y: .55rem;
+    min-height: var(--pm-header-h);
+}
+
+/* The wordmark PNG carries the logo's own navy background, and --pm-header is set to
+   exactly that colour, so the image blends into the header with no visible box. */
+.pm-brand {
+    display: inline-flex;
+    align-items: center;
+    padding: 0;
+    margin-right: .75rem;
+}
+
+.pm-brand img {
+    height: 34px;
+    width: auto;
+    display: block;
+}
+
+@media (min-width: 992px) {
+    .pm-brand img { height: 38px; }
+}
+
+.pm-footer-logo {
+    height: 26px;
+    width: auto;
+    opacity: .85;
+}
+
+.pm-header .nav-link {
+    color: rgba(255, 255, 255, .78);
+    font-weight: 500;
+    border-radius: var(--pm-radius-sm);
+    padding-inline: .7rem;
+    transition: color var(--pm-dur-fast) var(--pm-ease),
+                background-color var(--pm-dur-fast) var(--pm-ease);
+}
+
+.pm-header .nav-link:hover,
+.pm-header .nav-link:focus-visible {
+    color: #fff;
+    background: rgba(255, 255, 255, .09);
+}
+
+/* Current section, set by _Layout from the route values. */
+.pm-header .nav-link.is-current {
+    color: #fff;
+    background: rgba(255, 255, 255, .13);
+}
+
+.pm-user-chip {
+    text-decoration: none;
+    transition: background-color var(--pm-dur-fast) var(--pm-ease);
+    display: inline-flex;
+    align-items: center;
+    gap: .4rem;
+    padding: .3rem .7rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .09);
+    color: rgba(255, 255, 255, .9);
+    font-size: .82rem;
+    white-space: nowrap;
+}
+
+.pm-user-chip:hover,
+.pm-user-chip.is-current {
+    background: rgba(255, 255, 255, .18);
+    color: #fff;
+}
+
+.navbar-toggler {
+    border: 0;
+    padding: .4rem .55rem;
+}
+
+.navbar-toggler:focus { box-shadow: none; }
+
+/* The collapse menu animates height by default; give the items a small
+   cascade so it does not feel like a jump cut. */
+.navbar-collapse.show .nav-item,
+.navbar-collapse.collapsing .nav-item {
+    animation: pm-rise var(--pm-dur) var(--pm-ease) both;
+}
+
+/* === Footer ===================================================== */
+
+.pm-footer {
+    flex-shrink: 0;
+    background: var(--pm-header);
+    color: rgba(255, 255, 255, .62);
+    padding: 1.4rem 0 calc(1.4rem + var(--pm-safe-b));
+    font-size: .87rem;
+}
+
+.pm-footer a {
+    color: rgba(255, 255, 255, .78);
+    text-decoration: none;
+}
+
+.pm-footer a:hover { color: #fff; }
+
+.pm-footer-inner {
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    align-items: center;
+    text-align: center;
+}
+
+@media (min-width: 576px) {
+    .pm-footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+    }
+}
+
+/* === Surfaces =================================================== */
+
+.card {
+    border: 1px solid var(--pm-border);
+    border-radius: var(--pm-radius);
+    background: var(--pm-surface);
+    box-shadow: var(--pm-shadow-sm);
+}
+
+.card-header {
+    background: var(--pm-surface-sunken);
+    border-bottom-color: var(--pm-border);
+    font-weight: 600;
+}
+
+/* Bootstrap's .shadow-sm is used all over the views; retune it rather
+   than editing every call site. */
+.shadow-sm { box-shadow: var(--pm-shadow-sm) !important; }
+
+.pm-section-title {
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--pm-ink-faint);
+}
+
+/* === Listing card =============================================== */
 
 .car-card {
-  transition: transform .15s ease, box-shadow .15s ease;
+    overflow: hidden;
+    transition: transform var(--pm-dur) var(--pm-ease),
+                box-shadow var(--pm-dur) var(--pm-ease),
+                border-color var(--pm-dur) var(--pm-ease);
 }
 
-.car-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15) !important;
+/* Hover lift is a pointer affordance; on touch it just leaves cards
+   stuck in the hovered state after a tap. */
+@media (hover: hover) and (pointer: fine) {
+    .car-card:hover {
+        transform: translateY(-4px);
+        border-color: #cfd9ea;
+        box-shadow: var(--pm-shadow-lg) !important;
+    }
+
+    .car-card:hover .car-thumb img {
+        transform: scale(1.045);
+    }
 }
+
+.car-card:active { transform: scale(.99); }
+
+/* Fixed pixel heights made the thumbs letterbox differently at every
+   breakpoint. A ratio keeps the grid even at any width. */
+.car-thumb {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--pm-surface-sunken);
+}
+
+.car-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--pm-dur-slow) var(--pm-ease),
+                opacity var(--pm-dur) var(--pm-ease);
+}
+
+@media (min-width: 992px) {
+    .car-thumb { aspect-ratio: 16 / 10; }
+}
+
+.car-title a {
+    color: var(--pm-ink);
+    text-decoration: none;
+}
+
+.car-title a:hover { color: var(--pm-primary); }
+
+.pm-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--pm-ink);
+    letter-spacing: -.02em;
+}
+
+/* Status pill overlaid on the photo so the card body stays uncluttered. */
+.pm-badge-float {
+    position: absolute;
+    top: .6rem;
+    left: .6rem;
+    z-index: 2;
+    font-size: .68rem;
+    letter-spacing: .03em;
+    padding: .34rem .6rem;
+    border-radius: 999px;
+    backdrop-filter: blur(6px);
+}
+
+/* === Detail page ================================================ */
 
 .detail-img {
-  max-height: 460px;
-  object-fit: cover;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
 }
 
-.navbar-brand {
-  font-size: 1.25rem;
+@media (min-width: 992px) {
+    .detail-img {
+        aspect-ratio: 16 / 10;
+        max-height: 520px;
+    }
+
+    /* Keeps the price and offer form in view while a long description
+       scrolls past on desktop. */
+    .pm-sticky-aside {
+        position: sticky;
+        top: calc(var(--pm-header-h) + 1rem);
+    }
+
+    /* A sticky element only sticks within its parent, so it slides OVER anything that
+       follows it in the same column. That is what happened the moment a seller's offers
+       card appeared below the price panel: the panel scrolled down on top of it.
+       Sticking is only safe when nothing follows. */
+    .pm-sticky-aside:not(:last-child) {
+        position: static;
+    }
 }
+
+.pm-price-box {
+    background: var(--pm-primary-soft);
+    border: 1px solid #d3e2ff;
+    border-radius: var(--pm-radius-sm);
+    padding: .9rem 1rem;
+}
+
+.carousel-control-prev, .carousel-control-next { width: 12%; }
+
+.carousel-control-prev-icon, .carousel-control-next-icon {
+    padding: 1rem;
+    border-radius: 50%;
+    background-color: rgba(11, 18, 32, .45);
+    background-size: 45%;
+}
+
+/* === Buttons and controls ======================================= */
+
+.btn {
+    --bs-btn-border-radius: var(--pm-radius-sm);
+    font-weight: 600;
+    transition: transform var(--pm-dur-fast) var(--pm-ease-spring),
+                background-color var(--pm-dur-fast) var(--pm-ease),
+                border-color var(--pm-dur-fast) var(--pm-ease),
+                box-shadow var(--pm-dur-fast) var(--pm-ease);
+}
+
+.btn:active { transform: scale(.97); }
+
+.btn-primary {
+    --bs-btn-bg: var(--pm-primary);
+    --bs-btn-border-color: var(--pm-primary);
+    --bs-btn-hover-bg: var(--pm-primary-dark);
+    --bs-btn-hover-border-color: var(--pm-primary-dark);
+    --bs-btn-active-bg: var(--pm-primary-dark);
+    --bs-btn-active-border-color: var(--pm-primary-dark);
+}
+
+/* The scaffold's white-ringed focus glow was invisible on white cards.
+   A tinted ring reads on every surface and satisfies focus-visible. */
+.btn:focus-visible,
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus,
+.page-link:focus-visible {
+    box-shadow: 0 0 0 .2rem rgba(31, 95, 208, .28);
+    border-color: var(--pm-primary);
+    outline: none;
+}
+
+/* WCAG asks for 44x44 CSS px targets; the scaffold's .btn-sm was 31px
+   tall, which is a genuine miss-tap generator on a phone. */
+@media (max-width: 767.98px) {
+    .btn, .page-link, .nav-link {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-sm { min-height: 40px; }
+}
+
+.form-control, .form-select {
+    border-color: var(--pm-border);
+    border-radius: var(--pm-radius-sm);
+    transition: border-color var(--pm-dur-fast) var(--pm-ease),
+                box-shadow var(--pm-dur-fast) var(--pm-ease);
+}
+
+/* iOS Safari zooms the viewport whenever a focused field renders below
+   16px, and our fluid root size lands under that on small phones. */
+@media (max-width: 767.98px) {
+    .form-control, .form-select, .input-group-text, textarea {
+        font-size: 16px;
+        min-height: 46px;
+    }
+}
+
+.form-label { font-weight: 600; font-size: .9rem; }
+
+.alert {
+    border: 0;
+    border-radius: var(--pm-radius-sm);
+    box-shadow: var(--pm-shadow-sm);
+}
+
+/* === Browse filters ============================================= */
+
+/* On desktop the filter panel is a sticky rail. On phones it collapses
+   behind a "Filters" button, because the old col-lg-3 stacked the whole
+   panel above the results and pushed every listing below the fold. */
+@media (min-width: 992px) {
+    .pm-filter-rail {
+        position: sticky;
+        top: calc(var(--pm-header-h) + 1rem);
+        max-height: calc(100dvh - var(--pm-header-h) - 2rem);
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+}
+
+.pm-filter-bar {
+    display: flex;
+    gap: .5rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+@media (min-width: 992px) {
+    .pm-filter-bar { display: none; }
+}
+
+.pm-filter-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.35rem;
+    height: 1.35rem;
+    padding: 0 .35rem;
+    margin-left: .4rem;
+    border-radius: 999px;
+    background: var(--pm-accent);
+    color: var(--pm-ink);
+    font-size: .72rem;
+    font-weight: 700;
+}
+
+/* === Result header ============================================== */
+
+.pm-page-head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.1rem;
+}
+
+.pm-page-head h1 {
+    font-size: clamp(1.35rem, 1.1rem + 1.1vw, 1.9rem);
+    margin: 0;
+}
+
+.pm-muted { color: var(--pm-ink-soft); }
+
+/* === Empty states =============================================== */
+
+.pm-empty {
+    text-align: center;
+    padding: 3rem 1.25rem;
+    border: 1px dashed var(--pm-border);
+    border-radius: var(--pm-radius);
+    background: var(--pm-surface);
+}
+
+.pm-empty-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: .6rem;
+}
+
+/* === Pagination ================================================= */
+
+.pagination { --bs-pagination-border-radius: var(--pm-radius-sm); }
+
+.page-link {
+    color: var(--pm-primary);
+    border-color: var(--pm-border);
+}
+
+/* === Responsive data table ======================================
+   Admin's listing table has eight columns; horizontal scrolling that
+   wide is unusable on a phone, so below md each row re-flows into a
+   stacked card and the th labels are echoed from data-label. */
+
+@media (max-width: 767.98px) {
+    .pm-table-cards thead { display: none; }
+
+    .pm-table-cards,
+    .pm-table-cards tbody,
+    .pm-table-cards tr,
+    .pm-table-cards td {
+        display: block;
+        width: 100%;
+    }
+
+    .pm-table-cards tr {
+        margin-bottom: .85rem;
+        padding: .35rem .9rem .7rem;
+        border: 1px solid var(--pm-border);
+        border-radius: var(--pm-radius);
+        background: var(--pm-surface);
+        box-shadow: var(--pm-shadow-sm);
+    }
+
+    .pm-table-cards td {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding: .45rem 0;
+        border: 0;
+        border-bottom: 1px solid var(--pm-surface-sunken);
+        text-align: right;
+    }
+
+    .pm-table-cards td:last-child { border-bottom: 0; }
+
+    .pm-table-cards td::before {
+        content: attr(data-label);
+        font-size: .78rem;
+        font-weight: 600;
+        color: var(--pm-ink-faint);
+        text-align: left;
+    }
+
+    /* The photo cell is the card's own header: full-bleed, no label. */
+    .pm-table-cards td.pm-cell-media {
+        display: block;
+        padding: 0;
+        margin: 0 -.9rem .5rem;
+    }
+
+    .pm-table-cards td.pm-cell-media::before { content: none; }
+
+    .pm-table-cards td.pm-cell-media img {
+        width: 100% !important;
+        height: 140px !important;
+        border-radius: var(--pm-radius) var(--pm-radius) 0 0;
+    }
+
+    .pm-table-cards td.pm-cell-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5rem;
+        padding-top: .7rem;
+    }
+
+    .pm-table-cards td.pm-cell-actions::before { content: none; }
+    .pm-table-cards td.pm-cell-actions > * { flex: 1 1 30%; }
+    .pm-table-cards td.pm-cell-actions .btn { width: 100%; }
+}
+
+/* === Stat tiles ================================================= */
+
+.pm-stat {
+    text-align: center;
+    padding: 1rem .5rem;
+}
+
+.pm-stat-value {
+    font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -.03em;
+}
+
+.pm-stat-label {
+    font-size: .76rem;
+    color: var(--pm-ink-faint);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+
+/* === Misc ======================================================= */
+
+.pm-thumb-strip img {
+    height: 64px;
+    width: 84px;
+    object-fit: cover;
+    border-radius: var(--pm-radius-sm);
+}
+
+/* Long single-token values (URLs, emails) must not widen the layout. */
+.pm-break { overflow-wrap: anywhere; }
+
+.pm-toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(var(--pm-safe-b) + 1.25rem);
+    z-index: 1080;
+    transform: translate(-50%, 1rem);
+    padding: .6rem 1.1rem;
+    border-radius: 999px;
+    background: var(--pm-ink);
+    color: #fff;
+    font-size: .88rem;
+    font-weight: 500;
+    box-shadow: var(--pm-shadow-lg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--pm-dur) var(--pm-ease),
+                transform var(--pm-dur) var(--pm-ease-spring);
+}
+
+.pm-toast.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+}
+
+
+
+/* Skip link for keyboard users; visually hidden until focused. */
+.pm-skip {
+    position: absolute;
+    left: .5rem;
+    top: -4rem;
+    /* Above the arrival curtain (3000): a keyboard user tabbing during the
+       intro must be able to see what they have focused. */
+    z-index: 3100;
+    padding: .6rem 1rem;
+    border-radius: var(--pm-radius-sm);
+    background: var(--pm-surface);
+    color: var(--pm-ink);
+    box-shadow: var(--pm-shadow-lg);
+    transition: top var(--pm-dur) var(--pm-ease);
+}
+
+.pm-skip:focus { top: calc(var(--pm-safe-t) + .5rem); }
+
+/* === Vehicle specification ====================================== */
+
+/* The at-a-glance spec line on a listing card: mileage · fuel · gearbox.
+   Rendered as a list for screen readers, shown as separated inline text. */
+.pm-spec-line {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .25rem .5rem;
+    margin: 0 0 .6rem;
+    padding: 0;
+    list-style: none;
+    font-size: .8rem;
+    color: var(--pm-ink-soft);
+}
+
+.pm-spec-line li {
+    display: inline-flex;
+    align-items: center;
+}
+
+.pm-spec-line li + li::before {
+    content: "·";
+    margin-right: .5rem;
+    color: var(--pm-ink-faint);
+}
+
+/* Spec grid on the detail page. Two columns on a phone, four from md --
+   sixteen spec rows as a <dl> would be a very long scroll on mobile. */
+.pm-spec-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .1rem;
+}
+
+@media (min-width: 768px) {
+    .pm-spec-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.pm-spec-item {
+    padding: .6rem .75rem;
+    border-radius: var(--pm-radius-sm);
+    background: var(--pm-surface-sunken);
+}
+
+.pm-spec-item dt {
+    font-size: .72rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: var(--pm-ink-faint);
+}
+
+.pm-spec-item dd {
+    margin: 0;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+/* Flex children default to min-width:auto, so a long username in an offer row
+   would push the amount off the card instead of truncating. */
+.min-w-0 { min-width: 0; }
+
+/* === Sub-navigation (seller panel) ============================== */
+
+/* Scrolls sideways on a phone rather than wrapping into two rows and
+   pushing the panel content down. */
+.pm-subnav {
+    display: flex;
+    gap: .25rem;
+    padding-bottom: .25rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    border-bottom: 1px solid var(--pm-border);
+}
+
+.pm-subnav::-webkit-scrollbar { display: none; }
+
+.pm-subnav-link {
+    flex: 0 0 auto;
+    padding: .55rem .9rem;
+    border-radius: var(--pm-radius-sm) var(--pm-radius-sm) 0 0;
+    font-weight: 600;
+    font-size: .9rem;
+    color: var(--pm-ink-soft);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: color var(--pm-dur-fast) var(--pm-ease),
+                border-color var(--pm-dur-fast) var(--pm-ease),
+                background-color var(--pm-dur-fast) var(--pm-ease);
+}
+
+.pm-subnav-link:hover {
+    color: var(--pm-ink);
+    background: var(--pm-surface-sunken);
+}
+
+.pm-subnav-link.active {
+    color: var(--pm-primary);
+    border-bottom-color: var(--pm-primary);
+}
+
+/* Small icon + label pairs used on the seller opt-in page. */
+.pm-feature {
+    display: flex;
+    align-items: flex-start;
+    gap: .65rem;
+    padding: .7rem .8rem;
+    border-radius: var(--pm-radius-sm);
+    background: var(--pm-surface-sunken);
+    height: 100%;
+}
+
+.pm-feature-icon {
+    font-size: 1.35rem;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+/* Filter chips used for status tabs in the seller panel. */
+.pm-chip {
+    flex: 0 0 auto;
+    padding: .4rem .85rem;
+    border-radius: 999px;
+    border: 1px solid var(--pm-border);
+    background: var(--pm-surface);
+    color: var(--pm-ink-soft);
+    font-size: .85rem;
+    font-weight: 600;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--pm-dur-fast) var(--pm-ease),
+                color var(--pm-dur-fast) var(--pm-ease),
+                border-color var(--pm-dur-fast) var(--pm-ease);
+}
+
+.pm-chip:hover { border-color: var(--pm-primary); color: var(--pm-primary); }
+
+.pm-chip.is-active {
+    background: var(--pm-primary);
+    border-color: var(--pm-primary);
+    color: #fff;
+}
+
+/* === Messaging ================================================== */
+
+.pm-thread-row {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .75rem 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: background-color var(--pm-dur-fast) var(--pm-ease);
+}
+
+.pm-thread-row:hover { background: var(--pm-surface-sunken); }
+
+.pm-thread-thumb {
+    width: 52px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: var(--pm-radius-sm);
+    flex-shrink: 0;
+    background: var(--pm-surface-sunken);
+}
+
+/* The thread is a bounded, scrollable panel rather than a full-height app screen:
+   the page keeps its normal header, content and footer, and the log scrolls inside.
+   A viewport-height chat made the site feel like an app shell on a phone. */
+.pm-chat {
+    display: flex;
+    flex-direction: column;
+}
+
+.pm-chat-head { flex-shrink: 0; }
+
+.pm-chat-log {
+    flex: 1 1 auto;
+    max-height: 60vh;
+    min-height: 16rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 1rem .25rem;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+}
+
+@media (min-width: 768px) {
+    .pm-chat-log { max-height: 55vh; }
+}
+
+.pm-chat-empty {
+    margin: auto;
+    max-width: 22rem;
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.pm-bubble-row {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.pm-bubble-row.is-mine { justify-content: flex-end; }
+
+.pm-bubble {
+    max-width: min(80%, 34rem);
+    padding: .55rem .8rem;
+    border-radius: var(--pm-radius);
+    background: var(--pm-surface);
+    border: 1px solid var(--pm-border);
+    box-shadow: var(--pm-shadow-sm);
+    font-size: .92rem;
+    animation: pm-rise var(--pm-dur) var(--pm-ease) both;
+}
+
+.pm-bubble-row.is-mine .pm-bubble {
+    background: var(--pm-primary);
+    border-color: var(--pm-primary);
+    color: #fff;
+}
+
+.pm-bubble-sender {
+    font-size: .74rem;
+    font-weight: 700;
+    color: var(--pm-primary);
+    margin-bottom: .15rem;
+}
+
+.pm-bubble-time {
+    font-size: .68rem;
+    margin-top: .25rem;
+    opacity: .65;
+}
+
+.pm-chat-compose {
+    flex-shrink: 0;
+    display: flex;
+    gap: .5rem;
+    align-items: flex-end;
+    padding-top: .5rem;
+}
+
+.pm-chat-compose textarea {
+    resize: none;
+    max-height: 160px;
+}
+
+/* === Photo manager (listing edit) =============================== */
+
+.pm-photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+    gap: .5rem;
+}
+
+.pm-photo {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: var(--pm-radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--pm-border);
+    background: var(--pm-surface-sunken);
+    transition: opacity var(--pm-dur) var(--pm-ease),
+                border-color var(--pm-dur) var(--pm-ease);
+}
+
+.pm-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.pm-photo-cover {
+    position: absolute;
+    left: .3rem;
+    bottom: .3rem;
+    padding: .1rem .4rem;
+    border-radius: 999px;
+    background: rgba(11, 18, 32, .72);
+    color: #fff;
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .03em;
+}
+
+/* The checkbox itself is hidden; the ✕ label is the control. Keeping a real checkbox
+   means removal still works with JavaScript off and the value still posts. */
+.pm-photo-check {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.pm-photo-remove {
+    position: absolute;
+    top: .3rem;
+    right: .3rem;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: rgba(11, 18, 32, .6);
+    color: #fff;
+    font-size: .78rem;
+    line-height: 1;
+    cursor: pointer;
+    backdrop-filter: blur(4px);
+    transition: background-color var(--pm-dur-fast) var(--pm-ease),
+                transform var(--pm-dur-fast) var(--pm-ease-spring);
+}
+
+.pm-photo-remove:hover { background: var(--pm-danger); transform: scale(1.08); }
+
+/* Checked = marked for deletion. Showing it struck through rather than removing it from
+   the DOM lets the seller change their mind before saving. */
+.pm-photo-check:checked ~ .pm-photo-remove {
+    background: var(--pm-danger);
+}
+
+.pm-photo:has(.pm-photo-check:checked) {
+    opacity: .38;
+    border-color: var(--pm-danger);
+}
+
+.pm-photo:has(.pm-photo-check:checked)::after {
+    content: "Will be removed";
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: .2rem;
+    background: var(--pm-danger);
+    color: #fff;
+    font-size: .62rem;
+    font-weight: 700;
+    text-align: center;
+}
+
+.pm-photo-check:focus-visible ~ .pm-photo-remove {
+    box-shadow: 0 0 0 .2rem rgba(31, 95, 208, .5);
+}
+
+.pm-subnav-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    margin-left: .35rem;
+    padding: 0 .3rem;
+    border-radius: 999px;
+    background: var(--pm-surface-sunken);
+    color: var(--pm-ink-soft);
+    font-size: .68rem;
+    font-weight: 700;
+}
+
+.pm-subnav-count.is-alert {
+    background: var(--pm-primary);
+    color: #fff;
+}
+
+.pm-subnav-divider {
+    flex: 0 0 auto;
+    align-self: center;
+    width: 1px;
+    height: 1.1rem;
+    margin: 0 .35rem;
+    background: var(--pm-border);
+}
+
+/* === Choice cards (signup fork) ================================= */
+
+.pm-choice {
+    transition: transform var(--pm-dur) var(--pm-ease),
+                box-shadow var(--pm-dur) var(--pm-ease),
+                border-color var(--pm-dur) var(--pm-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .pm-choice:hover {
+        transform: translateY(-3px);
+        border-color: var(--pm-primary);
+        box-shadow: var(--pm-shadow-lg);
+    }
+}
+
+.pm-choice-accent { border-top: 3px solid var(--pm-accent); }
+
+.pm-choice-icon {
+    font-size: 2rem;
+    line-height: 1;
+    margin-bottom: .5rem;
+}
+
+.pm-tick-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    color: var(--pm-ink-soft);
+}
+
+.pm-tick-list li {
+    position: relative;
+    padding-left: 1.4rem;
+    margin-bottom: .3rem;
+}
+
+.pm-tick-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--pm-success);
+    font-weight: 700;
+}
+
+/* === Numbered steps (how it works) ============================== */
+
+.pm-steps {
+    counter-reset: pm-step;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pm-steps li {
+    counter-increment: pm-step;
+    position: relative;
+    padding: 0 0 1.1rem 2.6rem;
+    color: var(--pm-ink-soft);
+    font-size: .93rem;
+}
+
+.pm-steps li::before {
+    content: counter(pm-step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1.8rem;
+    height: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--pm-primary-soft);
+    color: var(--pm-primary);
+    font-weight: 700;
+    font-size: .85rem;
+}
+
+/* The connecting line between steps, stopping short of the last one. */
+.pm-steps li:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    left: .87rem;
+    top: 2rem;
+    bottom: .35rem;
+    width: 2px;
+    background: var(--pm-border);
+}
+
+.pm-steps strong { color: var(--pm-ink); }
+
+/* === Avatars ==================================================== */
+
+/* A missing picture falls back to a monogram rather than a silhouette: initials
+   identify the seller, a generic icon identifies nobody, and most accounts will
+   never upload a photo. */
+.pm-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: 50%;
+    background: var(--pm-surface-sunken);
+    color: var(--pm-ink-soft);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: .02em;
+    text-transform: uppercase;
+}
+
+.pm-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.pm-avatar-sm { width: 28px; height: 28px; font-size: .68rem; }
+.pm-avatar-md { width: 42px; height: 42px; font-size: .85rem; }
+.pm-avatar-lg { width: 76px; height: 76px; font-size: 1.5rem; }
+
+.pm-avatar-initials {
+    background: linear-gradient(135deg, var(--pm-primary), var(--pm-primary-dark));
+    color: #fff;
+}
+
+/* A dealer logo is usually a rectangular wordmark, so squaring it off crops the
+   name. Rounded rather than circular keeps it readable. */
+.pm-dealer-card .pm-avatar,
+.is-dealer .pm-avatar { border-radius: var(--pm-radius-sm); }
+
+/* === Seller byline ============================================== */
+
+.pm-byline {
+    display: inline-flex;
+    align-items: center;
+    gap: .6rem;
+    max-width: 100%;
+    padding: .35rem .5rem;
+    margin-inline: -.5rem;
+    border-radius: var(--pm-radius-sm);
+    color: inherit;
+    text-decoration: none;
+    transition: background-color var(--pm-dur-fast) var(--pm-ease);
+}
+
+.pm-byline:hover { background: var(--pm-surface-sunken); color: inherit; }
+
+.pm-byline-text { min-width: 0; }
+
+.pm-byline-name {
+    display: block;
+    font-weight: 600;
+    font-size: .88rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pm-byline-meta {
+    display: flex;
+    align-items: center;
+    gap: .4rem;
+    font-size: .76rem;
+    color: var(--pm-ink-soft);
+}
+
+.pm-byline-sm .pm-byline-name { font-size: .82rem; }
+.pm-byline-sm .pm-byline-meta { font-size: .72rem; }
+
+.pm-byline-box {
+    padding: .5rem .75rem;
+    border: 1px solid var(--pm-border);
+    border-radius: var(--pm-radius-sm);
+    background: var(--pm-surface);
+}
+
+/* Dealer and private seller must be distinguishable at a glance, because it is the
+   single biggest difference in what a buyer is walking into: consumer rights,
+   warranty and recourse all differ. Colour alone would not do it, so the two also
+   read differently in words. */
+.pm-seller-type {
+    display: inline-block;
+    padding: .05rem .4rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: .72rem;
+    line-height: 1.5;
+}
+
+.pm-seller-type.is-dealer  { background: var(--pm-primary-soft); color: var(--pm-primary-dark); }
+.pm-seller-type.is-private { background: var(--pm-surface-sunken); color: var(--pm-ink-soft); }
+
+.pm-verified {
+    display: inline-block;
+    margin-left: .15rem;
+    color: var(--pm-success);
+    font-weight: 700;
+}
+
+.pm-byline-rating { white-space: nowrap; }
+
+/* === Ratings ==================================================== */
+
+.pm-stars { display: inline-flex; align-items: center; gap: .35rem; }
+
+.pm-star-row { color: var(--pm-accent); letter-spacing: .02em; }
+.pm-star-row .is-on { color: var(--pm-accent); }
+.pm-stars-empty .pm-star-row { color: var(--pm-ink-faint); }
+
+.pm-rating-value { font-weight: 700; }
+
+.pm-rating-summary { display: flex; align-items: center; gap: .75rem; }
+.pm-rating-big { font-size: 2.4rem; font-weight: 800; line-height: 1; }
+
+.pm-rating-bars { display: grid; gap: .3rem; }
+
+.pm-rating-bar {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr 2rem;
+    align-items: center;
+    gap: .5rem;
+    font-size: .78rem;
+}
+
+.pm-rating-bar-label { color: var(--pm-ink-soft); white-space: nowrap; }
+.pm-rating-bar-count { text-align: right; color: var(--pm-ink-soft); }
+
+.pm-rating-bar-track {
+    height: 7px;
+    border-radius: 999px;
+    background: var(--pm-surface-sunken);
+    overflow: hidden;
+}
+
+.pm-rating-bar-fill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--pm-accent);
+}
+
+/* Star picker. Radio inputs rather than a JavaScript widget, so it works with the
+   keyboard, with a screen reader and with scripting off. The row is reversed in the
+   markup so plain CSS sibling selectors can light up every star to the LEFT of the
+   hovered one — a selector cannot look backwards. */
+.pm-star-input {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+    gap: .1rem;
+}
+
+.pm-star-input input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.pm-star-input label {
+    cursor: pointer;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--pm-border);
+    transition: color var(--pm-dur-fast) var(--pm-ease),
+                transform var(--pm-dur-fast) var(--pm-ease-spring);
+}
+
+.pm-star-input label:hover,
+.pm-star-input label:hover ~ label,
+.pm-star-input input:checked ~ label { color: var(--pm-accent); }
+
+.pm-star-input label:hover { transform: scale(1.12); }
+
+.pm-star-input input:focus-visible + label {
+    outline: 2px solid var(--pm-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.pm-review-list { display: grid; gap: 1rem; }
+
+.pm-review-reply {
+    padding: .7rem .9rem;
+    border-left: 3px solid var(--pm-primary);
+    border-radius: var(--pm-radius-sm);
+    background: var(--pm-surface-sunken);
+}
+
+.pm-review-thumb {
+    display: block;
+    flex: 0 0 auto;
+    width: 84px;
+    height: 62px;
+    border-radius: var(--pm-radius-sm);
+    overflow: hidden;
+}
+
+.pm-review-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* === Seller and dealership pages ================================ */
+
+.pm-seller-hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid var(--pm-border);
+    border-radius: var(--pm-radius);
+    background: var(--pm-surface);
+    box-shadow: var(--pm-shadow-sm);
+}
+
+.pm-seller-id { display: flex; align-items: center; gap: 1rem; min-width: 0; }
+
+.pm-seller-headline h1 {
+    font-size: clamp(1.25rem, 1rem + 1vw, 1.7rem);
+    margin: 0 0 .25rem;
+    overflow-wrap: anywhere;
+}
+
+.pm-seller-sub {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .35rem;
+    margin: 0 0 .4rem;
+    font-size: .82rem;
+}
+
+.pm-seller-stats { display: flex; gap: 1.5rem; }
+
+.pm-seller-stats div { display: flex; flex-direction: column; }
+.pm-seller-stats strong { font-size: 1.35rem; line-height: 1.2; }
+.pm-seller-stats span { font-size: .74rem; color: var(--pm-ink-soft); }
+
+.pm-dealer-card {
+    text-decoration: none;
+    color: inherit;
+    transition: transform var(--pm-dur) var(--pm-ease),
+                box-shadow var(--pm-dur) var(--pm-ease);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .pm-dealer-card:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--pm-shadow-md);
+    }
+}
+
+.pm-dealer-card:active { transform: scale(.99); }
+
+.pm-dealer-head { display: flex; align-items: center; gap: .75rem; min-width: 0; }
+.pm-dealer-title { min-width: 0; }
+.pm-dealer-title h2 { overflow-wrap: anywhere; }
+
+.pm-dealer-counts {
+    display: flex;
+    gap: 1rem;
+    font-size: .8rem;
+    color: var(--pm-ink-soft);
+    padding-top: .75rem;
+    border-top: 1px solid var(--pm-border);
+}
+
+.pm-dealer-details dt { font-size: .74rem; }
+
+/* === Price history and drops ==================================== */
+
+.pm-price-was {
+    color: var(--pm-ink-faint);
+    text-decoration: line-through;
+    font-weight: 500;
+    font-size: .82em;
+    margin-left: .35rem;
+}
+
+.pm-drop-amount { color: var(--pm-success); font-weight: 700; margin-left: .35rem; }
+
+.pm-badge-drop {
+    background: var(--pm-success);
+    color: #fff;
+    padding: .2rem .5rem;
+    border-radius: 999px;
+    font-size: .7rem;
+    font-weight: 700;
+    /* Sits under the status badge when a listing somehow has both. */
+    top: auto;
+    bottom: .5rem;
+}
+
+.pm-price-history { list-style: none; margin: 0; padding: 0; display: grid; gap: .4rem; }
+
+.pm-price-history li {
+    display: flex;
+    align-items: baseline;
+    gap: .75rem;
+    padding-bottom: .4rem;
+    border-bottom: 1px solid var(--pm-border);
+    font-size: .85rem;
+}
+
+.pm-price-history li:last-child { border-bottom: 0; padding-bottom: 0; }
+
+.pm-history-date { color: var(--pm-ink-soft); min-width: 6.5rem; }
+.pm-history-price { font-weight: 700; }
+.pm-history-delta.is-down { color: var(--pm-success); font-weight: 600; }
+.pm-history-delta.is-up { color: var(--pm-danger); font-weight: 600; }
+
+.pm-sold-wrap { position: relative; height: 100%; }
+
+.pm-sold-strip {
+    margin-top: .5rem;
+    padding: .45rem .7rem;
+    border-radius: var(--pm-radius-sm);
+    background: var(--pm-surface-sunken);
+    font-size: .82rem;
+}
+
+/* === Charts ===================================================== */
+
+/* Hand-rolled rather than a charting library: a library is 60-200 KB to draw
+   twelve bars, and CSS bars inherit the theme tokens so the charts follow the
+   palette for free. Every chart is also mirrored as a visually hidden table,
+   because coloured rectangles are unreadable to a screen reader and this data
+   is the entire point of the page. */
+.pm-chart { margin: 0; }
+
+.pm-chart figcaption {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: .5rem;
+    margin-bottom: 1rem;
+}
+
+.pm-chart-title { font-weight: 700; font-size: .95rem; }
+.pm-chart-sub { font-size: .78rem; color: var(--pm-ink-soft); }
+
+.pm-chart-empty {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--pm-ink-faint);
+    background: var(--pm-surface-sunken);
+    border-radius: var(--pm-radius-sm);
+    font-size: .85rem;
+}
+
+.pm-chart-plot {
+    display: flex;
+    align-items: flex-end;
+    gap: .35rem;
+    /* Horizontal scroll rather than squashing: 24 months of bars at 3px each
+       would be unreadable, and the page itself must never scroll sideways. */
+    overflow-x: auto;
+    padding-bottom: .25rem;
+}
+
+.pm-chart-col {
+    flex: 1 1 0;
+    min-width: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .3rem;
+}
+
+.pm-chart-bar-track {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    height: 150px;
+}
+
+.pm-chart-bar {
+    width: 100%;
+    min-height: 2px;
+    border-radius: var(--pm-radius-sm) var(--pm-radius-sm) 0 0;
+    /* Grows from the baseline on first paint; transform would distort the
+       rounded cap, so this animates the height itself. */
+    animation: pm-chart-grow var(--pm-dur-slow) var(--pm-ease) both;
+    transform-origin: 50% 100%;
+}
+
+/* A zero month still needs a visible baseline, or the chart looks broken
+   rather than empty. */
+.pm-chart-bar.is-zero { background: var(--pm-border) !important; min-height: 2px; }
+
+@keyframes pm-chart-grow {
+    from { height: 0; opacity: 0; }
+}
+
+.pm-chart-value {
+    font-size: .68rem;
+    font-weight: 700;
+    white-space: nowrap;
+    color: var(--pm-ink-soft);
+}
+
+.pm-chart-label {
+    font-size: .68rem;
+    color: var(--pm-ink-faint);
+    white-space: nowrap;
+}
+
+.pm-sparkline {
+    display: block;
+    width: 100%;
+    height: 130px;
+}
+
+.pm-chart-axis {
+    display: flex;
+    justify-content: space-between;
+    gap: .5rem;
+    margin-top: .4rem;
+    font-size: .72rem;
+    color: var(--pm-ink-faint);
+}
+
+.pm-chart-peak { font-weight: 600; color: var(--pm-ink-soft); }
+
+/* === Avatar editor ============================================== */
+
+.pm-avatar-editor { display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap; }
+.pm-avatar-form { flex: 1 1 16rem; min-width: 0; }
+
+.pm-banner-preview {
+    display: block;
+    width: 100%;
+    aspect-ratio: 3 / 1;
+    border-radius: var(--pm-radius-sm);
+    overflow: hidden;
+}
+
+.pm-banner-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }

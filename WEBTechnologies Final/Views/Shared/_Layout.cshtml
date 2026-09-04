@@ -1,66 +1,161 @@
+@{
+    var isAdmin = Context.Session.GetString(SessionKeys.IsAdmin) == "true";
+    var isSellerAccount = isAdmin || Context.Session.GetString(SessionKeys.IsSeller) == "true";
+    var currentUser = Context.Session.GetString(SessionKeys.Username);
+    var isLoggedIn = !string.IsNullOrEmpty(currentUser);
+
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+    string Current(string c) =>
+        string.Equals(controller, c, StringComparison.OrdinalIgnoreCase) ? "is-current" : "";
+    string CurrentPage(string c, string a) =>
+        string.Equals(controller, c, StringComparison.OrdinalIgnoreCase)
+        && string.Equals(action, a, StringComparison.OrdinalIgnoreCase) ? "is-current" : "";
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @* viewport-fit=cover lets the safe-area insets in theme.css reach
+       the notch and the home-indicator area on modern phones. *@
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#173042" />
+
+    @* Two marks, both cut from the supplied 1200x1200 logo: the wordmark for the
+       header, and the car alone for tabs and home screens. The whole logo scaled to
+       32px was an unreadable smudge - the car on its own still reads as a car.
+       asp-append-version matters here: without it a browser keeps the old icon
+       from cache more or less forever. *@
+    <link rel="icon" type="image/png" sizes="32x32" href="~/img/icon-32.png" asp-append-version="true" />
+    <link rel="icon" type="image/png" sizes="512x512" href="~/img/icon-512.png" asp-append-version="true" />
+    <link rel="apple-touch-icon" sizes="180x180" href="~/img/icon-180.png" asp-append-version="true" />
+    <meta name="color-scheme" content="light" />
+    <meta name="description" content="PremiumMotors - buy and sell cars. Browse listings and send private offers to sellers." />
     <title>@ViewData["Title"] - PremiumMotors</title>
-    <script type="importmap"></script>
+
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/WEBTechnologies_Final.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/motion.css" asp-append-version="true" />
+    @await RenderSectionAsync("Styles", required: false)
+
+    @* Decides, before the first paint, whether this load gets the arrival
+       animation. It has to run here rather than in site.js: by the time a
+       deferred script executes the page has already been painted, and the
+       intro would appear as a flash on top of content you could already see.
+
+       Deliberately narrow -- reduced motion off, a genuine navigation rather
+       than a reload or a back/forward, and the first page of the session. See
+       the ARRIVAL section of motion.css for what these flags drive. *@
+    <script>
+        (function () {
+            try {
+                var root = document.documentElement;
+                var replay = location.hash === "#intro";
+
+                if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { return; }
+
+                var nav = performance.getEntriesByType("navigation")[0];
+                if (nav && nav.type !== "navigate" && !replay) { return; }
+
+                if (sessionStorage.getItem("pm-entered") === "1" && !replay) { return; }
+                sessionStorage.setItem("pm-entered", "1");
+
+                root.setAttribute("data-pm-intro", "");
+                root.classList.add("pm-arrive");
+            } catch (e) {
+                /* Private modes can throw on sessionStorage. Showing no intro
+                   is the right outcome -- it is decoration, not content. */
+            }
+        })();
+    </script>
 </head>
 <body>
-    @{
-        var isAdmin = Context.Session.GetString(SessionKeys.IsAdmin) == "true";
-        var currentUser = Context.Session.GetString(SessionKeys.Username);
-        var isLoggedIn = !string.IsNullOrEmpty(currentUser);
-    }
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand fw-bold" asp-controller="Cars" asp-action="Index">
-                    🏁 Premium<span class="text-warning">Motors</span>
+    <a class="pm-skip" href="#main">Skip to content</a>
+
+    @* First-visit curtain. Inert unless <html> carries data-pm-intro, and
+       aria-hidden because it announces nothing a screen reader has not
+       already been given by the page title. *@
+    <div class="pm-intro" aria-hidden="true">
+        <div class="pm-intro-mark">
+            <img src="~/img/logo-wordmark.png" alt="" width="184" height="96" />
+            <span class="pm-intro-rule"></span>
+        </div>
+    </div>
+
+    <header class="pm-header">
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container-fluid px-3 px-lg-4">
+                <a class="navbar-brand pm-brand" asp-controller="Cars" asp-action="Index">
+                    <img src="~/img/logo-wordmark.png" alt="PremiumMotors" width="184" height="96" />
                 </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+
+                <button class="navbar-toggler d-lg-none" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+
+                <div class="navbar-collapse collapse" id="mainNav">
+                    <ul class="navbar-nav flex-grow-1 mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link text-light" asp-controller="Cars" asp-action="Index">Browse Auctions</a>
+                            <a class="nav-link @Current("Cars")" asp-controller="Cars" asp-action="Index">Browse cars</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @Current("Dealerships")" asp-controller="Dealerships" asp-action="Index">Dealerships</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @CurrentPage("Cars", "Sold")" asp-controller="Cars" asp-action="Sold">Recently sold</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @CurrentPage("Home", "HowItWorks")" asp-controller="Home" asp-action="HowItWorks">How it works</a>
                         </li>
                         @if (isLoggedIn && !isAdmin)
                         {
+                            @if (isSellerAccount)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @Current("Seller")" asp-controller="Seller" asp-action="Dashboard">Seller panel</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @Current("Seller")" asp-controller="Seller" asp-action="Start">Start selling</a>
+                                </li>
+                            }
                             <li class="nav-item">
-                                <a class="nav-link text-success" asp-controller="Sell" asp-action="Create">+ Sell your car</a>
+                                <a class="nav-link @Current("Messages")" asp-controller="Messages" asp-action="Index">Messages</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-controller="Favorites" asp-action="Index">♥ My Favourites</a>
+                                <a class="nav-link @Current("Favorites")" asp-controller="Favorites" asp-action="Index">♥ Favourites</a>
                             </li>
                         }
                         @if (isAdmin)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-warning" asp-controller="Admin" asp-action="Index">Manage Listings</a>
+                                <a class="nav-link @CurrentPage("Admin", "Index")" asp-controller="Admin" asp-action="Index">Manage Listings</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-success" asp-controller="Admin" asp-action="Create">+ Post a Car</a>
+                                <a class="nav-link @CurrentPage("Admin", "Create")" asp-controller="Admin" asp-action="Create">+ Post a Car</a>
                             </li>
                         }
                     </ul>
-                    <ul class="navbar-nav">
+
+                    <ul class="navbar-nav align-items-lg-center gap-2">
                         @if (isLoggedIn)
                         {
-                            <li class="nav-item d-flex align-items-center text-light me-2">
-                                @if (isAdmin)
-                                {
-                                    <span class="badge bg-warning text-dark me-1">Admin</span>
-                                }
-                                <span class="small">Hi, <strong>@currentUser</strong></span>
+                            <li class="nav-item">
+                                <a class="pm-user-chip @Current("Account")" asp-controller="Account" asp-action="Profile">
+                                    @if (isAdmin)
+                                    {
+                                        <span class="badge bg-warning text-dark">Admin</span>
+                                    }
+                                    <span><strong>@currentUser</strong></span>
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-grid d-lg-inline">
                                     <button type="submit" class="btn btn-sm btn-outline-light">Log out</button>
                                 </form>
                             </li>
@@ -68,10 +163,10 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-controller="Account" asp-action="Login">Log in</a>
+                                <a class="nav-link @CurrentPage("Account", "Login")" asp-controller="Account" asp-action="Login">Log in</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-warning" asp-controller="Account" asp-action="Register">Register</a>
+                            <li class="nav-item d-grid d-lg-block">
+                                <a class="btn btn-sm btn-warning fw-semibold" asp-controller="Account" asp-action="Signup">Register</a>
                             </li>
                         }
                     </ul>
@@ -79,23 +174,28 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+
+    <div class="container pm-main">
         <partial name="_Alerts" />
-        <main role="main" class="pb-3">
+        <main id="main" role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container d-flex flex-wrap justify-content-between">
-            <span>&copy; 2026 - PremiumMotors</span>
-            <span>
-                <a asp-controller="Home" asp-action="Terms" class="text-muted">Terms</a>
-                <span class="mx-1">·</span>
-                <a asp-controller="Home" asp-action="Privacy" class="text-muted">Privacy</a>
+    <footer class="pm-footer">
+        <div class="container pm-footer-inner">
+            <span class="d-flex align-items-center gap-2">
+                <img src="~/img/logo-wordmark.png" alt="" width="184" height="96" class="pm-footer-logo" />
+                <span>&copy; 2026</span>
+            </span>
+            <span class="d-flex gap-3">
+                <a asp-controller="Home" asp-action="HowItWorks">How it works</a>
+                <a asp-controller="Home" asp-action="Terms">Terms</a>
+                <a asp-controller="Home" asp-action="Privacy">Privacy</a>
             </span>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

@@ -3,53 +3,31 @@
     ViewData["Title"] = "My Favourites";
 }
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="pm-page-head">
     <div>
-        <h1 class="h3 mb-0">♥ My Favourites</h1>
-        <p class="text-muted mb-0">@Model.Count saved listing(s)</p>
+        <h1>♥ My Favourites</h1>
+        <p class="pm-muted mb-0 small">@Model.Count saved listing@(Model.Count == 1 ? "" : "s")</p>
     </div>
-    <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-primary">Browse auctions</a>
+    <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-primary">Browse cars</a>
 </div>
 
 @if (Model.Count == 0)
 {
-    <div class="alert alert-info">
-        You haven't saved any listings yet. Tap <strong>♡ Favourite</strong> on any car to add it here.
+    <div class="pm-empty">
+        <div class="pm-empty-icon" aria-hidden="true">♡</div>
+        <h2 class="h5">Nothing saved yet</h2>
+        <p class="pm-muted mb-3">Tap <strong>♡ Favourite</strong> on any car to keep it here.</p>
+        <a asp-controller="Cars" asp-action="Index" class="btn btn-primary">Find a car</a>
     </div>
 }
 else
 {
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3 g-md-4 pm-stagger">
         @foreach (var car in Model)
         {
             <div class="col">
-                <div class="card h-100 shadow-sm car-card">
-                    <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id">
-                        <img src="@car.PrimaryImage" class="card-img-top car-thumb" alt="@car.Title" />
-                    </a>
-                    <div class="card-body d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-start">
-                            <h3 class="h6 mb-1">
-                                <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id"
-                                   class="text-dark text-decoration-none">@car.Title</a>
-                            </h3>
-                            <span class="badge bg-secondary">@car.Type</span>
-                        </div>
-                        <div class="mt-auto">
-                            <div class="d-flex justify-content-between align-items-end mb-2">
-                                <div>
-                                    <div class="small text-muted">Asking price</div>
-                                    <div class="fw-bold text-primary">@car.StartingPrice.ToString("C")</div>
-                                </div>
-                                @if (car.IsClosed)
-                                {
-                                    <span class="badge bg-danger">Closed</span>
-                                }
-                            </div>
-                            <partial name="_FavoriteButton" model="car" view-data='new ViewDataDictionary(ViewData) { ["FavBtnClass"] = "btn-sm w-100" }' />
-                        </div>
-                    </div>
-                </div>
+                <partial name="_CarCard" model="car"
+                         view-data='new ViewDataDictionary(ViewData) { ["FavBtnClass"] = "btn-sm" }' />
             </div>
         }
     </div>

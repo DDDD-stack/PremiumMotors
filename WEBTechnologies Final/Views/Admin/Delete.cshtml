@@ -3,12 +3,15 @@
     ViewData["Title"] = "Delete " + Model.Title;
 }
 
-<h1 class="h3 mb-3 text-danger">Delete Listing</h1>
+<div class="pm-page-head"><h1 class="text-danger">Delete Listing</h1></div>
 
-<div class="card shadow-sm">
+<div class="card overflow-hidden">
     <div class="row g-0">
         <div class="col-md-4">
-            <img src="@Model.PrimaryImage" class="img-fluid rounded-start h-100" style="object-fit:cover" alt="@Model.Title" />
+            @* h-100 with no ratio produced a very tall crop once the column
+               went full width on a phone. *@
+            <img src="@Model.PrimaryImage" class="w-100" alt="@Model.Title"
+                 style="aspect-ratio:4/3;object-fit:cover;height:100%" />
         </div>
         <div class="col-md-8">
             <div class="card-body">
@@ -16,11 +19,12 @@
                 <h2 class="h5">@Model.Title</h2>
                 <dl class="row small text-muted">
                     <dt class="col-4">Type</dt><dd class="col-8">@Model.Type</dd>
-                    <dt class="col-4">Asking price</dt><dd class="col-8">@Model.StartingPrice.ToString("C")</dd>
-                    <dt class="col-4">Offers</dt><dd class="col-8">@Model.Bids.Count</dd>
+                    <dt class="col-4">Asking price</dt><dd class="col-8">@Model.Price.ToString("C")</dd>
+                    <dt class="col-4">Mileage</dt><dd class="col-8">@Model.Mileage.ToString("N0") km</dd>
+                    <dt class="col-4">Offers</dt><dd class="col-8">@Model.Offers.Count</dd>
                 </dl>
 
-                <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+                <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-grid d-sm-flex gap-2">
                     @Html.AntiForgeryToken()
                     <button type="submit" class="btn btn-danger">Yes, delete</button>
                     <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>

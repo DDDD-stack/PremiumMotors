@@ -1,7 +1,7 @@
 @model WEBTechnologies_Final.Models.Car
 @{
-    var username = Context.Session.GetString(WEBTechnologies_Final.Services.SessionKeys.Username);
-    var loggedIn = !string.IsNullOrEmpty(username);
+    var userId = Context.Session.GetInt32(WEBTechnologies_Final.Services.SessionKeys.UserId);
+    var loggedIn = userId is not null;
     var isFav = ViewData["IsFav_" + Model.Id] is true;
     var returnUrl = Context.Request.Path + Context.Request.QueryString;
     var extra = ViewData["FavBtnClass"] as string ?? "";
@@ -9,12 +9,15 @@
 
 @if (loggedIn)
 {
+    @* display:contents keeps the form out of the flex/grid layout so the
+       button lines up with its siblings as if the form were not there. *@
     <form asp-controller="Favorites" asp-action="Toggle" method="post" style="display:contents">
         @Html.AntiForgeryToken()
         <input type="hidden" name="id" value="@Model.Id" />
         <input type="hidden" name="returnUrl" value="@returnUrl" />
         <button type="submit"
                 class="btn @(isFav ? "btn-danger" : "btn-outline-danger") @extra"
+                aria-pressed="@(isFav ? "true" : "false")"
                 title="@(isFav ? "Remove from favourites" : "Save to favourites")">
             @(isFav ? "♥ Saved" : "♡ Favourite")
         </button>

@@ -1,0 +1,53 @@
+@model ChartSeries
+@{
+    @* A bar chart in plain CSS: each bar is a div whose height is a percentage of the
+       tallest. No SVG geometry to get wrong at odd widths, no library, and it reflows
+       on a phone without any JavaScript.
+
+       Every bar carries its own accessible label, and the whole chart is followed by a
+       visually hidden table — a chart that only exists as coloured rectangles is
+       unreadable to a screen reader, and this data is the point of the page. *@
+}
+
+<figure class="pm-chart">
+    <figcaption>
+        <span class="pm-chart-title">@Model.Title</span>
+        @if (!string.IsNullOrWhiteSpace(Model.Subtitle))
+        {
+            <span class="pm-chart-sub">@Model.Subtitle</span>
+        }
+    </figcaption>
+
+    @if (Model.IsEmpty)
+    {
+        <div class="pm-chart-empty">Nothing to show yet.</div>
+    }
+    else
+    {
+        <div class="pm-chart-plot" role="img" aria-label="@Model.Title">
+            @foreach (var point in Model.Points)
+            {
+                var pct = Model.Percent(point);
+                <div class="pm-chart-col" title="@point.Label: @point.Display">
+                    <div class="pm-chart-bar-track">
+                        <div class="pm-chart-bar @(point.Value > 0 ? "" : "is-zero")"
+                             style="height:@pct.ToString(System.Globalization.CultureInfo.InvariantCulture)%; background:@Model.Accent"></div>
+                    </div>
+                    <div class="pm-chart-value">@point.Display</div>
+                    <div class="pm-chart-label">@point.Label</div>
+                </div>
+            }
+        </div>
+
+        <table class="visually-hidden">
+            <caption>@Model.Title</caption>
+            <thead><tr><th>Period</th><th>Value</th></tr></thead>
+            <tbody>
+                @foreach (var point in Model.Points)
+                {
+                    <tr><td>@point.Label</td><td>@point.Display</td></tr>
+                }
+            </tbody>
+        </table>
+    }
+</figure>

@@ -6,11 +6,11 @@
     var fee = (feeCents / 100m).ToString("C");
 }
 
-<h1 class="h3 mb-1">Sell your car</h1>
+<div class="pm-page-head"><h1>Sell your car</h1></div>
 <p class="text-muted">
     @if (feeCents > 0)
     {
-        <text>List your car for buyers to make private offers. A one-time listing fee of <strong>@fee</strong> is charged before your listing goes live. If your auction ends with no offers, your next listing is free.</text>
+        <text>List your car for buyers to make private offers. A one-time listing fee of <strong>@fee</strong> is charged before your listing goes live. If your listing gets no offers, your next listing is free.</text>
     }
     else
     {
@@ -22,7 +22,7 @@
     <div class="card-body">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <partial name="_CarForm" model="Model" />
-            <div class="mt-4 d-flex gap-2">
+            <div class="mt-4 d-grid d-sm-flex gap-2">
                 <button type="submit" class="btn btn-success">
                     @(feeCents > 0 ? $"Continue to payment ({fee})" : "Publish listing")
                 </button>

@@ -1,0 +1,150 @@
+@{
+    ViewData["Title"] = "How it works";
+    var isLoggedIn = !string.IsNullOrEmpty(Context.Session.GetString(SessionKeys.Username));
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>How PremiumMotors works</h1>
+        <p class="pm-muted mb-0">
+            Not an auction, not a fixed-price ad. Buyers make private offers and sellers choose.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <h2 class="h5 mb-3">Buying a car</h2>
+        <ol class="pm-steps">
+            <li>
+                <strong>Find a car.</strong>
+                Filter by price, mileage, fuel and gearbox. Every listing shows the full
+                specification and the service history the seller recorded.
+            </li>
+            <li>
+                <strong>Ask before you offer.</strong>
+                Message the seller from the listing. Ask about the VIN, the service book, or
+                arrange a viewing — all before committing to a number.
+            </li>
+            <li>
+                <strong>Make a private offer.</strong>
+                It does not have to match the asking price. Only the seller sees it — never
+                other buyers, and never the public.
+            </li>
+            <li>
+                <strong>The seller answers.</strong>
+                They can accept, decline, or keep talking. If they accept, you both get each
+                other's contact details and the car is reserved for you.
+            </li>
+            <li>
+                <strong>Complete the sale directly.</strong>
+                Payment and handover happen between you and the seller. PremiumMotors never
+                holds your money.
+            </li>
+        </ol>
+    </div>
+
+    <div class="col-lg-6">
+        <h2 class="h5 mb-3">Selling a car</h2>
+        <ol class="pm-steps">
+            <li>
+                <strong>Turn on selling.</strong>
+                One form on your profile for a private sale, or register a business account if
+                you are a dealer.
+            </li>
+            <li>
+                <strong>List the car.</strong>
+                Photos, mileage, service history and full specification. The more you fill in,
+                the fewer questions you will answer later.
+            </li>
+            <li>
+                <strong>Read your offers.</strong>
+                They arrive in your seller panel, private to you. You see who offered what;
+                buyers see only their own offer.
+            </li>
+            <li>
+                <strong>Talk, then decide.</strong>
+                Chat with a buyer before answering. You are never obliged to take the highest
+                offer — or any offer.
+            </li>
+            <li>
+                <strong>Accept one.</strong>
+                The car is reserved, the other offers are declined automatically, and you and
+                the buyer exchange contact details.
+            </li>
+        </ol>
+    </div>
+</div>
+
+<hr class="my-4" />
+
+<h2 class="h5 mb-3">Questions people ask</h2>
+<div class="row row-cols-1 row-cols-md-2 g-3">
+    <div class="col">
+        <div class="card h-100"><div class="card-body">
+            <h3 class="h6">Can other buyers see my offer?</h3>
+            <p class="pm-muted small mb-0">
+                No. Only the seller of that listing — and site administrators, for support and
+                abuse handling. There is no visible highest bid to beat, which is why an offer
+                does not have to top anything.
+            </p>
+        </div></div>
+    </div>
+    <div class="col">
+        <div class="card h-100"><div class="card-body">
+            <h3 class="h6">Is there a deadline?</h3>
+            <p class="pm-muted small mb-0">
+                No. Nothing closes on a clock. A listing stays available until its seller
+                accepts an offer or takes it off the market.
+            </p>
+        </div></div>
+    </div>
+    <div class="col">
+        <div class="card h-100"><div class="card-body">
+            <h3 class="h6">Does the seller have to take the highest offer?</h3>
+            <p class="pm-muted small mb-0">
+                No, and that is deliberate. A slightly lower offer from someone who can collect
+                on Saturday with cash is often worth more than a higher one that needs finance.
+            </p>
+        </div></div>
+    </div>
+    <div class="col">
+        <div class="card h-100"><div class="card-body">
+            <h3 class="h6">When do I get contact details?</h3>
+            <p class="pm-muted small mb-0">
+                When an offer is accepted, and only then. Both sides get the other's email and
+                phone at the same moment. Declined and withdrawn offers release nothing.
+            </p>
+        </div></div>
+    </div>
+    <div class="col">
+        <div class="card h-100"><div class="card-body">
+            <h3 class="h6">Does PremiumMotors handle the money?</h3>
+            <p class="pm-muted small mb-0">
+                No. There is no escrow and no payment processing between buyer and seller. The
+                sale completes directly between the two of you — inspect the car before paying.
+            </p>
+        </div></div>
+    </div>
+    <div class="col">
+        <div class="card h-100"><div class="card-body">
+            <h3 class="h6">Can I change my mind?</h3>
+            <p class="pm-muted small mb-0">
+                A buyer can withdraw an offer any time before the seller answers it. A seller
+                whose sale falls through can put the car straight back on the market.
+            </p>
+        </div></div>
+    </div>
+</div>
+
+@if (!isLoggedIn)
+{
+    <div class="pm-empty mt-4">
+        <h2 class="h5">Ready to start?</h2>
+        <p class="pm-muted mb-3">Browsing is open to everyone. You need an account to make an offer.</p>
+        <div class="d-grid d-sm-flex gap-2 justify-content-center">
+            <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-primary">Browse cars</a>
+            <a asp-controller="Account" asp-action="Signup" class="btn btn-primary">Create an account</a>
+        </div>
+    </div>
+}

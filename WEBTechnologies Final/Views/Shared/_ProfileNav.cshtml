@@ -1,0 +1,89 @@
+@{
+    @* One sub-navigation for everything about "me". The seller panel lives inside the profile
+       rather than off in its own area, so a seller has one place to go rather than two. It is
+       still served by SellerController (and mirrored on /api/v1/seller) — only the navigation
+       is unified, which keeps the "move the panel to its own domain" option open. *@
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    var action = ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+
+    string On(string c, params string[] actions) =>
+        string.Equals(controller, c, StringComparison.OrdinalIgnoreCase)
+        && (actions.Length == 0 || actions.Any(a => string.Equals(action, a, StringComparison.OrdinalIgnoreCase)))
+            ? "active" : "";
+
+    var isSeller = Context.Session.GetString(SessionKeys.IsSeller) == "true"
+                   || Context.Session.GetString(SessionKeys.IsAdmin) == "true";
+    var user = ViewData["ProfileUser"] as WEBTechnologies_Final.Models.User;
+    var isBusiness = user?.IsBusiness ?? false;
+
+    int Count(string key) => ViewData[key] is int n ? n : 0;
+}
+
+<div class="pm-subnav mb-3">
+    <a class="pm-subnav-link @On("Account", "Profile")" asp-controller="Account" asp-action="Profile">Profile</a>
+
+    <a class="pm-subnav-link @On("Account", "Offers")" asp-controller="Account" asp-action="Offers">
+        My offers
+        @if (Count("CountOffers") > 0)
+        {
+            <span class="pm-subnav-count">@Count("CountOffers")</span>
+        }
+    </a>
+
+    <a class="pm-subnav-link @On("Account", "Purchases")" asp-controller="Account" asp-action="Purchases">
+        Purchases
+        @if (Count("CountPurchases") > 0)
+        {
+            <span class="pm-subnav-count">@Count("CountPurchases")</span>
+        }
+    </a>
+
+    <a class="pm-subnav-link @On("Favorites")" asp-controller="Favorites" asp-action="Index">
+        Saved
+        @if (Count("CountFavorites") > 0)
+        {
+            <span class="pm-subnav-count">@Count("CountFavorites")</span>
+        }
+    </a>
+
+    <a class="pm-subnav-link @On("Messages")" asp-controller="Messages" asp-action="Index">
+        Messages
+        @if (Count("CountUnread") > 0)
+        {
+            <span class="pm-subnav-count is-alert">@Count("CountUnread")</span>
+        }
+    </a>
+
+    @if (isSeller)
+    {
+        <span class="pm-subnav-divider" aria-hidden="true"></span>
+        <a class="pm-subnav-link @On("Seller", "Dashboard")" asp-controller="Seller" asp-action="Dashboard">Selling</a>
+        <a class="pm-subnav-link @On("Seller", "Listings", "Edit")" asp-controller="Seller" asp-action="Listings">My listings</a>
+        <a class="pm-subnav-link @On("Seller", "Offers")" asp-controller="Seller" asp-action="Offers">Offers received</a>
+        <a class="pm-subnav-link @On("Seller", "Analytics")" asp-controller="Seller" asp-action="Analytics">Analytics</a>
+        <a class="pm-subnav-link @On("Seller", "Reviews")" asp-controller="Seller" asp-action="Reviews">
+            Reviews
+            @if (Count("CountReviews") > 0)
+            {
+                <span class="pm-subnav-count">@Count("CountReviews")</span>
+            }
+        </a>
+        @if (isBusiness)
+        {
+            <a class="pm-subnav-link @On("Seller", "Dealership")" asp-controller="Seller" asp-action="Dealership">Dealership page</a>
+            <a class="pm-subnav-link @On("Account", "Business")" asp-controller="Account" asp-action="Business">Business</a>
+        }
+        else
+        {
+            <a class="pm-subnav-link @On("Seller", "Profile")" asp-controller="Seller" asp-action="Profile">Seller profile</a>
+        }
+    }
+    else
+    {
+        <span class="pm-subnav-divider" aria-hidden="true"></span>
+        <a class="pm-subnav-link @On("Seller", "Start")" asp-controller="Seller" asp-action="Start">Start selling</a>
+    }
+
+    <span class="pm-subnav-divider" aria-hidden="true"></span>
+    <a class="pm-subnav-link @On("Account", "Security")" asp-controller="Account" asp-action="Security">Security</a>
+</div>

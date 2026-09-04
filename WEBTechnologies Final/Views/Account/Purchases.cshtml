@@ -1,0 +1,114 @@
+@model List<Car>
+@{
+    ViewData["Title"] = "My purchases";
+    var sellers = ViewData["Sellers"] as Dictionary<int, User> ?? new();
+    var reviewed = ViewData["Reviewed"] as List<int> ?? new();
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>My purchases</h1>
+        <p class="pm-muted mb-0 small">Cars where the seller accepted your offer.</p>
+    </div>
+</div>
+
+<partial name="_ProfileNav" />
+
+@if (Model.Count == 0)
+{
+    <div class="pm-empty">
+        <div class="pm-empty-icon" aria-hidden="true">🔑</div>
+        <h2 class="h5">Nothing here yet</h2>
+        <p class="pm-muted mb-3">
+            When a seller accepts one of your offers, the car and their contact details appear here.
+        </p>
+        <a asp-controller="Cars" asp-action="Index" class="btn btn-primary">Browse cars</a>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-lg-2 g-3 pm-stagger">
+        @foreach (var car in Model)
+        {
+            var seller = car.OwnerId is int ownerId && sellers.TryGetValue(ownerId, out var s) ? s : null;
+
+            <div class="col">
+                <div class="card h-100">
+                    <div class="row g-0">
+                        <div class="col-4">
+                            <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id"
+                               class="car-thumb pm-media h-100 d-block">
+                                <img src="@car.PrimaryImage" alt="@car.Title" loading="lazy" decoding="async" />
+                            </a>
+                        </div>
+                        <div class="col-8">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start gap-2">
+                                    <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id"
+                                       class="fw-semibold text-decoration-none text-truncate">@car.Title</a>
+                                    <partial name="_ListingStatusBadge" model="car.Status" />
+                                </div>
+
+                                <div class="small pm-muted mb-2">
+                                    @car.Mileage.ToString("N0") km · @car.FuelType
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-baseline">
+                                    <span class="small pm-muted">You agreed</span>
+                                    <span class="pm-price">@(car.SoldPrice?.ToString("C") ?? car.Price.ToString("C"))</span>
+                                </div>
+
+                                @if (car.Status == ListingStatus.Reserved)
+                                {
+                                    <div class="small text-warning-emphasis mt-1">
+                                        Sale in progress — arrange collection with the seller.
+                                    </div>
+                                }
+
+                                @if (car.Status == ListingStatus.Sold)
+                                {
+                                    <div class="mt-3">
+                                        @if (reviewed.Contains(car.Id))
+                                        {
+                                            <span class="small pm-muted">
+                                                ✓ You reviewed this seller.
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <a class="btn btn-sm btn-outline-primary"
+                                               asp-controller="Sellers" asp-action="Review"
+                                               asp-route-carId="@car.Id">Rate this seller</a>
+                                            <div class="small pm-muted mt-1">
+                                                Helps the next buyer know who to trust.
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    @* Acceptance releases contact details in both directions; this is the
+                       buyer's half of that exchange. *@
+                    @if (seller is not null)
+                    {
+                        <div class="card-footer bg-transparent">
+                            <div class="small fw-semibold mb-1">Seller contact</div>
+                            <dl class="row small mb-0 pm-break">
+                                <dt class="col-4">Name</dt><dd class="col-8">@seller.SellerName</dd>
+                                <dt class="col-4">Email</dt>
+                                <dd class="col-8"><a href="mailto:@seller.Email">@seller.Email</a></dd>
+                                @if (!string.IsNullOrWhiteSpace(seller.Phone))
+                                {
+                                    <dt class="col-4">Phone</dt>
+                                    <dd class="col-8"><a href="tel:@seller.Phone">@seller.Phone</a></dd>
+                                }
+                            </dl>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -1,13 +1,14 @@
 @model LoginViewModel
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Env
 @{
     ViewData["Title"] = "Log In";
 }
 
 <div class="row justify-content-center">
-    <div class="col-md-5">
-        <div class="card shadow-sm mt-4">
-            <div class="card-body">
-                <h1 class="h4 mb-3">Log In</h1>
+    <div class="col-sm-9 col-md-7 col-lg-5">
+        <div class="card mt-2 mt-md-4">
+            <div class="card-body p-4">
+                <h1 class="h4 mb-3">Log in</h1>
 
                 <div asp-validation-summary="All" class="text-danger mb-2"></div>
 
@@ -17,25 +18,33 @@
 
                     <div class="mb-3">
                         <label asp-for="Username" class="form-label"></label>
-                        <input asp-for="Username" class="form-control" autofocus />
+                        @* autocomplete + autocapitalize keep mobile keyboards
+                           from "helpfully" capitalising the first letter of a
+                           username and breaking the login. *@
+                        <input asp-for="Username" class="form-control" autofocus
+                               autocomplete="username" autocapitalize="none" autocorrect="off" spellcheck="false" />
                         <span asp-validation-for="Username" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" class="form-control" />
+                        <input asp-for="Password" class="form-control" autocomplete="current-password" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <button type="submit" class="btn btn-primary w-100">Log in</button>
                 </form>
 
                 <p class="text-center mt-3 mb-0">
-                    New here? <a asp-action="Register">Create an account</a>
+                    New here? <a asp-action="Signup">Create an account</a>
                 </p>
 
-                <div class="alert alert-info small mt-3 mb-0">
-                    <strong>Admin demo:</strong> <code>admin</code> / <code>admin123</code>
-                    (real auth arrives with the database).
-                </div>
+                @if (Env.IsDevelopment())
+                {
+                    @* Never rendered outside Development — the seeded admin
+                       password is generated and logged in production. *@
+                    <div class="alert alert-info small mt-3 mb-0">
+                        <strong>Dev seed:</strong> <code>admin</code> / <code>admin123</code>
+                    </div>
+                }
             </div>
         </div>
     </div>

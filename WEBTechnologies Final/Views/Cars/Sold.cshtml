@@ -1,0 +1,71 @@
+@model List<Car>
+@{
+    ViewData["Title"] = "Recently sold";
+    var pageNo = (int)(ViewData["Page"] ?? 1);
+    var pageSize = (int)(ViewData["PageSize"] ?? 24);
+    var total = (int)(ViewData["Total"] ?? 0);
+    var pages = (int)Math.Ceiling(total / (double)Math.Max(pageSize, 1));
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>Recently sold</h1>
+        <p class="pm-muted mb-0 small">
+            @total car@(total == 1 ? "" : "s") sold through PremiumMotors
+            @if (pages > 1)
+            {
+                <text>· page @pageNo of @pages</text>
+            }
+        </p>
+    </div>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="pm-empty">
+        <h2 class="h5">Nothing sold yet</h2>
+        <p class="pm-muted mb-0">
+            Once cars start selling here they will be listed on this page, with what they
+            actually went for.
+        </p>
+    </div>
+}
+else
+{
+    <p class="pm-muted small mb-3">
+        What cars actually sell for is usually more useful than what they are advertised at.
+        These are completed sales, newest first.
+    </p>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3 g-md-4 pm-stagger">
+        @foreach (var car in Model)
+        {
+            <div class="col">
+                <div class="pm-sold-wrap">
+                    <partial name="_CarCard" model="car" />
+                    @if (car.SoldPrice is decimal sold)
+                    {
+                        <div class="pm-sold-strip">
+                            Sold for <strong>@sold.ToString("C")</strong>
+                            @if (car.SoldUtc is DateTime when)
+                            {
+                                <span class="pm-muted">· @when.ToString("d MMM yyyy")</span>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (pages > 1)
+    {
+        <nav class="pm-pager" aria-label="Pages">
+            @for (var p = 1; p <= pages; p++)
+            {
+                <a class="pm-page @(p == pageNo ? "is-current" : "")"
+                   asp-action="Sold" asp-route-page="@p">@p</a>
+            }
+        </nav>
+    }
+}

@@ -1,0 +1,32 @@
+@model SellerBadge
+@{
+    @* Who is selling this car, and whether they are a business. Shown on every listing card
+       and at the top of every listing page.
+
+       This is the most conspicuous thing a used-car listing can lack: a buyer decides whether
+       to bother enquiring based on who is at the other end, and "dealership, 4.6 from 23
+       reviews" and "private seller, no ratings yet" are entirely different decisions.
+
+       A dealer links to their shopfront and a private seller to their profile. The two are
+       written out separately rather than with computed route values, because the two routes
+       take different parameters and passing both would leave a stray query string on each. *@
+    var compact = (ViewData["BylineCompact"] as bool?) ?? false;
+    var toDealership = Model.IsDealer && !string.IsNullOrEmpty(Model.DealershipSlug);
+}
+
+@if (toDealership)
+{
+    <a class="pm-byline @(compact ? "pm-byline-sm" : "")"
+       asp-controller="Dealerships" asp-action="Details" asp-route-slug="@Model.DealershipSlug">
+        <partial name="_BylineInner" model="Model"
+                 view-data='new ViewDataDictionary(ViewData) { ["BylineCompact"] = compact }' />
+    </a>
+}
+else
+{
+    <a class="pm-byline @(compact ? "pm-byline-sm" : "")"
+       asp-controller="Sellers" asp-action="Profile" asp-route-username="@Model.Username">
+        <partial name="_BylineInner" model="Model"
+                 view-data='new ViewDataDictionary(ViewData) { ["BylineCompact"] = compact }' />
+    </a>
+}

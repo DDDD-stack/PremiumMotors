@@ -1,0 +1,155 @@
+@model Dealership
+@{
+    ViewData["Title"] = "Dealership page";
+    var logoInitial = Model.Name.Length > 0 ? Model.Name[..1].ToUpperInvariant() : "?";
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>Your dealership page</h1>
+        <p class="pm-muted mb-0 small">
+            Live at
+            <a asp-controller="Dealerships" asp-action="Details" asp-route-slug="@Model.Slug">
+                /Dealerships/@Model.Slug
+            </a>
+            — this is what buyers see when they click your name on a listing.
+        </p>
+    </div>
+    <a class="btn btn-outline-secondary"
+       asp-controller="Dealerships" asp-action="Details" asp-route-slug="@Model.Slug">Preview</a>
+</div>
+
+<partial name="_ProfileNav" />
+
+<form asp-action="Dealership" method="post" enctype="multipart/form-data" class="row g-3">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-body row g-3">
+                <h2 class="h6 mb-0">Details</h2>
+
+                <div class="col-12">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="About" class="form-label"></label>
+                    <textarea asp-for="About" class="form-control" rows="5"
+                              placeholder="What you specialise in, how long you have been trading, what a buyer can expect."></textarea>
+                    <span asp-validation-for="About" class="text-danger"></span>
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="City" class="form-label"></label>
+                    <input asp-for="City" class="form-control" placeholder="e.g. Tirana" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Country" class="form-label"></label>
+                    <input asp-for="Country" class="form-control" placeholder="e.g. Albania" />
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="Address" class="form-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                </div>
+
+                <div class="col-md-6">
+                    <label asp-for="Phone" class="form-label"></label>
+                    <input asp-for="Phone" class="form-control" />
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="Website" class="form-label"></label>
+                    <input asp-for="Website" class="form-control" placeholder="https://" />
+                </div>
+
+                <div class="col-12">
+                    <label asp-for="OpeningHours" class="form-label"></label>
+                    <input asp-for="OpeningHours" class="form-control"
+                           placeholder="Mon-Fri 9-18, Sat 9-14" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h2 class="h6 mb-3">Logo</h2>
+                <div class="pm-avatar-editor">
+                    <partial name="_Avatar" model="@((Model.LogoPath, logoInitial, "lg"))" />
+                    <div class="pm-avatar-form">
+                        <input type="file" name="logo" class="form-control" accept="image/*" />
+                        <div class="form-text">
+                            Square works best. Shown on your listings and in the directory.
+                        </div>
+                        @if (!string.IsNullOrWhiteSpace(Model.LogoPath))
+                        {
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="checkbox" name="removeLogo"
+                                       value="true" id="removeLogo" />
+                                <label class="form-check-label small" for="removeLogo">
+                                    Remove the current logo
+                                </label>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-3">
+            <div class="card-body">
+                <h2 class="h6 mb-3">Header image</h2>
+                @if (!string.IsNullOrWhiteSpace(Model.BannerPath))
+                {
+                    <div class="pm-banner-preview pm-media mb-2">
+                        <img src="@Model.BannerPath" alt="" loading="lazy" decoding="async" />
+                    </div>
+                }
+                <input type="file" name="banner" class="form-control" accept="image/*" />
+                <div class="form-text">A wide photo of the forecourt or showroom.</div>
+                @if (!string.IsNullOrWhiteSpace(Model.BannerPath))
+                {
+                    <div class="form-check mt-2">
+                        <input class="form-check-input" type="checkbox" name="removeBanner"
+                               value="true" id="removeBanner" />
+                        <label class="form-check-label small" for="removeBanner">
+                            Remove the current header image
+                        </label>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h6 mb-2">Verification</h2>
+                @if (Model.Verified)
+                {
+                    <p class="mb-0 small"><span class="pm-verified">✓</span> This dealership is verified.</p>
+                }
+                else
+                {
+                    <p class="mb-0 small pm-muted">
+                        Your company details were collected at registration but are not checked
+                        yet, so no verified badge is shown. Document checks are not built —
+                        better to show nothing than a badge that means nothing.
+                    </p>
+                }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 d-flex gap-2">
+        <button type="submit" class="btn btn-primary">Save page</button>
+        <a class="btn btn-outline-secondary" asp-action="Dashboard">Cancel</a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,122 @@
+@model BusinessDetailsViewModel
+@{
+    ViewData["Title"] = "Business details";
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>Business details</h1>
+        <p class="pm-muted mb-0 small">What buyers see, and what we hold on record for your company.</p>
+    </div>
+    @if (Model.IsVerified)
+    {
+        <span class="badge bg-success">Verified</span>
+    }
+    else
+    {
+        <span class="badge bg-secondary" title="Document verification is not live yet">Unverified</span>
+    }
+</div>
+
+<partial name="_ProfileNav" />
+
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="card">
+            <div class="card-body">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+                <form asp-action="Business" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <h2 class="pm-section-title mb-3">Company</h2>
+                    <div class="row g-3 mb-3">
+                        <div class="col-12">
+                            <label asp-for="BusinessName" class="form-label"></label>
+                            <input asp-for="BusinessName" class="form-control" autocapitalize="words" />
+                            <div class="form-text">Shown on every listing you post.</div>
+                            <span asp-validation-for="BusinessName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="RegistrationNumber" class="form-label"></label>
+                            <input asp-for="RegistrationNumber" class="form-control"
+                                   autocapitalize="characters" spellcheck="false" />
+                            <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="VatNumber" class="form-label"></label>
+                            <input asp-for="VatNumber" class="form-control"
+                                   autocapitalize="characters" spellcheck="false" />
+                            <span asp-validation-for="VatNumber" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <h2 class="pm-section-title mb-3">Where you trade</h2>
+                    <div class="row g-3 mb-3">
+                        <div class="col-12">
+                            <label asp-for="Address" class="form-label"></label>
+                            <input asp-for="Address" class="form-control" autocapitalize="words" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Location" class="form-label"></label>
+                            <input asp-for="Location" class="form-control" autocapitalize="words"
+                                   placeholder="e.g. Tirana, Albania" />
+                            <div class="form-text">Shown next to your listings.</div>
+                            <span asp-validation-for="Location" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Website" class="form-label"></label>
+                            <input asp-for="Website" class="form-control" type="url" inputmode="url"
+                                   spellcheck="false" placeholder="https://" />
+                            <span asp-validation-for="Website" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <h2 class="pm-section-title mb-3">Responsible person</h2>
+                    <div class="mb-3">
+                        <label asp-for="ContactName" class="form-label"></label>
+                        <input asp-for="ContactName" class="form-control" autocapitalize="words" />
+                        <span asp-validation-for="ContactName" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save business details</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card mb-3">
+            <div class="card-header">Verification</div>
+            <div class="card-body small pm-muted">
+                @* Nothing sets SellerVerified yet — the review flow does not exist. Being
+                   explicit here beats a badge that silently never arrives. *@
+                <p>
+                    Your registration number is on file. Document checks — business registration,
+                    VAT and ID — are not live yet, so your account shows as unverified.
+                </p>
+                <p class="mb-0">
+                    This does not limit what you can list or sell. When verification launches
+                    we will email you with what to upload.
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">Coming for dealers</div>
+            <div class="card-body small pm-muted">
+                <ul class="mb-0 ps-3">
+                    <li>A public page listing all your cars</li>
+                    <li>Bulk upload and stock feeds</li>
+                    <li>Listing view counts</li>
+                    <li>Paid listing boosts</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

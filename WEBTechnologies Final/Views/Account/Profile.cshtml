@@ -1,0 +1,185 @@
+@model ProfileViewModel
+@{
+    ViewData["Title"] = "My profile";
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>@Model.Username</h1>
+        <p class="pm-muted mb-0 small">
+            @(Model.IsBusiness ? "Business account" : "Personal account")
+            · member since @AppTime.ToDisplay(Model.RegisteredUtc).ToString("MMMM yyyy")
+        </p>
+    </div>
+    @if (Model.IsSeller)
+    {
+        <a asp-controller="Sell" asp-action="Create" class="btn btn-success">+ List a car</a>
+    }
+</div>
+
+<partial name="_ProfileNav" />
+
+<div class="row g-3">
+    <div class="col-lg-7">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h2 class="h6 mb-3">Profile picture</h2>
+
+                <div class="pm-avatar-editor">
+                    <partial name="_Avatar" model="@((Model.AvatarPath, Model.Initials, "lg"))" />
+
+                    @* Its own form on purpose: a file input forces multipart, and a rejected
+                       upload here must not also throw away an unsaved email or phone edit. *@
+                    <form asp-action="Avatar" method="post" enctype="multipart/form-data"
+                          class="pm-avatar-form">
+                        @Html.AntiForgeryToken()
+                        <label class="form-label" for="avatar">Choose a picture</label>
+                        <input type="file" id="avatar" name="avatar" class="form-control"
+                               accept="image/*" />
+                        <div class="form-text">
+                            JPEG, PNG, GIF or WebP. Square images look best; anything else is
+                            cropped to the centre.
+                        </div>
+                        <div class="d-flex gap-2 mt-2">
+                            <button type="submit" class="btn btn-primary btn-sm">Save picture</button>
+                            @if (!string.IsNullOrWhiteSpace(Model.AvatarPath))
+                            {
+                                <button type="submit" name="remove" value="true"
+                                        class="btn btn-outline-danger btn-sm">Remove</button>
+                            }
+                        </div>
+                    </form>
+                </div>
+
+                @if (Model.IsSeller)
+                {
+                    <p class="small pm-muted mt-3 mb-0">
+                        This picture appears next to your name on every car you list.
+                        @if (Model.IsBusiness)
+                        {
+                            <text>
+                                Your dealership page uses its own logo, which you set in the
+                                <a asp-controller="Seller" asp-action="Dealership">dealership settings</a>.
+                            </text>
+                        }
+                    </p>
+                }
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h6 mb-3">Contact details</h2>
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
+
+                <form asp-action="Profile" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label class="form-label">Username</label>
+                        @* Username is the identity other people see on offers and messages, and
+                           it is denormalized onto listings and offers — renaming it would need a
+                           backfill, so it is deliberately not editable here. *@
+                        <input class="form-control" value="@Model.Username" disabled />
+                        <div class="form-text">Your username cannot be changed.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <div class="input-group">
+                            <input asp-for="Email" class="form-control" type="email" inputmode="email"
+                                   autocapitalize="none" spellcheck="false" />
+                            @if (Model.EmailVerified)
+                            {
+                                <span class="input-group-text text-success" title="Verified">✓</span>
+                            }
+                        </div>
+                        @if (!Model.EmailVerified)
+                        {
+                            <div class="form-text">
+                                Not verified yet. Verification emails go out once an email provider
+                                is configured.
+                            </div>
+                        }
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Phone" class="form-label"></label>
+                        <input asp-for="Phone" class="form-control" type="tel" inputmode="tel"
+                               autocomplete="tel" />
+                        <div class="form-text">
+                            Shared with the other party only when an offer is accepted.
+                        </div>
+                        <span asp-validation-for="Phone" class="text-danger"></span>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        @if (Model.IsSeller)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h2 class="h6 mb-0">Selling</h2>
+                        <span class="badge bg-success">Active</span>
+                    </div>
+                    <p class="pm-muted small">
+                        Your seller panel is unlocked. Post cars, read offers and reply to buyers.
+                    </p>
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Seller" asp-action="Dashboard" class="btn btn-outline-primary btn-sm">
+                            Open seller panel
+                        </a>
+                        @if (Model.IsBusiness)
+                        {
+                            <a asp-action="Business" class="btn btn-outline-secondary btn-sm">Business details</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="card mb-3 pm-choice-accent">
+                <div class="card-body">
+                    <h2 class="h6">Thinking of selling?</h2>
+                    <p class="pm-muted small">
+                        Turn on selling to list your car and receive private offers. It takes one
+                        form and you keep everything you have as a buyer.
+                    </p>
+                    <div class="d-grid gap-2">
+                        <a asp-controller="Seller" asp-action="Start" class="btn btn-success btn-sm">
+                            Start selling
+                        </a>
+                        <a asp-action="RegisterBusiness" class="btn btn-link btn-sm">
+                            Selling as a dealer? Register a business account
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="card">
+            <div class="card-body">
+                <h2 class="h6">Quick links</h2>
+                <div class="list-group list-group-flush">
+                    <a asp-action="Offers" class="list-group-item list-group-item-action px-0">My offers</a>
+                    <a asp-action="Purchases" class="list-group-item list-group-item-action px-0">My purchases</a>
+                    <a asp-controller="Messages" asp-action="Index" class="list-group-item list-group-item-action px-0">Messages</a>
+                    <a asp-action="Security" class="list-group-item list-group-item-action px-0">Password &amp; devices</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

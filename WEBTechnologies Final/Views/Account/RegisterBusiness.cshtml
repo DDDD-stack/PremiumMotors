@@ -1,0 +1,155 @@
+@model RegisterBusinessViewModel
+@{
+    ViewData["Title"] = "Register a business";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="pm-page-head">
+            <div>
+                <h1>Register a business</h1>
+                <p class="pm-muted mb-0 small">
+                    Everything a dealer account needs, collected once. Your seller panel is
+                    unlocked as soon as you finish.
+                </p>
+            </div>
+            <a asp-action="Signup" class="btn btn-outline-secondary btn-sm">Not a business?</a>
+        </div>
+
+        <form asp-action="RegisterBusiness" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h2 class="pm-section-title mb-3">Your business</h2>
+                    <div class="row g-3">
+                        <div class="col-md-7">
+                            <label asp-for="BusinessName" class="form-label"></label>
+                            <input asp-for="BusinessName" class="form-control" autocapitalize="words"
+                                   placeholder="e.g. Adriatik Motors sh.p.k." />
+                            <div class="form-text">This is the name buyers see on your listings.</div>
+                            <span asp-validation-for="BusinessName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-5">
+                            <label asp-for="RegistrationNumber" class="form-label"></label>
+                            <input asp-for="RegistrationNumber" class="form-control"
+                                   autocapitalize="characters" spellcheck="false" />
+                            <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-md-5">
+                            <label asp-for="VatNumber" class="form-label"></label>
+                            <input asp-for="VatNumber" class="form-control"
+                                   autocapitalize="characters" spellcheck="false" />
+                            <span asp-validation-for="VatNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-7">
+                            <label asp-for="Website" class="form-label"></label>
+                            <input asp-for="Website" class="form-control" type="url" inputmode="url"
+                                   spellcheck="false" placeholder="https://" />
+                            <span asp-validation-for="Website" class="text-danger"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <label asp-for="Address" class="form-label"></label>
+                            <input asp-for="Address" class="form-control" autocapitalize="words"
+                                   placeholder="Street and number" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="City" class="form-label"></label>
+                            <input asp-for="City" class="form-control" autocapitalize="words" />
+                            <span asp-validation-for="City" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Country" class="form-label"></label>
+                            <input asp-for="Country" class="form-control" autocapitalize="words" />
+                            <span asp-validation-for="Country" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h2 class="pm-section-title mb-3">Who we contact</h2>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label asp-for="ContactName" class="form-label"></label>
+                            <input asp-for="ContactName" class="form-control" autocapitalize="words" />
+                            <span asp-validation-for="ContactName" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" type="email" inputmode="email"
+                                   autocomplete="email" autocapitalize="none" spellcheck="false" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Phone" class="form-label"></label>
+                            <input asp-for="Phone" class="form-control" type="tel" inputmode="tel"
+                                   autocomplete="tel" placeholder="e.g. +355 69 123 4567" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-text mt-2">
+                        Shared with a buyer only when you accept their offer, so they can reach you.
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h2 class="pm-section-title mb-3">Your login</h2>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label asp-for="Username" class="form-label"></label>
+                            <input asp-for="Username" class="form-control" autocomplete="username"
+                                   autocapitalize="none" autocorrect="off" spellcheck="false" />
+                            <span asp-validation-for="Username" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" class="form-control" autocomplete="new-password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* Verification is not live: nothing sets SellerVerified yet. Saying so here is
+               better than implying a check happened. See docs/SELLER-PANEL.md. *@
+            <div class="alert alert-light border small">
+                <strong>About verification.</strong> We record your registration number now.
+                Document checks and the verified badge are not live yet, so new dealer accounts
+                start unverified — this does not limit what you can list or sell.
+            </div>
+
+            <div class="form-check mb-3">
+                <input asp-for="AcceptTerms" class="form-check-input" type="checkbox" />
+                <label asp-for="AcceptTerms" class="form-check-label">
+                    I accept the <a asp-controller="Home" asp-action="Terms">Terms</a> and
+                    <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a>, and I confirm
+                    I am authorised to act for this business
+                </label>
+                <span asp-validation-for="AcceptTerms" class="text-danger d-block"></span>
+            </div>
+
+            <button type="submit" class="btn btn-dark w-100">Create my business account</button>
+        </form>
+
+        <p class="text-center mt-3 mb-0 small">
+            Already have an account? <a asp-action="Login">Log in</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,135 @@
+@model List<Offer>
+@{
+    ViewData["Title"] = "Offers";
+    var filter = ViewData["StatusFilter"] as OfferStatus?;
+    var threads = ViewData["Threads"] as Dictionary<string, int> ?? new();
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+}
+
+<div class="pm-page-head">
+    <h1>Offers</h1>
+</div>
+
+<partial name="_ProfileNav" />
+
+<div class="pm-subnav mb-3 border-0">
+    <a class="pm-chip @(filter is null ? "is-active" : "")" asp-action="Offers">All</a>
+    <a class="pm-chip @(filter == OfferStatus.Pending ? "is-active" : "")"
+       asp-action="Offers" asp-route-status="@OfferStatus.Pending">Awaiting reply</a>
+    <a class="pm-chip @(filter == OfferStatus.Accepted ? "is-active" : "")"
+       asp-action="Offers" asp-route-status="@OfferStatus.Accepted">Accepted</a>
+    <a class="pm-chip @(filter == OfferStatus.Declined ? "is-active" : "")"
+       asp-action="Offers" asp-route-status="@OfferStatus.Declined">Declined</a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="pm-empty">
+        <div class="pm-empty-icon" aria-hidden="true">📭</div>
+        <h2 class="h5">No offers here</h2>
+        <p class="pm-muted mb-3">Offers buyers send on your listings show up on this page.</p>
+        <a asp-action="Listings" class="btn btn-outline-primary">See my listings</a>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-lg-2 g-3 pm-stagger">
+        @foreach (var offer in Model)
+        {
+            var threadId = offer.BuyerId is int b && threads.TryGetValue($"{offer.CarId}:{b}", out var t)
+                ? (int?)t : null;
+
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                            <div class="min-w-0">
+                                <a asp-controller="Cars" asp-action="Details" asp-route-id="@offer.CarId"
+                                   class="fw-semibold text-decoration-none d-block text-truncate">
+                                    @(offer.Car?.Title ?? "Listing")
+                                </a>
+                                <div class="small pm-muted">
+                                    Asking @(offer.Car?.Price.ToString("C") ?? "—")
+                                </div>
+                            </div>
+                            <partial name="_OfferStatusBadge" model="offer.Status" />
+                        </div>
+
+                        <div class="pm-price-box mb-2 d-flex justify-content-between align-items-center">
+                            <div class="min-w-0">
+                                <div class="small pm-muted">From</div>
+                                <div class="fw-semibold text-truncate">@offer.BuyerUsername</div>
+                            </div>
+                            <div class="text-end flex-shrink-0">
+                                <div class="pm-price">@offer.Amount.ToString("C")</div>
+                                @if (offer.Car is not null && offer.Car.Price > 0)
+                                {
+                                    var delta = offer.Amount - offer.Car.Price;
+                                    <div class="small @(delta >= 0 ? "text-success" : "text-danger")">
+                                        @(delta >= 0 ? "+" : "")@delta.ToString("C0") vs asking
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(offer.Message))
+                        {
+                            <p class="small fst-italic pm-break mb-2">&ldquo;@offer.Message&rdquo;</p>
+                        }
+
+                        <div class="small pm-muted mb-2">
+                            Received @AppTime.ToDisplay(offer.CreatedUtc).ToString("dd/MM/yyyy HH:mm")
+                        </div>
+
+                        @if (offer.Status == OfferStatus.Pending)
+                        {
+                            @* Chat is offered first, deliberately: the whole point of the
+                               marketplace flow is that a seller can ask before deciding. *@
+                            <div class="d-grid gap-2">
+                                @if (threadId is int existing)
+                                {
+                                    <a asp-controller="Messages" asp-action="Thread" asp-route-id="@existing"
+                                       class="btn btn-outline-primary btn-sm">💬 Chat with @offer.BuyerUsername</a>
+                                }
+                                else if (offer.BuyerId is int buyerId)
+                                {
+                                    <form asp-controller="Cars" asp-action="StartChat" method="post" class="d-grid">
+                                        <input type="hidden" name="carId" value="@offer.CarId" />
+                                        <input type="hidden" name="buyerId" value="@buyerId" />
+                                        <button type="submit" class="btn btn-outline-primary btn-sm">
+                                            💬 Chat with @offer.BuyerUsername
+                                        </button>
+                                    </form>
+                                }
+
+                                <div class="d-flex gap-2">
+                                    <form asp-action="AcceptOffer" method="post" class="flex-fill d-grid">
+                                        <input type="hidden" name="offerId" value="@offer.Id" />
+                                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                        <button type="submit" class="btn btn-success btn-sm">Accept</button>
+                                    </form>
+                                    <form asp-action="DeclineOffer" method="post" class="flex-fill d-grid">
+                                        <input type="hidden" name="offerId" value="@offer.Id" />
+                                        <input type="hidden" name="returnUrl" value="@returnUrl" />
+                                        <button type="submit" class="btn btn-outline-danger btn-sm">Decline</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="small pm-muted">
+                                Answered @(offer.RespondedUtc is DateTime r
+                                    ? AppTime.ToDisplay(r).ToString("dd/MM/yyyy HH:mm") : "—")
+                            </div>
+                            @if (!string.IsNullOrWhiteSpace(offer.SellerResponse))
+                            {
+                                <div class="small fst-italic pm-break">&ldquo;@offer.SellerResponse&rdquo;</div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -3,13 +3,13 @@
     ViewData["Title"] = "Edit " + Model.Title;
 }
 
-<h1 class="h3 mb-3">Edit Listing</h1>
+<div class="pm-page-head"><h1>Edit Listing</h1></div>
 
 <div class="card shadow-sm">
     <div class="card-body">
         <form asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
             <partial name="_CarForm" model="Model" />
-            <div class="mt-4 d-flex gap-2">
+            <div class="mt-4 d-grid d-sm-flex gap-2">
                 <button type="submit" class="btn btn-primary">Save changes</button>
                 <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
             </div>

@@ -1,0 +1,110 @@
+@model PublicSellerViewModel
+@{
+    @* One page body for a dealership and for a private seller. They differ in the details
+       they carry, not in what they are - a seller, their stock and their reputation - so
+       keeping them as one partial is what stops the two drifting apart. *@
+    var d = Model.Dealership;
+    var tab = Model.Tab == "reviews" ? "reviews" : "stock";
+}
+
+<div class="pm-seller-hero @(Model.IsDealer ? "is-dealer" : "")">
+    <div class="pm-seller-id">
+        <partial name="_Avatar" model="@((Model.AvatarPath, Model.Initials, "lg"))" />
+        <div class="pm-seller-headline">
+            <h1>
+                @Model.DisplayName
+                @if (Model.Verified)
+                {
+                    <span class="pm-verified" title="Verified dealer">✓</span>
+                }
+            </h1>
+            <p class="pm-seller-sub">
+                <span class="pm-seller-type @(Model.IsDealer ? "is-dealer" : "is-private")">
+                    @(Model.IsDealer ? "Dealership" : "Private seller")
+                </span>
+                @{
+                    var where = d?.Location ?? Model.Location;
+                }
+                @if (!string.IsNullOrWhiteSpace(where))
+                {
+                    <span class="pm-muted">· @where</span>
+                }
+                <span class="pm-muted">· Selling since @Model.MemberSince.ToString("MMMM yyyy")</span>
+            </p>
+            <partial name="_Stars" model="@((Model.RatingAverage, Model.RatingCount))" />
+        </div>
+    </div>
+
+    <div class="pm-seller-stats">
+        <div><strong>@Model.ActiveCount</strong><span>in stock</span></div>
+        <div><strong>@Model.SoldCount</strong><span>sold</span></div>
+        <div><strong>@Model.RatingCount</strong><span>review@(Model.RatingCount == 1 ? "" : "s")</span></div>
+    </div>
+</div>
+
+@if (d is not null && (!string.IsNullOrWhiteSpace(d.About) || !string.IsNullOrWhiteSpace(d.Address)
+     || !string.IsNullOrWhiteSpace(d.Phone) || !string.IsNullOrWhiteSpace(d.Website)
+     || !string.IsNullOrWhiteSpace(d.OpeningHours)))
+{
+    <div class="card shadow-sm mb-4">
+        <div class="card-body pm-dealer-details">
+            @if (!string.IsNullOrWhiteSpace(d.About))
+            {
+                <p class="mb-3 pm-wrap">@d.About</p>
+            }
+            <dl class="pm-spec-grid mb-0">
+                @if (!string.IsNullOrWhiteSpace(d.Address))
+                {
+                    <div><dt>Address</dt><dd>@d.Address</dd></div>
+                }
+                @if (!string.IsNullOrWhiteSpace(d.OpeningHours))
+                {
+                    <div><dt>Opening hours</dt><dd>@d.OpeningHours</dd></div>
+                }
+                @if (!string.IsNullOrWhiteSpace(d.Phone))
+                {
+                    <div><dt>Phone</dt><dd><a href="tel:@d.Phone">@d.Phone</a></dd></div>
+                }
+                @if (!string.IsNullOrWhiteSpace(d.Website))
+                {
+                    <div>
+                        <dt>Website</dt>
+                        @* rel=nofollow noopener: an unverified dealer's own link must not pass
+                           ranking, and must not be able to reach back through window.opener. *@
+                        <dd class="pm-wrap">
+                            <a href="@d.Website" target="_blank" rel="nofollow noopener">@d.Website</a>
+                        </dd>
+                    </div>
+                }
+            </dl>
+        </div>
+    </div>
+}
+
+<ul class="nav nav-pills pm-chip-row mb-3">
+    <li><a class="pm-chip @(tab == "stock" ? "is-active" : "")"
+           asp-route-tab="stock">Cars (@Model.Cars.Count)</a></li>
+    <li><a class="pm-chip @(tab == "reviews" ? "is-active" : "")"
+           asp-route-tab="reviews">Reviews (@Model.RatingCount)</a></li>
+</ul>
+
+@if (tab == "reviews")
+{
+    <partial name="_ReviewList" model="Model" />
+}
+else if (Model.Cars.Count == 0)
+{
+    <div class="pm-empty">
+        <h2 class="h5">Nothing listed right now</h2>
+        <p class="pm-muted mb-0">This seller has no cars on the market at the moment.</p>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3 g-md-4 pm-stagger">
+        @foreach (var car in Model.Cars)
+        {
+            <div class="col"><partial name="_CarCard" model="car" /></div>
+        }
+    </div>
+}

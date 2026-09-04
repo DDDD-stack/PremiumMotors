@@ -1,65 +1,87 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using WEBTechnologies_Final.Data;
 using WEBTechnologies_Final.Models;
 using WEBTechnologies_Final.Services;
-using WEBTechnologies_Final.Data;
-using Microsoft.EntityFrameworkCore;
+using WEBTechnologies_Final.Services.Marketplace;
 
 namespace WEBTechnologies_Final.Controllers
 {
     public class CarsController : Controller
     {
-        private readonly ApiClient _api;
         private readonly AppDbContext _context;
+        private readonly OfferService _offers;
+        private readonly ConversationService _conversations;
+        private readonly ListingExtrasService _extras;
+        private readonly ListingViewService _views;
 
-        public CarsController(ApiClient api, AppDbContext context)
+        public CarsController(
+            AppDbContext context, OfferService offers, ConversationService conversations,
+            ListingExtrasService extras, ListingViewService views)
         {
-            _api = api;
             _context = context;
+            _offers = offers;
+            _conversations = conversations;
+            _extras = extras;
+            _views = views;
         }
 
         public async Task<IActionResult> Index(
-            string? search, CarType? type, string? make,
-            string? model, int? year, string sortBy = "newest")
+            string? search, CarType? type, string? make, string? model, int? year,
+            decimal? minPrice, decimal? maxPrice, int? maxMileage,
+            FuelType? fuel, TransmissionType? gearbox,
+            string sortBy = "newest", int page = 1, int pageSize = 24)
         {
-            // Only published (listing-fee-paid or admin) cars appear publicly; drafts stay hidden.
-            var query = _context.Cars.Where(c => c.IsPublished).AsQueryable();
+            // Drafts and archived listings exist only for their seller. Reserved and sold cars
+            // stay browsable — a marketplace that hides sold stock looks empty and tells a
+            // buyer nothing about what actually moves.
+            var query = _context.Cars
+                .Where(c => c.Status != ListingStatus.Draft && c.Status != ListingStatus.Archived);
 
             if (!string.IsNullOrEmpty(search))
             {
-                query = query.Where(c => c.Make.Contains(search) || c.Model.Contains(search) || c.Description.Contains(search));
+                query = query.Where(c =>
+                    c.Make.Contains(search) || c.Model.Contains(search) || c.Description.Contains(search));
             }
-            if (type.HasValue)
-            {
-                query = query.Where(c => c.Type == type.Value);
-            }
-            if (!string.IsNullOrEmpty(make))
-            {
-                query = query.Where(c => c.Make == make);
-            }
-            if (!string.IsNullOrEmpty(model))
-            {
-                query = query.Where(c => c.Model == model);
-            }
-            if (year.HasValue)
-            {
-                query = query.Where(c => c.Year == year.Value);
-            }
+            if (type.HasValue) query = query.Where(c => c.Type == type.Value);
+            if (!string.IsNullOrEmpty(make)) query = query.Where(c => c.Make == make);
+            if (!string.IsNullOrEmpty(model)) query = query.Where(c => c.Model == model);
+            if (year.HasValue) query = query.Where(c => c.Year == year.Value);
+            if (minPrice.HasValue) query = query.Where(c => c.Price >= minPrice.Value);
+            if (maxPrice.HasValue) query = query.Where(c => c.Price <= maxPrice.Value);
+            if (maxMileage.HasValue) query = query.Where(c => c.Mileage <= maxMileage.Value);
+            if (fuel.HasValue) query = query.Where(c => c.FuelType == fuel.Value);
+            if (gearbox.HasValue) query = query.Where(c => c.Transmission == gearbox.Value);
 
             query = sortBy switch
             {
-                "price_asc" => query.OrderBy(c => c.StartingPrice),
-                "price_desc" => query.OrderByDescending(c => c.StartingPrice),
+                "price_asc" => query.OrderBy(c => c.Price),
+                "price_desc" => query.OrderByDescending(c => c.Price),
                 "year_asc" => query.OrderBy(c => c.Year),
                 "year_desc" => query.OrderByDescending(c => c.Year),
+                "mileage_asc" => query.OrderBy(c => c.Mileage),
                 _ => query.OrderByDescending(c => c.Id)
             };
 
-            var cars = await query.ToListAsync();
+            page = page < 1 ? 1 : page;
+            pageSize = pageSize is < 1 or > 96 ? 24 : pageSize;
 
-            var makes = await _context.Cars.Select(c => c.Make).Distinct().OrderBy(m => m).ToListAsync();
-            var models = await _context.Cars.Select(c => c.Model).Distinct().OrderBy(m => m).ToListAsync();
-            var years = await _context.Cars.Select(c => c.Year).Distinct().OrderByDescending(y => y).ToListAsync();
+            var totalCount = await query.CountAsync();
+            var cars = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var listed = _context.Cars
+                .Where(c => c.Status != ListingStatus.Draft && c.Status != ListingStatus.Archived);
+            var makes = await listed.Select(c => c.Make).Distinct().OrderBy(m => m).ToListAsync();
+            var models = await listed.Select(c => c.Model).Distinct().OrderBy(m => m).ToListAsync();
+            var years = await listed.Select(c => c.Year).Distinct().OrderByDescending(y => y).ToListAsync();
+
+            // One query for every favourite on this page, rather than one per card.
+            await LoadFavouritesAsync(cars.Select(c => c.Id));
+
+            // Seller bylines and price history for the whole page in two queries. See
+            // ListingExtrasService for why this is not done per card.
+            await LoadExtrasAsync(cars);
 
             var vm = new CarListViewModel
             {
@@ -69,11 +91,21 @@ namespace WEBTechnologies_Final.Controllers
                 Make = make,
                 Model = model,
                 Year = year,
+                MinPrice = minPrice,
+                MaxPrice = maxPrice,
+                MaxMileage = maxMileage,
+                Fuel = fuel,
+                Gearbox = gearbox,
                 SortBy = sortBy,
-                TypeOptions = BuildTypeOptions(type),
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                TypeOptions = EnumOptions<CarType>(type?.ToString()),
                 MakeOptions = new SelectList(makes, make),
                 ModelOptions = new SelectList(models, model),
                 YearOptions = new SelectList(years, year),
+                FuelOptions = EnumOptions<FuelType>(fuel?.ToString()),
+                GearboxOptions = EnumOptions<TransmissionType>(gearbox?.ToString()),
                 SortOptions = BuildSortOptions(sortBy)
             };
 
@@ -83,90 +115,214 @@ namespace WEBTechnologies_Final.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var car = await _context.Cars
-                .Include(c => c.Bids)
+                .Include(c => c.Offers)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (car is null) return NotFound();
 
-            var username = HttpContext.Session.GetString(SessionKeys.Username);
+            var userId = HttpContext.Session.GetInt32(SessionKeys.UserId);
             var isAdmin = HttpContext.Session.GetString(SessionKeys.IsAdmin) == "true";
-            var isSeller = isAdmin || (username is not null
-                && string.Equals(username, car.OwnerUsername, StringComparison.OrdinalIgnoreCase));
+            var isSeller = IsSellerOf(car, userId, isAdmin);
 
-            // A draft (unpaid) listing is visible only to its owner/admin, never the public.
-            if (!car.IsPublished && !isSeller) return NotFound();
+            // A draft or archived listing simply does not exist for anyone but its seller.
+            if (!car.IsPubliclyVisible && !isSeller) return NotFound();
 
-            if (username is not null)
+            ViewData["IsSeller"] = isSeller;
+
+            // Count the view once per browser session, and never the seller's own. Sellers
+            // reload their listing constantly to see how it looks; counting that would turn
+            // the trend line into a graph of the seller's own anxiety.
+            var seenKey = "seen:" + car.Id;
+            if (!isSeller && HttpContext.Session.GetString(seenKey) is null)
             {
-
-                ViewData[$"IsFav_{car.Id}"] = await _context.UserFavoriteCars
-                    .AnyAsync(f => f.Username == username && f.CarId == id);
+                HttpContext.Session.SetString(seenKey, "1");
+                await _views.RecordAsync(car.Id);
             }
 
-            // Reveal the winning bidder's contact details to the seller once the auction has closed.
-            if (isSeller && car.IsSold && car.SoldTo is not null)
+            RememberRecentlyViewed(car.Id);
+
+            var badges = await _extras.ForCarsAsync(new[] { car });
+            if (car.OwnerId is int ownerId && badges.Sellers.TryGetValue(ownerId, out var badge))
+                ViewData["SellerBadge"] = badge;
+            if (badges.PreviousPrices.TryGetValue(car.Id, out var wasPrice))
+                ViewData["PreviousPrice"] = wasPrice;
+
+            // Three comparable cars, so a listing that is not right is not a dead end. Same
+            // body type, within a quarter of the price either way, cheapest deviation first.
+            var lower = car.Price * 0.75m;
+            var upper = car.Price * 1.25m;
+            ViewData["Similar"] = await _context.Cars
+                .Where(c => c.Id != car.Id
+                            && c.Status == ListingStatus.Active
+                            && c.Type == car.Type
+                            && c.Price >= lower && c.Price <= upper)
+                .OrderBy(c => c.Price > car.Price ? c.Price - car.Price : car.Price - c.Price)
+                .Take(3)
+                .ToListAsync();
+
+            ViewData["PriceHistory"] = await _context.CarPriceChanges
+                .Where(h => h.CarId == car.Id)
+                .OrderByDescending(h => h.ChangedUtc)
+                .Take(6)
+                .ToListAsync();
+
+            if (userId is not null)
             {
-                var winner = await _context.Users
-                    .FirstOrDefaultAsync(u => u.Username.ToLower() == car.SoldTo.ToLower());
-                if (winner is not null)
+                ViewData[$"IsFav_{car.Id}"] = await _context.UserFavoriteCars
+                    .AnyAsync(f => f.UserId == userId.Value && f.CarId == id);
+
+                // The buyer's own offer, so the page can show its status instead of
+                // inviting them to make the same offer again.
+                var mine = await _context.Offers
+                    .Where(o => o.CarId == id && o.BuyerId == userId.Value)
+                    .OrderByDescending(o => o.CreatedUtc)
+                    .FirstOrDefaultAsync();
+                ViewData["MyOffer"] = mine;
+
+                var thread = await _context.Conversations
+                    .FirstOrDefaultAsync(c => c.CarId == id && c.BuyerId == userId.Value);
+                ViewData["MyConversationId"] = thread?.Id;
+            }
+
+            // Contact details are released once an offer is accepted — in both directions.
+            // The sale completes off-platform, so each side needs to be able to reach the
+            // other; releasing only the buyer would leave them unable to arrange collection.
+            if (car.SoldToUserId is not null)
+            {
+                if (isSeller)
                 {
-                    ViewData["WinnerEmail"] = winner.Email;
-                    ViewData["WinnerPhone"] = winner.Phone;
+                    var buyer = await _context.Users.FirstOrDefaultAsync(u => u.Id == car.SoldToUserId);
+                    if (buyer is not null)
+                    {
+                        ViewData["BuyerEmail"] = buyer.Email;
+                        ViewData["BuyerPhone"] = buyer.Phone;
+                    }
                 }
+                else if (userId is not null && car.SoldToUserId == userId && car.OwnerId is not null)
+                {
+                    var seller = await _context.Users.FirstOrDefaultAsync(u => u.Id == car.OwnerId);
+                    if (seller is not null)
+                    {
+                        ViewData["SellerName"] = seller.SellerName;
+                        ViewData["SellerEmail"] = seller.Email;
+                        ViewData["SellerPhone"] = seller.Phone;
+                    }
+                }
+            }
+
+            // Seller view: which offers have a thread already, so each row links to the chat.
+            if (isSeller)
+            {
+                var threads = await _context.Conversations
+                    .Where(c => c.CarId == id)
+                    .ToDictionaryAsync(c => c.BuyerId, c => c.Id);
+                ViewData["Threads"] = threads;
+            }
+
+            ViewData["RecentlyViewed"] = await RecentlyViewedAsync(car.Id);
+
+            // The similar and recently-viewed strips are made of the same card, so they need
+            // the same lookups. Build them from everything the page will actually render.
+            var strip = new List<Car>();
+            if (ViewData["Similar"] is List<Car> similar) strip.AddRange(similar);
+            if (ViewData["RecentlyViewed"] is List<Car> recent) strip.AddRange(recent);
+            if (strip.Count > 0)
+            {
+                await LoadFavouritesAsync(strip.Select(c => c.Id));
+                await LoadExtrasAsync(strip);
             }
 
             return View(car);
         }
 
+        /// <summary>Places a private offer. Replaces the old auction Bid action.</summary>
         [HttpPost]
         [LoggedInOnly]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Bid(int id, decimal amount)
+        public async Task<IActionResult> Offer(int id, decimal amount, string? message)
         {
-            var bidderName = HttpContext.Session.GetString(SessionKeys.Username)!;
+            var buyerId = HttpContext.Session.GetInt32(SessionKeys.UserId)!.Value;
+            var buyerName = HttpContext.Session.GetString(SessionKeys.Username)!;
 
-            var car = await _context.Cars.Include(c => c.Bids).FirstOrDefaultAsync(c => c.Id == id);
-            if (car is null) return NotFound();
+            var result = await _offers.PlaceAsync(id, buyerId, buyerName, amount, message);
 
-            if (car.IsClosed)
+            if (!result.Success)
             {
-                TempData["Error"] = "This auction is closed and no longer accepting offers.";
+                if (result.Code == MarketplaceCodes.NotFound) return NotFound();
+                TempData["Error"] = result.Error;
                 return RedirectToAction(nameof(Details), new { id });
             }
 
-            // Sealed offers don't need to out-bid each other (and revealing the standing
-            // total would defeat their privacy) — they only need to be a positive amount.
-            if (amount <= 0)
-            {
-                TempData["Error"] = "Your offer must be greater than zero.";
-                return RedirectToAction(nameof(Details), new { id });
-            }
-
-            var newBid = new Bid
-            {
-                CarId = id,
-                Amount = amount,
-                BidderUsername = bidderName,
-                CreatedUtc = DateTime.UtcNow
-            };
-
-            _context.Bids.Add(newBid);
-            await ConsumeListingTokenAsync(id);
-
-            // Offers are private — the bidder only learns their own offer landed, not the standing total.
-            TempData["Success"] = $"Your offer of {amount:C} was sent privately to the seller.";
-
-            await _context.SaveChangesAsync();
+            TempData["Success"] =
+                $"Your offer of {amount:C} was sent privately to the seller. You'll see their answer here.";
             return RedirectToAction(nameof(Details), new { id });
         }
 
-        // Once a listing receives an offer, its paid token is spent and can no longer be
-        // reclaimed for a free relist — this is what blocks the "never declare a winner" exploit.
-        private async Task ConsumeListingTokenAsync(int carId)
+        /// <summary>Buyer pulls back an offer the seller has not answered yet.</summary>
+        [HttpPost]
+        [LoggedInOnly]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> WithdrawOffer(int offerId, int carId)
         {
-            var token = await _context.Payments
-                .FirstOrDefaultAsync(p => p.CarId == carId && p.Status == PaymentStatus.Paid && !p.OfferConsumed);
-            if (token is not null) token.OfferConsumed = true;
+            var buyerId = HttpContext.Session.GetInt32(SessionKeys.UserId)!.Value;
+            var result = await _offers.WithdrawAsync(offerId, buyerId);
+
+            TempData[result.Success ? "Success" : "Error"] =
+                result.Success ? "Your offer was withdrawn." : result.Error;
+
+            return RedirectToAction(nameof(Details), new { id = carId });
+        }
+
+        /// <summary>
+        /// Opens (or continues) the buyer/seller thread for this listing and jumps to it.
+        /// Either side can start it: a buyer asking a question before offering, or a seller
+        /// wanting detail before answering an offer.
+        /// </summary>
+        [HttpPost]
+        [LoggedInOnly]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> StartChat(int carId, int? buyerId)
+        {
+            var userId = HttpContext.Session.GetInt32(SessionKeys.UserId)!.Value;
+            var isAdmin = HttpContext.Session.GetString(SessionKeys.IsAdmin) == "true";
+
+            var result = await _conversations.OpenAsync(carId, buyerId ?? userId, userId, isAdmin);
+
+            if (!result.Success || result.Value is null)
+            {
+                TempData["Error"] = result.Error;
+                return RedirectToAction(nameof(Details), new { id = carId });
+            }
+
+            return RedirectToAction("Thread", "Messages", new { id = result.Value.Id });
+        }
+
+        /// <summary>
+        /// Cars that actually sold here, newest first.
+        ///
+        /// The strongest trust signal a young marketplace has: proof that transactions
+        /// complete. Sale prices are shown because Car.SoldPrice is already public on the
+        /// listing itself - hiding them here would be inconsistent rather than private.
+        /// </summary>
+        public async Task<IActionResult> Sold(int page = 1, int pageSize = 24)
+        {
+            page = page < 1 ? 1 : page;
+            pageSize = pageSize is < 1 or > 96 ? 24 : pageSize;
+
+            var query = _context.Cars
+                .Where(c => c.Status == ListingStatus.Sold)
+                .OrderByDescending(c => c.SoldUtc);
+
+            var total = await query.CountAsync();
+            var cars = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            await LoadFavouritesAsync(cars.Select(c => c.Id));
+            await LoadExtrasAsync(cars);
+
+            ViewData["Page"] = page;
+            ViewData["PageSize"] = pageSize;
+            ViewData["Total"] = total;
+            return View(cars);
         }
 
         public async Task<IActionResult> Share(int id)
@@ -177,22 +333,112 @@ namespace WEBTechnologies_Final.Controllers
             return View(car);
         }
 
-        private static SelectList BuildTypeOptions(CarType? selected)
+        // ---------- helpers ----------
+
+        /// <summary>
+        /// Ownership check used for draft visibility and the private offer list. Admins count
+        /// here (they administer every listing) but deliberately do not count as the owner when
+        /// deciding who may place an offer — see OfferService.IsOwner.
+        /// </summary>
+        private static bool IsSellerOf(Car car, int? userId, bool isAdmin) =>
+            isAdmin || (userId is not null && car.OwnerId is not null && car.OwnerId == userId);
+
+        private async Task LoadExtrasAsync(IReadOnlyList<Car> cars)
         {
-            var items = Enum.GetValues<CarType>()
-                .Select(t => new { Value = t.ToString(), Text = t.ToString() });
-            return new SelectList(items, "Value", "Text", selected?.ToString());
+            if (cars.Count == 0) return;
+            var extras = await _extras.ForCarsAsync(cars);
+            ViewData["SellerBadges"] = extras.Sellers;
+            ViewData["PriceDrops"] = extras.PreviousPrices;
+        }
+
+        /// <summary>
+        /// Last five listings this visitor opened, kept in the session.
+        ///
+        /// Session rather than a table on purpose: it needs no schema, works for signed-out
+        /// visitors, and disappears on its own. Browsing history is also the kind of personal
+        /// data that is much easier not to store than to store and then have to justify.
+        /// </summary>
+        private void RememberRecentlyViewed(int carId)
+        {
+            const string key = "recent";
+            var ids = (HttpContext.Session.GetString(key) ?? "")
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(v => int.TryParse(v, out var n) ? n : 0)
+                .Where(n => n > 0 && n != carId)
+                .ToList();
+
+            ids.Insert(0, carId);
+            HttpContext.Session.SetString(key, string.Join(',', ids.Take(6)));
+        }
+
+        private async Task<List<Car>> RecentlyViewedAsync(int excludeId)
+        {
+            var ids = (HttpContext.Session.GetString("recent") ?? "")
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(v => int.TryParse(v, out var n) ? n : 0)
+                .Where(n => n > 0 && n != excludeId)
+                .Take(4)
+                .ToList();
+
+            if (ids.Count == 0) return new List<Car>();
+
+            var cars = await _context.Cars
+                .Where(c => ids.Contains(c.Id) && c.Status != ListingStatus.Draft
+                            && c.Status != ListingStatus.Archived)
+                .ToListAsync();
+
+            // Restore the session's order: the database returns them by id, which would show
+            // the oldest first and make the row look stale.
+            return ids.Select(id => cars.FirstOrDefault(c => c.Id == id))
+                      .Where(c => c is not null)
+                      .Select(c => c!)
+                      .ToList();
+        }
+
+        private async Task LoadFavouritesAsync(IEnumerable<int> carIds)
+        {
+            var userId = HttpContext.Session.GetInt32(SessionKeys.UserId);
+            if (userId is null) return;
+
+            var ids = carIds.ToList();
+            if (ids.Count == 0) return;
+
+            var favourites = await _context.UserFavoriteCars
+                .Where(f => f.UserId == userId.Value && ids.Contains(f.CarId))
+                .Select(f => f.CarId)
+                .ToListAsync();
+
+            foreach (var carId in favourites) ViewData[$"IsFav_{carId}"] = true;
+        }
+
+        private static SelectList EnumOptions<TEnum>(string? selected) where TEnum : struct, Enum
+        {
+            var items = Enum.GetValues<TEnum>()
+                .Select(v => new { Value = v.ToString(), Text = DisplayName(v) });
+            return new SelectList(items, "Value", "Text", selected);
+        }
+
+        /// <summary>Reads the [Display(Name)] off an enum member so "PluginHybrid" reads as "Plug-in hybrid".</summary>
+        private static string DisplayName<TEnum>(TEnum value) where TEnum : struct, Enum
+        {
+            var member = typeof(TEnum).GetMember(value.ToString()!).FirstOrDefault();
+            var display = member?.GetCustomAttributes(
+                typeof(System.ComponentModel.DataAnnotations.DisplayAttribute), false)
+                .Cast<System.ComponentModel.DataAnnotations.DisplayAttribute>()
+                .FirstOrDefault();
+            return display?.Name ?? value.ToString()!;
         }
 
         private static SelectList BuildSortOptions(string? selected)
         {
             var items = new[]
             {
-                new { Value = "newest",     Text = "Newest first" },
-                new { Value = "price_asc",  Text = "Price: low to high" },
-                new { Value = "price_desc", Text = "Price: high to low" },
-                new { Value = "year_desc",  Text = "Year: newest" },
-                new { Value = "year_asc",   Text = "Year: oldest" },
+                new { Value = "newest",      Text = "Newest first" },
+                new { Value = "price_asc",   Text = "Price: low to high" },
+                new { Value = "price_desc",  Text = "Price: high to low" },
+                new { Value = "mileage_asc", Text = "Mileage: lowest" },
+                new { Value = "year_desc",   Text = "Year: newest" },
+                new { Value = "year_asc",    Text = "Year: oldest" },
             };
             return new SelectList(items, "Value", "Text", selected);
         }

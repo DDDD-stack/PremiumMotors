@@ -1,0 +1,212 @@
+@model SellerAnalytics
+@{
+    ViewData["Title"] = "Analytics";
+    var months = (int)(ViewData["Months"] ?? 12);
+    var dealership = ViewData["Dealership"] as Dealership;
+
+    var revenue = new ChartSeries
+    {
+        Title = "Revenue per month",
+        Subtitle = "What your accepted offers actually came to",
+        Accent = "var(--pm-primary)",
+        Points = Model.Monthly
+            .Select(m => new ChartPoint(m.Label, (double)m.Revenue, m.Revenue.ToString("C0")))
+            .ToList()
+    };
+
+    var sales = new ChartSeries
+    {
+        Title = "Cars sold per month",
+        Accent = "var(--pm-success)",
+        Points = Model.Monthly
+            .Select(m => new ChartPoint(m.Label, m.Sales, m.Sales.ToString("N0")))
+            .ToList()
+    };
+
+    var offers = new ChartSeries
+    {
+        Title = "Offers received per month",
+        Accent = "var(--pm-accent)",
+        Points = Model.Monthly
+            .Select(m => new ChartPoint(m.Label, m.Offers, m.Offers.ToString("N0")))
+            .ToList()
+    };
+
+    var views = new ChartSeries
+    {
+        Title = "Views, last 30 days",
+        Subtitle = Model.ViewsLast30.ToString("N0") + " in total",
+        Accent = "var(--pm-primary)",
+        Points = Model.Daily
+            .Select(d => new ChartPoint(d.Label, d.Views, d.Views.ToString("N0")))
+            .ToList()
+    };
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>Analytics</h1>
+        <p class="pm-muted mb-0 small">
+            How your listings are performing over the last @months months.
+            @if (dealership is not null)
+            {
+                <a asp-controller="Dealerships" asp-action="Details" asp-route-slug="@dealership.Slug">
+                    View your public page
+                </a>
+            }
+        </p>
+    </div>
+    <form asp-action="Analytics" method="get" class="d-flex gap-2 align-items-center">
+        <label class="form-label mb-0 small" for="months">Period</label>
+        <select id="months" name="months" class="form-select form-select-sm"
+                onchange="this.form.submit()">
+            <option value="6" selected="@(months == 6)">6 months</option>
+            <option value="12" selected="@(months == 12)">12 months</option>
+            <option value="24" selected="@(months == 24)">24 months</option>
+        </select>
+        <noscript><button type="submit" class="btn btn-sm btn-outline-secondary">Go</button></noscript>
+    </form>
+</div>
+
+<partial name="_ProfileNav" />
+
+@* Headline numbers first: money, then the funnel that produces it. *@
+<div class="pm-stat-grid mb-4">
+    <div class="pm-stat">
+        <span class="pm-stat-value">@Model.Revenue.ToString("C0")</span>
+        <span class="pm-stat-label">Total revenue</span>
+    </div>
+    <div class="pm-stat">
+        <span class="pm-stat-value">@Model.Sold.ToString("N0")</span>
+        <span class="pm-stat-label">Cars sold</span>
+    </div>
+    <div class="pm-stat">
+        <span class="pm-stat-value">@(Model.Sold == 0 ? "—" : Model.AverageSalePrice.ToString("C0"))</span>
+        <span class="pm-stat-label">Average sale price</span>
+    </div>
+    <div class="pm-stat">
+        <span class="pm-stat-value">@Model.LiveStockValue.ToString("C0")</span>
+        <span class="pm-stat-label">Value of live stock</span>
+    </div>
+    <div class="pm-stat">
+        <span class="pm-stat-value">@Model.TotalViews.ToString("N0")</span>
+        <span class="pm-stat-label">Total views</span>
+    </div>
+    <div class="pm-stat">
+        <span class="pm-stat-value">@Model.TotalOffers.ToString("N0")</span>
+        <span class="pm-stat-label">Offers received</span>
+    </div>
+    <div class="pm-stat">
+        <span class="pm-stat-value">
+            @(Model.AcceptanceRate is double rate ? rate.ToString("P0") : "—")
+        </span>
+        <span class="pm-stat-label">Offers accepted</span>
+    </div>
+    <div class="pm-stat">
+        <span class="pm-stat-value">@Model.Favourites.ToString("N0")</span>
+        <span class="pm-stat-label">Saved by buyers</span>
+    </div>
+</div>
+
+<div class="row g-3 g-lg-4 mb-4">
+    <div class="col-12">
+        <div class="card shadow-sm"><div class="card-body">
+            <partial name="_ChartBars" model="revenue" />
+        </div></div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <partial name="_ChartBars" model="sales" />
+        </div></div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm h-100"><div class="card-body">
+            <partial name="_ChartBars" model="offers" />
+        </div></div>
+    </div>
+    <div class="col-12">
+        <div class="card shadow-sm"><div class="card-body">
+            <partial name="_ChartLine" model="views" />
+        </div></div>
+    </div>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+            <h2 class="pm-section-title mb-0">Listing by listing</h2>
+            <span class="small pm-muted">Most viewed first</span>
+        </div>
+
+        @if (Model.PerListing.Count == 0)
+        {
+            <div class="pm-empty mb-0">
+                <h3 class="h6">Nothing listed yet</h3>
+                <p class="pm-muted mb-3">Post your first car and the numbers start here.</p>
+                <a class="btn btn-success" asp-controller="Sell" asp-action="Create">+ List a car</a>
+            </div>
+        }
+        else
+        {
+            @* Reuses the responsive table treatment from the admin list: eight columns do not
+               fit a phone, so below md each row re-flows into a labelled stack. *@
+            <div class="pm-table-wrap">
+                <table class="table pm-data-table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th scope="col">Car</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="text-end">Price</th>
+                            <th scope="col" class="text-end">Views</th>
+                            <th scope="col" class="text-end">Offers</th>
+                            <th scope="col" class="text-end">Saved</th>
+                            <th scope="col" class="text-end">Views/offer</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in Model.PerListing)
+                        {
+                            <tr>
+                                <td data-label="Car">
+                                    <a class="d-inline-flex align-items-center gap-2 text-decoration-none"
+                                       asp-controller="Cars" asp-action="Details" asp-route-id="@row.Id">
+                                        <span class="pm-review-thumb pm-media">
+                                            <img src="@row.Image" alt="" loading="lazy" decoding="async" />
+                                        </span>
+                                        <span>@row.Title</span>
+                                    </a>
+                                </td>
+                                <td data-label="Status">
+                                    <partial name="_ListingStatusBadge" model="row.Status" />
+                                </td>
+                                <td data-label="Price" class="text-end">
+                                    @if (row.SoldPrice is decimal sold)
+                                    {
+                                        <span class="fw-semibold">@sold.ToString("C0")</span>
+                                        <span class="d-block small pm-muted">asked @row.Price.ToString("C0")</span>
+                                    }
+                                    else
+                                    {
+                                        @row.Price.ToString("C0")
+                                    }
+                                </td>
+                                <td data-label="Views" class="text-end">@row.Views.ToString("N0")</td>
+                                <td data-label="Offers" class="text-end">@row.Offers.ToString("N0")</td>
+                                <td data-label="Saved" class="text-end">@row.Favourites.ToString("N0")</td>
+                                <td data-label="Views/offer" class="text-end">
+                                    @(row.ViewsPerOffer is double vpo ? vpo.ToString("N0") : "—")
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="small pm-muted mt-3 mb-0">
+                <strong>Views per offer</strong> is the number worth watching: plenty of views
+                and no offers usually means the price, while almost no views usually means the
+                photos or the title. A dash means there have been no offers to divide by yet.
+            </p>
+        }
+    </div>
+</div>

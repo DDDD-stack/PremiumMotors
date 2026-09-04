@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore
+        run: dotnet restore "WEBTechnologies Final.slnx"
+
+      - name: Build
+        run: dotnet build "WEBTechnologies Final.slnx" --no-restore --configuration Release
+
+      # The suite is deliberately free of external dependencies - no database, no network -
+      # so CI needs no secrets and cannot be flaky for environmental reasons.
+      - name: Test
+        run: dotnet test "WEBTechnologies Final.slnx" --no-build --configuration Release --verbosity normal
+
+  migrations-are-current:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Install EF tools
+        run: dotnet tool install --global dotnet-ef --version 9.0.2
+
+      # Catches a model change that was committed without its migration - which would
+      # otherwise only surface as a runtime failure after deploy.
+      - name: Check for un-scaffolded model changes
+        working-directory: "WEBTechnologies Final"
+        run: |
+          dotnet ef migrations has-pending-model-changes || {
+            echo "::error::The EF model has changes with no matching migration. Run: dotnet ef migrations add <Name>"
+            exit 1
+          }

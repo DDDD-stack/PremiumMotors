@@ -1,0 +1,115 @@
+@model List<Offer>
+@{
+    ViewData["Title"] = "My offers";
+    var threads = ViewData["Threads"] as Dictionary<int, int> ?? new();
+    var pending = Model.Count(o => o.Status == OfferStatus.Pending);
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>My offers</h1>
+        <p class="pm-muted mb-0 small">
+            @Model.Count offer@(Model.Count == 1 ? "" : "s")
+            @if (pending > 0)
+            {
+                <text>· @pending awaiting a reply</text>
+            }
+        </p>
+    </div>
+</div>
+
+<partial name="_ProfileNav" />
+
+@if (Model.Count == 0)
+{
+    <div class="pm-empty">
+        <div class="pm-empty-icon" aria-hidden="true">💶</div>
+        <h2 class="h5">You haven't made any offers yet</h2>
+        <p class="pm-muted mb-3">
+            Find a car you like and send the seller a private offer — it doesn't have to match
+            the asking price.
+        </p>
+        <a asp-controller="Cars" asp-action="Index" class="btn btn-primary">Browse cars</a>
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-lg-2 g-3 pm-stagger">
+        @foreach (var offer in Model)
+        {
+            var car = offer.Car;
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                            <div class="min-w-0">
+                                <a asp-controller="Cars" asp-action="Details" asp-route-id="@offer.CarId"
+                                   class="fw-semibold text-decoration-none d-block text-truncate">
+                                    @(car?.Title ?? "Listing")
+                                </a>
+                                <div class="small pm-muted">
+                                    Asking @(car?.Price.ToString("C") ?? "—")
+                                </div>
+                            </div>
+                            <partial name="_OfferStatusBadge" model="offer.Status" />
+                        </div>
+
+                        <div class="pm-price-box mb-2 d-flex justify-content-between align-items-center">
+                            <span class="small pm-muted">Your offer</span>
+                            <span class="pm-price">@offer.Amount.ToString("C")</span>
+                        </div>
+
+                        @if (!string.IsNullOrWhiteSpace(offer.Message))
+                        {
+                            <p class="small fst-italic pm-break mb-2">&ldquo;@offer.Message&rdquo;</p>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(offer.SellerResponse))
+                        {
+                            <div class="alert alert-light border small py-2 mb-2">
+                                <strong>Seller:</strong> @offer.SellerResponse
+                            </div>
+                        }
+
+                        <div class="small pm-muted mb-2">
+                            Sent @AppTime.ToDisplay(offer.CreatedUtc).ToString("dd/MM/yyyy HH:mm")
+                            @if (offer.RespondedUtc is DateTime r)
+                            {
+                                <text>· answered @AppTime.ToDisplay(r).ToString("dd/MM HH:mm")</text>
+                            }
+                        </div>
+
+                        <div class="d-flex flex-wrap gap-2">
+                            @if (threads.TryGetValue(offer.CarId, out var threadId))
+                            {
+                                <a asp-controller="Messages" asp-action="Thread" asp-route-id="@threadId"
+                                   class="btn btn-sm btn-outline-primary">💬 Chat</a>
+                            }
+                            else
+                            {
+                                <form asp-controller="Cars" asp-action="StartChat" method="post" class="d-inline">
+                                    <input type="hidden" name="carId" value="@offer.CarId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-primary">💬 Message seller</button>
+                                </form>
+                            }
+
+                            @if (offer.Status == OfferStatus.Pending)
+                            {
+                                <form asp-controller="Cars" asp-action="WithdrawOffer" method="post" class="d-inline">
+                                    <input type="hidden" name="offerId" value="@offer.Id" />
+                                    <input type="hidden" name="carId" value="@offer.CarId" />
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Withdraw</button>
+                                </form>
+                            }
+
+                            @if (offer.Status == OfferStatus.Accepted)
+                            {
+                                <a asp-action="Purchases" class="btn btn-sm btn-success">See seller contact</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
