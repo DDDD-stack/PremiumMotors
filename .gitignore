@@ -361,3 +361,22 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+# Local environment files (never commit these - they hold project keys)
+.env
+.env.*
+!.env.example
+
+# ---------------------------------------------------------------------------
+# PremiumMotors
+# ---------------------------------------------------------------------------
+
+# Uploaded car photos, avatars and dealer logos. These are RUNTIME USER CONTENT,
+# not source: local disk is the development-only fallback, and production writes
+# them to Supabase Storage instead (Storage:Provider=Supabase). Committing them
+# would put multi-megabyte user files in the history permanently, and they are
+# not the same set on any two machines. The folder is recreated automatically.
+WEBTechnologies Final/wwwroot/uploads/
+
+# Serilog's rolling file sink. Already covered by [Ll]ogs/ above; named here so
+# it is obvious why nothing from logs/ ever appears in a diff.
+WEBTechnologies Final/logs/
