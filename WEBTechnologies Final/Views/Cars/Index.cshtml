@@ -7,8 +7,12 @@
 <div class="pm-page-head">
     <div>
         <h1>Cars for sale</h1>
+        @* "6 cars" under a heading that says "Cars for sale" read as six available cars,
+           when the count deliberately includes sold and reserved listings - they stay
+           browsable because hiding them makes a young marketplace look empty. Calling
+           them listings rather than cars stops the heading and the number disagreeing. *@
         <p class="pm-muted mb-0 small">
-            @Model.TotalCount car@(Model.TotalCount == 1 ? "" : "s")
+            @Model.TotalCount listing@(Model.TotalCount == 1 ? "" : "s")
             @if (Model.TotalPages > 1)
             {
                 <text>· page @Model.Page of @Model.TotalPages</text>

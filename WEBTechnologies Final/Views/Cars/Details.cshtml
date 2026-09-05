@@ -246,7 +246,7 @@
                             <strong>Log in to make an offer.</strong>
                             <div class="small">
                                 Offers, written messages and favourites need a free account.
-                                @if (ViewData["ListingPhone"] is not null)
+                                @if (Model.Status == ListingStatus.Active && ViewData["ListingPhone"] is not null)
                                 {
                                     <text>Or just ring the seller on the number below.</text>
                                 }
@@ -318,8 +318,14 @@
                         @* The seller's published number. This is the one contact route that
                            does not need an account, so for a signed-out visitor it is the
                            primary action and gets the solid button. Signed in, offering and
-                           messaging are better routes, so it steps back to an outline. *@
-                        @if (!isSeller && ViewData["ListingPhone"] is string listingPhone)
+                           messaging are better routes, so it steps back to an outline.
+
+                           ACTIVE ONLY. A sold or reserved listing stays browsable, but
+                           inviting someone to ring about a car that is already gone wastes
+                           their time and the seller's. Same rule as paid placement. *@
+                        @if (!isSeller
+                             && Model.Status == ListingStatus.Active
+                             && ViewData["ListingPhone"] is string listingPhone)
                         {
                             var guest = string.IsNullOrEmpty(currentUser);
                             <a href="tel:@listingPhone"

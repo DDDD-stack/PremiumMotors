@@ -115,6 +115,50 @@ namespace WEBTechnologies_Final.Services.Auth
             return AccountResult.Ok(user);
         }
 
+        /// <summary>
+        /// Turns an existing personal account into a business one, in place.
+        ///
+        /// The alternative - telling a private seller to register a second account - would
+        /// strand their listings, their offers and their rating on the account they are
+        /// leaving. Converting keeps all of it, which is the whole point: a private seller who
+        /// starts trading should not have to choose between their history and a dealer account.
+        ///
+        /// Deliberately one-way here. Going back would need a rule for what happens to the
+        /// dealership page, its slug and any reviews attached to it, and there is no reason to
+        /// invent one before somebody asks.
+        /// </summary>
+        public async Task<AccountResult> ConvertToBusinessAsync(
+            int userId, BusinessDetailsViewModel form, CancellationToken ct = default)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId, ct);
+            if (user is null) return AccountResult.Fail("Account not found.");
+
+            if (user.SellerType == SellerType.Dealer)
+                return AccountResult.Fail("This is already a business account.");
+
+            // Selling is unlocked as part of the switch. Somebody converting has said clearly
+            // enough that they intend to sell; making them opt in twice would be theatre.
+            if (!user.IsSeller)
+            {
+                user.IsSeller = true;
+                user.SellerSinceUtc = DateTime.UtcNow;
+            }
+
+            user.SellerType = SellerType.Dealer;
+            user.SellerDisplayName = form.BusinessName.Trim();
+            user.SellerLocation = Blank(form.Location);
+            user.BusinessRegistrationNumber = form.RegistrationNumber.Trim();
+            user.VatNumber = Blank(form.VatNumber);
+            user.BusinessAddress = form.Address.Trim();
+            user.Website = Blank(form.Website);
+            user.ContactName = form.ContactName.Trim();
+
+            // Nothing here is checked against the business register. Recorded, not verified.
+
+            await _db.SaveChangesAsync(ct);
+            return AccountResult.Ok(user);
+        }
+
         /// <summary>Updates the business record on an existing dealer account.</summary>
         public async Task<AccountResult> UpdateBusinessAsync(
             int userId, BusinessDetailsViewModel form, CancellationToken ct = default)

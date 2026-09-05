@@ -1,6 +1,12 @@
 @{
     var isAdmin = Context.Session.GetString(SessionKeys.IsAdmin) == "true";
     var isSellerAccount = isAdmin || Context.Session.GetString(SessionKeys.IsSeller) == "true";
+    @* Null means the session predates this flag, which is not the same as "not a dealer".
+       Treating absent as false would offer "Register as a business" to dealers who were
+       already signed in when it shipped, and land them on a page that turns them away.
+       Absent means say nothing; their next sign-in writes it. *@
+    var dealerFlag = Context.Session.GetString(SessionKeys.IsDealer);
+    var canOfferBusinessUpgrade = dealerFlag == "false";
     var currentUser = Context.Session.GetString(SessionKeys.Username);
     var isLoggedIn = !string.IsNullOrEmpty(currentUser);
 
@@ -142,6 +148,17 @@
                             {
                                 <li class="nav-item">
                                     <a class="nav-link @Current("Seller")" asp-controller="Seller" asp-action="Start">Start selling</a>
+                                </li>
+                            }
+                            @* Next to "Start selling" / "Seller panel" on purpose: a private
+                               seller decides to go professional at the moment they are
+                               thinking about selling, not while reading a marketing page they
+                               can no longer reach. Hidden once they are already a dealership. *@
+                            @if (canOfferBusinessUpgrade)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link @CurrentPage("Account", "GoBusiness")"
+                                       asp-controller="Account" asp-action="GoBusiness">Register as a business</a>
                                 </li>
                             }
                             <li class="nav-item">

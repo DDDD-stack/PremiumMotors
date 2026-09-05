@@ -48,8 +48,11 @@
 }
 else
 {
-    <div class="table-responsive pm-table-wrap">
-        <table class="table align-middle pm-table">
+    @* pm-table-cards is what turns each row into a readable card on a phone, driven by the
+       data-label attributes below. Without it those labels never render and the table is
+       an unreadable squash on mobile - which is what this page had at first. *@
+    <div class="table-responsive">
+        <table class="table table-hover align-middle pm-table-cards">
             <thead>
                 <tr>
                     <th scope="col">Car</th>
@@ -97,17 +100,29 @@ else
                             }
                         </td>
                         <td class="text-end pm-cell-actions">
+                            @* The select must open on the tier this listing already has.
+                               Defaulting it to Promoted meant that extending a front-page
+                               placement silently demoted it - the admin changes only the
+                               days, presses the button, and quietly downgrades what somebody
+                               paid for. *@
                             <form asp-action="Promote" method="post" class="d-flex gap-2 justify-content-end align-items-center flex-wrap">
                                 @Html.AntiForgeryToken()
                                 <input type="hidden" name="id" value="@car.Id" />
                                 <select name="tier" class="form-select form-select-sm w-auto" aria-label="Placement tier">
-                                    <option value="@PromotionTier.Promoted">Promoted</option>
-                                    <option value="@PromotionTier.FrontPage">Front page</option>
+                                    <option value="@PromotionTier.Promoted"
+                                            selected="@(car.PromotionTier != PromotionTier.FrontPage)">Promoted</option>
+                                    <option value="@PromotionTier.FrontPage"
+                                            selected="@(car.PromotionTier == PromotionTier.FrontPage)">Front page</option>
                                 </select>
                                 <input type="number" name="days" value="30" min="1" max="365"
                                        class="form-control form-control-sm" style="width:5.5rem"
-                                       aria-label="Days" />
-                                <button type="submit" class="btn btn-sm btn-primary">Start</button>
+                                       aria-label="Days from today" />
+                                @* "Start" would be a lie on a row that is already running:
+                                   the new end date replaces the old one rather than adding
+                                   to it. *@
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    @(car.IsPromoted ? "Replace" : "Start")
+                                </button>
                             </form>
                             @if (car.PromotedUntilUtc is not null)
                             {

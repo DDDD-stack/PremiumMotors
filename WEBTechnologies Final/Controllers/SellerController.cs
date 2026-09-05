@@ -87,6 +87,10 @@ namespace WEBTechnologies_Final.Controllers
             // user would be bounced straight back to this page.
             HttpContext.Session.SetString(SessionKeys.IsSeller, "true");
 
+            // Always a private seller on this path (see above), and writing it explicitly is
+            // what makes the "Register as a business" nav item appear for them straight away.
+            HttpContext.Session.SetString(SessionKeys.IsDealer, "false");
+
             TempData["Success"] = "Your seller panel is unlocked. Post your first car whenever you're ready.";
             return RedirectToAction(nameof(Dashboard));
         }

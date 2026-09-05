@@ -121,6 +121,86 @@ namespace WEBTechnologies_Final.Controllers
             return RedirectToAction("Dashboard", "Seller");
         }
 
+        // ------------------------------------------------- personal -> business
+
+        /// <summary>
+        /// The dealer pitch, for somebody who is already signed in.
+        ///
+        /// /business is the same argument for strangers, and signed-in visitors are redirected
+        /// off it - which closed the one path a private seller had to talk themselves into a
+        /// dealer account. This is that path, reopened: the case for switching, and then the
+        /// switch, rather than a form sprung on them with no explanation.
+        /// </summary>
+        [HttpGet]
+        [LoggedInOnly]
+        public async Task<IActionResult> GoBusiness()
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == UserId);
+            if (user is null) return SignOutAndHome();
+
+            if (user.IsBusiness)
+            {
+                TempData["Error"] = "This account is already a business account.";
+                return RedirectToAction("Dashboard", "Seller");
+            }
+
+            ViewData["Dealerships"] = await _db.Dealerships.CountAsync();
+            ViewData["ActiveListings"] = await _db.Cars.CountAsync(c => c.Status == ListingStatus.Active);
+            return View();
+        }
+
+        /// <summary>The switch itself. Everything asked for here is the same record a business signup collects.</summary>
+        [HttpGet]
+        [LoggedInOnly]
+        public async Task<IActionResult> BecomeBusiness()
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == UserId);
+            if (user is null) return SignOutAndHome();
+            if (user.IsBusiness) return RedirectToAction("Dashboard", "Seller");
+
+            // Prefill from what the account already has, so a private seller who has been
+            // trading for a while is not retyping their own trading name and town.
+            return View(new BusinessDetailsViewModel
+            {
+                BusinessName = user.SellerDisplayName ?? user.Username,
+                Location = user.SellerLocation,
+                ContactName = user.ContactName ?? string.Empty
+            });
+        }
+
+        [HttpPost]
+        [LoggedInOnly]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> BecomeBusiness(BusinessDetailsViewModel model)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == UserId);
+            if (user is null) return SignOutAndHome();
+            if (user.IsBusiness) return RedirectToAction("Dashboard", "Seller");
+
+            if (!ModelState.IsValid) return View(model);
+
+            var result = await _accounts.ConvertToBusinessAsync(user.Id, model);
+            if (!result.Succeeded)
+            {
+                ModelState.AddModelError(string.Empty, result.Error ?? "Could not switch this account.");
+                return View(model);
+            }
+
+            // Same as business signup: the shopfront exists from the moment the account
+            // becomes a dealership, not whenever somebody remembers to make one.
+            await _dealerships.EnsureForAsync(result.User!);
+
+            // The session still says private seller, and the nav and the panel are gated on
+            // it. Without this refresh the user would be a dealer in the database and not on
+            // screen until their next login.
+            SignIn(result.User!);
+
+            TempData["Success"] =
+                $"{result.User!.SellerName} is now a business account. Your dealership page is live and " +
+                "your listings, offers and rating all came with you.";
+            return RedirectToAction("Dealership", "Seller");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Logout()
@@ -390,6 +470,7 @@ namespace WEBTechnologies_Final.Controllers
             HttpContext.Session.SetString(SessionKeys.Username, user.Username);
             HttpContext.Session.SetString(SessionKeys.IsAdmin, user.IsAdmin ? "true" : "false");
             HttpContext.Session.SetString(SessionKeys.IsSeller, user.IsSeller ? "true" : "false");
+            HttpContext.Session.SetString(SessionKeys.IsDealer, user.IsBusiness ? "true" : "false");
         }
 
         /// <summary>
