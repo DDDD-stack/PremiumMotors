@@ -538,9 +538,12 @@ app.MapHealthChecks("/health/live", new HealthCheckOptions { Predicate = _ => fa
 app.MapHealthChecks("/health/ready", new HealthCheckOptions { Predicate = c => c.Tags.Contains("ready") });
 
 app.MapControllers();
+// "/" is the consumer front page. The marketplace lives at /Cars and is reached from it —
+// deliberately a second click, so a first-time visitor is told what this is before being
+// handed a grid of cars.
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Cars}/{action=Index}/{id?}")
+    pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
 app.Run();

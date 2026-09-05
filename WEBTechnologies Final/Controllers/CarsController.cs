@@ -147,6 +147,29 @@ namespace WEBTechnologies_Final.Controllers
             if (badges.PreviousPrices.TryGetValue(car.Id, out var wasPrice))
                 ViewData["PreviousPrice"] = wasPrice;
 
+            // The one way a signed-out visitor can reach the seller. Deliberately not
+            // User.Phone: that is the account's private number and is released only to the
+            // other party once an offer is accepted. This is a number the seller chose to
+            // publish - either on their seller profile, or as their dealership's trading
+            // line, which has been public on the shopfront all along.
+            if (car.OwnerId is int contactOwnerId)
+            {
+                var contact = await (
+                    from u in _context.Users.AsNoTracking()
+                    where u.Id == contactOwnerId
+                    join d in _context.Dealerships.AsNoTracking() on u.Id equals d.OwnerUserId into ds
+                    from d in ds.DefaultIfEmpty()
+                    select new { u.PublicPhone, DealerPhone = d != null ? d.Phone : null })
+                    .FirstOrDefaultAsync();
+
+                var publicPhone = !string.IsNullOrWhiteSpace(contact?.PublicPhone)
+                    ? contact!.PublicPhone
+                    : contact?.DealerPhone;
+
+                if (!string.IsNullOrWhiteSpace(publicPhone))
+                    ViewData["ListingPhone"] = publicPhone.Trim();
+            }
+
             // Three comparable cars, so a listing that is not right is not a dead end. Same
             // body type, within a quarter of the price either way, cheapest deviation first.
             var lower = car.Price * 0.75m;

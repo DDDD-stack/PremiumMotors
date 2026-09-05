@@ -86,17 +86,29 @@
     <header class="pm-header">
         <nav class="navbar navbar-expand-lg navbar-dark">
             <div class="container-fluid px-3 px-lg-4">
-                <a class="navbar-brand pm-brand" asp-controller="Cars" asp-action="Index">
+                <a class="navbar-brand pm-brand" asp-controller="Home" asp-action="Index">
                     <img src="~/img/logo-wordmark.png" alt="PremiumMotors" width="184" height="96" />
                 </a>
 
-                <button class="navbar-toggler d-lg-none" type="button"
+                @* The second of the three ways into the marketplace. It sits outside the
+                   collapse so that on a phone it is reachable without opening the burger,
+                   and it stays invisible until the hero button has scrolled away — see
+                   [data-pm-cta-anchor] in site.js. Landing pages only. *@
+                @if (ViewData["HeaderCta"] is true)
+                {
+                    <a class="btn btn-sm btn-warning fw-semibold pm-header-cta ms-auto me-2 order-lg-3"
+                       asp-controller="Cars" asp-action="Index" data-pm-header-cta>
+                        Browse the marketplace
+                    </a>
+                }
+
+                <button class="navbar-toggler d-lg-none order-lg-4" type="button"
                         data-bs-toggle="collapse" data-bs-target="#mainNav"
                         aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="navbar-collapse collapse" id="mainNav">
+                <div class="navbar-collapse collapse order-lg-2" id="mainNav">
                     <ul class="navbar-nav flex-grow-1 mb-2 mb-lg-0">
                         <li class="nav-item">
                             <a class="nav-link @Current("Cars")" asp-controller="Cars" asp-action="Index">Browse cars</a>
@@ -110,6 +122,12 @@
                         <li class="nav-item">
                             <a class="nav-link @CurrentPage("Home", "HowItWorks")" asp-controller="Home" asp-action="HowItWorks">How it works</a>
                         </li>
+                        @if (!isSellerAccount && !isAdmin)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link @CurrentPage("Home", "ForBusiness")" asp-controller="Home" asp-action="ForBusiness">For businesses</a>
+                            </li>
+                        }
                         @if (isLoggedIn && !isAdmin)
                         {
                             @if (isSellerAccount)
@@ -190,6 +208,7 @@
             </span>
             <span class="d-flex gap-3">
                 <a asp-controller="Home" asp-action="HowItWorks">How it works</a>
+                <a asp-controller="Home" asp-action="ForBusiness">For businesses</a>
                 <a asp-controller="Home" asp-action="Terms">Terms</a>
                 <a asp-controller="Home" asp-action="Privacy">Privacy</a>
             </span>

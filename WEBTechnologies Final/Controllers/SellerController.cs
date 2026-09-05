@@ -274,6 +274,7 @@ namespace WEBTechnologies_Final.Controllers
                 SellerType = user.SellerType,
                 DisplayName = user.SellerDisplayName,
                 Location = user.SellerLocation,
+                PublicPhone = user.PublicPhone,
                 IsVerified = user.SellerVerified,
                 IsBusiness = user.IsBusiness,
                 SellerSinceUtc = user.SellerSinceUtc
@@ -290,7 +291,8 @@ namespace WEBTechnologies_Final.Controllers
             // SellerType is not editable from the profile form — see SellerProfileViewModel.
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == UserId);
             var result = await _sellers.UpdateProfileAsync(
-                UserId, user?.SellerType ?? SellerType.Private, vm.DisplayName, vm.Location);
+                UserId, user?.SellerType ?? SellerType.Private, vm.DisplayName, vm.Location,
+                vm.PublicPhone);
 
             TempData[result.Success ? "Success" : "Error"] =
                 result.Success ? "Seller profile updated." : result.Error;

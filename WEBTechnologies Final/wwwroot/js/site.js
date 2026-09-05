@@ -390,3 +390,34 @@
         });
     });
 })();
+
+/* ---------------------------------------------------------------------------
+   Landing pages: hand the "Browse the marketplace" call to action over to the
+   header once the hero button has scrolled out of view.
+
+   The two buttons are the same destination deliberately - the point is that
+   the invitation is never off screen, not that there are two of them. Only
+   one is visible at a time.
+
+   Watching the hero button itself rather than a scroll offset means the
+   handover happens exactly when it disappears, at any viewport size, with no
+   magic pixel numbers to get wrong on a phone.
+   --------------------------------------------------------------------------- */
+(function () {
+    var header = document.querySelector('[data-pm-header-cta]');
+    if (!header) { return; }
+
+    var anchor = document.querySelector('[data-pm-cta-anchor]');
+
+    /* No anchor, or a browser without IntersectionObserver: show the header
+       button and leave it there. A permanently visible call to action is a
+       far smaller failure than one that never appears. */
+    if (!anchor || !('IntersectionObserver' in window)) {
+        document.documentElement.classList.add('pm-cta-on');
+        return;
+    }
+
+    new IntersectionObserver(function (entries) {
+        document.documentElement.classList.toggle('pm-cta-on', !entries[0].isIntersecting);
+    }, { threshold: 0 }).observe(anchor);
+})();

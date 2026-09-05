@@ -25,7 +25,17 @@ namespace WEBTechnologies_Final.Models.Dtos
         [StringLength(80)] public string? Location { get; set; }
     }
 
-    public class UpdateSellerProfileRequest : BecomeSellerRequest { }
+    public class UpdateSellerProfileRequest : BecomeSellerRequest
+    {
+        /// <summary>
+        /// Shown publicly on every listing this seller owns, signed-out visitors included.
+        /// Not on <see cref="BecomeSellerRequest"/> on purpose: publishing a number should be
+        /// a separate, deliberate edit rather than something that happens during signup.
+        /// </summary>
+        [StringLength(40)]
+        [Phone]
+        public string? PublicPhone { get; set; }
+    }
 
     public record SellerDashboardDto(
         int ActiveListings,

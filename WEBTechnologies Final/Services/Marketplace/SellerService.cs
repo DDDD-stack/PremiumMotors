@@ -50,7 +50,7 @@ namespace WEBTechnologies_Final.Services.Marketplace
 
         public async Task<MarketplaceResult<User>> UpdateProfileAsync(
             int userId, SellerType type, string? displayName, string? location,
-            CancellationToken ct = default)
+            string? publicPhone, CancellationToken ct = default)
         {
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == userId, ct);
             if (user is null)
@@ -63,6 +63,10 @@ namespace WEBTechnologies_Final.Services.Marketplace
             user.SellerType = type;
             user.SellerDisplayName = Trim(displayName, 80);
             user.SellerLocation = Trim(location, 80);
+
+            // Clearing the box takes the number off every one of their listings again, so
+            // publishing it stays a decision the seller can reverse in one edit.
+            user.PublicPhone = Trim(publicPhone, 40);
 
             await _db.SaveChangesAsync(ct);
             return MarketplaceResult<User>.Ok(user);

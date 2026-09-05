@@ -41,6 +41,17 @@ namespace WEBTechnologies_Final.Models
         [StringLength(80)]
         public string? Location { get; set; }
 
+        /// <summary>
+        /// Optional, and public the moment it is filled in — it appears on every listing this
+        /// seller has, to signed-out visitors included. That is the point: ringing the seller
+        /// is the one way to make contact without an account. Separate from the account's
+        /// private Phone, which is still only released once an offer is accepted.
+        /// </summary>
+        [Display(Name = "Public phone number")]
+        [StringLength(40)]
+        [Phone(ErrorMessage = "Enter a phone number people can actually dial.")]
+        public string? PublicPhone { get; set; }
+
         public bool IsVerified { get; set; }
         public bool IsBusiness { get; set; }
         public DateTime? SellerSinceUtc { get; set; }

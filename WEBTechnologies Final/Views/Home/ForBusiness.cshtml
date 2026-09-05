@@ -1,0 +1,284 @@
+@model BusinessLandingViewModel
+@{
+    ViewData["Title"] = "PremiumMotors for dealerships";
+    var stats = Model.Stats;
+}
+
+@* ---------------------------------------------------------------------------
+   Same three entry points as the consumer page: hero button (which doubles as
+   the scroll anchor for the header button), and the stock strip lower down.
+   The argument is different though - a dealer is buying a sales channel.
+   --------------------------------------------------------------------------- *@
+<section class="pm-hero pm-hero-biz pm-bleed">
+    <div class="pm-hero-inner pm-stagger">
+        <p class="pm-eyebrow">For dealerships</p>
+
+        <h1 class="pm-hero-title">Stop discounting in public.</h1>
+
+        <p class="pm-hero-sub">
+            Every buyer who walks your forecourt already knows your lowest advertised price —
+            because you advertised it. Here, buyers come to you with a number instead, one at a
+            time, in private. You keep the margin you would otherwise have posted on a banner.
+        </p>
+
+        <div class="pm-hero-cta">
+            @if (Model.IsBusinessAccount)
+            {
+                <a asp-controller="Seller" asp-action="Dashboard"
+                   class="btn btn-lg btn-warning fw-semibold pm-cta-main" data-pm-cta-anchor>
+                    Open your dealer panel
+                </a>
+                <a asp-controller="Cars" asp-action="Index" class="btn btn-lg btn-outline-light">
+                    Browse the marketplace
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="RegisterBusiness"
+                   class="btn btn-lg btn-warning fw-semibold pm-cta-main" data-pm-cta-anchor>
+                    Register your dealership — free
+                </a>
+                <a asp-controller="Cars" asp-action="Index" class="btn btn-lg btn-outline-light">
+                    Browse the marketplace
+                </a>
+            }
+        </div>
+
+        <p class="pm-hero-note">
+            No listing fees, no commission, no card details. All we ask for is your NIPT.
+        </p>
+
+        @if (stats.WorthShowing)
+        {
+            <dl class="pm-stat-strip">
+                <div><dt>0%</dt><dd>commission on a sale</dd></div>
+                <div><dt>@stats.DealershipCount</dt><dd>dealerships trading</dd></div>
+                <div><dt>@stats.ActiveListings</dt><dd>cars listed</dd></div>
+                <div><dt>@stats.SoldCount</dt><dd>sold through the site</dd></div>
+            </dl>
+        }
+    </div>
+</section>
+
+@* --------------------------------------------------------------------------- *@
+<section class="pm-section pm-reveal">
+    <div class="pm-section-head">
+        <h2>Where the money is</h2>
+        <p class="pm-muted">Three things that change when offers are private.</p>
+    </div>
+
+    <div class="row g-4 pm-stagger">
+        <div class="col-md-4">
+            <div class="pm-idea-card">
+                <span class="pm-idea-num">01</span>
+                <h3 class="h6">Your floor stays yours</h3>
+                <p>
+                    On a classifieds site the advertised price is the ceiling and everyone
+                    negotiates down from it. Here a buyer has to name a number first, and
+                    plenty of them name one you would not have asked for.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="pm-idea-card">
+                <span class="pm-idea-num">02</span>
+                <h3 class="h6">You are never forced to take the highest</h3>
+                <p>
+                    Accept the buyer who is financed, local and ready — not just the one waving
+                    the biggest number. Declining costs you nothing and the listing stays live.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="pm-idea-card">
+                <span class="pm-idea-num">03</span>
+                <h3 class="h6">You find out what a car is really worth</h3>
+                <p>
+                    Ten private offers on a car is ten independent valuations. Price the next
+                    one from evidence instead of from what the dealer down the road is asking.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* --------------------------------------------------------------------------- *@
+<section class="pm-section pm-reveal">
+    <div class="pm-section-head">
+        <h2>The tools you get</h2>
+        <p class="pm-muted">All of it included, from the day you register.</p>
+    </div>
+
+    <div class="row g-4 pm-stagger">
+        <div class="col-md-6 col-lg-4">
+            <div class="pm-why">
+                <h3 class="h6">A shopfront of your own</h3>
+                <p>
+                    Your logo, banner, address, opening hours and every car you have, on one
+                    page with a clean address you can print on a business card. Buyers browse
+                    the <a asp-controller="Dealerships" asp-action="Index">dealership directory</a>
+                    by name and by city, not just by car.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="pm-why">
+                <h3 class="h6">Sales analytics</h3>
+                <p>
+                    Revenue per month, offers per month, views over the last thirty days, and a
+                    listing-by-listing table. Views per offer tells you which cars are being
+                    looked at and passed over — usually a pricing problem, not a photo problem.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="pm-why">
+                <h3 class="h6">One inbox for every offer</h3>
+                <p>
+                    Offers arrive in your panel with the buyer attached. Accept with a note,
+                    decline with a reason, or open a conversation first. Accepting one declines
+                    the rest automatically and reserves the car.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="pm-why">
+                <h3 class="h6">Stock management</h3>
+                <p>
+                    Draft, active, reserved, sold and archived — move a car between them in one
+                    click. Relist an unsold car without retyping it. Every price change is
+                    recorded, so your own history is auditable.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="pm-why">
+                <h3 class="h6">A reputation you can point at</h3>
+                <p>
+                    Only a buyer who completed a purchase from you can leave a rating, so the
+                    score on your shopfront is worth something. It shows on every listing you
+                    put up.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="pm-why">
+                <h3 class="h6">Messaging with a record</h3>
+                <p>
+                    Every conversation is tied to the car it is about and kept in one thread,
+                    so a handover six weeks later is not an argument about who said what.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ---------------------------------------------------------------------------
+   Registration, spelled out. A dealer's first question is what it costs and
+   what we will ask them for, so both get answered before the CTA.
+   --------------------------------------------------------------------------- *@
+<section class="pm-section pm-reveal">
+    <div class="pm-signup">
+        <div class="pm-signup-col">
+            <h2 class="h4">Registering is free</h2>
+            <p class="pm-muted">
+                There is no plan to pick, no trial to start and nothing to cancel. We do not
+                take a percentage of your sales — the sale happens directly between you and
+                the buyer, and we are not part of it.
+            </p>
+            @* Careful with this paragraph. Nothing in the app checks a NIPT against a
+               register, and User.SellerVerified is never set to true by any code path, so
+               it must not promise a verification we do not perform. See item 2.5 of the
+               pre-release checklist. *@
+            <p class="pm-muted mb-0">
+                We ask for a registration number so that a business account is tied to a real
+                registered business rather than to an address somebody made up this morning.
+                We record it with your account; we do not check it against a public register
+                yet, and no listing carries a verified badge until we do.
+            </p>
+        </div>
+
+        <div class="pm-signup-col">
+            <h2 class="h5">What you will need</h2>
+            <ol class="pm-tick-list pm-tick-num">
+                <li><strong>Your NIPT</strong> — the business registration number</li>
+                <li>Registered business name and trading address</li>
+                <li>A named contact person for the account</li>
+                <li>An email address and a phone number</li>
+            </ol>
+            <p class="pm-muted small">VAT number and website are optional and can be added later.</p>
+
+            @if (Model.IsBusinessAccount)
+            {
+                <a asp-controller="Seller" asp-action="Dashboard" class="btn btn-lg btn-primary fw-semibold">
+                    Open your dealer panel
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="RegisterBusiness" class="btn btn-lg btn-primary fw-semibold">
+                    Register your dealership
+                </a>
+                <p class="small pm-muted mt-2 mb-0">
+                    Already have a business account?
+                    <a asp-controller="Account" asp-action="Login">Log in</a>.
+                </p>
+            }
+        </div>
+    </div>
+</section>
+
+@* --------------------------------------------------------------------------- *@
+@if (Model.Dealerships.Count > 0)
+{
+    <section class="pm-section pm-reveal">
+        <div class="pm-section-head pm-section-head-row">
+            <div>
+                <h2>Dealerships already trading here</h2>
+                <p class="pm-muted mb-0">Every business account gets a page like these.</p>
+            </div>
+            <a asp-controller="Dealerships" asp-action="Index" class="btn btn-outline-primary d-none d-md-inline-block">
+                See the directory
+            </a>
+        </div>
+
+        <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-4 pm-stagger">
+            @foreach (var dealer in Model.Dealerships)
+            {
+                <div class="col">
+                    <a class="pm-dealer-mini" asp-controller="Dealerships" asp-action="Details"
+                       asp-route-slug="@dealer.Slug">
+                        <img src="@dealer.Logo" alt="" width="56" height="56" loading="lazy" />
+                        <span class="pm-dealer-mini-name">@dealer.Name</span>
+                        @if (!string.IsNullOrWhiteSpace(dealer.Location))
+                        {
+                            <span class="pm-dealer-mini-meta">@dealer.Location</span>
+                        }
+                        <span class="pm-dealer-mini-meta">
+                            @dealer.ListingCount in stock
+                            @if (dealer.RatingCount > 0)
+                            {
+                                <text>· @dealer.RatingAverage.ToString("0.0") ★</text>
+                            }
+                        </span>
+                    </a>
+                </div>
+            }
+        </div>
+    </section>
+}
+
+@* --------------------------------------------------------------------------- *@
+<section class="pm-band pm-bleed pm-reveal">
+    <div class="pm-band-inner">
+        <div>
+            <h2 class="h4 mb-1">Selling one car, not a forecourt?</h2>
+            <p class="mb-0">
+                A personal account lists a car just as well, and costs nothing either.
+            </p>
+        </div>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-lg btn-warning fw-semibold flex-shrink-0">
+            PremiumMotors for buyers and sellers
+        </a>
+    </div>
+</section>

@@ -55,6 +55,18 @@ namespace WEBTechnologies_Final.Models
         public string? SellerLocation { get; set; }
 
         /// <summary>
+        /// A number the seller is happy for anyone to ring, shown on every one of their
+        /// listings — including to signed-out visitors.
+        ///
+        /// Deliberately NOT <see cref="Phone"/>. That one is the account's private contact
+        /// detail and is released only to the other party once an offer is accepted; putting
+        /// it on a public page would retroactively publish a number every existing user gave
+        /// us for a different purpose. This field starts null and stays null until a seller
+        /// types one in, so opting in is an act rather than a default.
+        /// </summary>
+        public string? PublicPhone { get; set; }
+
+        /// <summary>
         /// PLACEHOLDER: dealers will need document checks (business registration, VAT number)
         /// before this is set. Nothing sets it to true yet.
         /// </summary>

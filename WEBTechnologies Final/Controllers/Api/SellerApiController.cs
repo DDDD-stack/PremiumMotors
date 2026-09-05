@@ -74,7 +74,7 @@ namespace WEBTechnologies_Final.Controllers.Api
             [FromBody] UpdateSellerProfileRequest req, CancellationToken ct)
         {
             var result = await _sellers.UpdateProfileAsync(
-                UserId, req.SellerType, req.DisplayName, req.Location, ct);
+                UserId, req.SellerType, req.DisplayName, req.Location, req.PublicPhone, ct);
 
             return result.Success
                 ? Ok(ToDto(result.Value!))

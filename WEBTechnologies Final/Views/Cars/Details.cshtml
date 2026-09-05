@@ -244,7 +244,13 @@
                     {
                         <div class="alert alert-warning">
                             <strong>Log in to make an offer.</strong>
-                            <div class="small">You can also message the seller once signed in.</div>
+                            <div class="small">
+                                Offers, written messages and favourites need a free account.
+                                @if (ViewData["ListingPhone"] is not null)
+                                {
+                                    <text>Or just ring the seller on the number below.</text>
+                                }
+                            </div>
                         </div>
                         <div class="d-grid gap-2 mb-3">
                             <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@returnUrl"
@@ -309,6 +315,19 @@
                     }
 
                     <div class="d-grid gap-2">
+                        @* The seller's published number. This is the one contact route that
+                           does not need an account, so for a signed-out visitor it is the
+                           primary action and gets the solid button. Signed in, offering and
+                           messaging are better routes, so it steps back to an outline. *@
+                        @if (!isSeller && ViewData["ListingPhone"] is string listingPhone)
+                        {
+                            var guest = string.IsNullOrEmpty(currentUser);
+                            <a href="tel:@listingPhone"
+                               class="btn @(guest ? "btn-success" : "btn-outline-secondary")">
+                                📞 Call the seller — @listingPhone
+                            </a>
+                        }
+
                         @if (!isSeller && !string.IsNullOrEmpty(currentUser))
                         {
                             @if (myThreadId is int tid)

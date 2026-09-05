@@ -1537,3 +1537,394 @@ h1, h2, h3, h4 {
 }
 
 .pm-banner-preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* === Landing pages ============================================== */
+
+/* Full-bleed backgrounds from inside a fixed-width container.
+
+   The obvious approach - width:100vw with a negative margin - is wrong on any
+   page that has a scrollbar, because 100vw counts the scrollbar and the page
+   ends up scrolling sideways by a few pixels. A very wide ring-shaped shadow
+   paints the same background with no layout box at all, so it cannot overflow
+   anything. clip-path trims the ring vertically, leaving only the sideways
+   spill, so consecutive bands do not bleed into each other. */
+.pm-bleed {
+    background: var(--pm-bleed-bg);
+    box-shadow: 0 0 0 100vmax var(--pm-bleed-bg);
+    clip-path: inset(0 -100vmax);
+}
+
+/* --- Header call to action ----------------------------------------
+   Appears only once the hero button has scrolled out of view. Hidden
+   with display:none rather than opacity so it reserves no space while
+   it is not wanted - a phone header has none to spare. */
+.pm-header-cta { display: none; }
+
+html.pm-cta-on .pm-header-cta {
+    display: inline-block;
+    white-space: nowrap;
+    animation: pm-cta-in var(--pm-dur) var(--pm-ease) both;
+}
+
+@keyframes pm-cta-in {
+    from { opacity: 0; transform: translateY(-8px); }
+}
+
+/* --- Hero ---------------------------------------------------------- */
+
+.pm-hero {
+    --pm-bleed-bg: var(--pm-header);
+    /* Cancel .pm-main's padding so the hero meets the header with no seam. */
+    margin-top: -1rem;
+    padding: 3rem 0 3.25rem;
+    color: #fff;
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .pm-hero {
+        margin-top: -1.5rem;
+        padding: 4.5rem 0 4.75rem;
+    }
+}
+
+/* A second, warmer wash over the flat navy so the business page reads as a
+   different room without introducing a second brand colour. */
+.pm-hero-biz {
+    background-image:
+        radial-gradient(60rem 22rem at 50% -6rem, rgba(245, 165, 36, .22), transparent 70%);
+}
+
+.pm-hero-inner {
+    max-width: 46rem;
+    margin: 0 auto;
+}
+
+.pm-eyebrow {
+    font-size: .74rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--pm-accent);
+    margin-bottom: .75rem;
+}
+
+.pm-hero-title {
+    font-size: clamp(1.85rem, 5.2vw, 3.1rem);
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -.02em;
+    margin-bottom: 1rem;
+}
+
+.pm-hero-sub {
+    font-size: clamp(1rem, 2.1vw, 1.15rem);
+    line-height: 1.6;
+    color: rgba(255, 255, 255, .82);
+    margin: 0 auto 1.75rem;
+    max-width: 38rem;
+}
+
+.pm-hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .75rem;
+    justify-content: center;
+}
+
+/* Full width on a phone: two half-width buttons side by side are both too
+   small to hit confidently and too similar to tell apart at a glance. */
+@media (max-width: 575.98px) {
+    .pm-hero-cta .btn { width: 100%; }
+}
+
+.pm-hero-note {
+    margin: 1rem 0 0;
+    font-size: .85rem;
+    color: rgba(255, 255, 255, .6);
+}
+
+/* --- Live figures --------------------------------------------------- */
+
+.pm-stat-strip {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem 1rem;
+    margin: 2.5rem 0 0;
+    padding-top: 1.75rem;
+    border-top: 1px solid rgba(255, 255, 255, .15);
+}
+
+@media (min-width: 576px) {
+    .pm-stat-strip { grid-template-columns: repeat(4, 1fr); }
+}
+
+.pm-stat-strip dt {
+    font-size: 1.6rem;
+    font-weight: 800;
+    line-height: 1;
+    color: #fff;
+}
+
+.pm-stat-strip dd {
+    margin: .3rem 0 0;
+    font-size: .78rem;
+    line-height: 1.3;
+    color: rgba(255, 255, 255, .62);
+}
+
+/* --- Section scaffolding -------------------------------------------- */
+
+.pm-section { padding: 3rem 0; }
+
+@media (min-width: 768px) {
+    .pm-section { padding: 4rem 0; }
+}
+
+.pm-section-head { margin-bottom: 1.75rem; }
+
+.pm-section-head h2 {
+    font-size: clamp(1.35rem, 3vw, 1.9rem);
+    font-weight: 700;
+    letter-spacing: -.015em;
+    margin-bottom: .4rem;
+}
+
+.pm-section-head p { max-width: 40rem; margin-bottom: 0; }
+
+.pm-section-head-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+/* --- Idea cards ----------------------------------------------------- */
+
+.pm-idea-card {
+    height: 100%;
+    padding: 1.5rem;
+    background: var(--pm-surface);
+    border: 1px solid var(--pm-border);
+    border-radius: var(--pm-radius);
+    box-shadow: var(--pm-shadow-sm);
+}
+
+.pm-idea-num {
+    display: inline-block;
+    font-size: .8rem;
+    font-weight: 800;
+    letter-spacing: .08em;
+    color: var(--pm-primary);
+    margin-bottom: .6rem;
+}
+
+.pm-idea-card p {
+    margin-bottom: 0;
+    color: var(--pm-ink-soft);
+    font-size: .93rem;
+    line-height: 1.6;
+}
+
+/* --- Horizontal flow -------------------------------------------------
+   The vertical .pm-steps stepper is right for a page someone is reading;
+   this is for a page someone is scanning, so the four steps sit side by
+   side and collapse to one column on a phone. */
+.pm-flow {
+    counter-reset: pm-flow;
+    list-style: none;
+    display: grid;
+    gap: 1.5rem;
+    padding: 0;
+    margin: 0;
+}
+
+@media (min-width: 768px) {
+    .pm-flow { grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+}
+
+.pm-flow li {
+    counter-increment: pm-flow;
+    padding-top: 2.6rem;
+    position: relative;
+}
+
+.pm-flow li::before {
+    content: counter(pm-flow);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--pm-primary);
+    color: #fff;
+    font-weight: 700;
+    font-size: .9rem;
+}
+
+/* The rule joining the steps. Horizontal on a wide screen, absent on a
+   narrow one where the steps are stacked and the numbers speak for
+   themselves. */
+@media (min-width: 768px) {
+    .pm-flow li:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        top: 1rem;
+        left: 2.5rem;
+        right: -1.25rem;
+        height: 2px;
+        background: var(--pm-border);
+    }
+}
+
+.pm-flow p {
+    margin-bottom: 0;
+    color: var(--pm-ink-soft);
+    font-size: .9rem;
+    line-height: 1.55;
+}
+
+/* --- Reason grid ---------------------------------------------------- */
+
+.pm-why {
+    height: 100%;
+    padding-left: 1rem;
+    border-left: 3px solid var(--pm-primary-soft);
+}
+
+.pm-why h3 { margin-bottom: .35rem; }
+
+.pm-why p {
+    margin-bottom: 0;
+    color: var(--pm-ink-soft);
+    font-size: .92rem;
+    line-height: 1.6;
+}
+
+/* --- Guest / member comparison --------------------------------------- */
+
+.pm-guest,
+.pm-signup {
+    display: grid;
+    gap: 2rem;
+    padding: 1.75rem;
+    background: var(--pm-surface);
+    border: 1px solid var(--pm-border);
+    border-radius: var(--pm-radius-lg);
+    box-shadow: var(--pm-shadow-sm);
+}
+
+@media (min-width: 768px) {
+    .pm-guest,
+    .pm-signup { grid-template-columns: 1fr 1fr; gap: 2.5rem; padding: 2.25rem; }
+}
+
+/* Locked features get a padlock rather than a cross: the point is that they
+   are waiting behind a free account, not that they are unavailable. */
+.pm-lock-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem;
+    color: var(--pm-ink-soft);
+}
+
+.pm-lock-list li {
+    position: relative;
+    padding-left: 1.4rem;
+    margin-bottom: .3rem;
+}
+
+.pm-lock-list li::before {
+    content: "🔒";
+    position: absolute;
+    left: 0;
+    font-size: .8rem;
+    line-height: 1.5;
+}
+
+/* Numbered variant of the shared tick list, for "what you will need". */
+.pm-tick-list.pm-tick-num {
+    counter-reset: pm-need;
+}
+
+.pm-tick-list.pm-tick-num li {
+    counter-increment: pm-need;
+    padding-left: 1.7rem;
+    margin-bottom: .45rem;
+}
+
+.pm-tick-list.pm-tick-num li::before {
+    content: counter(pm-need);
+    color: var(--pm-primary);
+    font-size: .8rem;
+    top: .05rem;
+}
+
+/* --- Closing band ---------------------------------------------------- */
+
+.pm-band {
+    --pm-bleed-bg: var(--pm-header);
+    color: #fff;
+    padding: 2.5rem 0;
+    margin-bottom: -1rem;
+}
+
+.pm-band-inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem;
+}
+
+.pm-band p { color: rgba(255, 255, 255, .78); max-width: 42rem; }
+
+@media (max-width: 575.98px) {
+    .pm-band-inner .btn { width: 100%; }
+}
+
+/* --- Dealership thumbnails ------------------------------------------- */
+
+.pm-dealer-mini {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    padding: 1.1rem;
+    background: var(--pm-surface);
+    border: 1px solid var(--pm-border);
+    border-radius: var(--pm-radius);
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow var(--pm-dur) var(--pm-ease),
+                transform var(--pm-dur) var(--pm-ease);
+}
+
+.pm-dealer-mini:hover {
+    box-shadow: var(--pm-shadow-md);
+    transform: translateY(-2px);
+}
+
+.pm-dealer-mini img {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: var(--pm-radius-sm);
+    background: var(--pm-surface-sunken);
+    margin-bottom: .65rem;
+}
+
+.pm-dealer-mini-name {
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.pm-dealer-mini-meta {
+    font-size: .8rem;
+    color: var(--pm-ink-faint);
+    margin-top: .15rem;
+}

@@ -1,0 +1,277 @@
+@model HomeLandingViewModel
+@{
+    ViewData["Title"] = "Buy and sell cars by private offer";
+    var stats = Model.Stats;
+}
+
+@* ---------------------------------------------------------------------------
+   Hero. The primary CTA carries data-pm-cta-anchor: once it scrolls out of
+   view, site.js reveals the matching button in the header. That is entry
+   point one of the three, and the header button is entry point two.
+   --------------------------------------------------------------------------- *@
+<section class="pm-hero pm-bleed">
+    <div class="pm-hero-inner pm-stagger">
+        <p class="pm-eyebrow">Private offers, not auctions</p>
+
+        <h1 class="pm-hero-title">The asking price is where<br class="d-none d-md-inline" /> the conversation starts.</h1>
+
+        <p class="pm-hero-sub">
+            Every car here has a price on it. None of them are take-it-or-leave-it. You make a
+            private offer, the seller answers, and nobody else ever sees what you bid.
+        </p>
+
+        <div class="pm-hero-cta">
+            <a asp-controller="Cars" asp-action="Index"
+               class="btn btn-lg btn-warning fw-semibold pm-cta-main" data-pm-cta-anchor>
+                Browse the marketplace
+            </a>
+
+            @if (Model.IsLoggedIn)
+            {
+                <a asp-controller="Seller" asp-action="Start" class="btn btn-lg btn-outline-light">
+                    Sell your car
+                </a>
+            }
+            else
+            {
+                <a asp-controller="Account" asp-action="Signup" class="btn btn-lg btn-outline-light">
+                    Create a free account
+                </a>
+            }
+        </div>
+
+        <p class="pm-hero-note">
+            No account needed to look around. Registration is free, and takes about a minute.
+        </p>
+
+        @if (stats.WorthShowing)
+        {
+            <dl class="pm-stat-strip">
+                <div><dt>@stats.ActiveListings</dt><dd>cars for sale</dd></div>
+                <div><dt>@stats.DealershipCount</dt><dd>dealerships</dd></div>
+                <div><dt>@stats.SellerCount</dt><dd>sellers</dd></div>
+                <div><dt>@stats.SoldCount</dt><dd>sold through the site</dd></div>
+            </dl>
+        }
+    </div>
+</section>
+
+@* --------------------------------------------------------------------------- *@
+<section class="pm-section pm-reveal">
+    <div class="pm-section-head">
+        <h2>The idea</h2>
+        <p class="pm-muted">
+            Classifieds make you pay the sticker. Auctions make you bid in public against
+            strangers. This is neither.
+        </p>
+    </div>
+
+    <div class="row g-4 pm-stagger">
+        <div class="col-md-4">
+            <div class="pm-idea-card">
+                <span class="pm-idea-num">01</span>
+                <h3 class="h6">A price, not an ultimatum</h3>
+                <p>
+                    Sellers set an asking price so you know roughly where you stand. What you
+                    offer is up to you — below it, at it, or above it if you really want the car.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="pm-idea-card">
+                <span class="pm-idea-num">02</span>
+                <h3 class="h6">Your offer stays between you two</h3>
+                <p>
+                    Only the seller sees your number. Other buyers never do, and neither does
+                    the public. You are not bidding against a crowd or against a clock.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="pm-idea-card">
+                <span class="pm-idea-num">03</span>
+                <h3 class="h6">The seller picks who they sell to</h3>
+                <p>
+                    They are never forced to take the highest number. Message first, ask about
+                    the service book, arrange a viewing — then decide.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* --------------------------------------------------------------------------- *@
+<section class="pm-section pm-reveal">
+    <div class="pm-section-head">
+        <h2>How buying works</h2>
+        <p class="pm-muted">Four steps, and you can stop at any of them.</p>
+    </div>
+
+    <ol class="pm-flow pm-stagger">
+        <li>
+            <h3 class="h6">Find a car</h3>
+            <p>Filter by price, mileage, fuel and gearbox. Each listing carries the full specification and whatever service history the seller recorded.</p>
+        </li>
+        <li>
+            <h3 class="h6">Ask first</h3>
+            <p>Message the seller from the listing. VIN, service book, a viewing — all before you commit to a number.</p>
+        </li>
+        <li>
+            <h3 class="h6">Offer privately</h3>
+            <p>Send what the car is worth to you. You can withdraw it any time before the seller answers.</p>
+        </li>
+        <li>
+            <h3 class="h6">Agree and collect</h3>
+            <p>If they accept, you swap contact details and the car is reserved for you. Payment and handover happen directly between you — PremiumMotors never holds your money.</p>
+        </li>
+    </ol>
+
+    <div class="text-center mt-4">
+        <a asp-controller="Home" asp-action="HowItWorks" class="btn btn-outline-primary">
+            Read the full explanation
+        </a>
+    </div>
+</section>
+
+@* ---------------------------------------------------------------------------
+   Entry point three: the featured listings themselves, and the button below
+   them. Real cars, pulled live — clicking a card goes to that listing.
+   --------------------------------------------------------------------------- *@
+<section id="featured" class="pm-section pm-reveal">
+    <div class="pm-section-head pm-section-head-row">
+        <div>
+            <h2>Fresh on the marketplace</h2>
+            <p class="pm-muted mb-0">The latest cars listed. Click any of them to see the whole listing.</p>
+        </div>
+        <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-primary d-none d-md-inline-block">
+            See all @stats.ActiveListings
+        </a>
+    </div>
+
+    @if (Model.Featured.Count == 0)
+    {
+        <div class="pm-empty">
+            <p class="mb-2"><strong>No cars are listed yet.</strong></p>
+            <p class="pm-muted mb-3">The first ones will show up here the moment they go live.</p>
+            <a asp-controller="Seller" asp-action="Start" class="btn btn-primary">Be the first to list a car</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4 row-cols-1 row-cols-sm-2 row-cols-lg-3 pm-stagger">
+            @foreach (var car in Model.Featured)
+            {
+                <div class="col">
+                    <partial name="_CarCard" model="car" />
+                </div>
+            }
+        </div>
+
+        <div class="text-center mt-4">
+            <a asp-controller="Cars" asp-action="Index" class="btn btn-lg btn-primary fw-semibold">
+                Browse the marketplace
+            </a>
+        </div>
+    }
+</section>
+
+@* --------------------------------------------------------------------------- *@
+<section class="pm-section pm-reveal">
+    <div class="pm-section-head">
+        <h2>Why buy here</h2>
+    </div>
+
+    <div class="row g-4 pm-stagger">
+        <div class="col-md-6 col-lg-4">
+            <div class="pm-why">
+                <h3 class="h6">You can see who you are dealing with</h3>
+                <p>Every listing names its seller and says plainly whether they are a private seller or a dealership.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="pm-why">
+                <h3 class="h6">Ratings from people who actually bought</h3>
+                <p>Only a confirmed buyer can review a seller, so a five-star average means five completed sales — not five friends.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="pm-why">
+                <h3 class="h6">Price history in the open</h3>
+                <p>If a car has been reduced, the listing says so and shows what it used to cost. No quietly edited numbers.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="pm-why">
+                <h3 class="h6">Proof that sales complete</h3>
+                <p>The <a asp-controller="Cars" asp-action="Sold">recently sold</a> page lists what actually changed hands, and for how much.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="pm-why">
+                <h3 class="h6">Dealer shopfronts</h3>
+                <p>Every business account gets a <a asp-controller="Dealerships" asp-action="Index">page of its own</a> — the whole forecourt in one place.</p>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="pm-why">
+                <h3 class="h6">Nothing to pay</h3>
+                <p>Browsing, offering, messaging and listing are all free. We do not take a cut of your sale.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* ---------------------------------------------------------------------------
+   What a signed-out visitor can and cannot do. Stated up front, because
+   discovering the limits one blocked click at a time is what makes a site
+   feel like it is hiding something.
+   --------------------------------------------------------------------------- *@
+@if (!Model.IsLoggedIn)
+{
+    <section class="pm-section pm-reveal">
+        <div class="pm-guest">
+            <div class="pm-guest-col">
+                <h2 class="h5">Looking around without an account</h2>
+                <p class="pm-muted">You get the whole marketplace. Just not the parts that need to know who you are.</p>
+                <ul class="pm-tick-list">
+                    <li>Browse and filter every listing</li>
+                    <li>Open any car and read the full specification</li>
+                    <li>Browse the dealership directory and seller ratings</li>
+                    <li>See what has recently sold</li>
+                    <li><strong>Ring the seller directly</strong> on the number shown in the listing</li>
+                </ul>
+            </div>
+            <div class="pm-guest-col">
+                <h2 class="h5">What an account adds</h2>
+                <p class="pm-muted">Free, and about a minute to set up.</p>
+                <ul class="pm-lock-list">
+                    <li>Make a private offer</li>
+                    <li>Message the seller in writing, with a record of it</li>
+                    <li>Save cars to favourites and get the price-drop flag</li>
+                    <li>Leave a rating once you have bought</li>
+                    <li>List your own car</li>
+                </ul>
+                <div class="d-flex flex-wrap gap-2 mt-3">
+                    <a asp-controller="Account" asp-action="Signup" class="btn btn-primary">Create a free account</a>
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary">Log in</a>
+                </div>
+            </div>
+        </div>
+    </section>
+}
+
+@* --------------------------------------------------------------------------- *@
+<section class="pm-band pm-bleed pm-reveal">
+    <div class="pm-band-inner">
+        <div>
+            <h2 class="h4 mb-1">Selling more than one car?</h2>
+            <p class="mb-0">
+                Business accounts get a public shopfront, sales analytics and an inbox for
+                every offer. Registration is free and needs nothing but your NIPT.
+            </p>
+        </div>
+        <a asp-controller="Home" asp-action="ForBusiness" class="btn btn-lg btn-warning fw-semibold flex-shrink-0">
+            PremiumMotors for business
+        </a>
+    </div>
+</section>

@@ -57,6 +57,20 @@
                         <span asp-validation-for="Location" class="text-danger"></span>
                     </div>
 
+                    <div class="mb-3">
+                        <label asp-for="PublicPhone" class="form-label"></label>
+                        <input asp-for="PublicPhone" class="form-control" type="tel"
+                               inputmode="tel" autocomplete="tel" placeholder="e.g. +355 69 000 0000" />
+                        <div class="form-text">
+                            <strong>Anyone can see this</strong>, including visitors who are not
+                            logged in — it is how someone without an account gets hold of you.
+                            It appears on every listing you own. Leave it blank and buyers can
+                            only reach you by signing in and messaging you. This is not the
+                            number on your account, which stays private until you accept an offer.
+                        </div>
+                        <span asp-validation-for="PublicPhone" class="text-danger"></span>
+                    </div>
+
                     <button type="submit" class="btn btn-primary">Save changes</button>
                 </form>
             </div>
@@ -71,8 +85,6 @@
                    anyone using the panel, not just to whoever reads the code. *@
                 <ul class="mb-0 ps-3">
                     <li>Dealer verification (business registration, VAT number)</li>
-                    <li>A public seller page listing all your cars</li>
-                    <li>Buyer ratings and reviews</li>
                     <li>Paid listing boosts</li>
                 </ul>
             </div>
