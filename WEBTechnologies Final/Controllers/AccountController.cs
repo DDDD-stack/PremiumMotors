@@ -352,7 +352,6 @@ namespace WEBTechnologies_Final.Controllers
                 Location = user.SellerLocation,
                 Website = user.Website,
                 ContactName = user.ContactName ?? string.Empty,
-                IsVerified = user.SellerVerified
             });
         }
 

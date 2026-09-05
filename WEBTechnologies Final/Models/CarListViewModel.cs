@@ -6,6 +6,13 @@ namespace WEBTechnologies_Final.Models
     {
         public IReadOnlyList<Car> Cars { get; set; } = new List<Car>();
 
+        /// <summary>
+        /// Paid placement matching the current filters, page one only. These also appear in
+        /// <see cref="Cars"/> in their ordinary position — the seller bought extra exposure,
+        /// not a different set of search results.
+        /// </summary>
+        public IReadOnlyList<Car> Promoted { get; set; } = new List<Car>();
+
         public string? Search { get; set; }
         public CarType? Type { get; set; }
         public string? Make { get; set; }

@@ -11,9 +11,10 @@ namespace WEBTechnologies_Final.Services.Marketplace
     /// every buyer ability (browsing, favourites, making offers on other people's cars), and a
     /// role swap would have taken those away.
     ///
-    /// PLACEHOLDER SCOPE: <see cref="User.SellerVerified"/> is never set here. Dealer accounts
-    /// will need document checks (business registration, VAT number, ID) before they can be
-    /// marked verified, and no upload or review flow exists yet.
+    /// There is no seller verification, and that is a decision rather than a gap. Checking a
+    /// registration number means checking it against the state business register and there is
+    /// no route to that, so nobody carries a badge instead of a handful of people carrying a
+    /// meaningless one. Buyers go on the rating, which only a confirmed buyer can leave.
     /// </summary>
     public class SellerService
     {

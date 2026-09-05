@@ -43,7 +43,6 @@ namespace WEBTechnologies_Final.Services.Marketplace
                 Address = user.BusinessAddress,
                 Website = user.Website,
                 Phone = user.Phone,
-                Verified = user.SellerVerified,
                 CreatedUtc = DateTime.UtcNow
             };
 
@@ -93,7 +92,6 @@ namespace WEBTechnologies_Final.Services.Marketplace
                     City = d.City,
                     Country = d.Country,
                     LogoPath = d.LogoPath,
-                    Verified = d.Verified,
                     CreatedUtc = d.CreatedUtc,
                     RatingAverage = u.RatingAverage,
                     RatingCount = u.RatingCount,
@@ -193,7 +191,6 @@ namespace WEBTechnologies_Final.Services.Marketplace
         public string? City { get; set; }
         public string? Country { get; set; }
         public string? LogoPath { get; set; }
-        public bool Verified { get; set; }
         public DateTime CreatedUtc { get; set; }
         public decimal RatingAverage { get; set; }
         public int RatingCount { get; set; }

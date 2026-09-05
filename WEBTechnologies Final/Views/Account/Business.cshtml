@@ -8,14 +8,6 @@
         <h1>Business details</h1>
         <p class="pm-muted mb-0 small">What buyers see, and what we hold on record for your company.</p>
     </div>
-    @if (Model.IsVerified)
-    {
-        <span class="badge bg-success">Verified</span>
-    }
-    else
-    {
-        <span class="badge bg-secondary" title="Document verification is not live yet">Unverified</span>
-    }
 </div>
 
 <partial name="_ProfileNav" />
@@ -88,17 +80,16 @@
 
     <div class="col-lg-5">
         <div class="card mb-3">
-            <div class="card-header">Verification</div>
+            <div class="card-header">What we do with these details</div>
             <div class="card-body small pm-muted">
-                @* Nothing sets SellerVerified yet — the review flow does not exist. Being
-                   explicit here beats a badge that silently never arrives. *@
                 <p>
-                    Your registration number is on file. Document checks — business registration,
-                    VAT and ID — are not live yet, so your account shows as unverified.
+                    Your registration number and company details are held on record with your
+                    account. We do not check them against the state business register, and
+                    there is no verified badge on this site for anyone.
                 </p>
                 <p class="mb-0">
-                    This does not limit what you can list or sell. When verification launches
-                    we will email you with what to upload.
+                    Your rating is what buyers actually go on, and only someone who completed
+                    a purchase from you can leave one.
                 </p>
             </div>
         </div>

@@ -143,9 +143,45 @@ namespace WEBTechnologies_Final.Models
         /// </summary>
         public int ViewCount { get; set; }
 
+        // ---------- Paid placement ----------
+
+        /// <summary>What the seller bought. See <see cref="PromotionTier"/>.</summary>
+        public PromotionTier PromotionTier { get; set; } = PromotionTier.None;
+
+        /// <summary>
+        /// When the placement lapses. Null means no promotion has ever been bought.
+        ///
+        /// Expiry is stored rather than inferred so that a lapsed promotion leaves a record of
+        /// what was sold. Nothing sweeps expired rows: every query filters on this date, so an
+        /// expired promotion simply stops matching. A background job that reset the tier would
+        /// be one more thing to get wrong for no benefit.
+        /// </summary>
+        public DateTime? PromotedUntilUtc { get; set; }
+
         // ---------- Derived ----------
 
         public string Title => $"{Year} {Make} {Model}";
+
+        /// <summary>
+        /// Paid placement that is live right now. Checked against the clock at render time, so
+        /// a promotion that lapsed a second ago stops being shown without anything having to
+        /// run.
+        ///
+        /// Active only, deliberately — narrower than IsPubliclyVisible. A reserved or sold car
+        /// stays browsable, but advertising one is worse than advertising nothing: the visitor
+        /// clicks the most prominent thing on the page and lands on a car they cannot buy.
+        ///
+        /// NOTE: this is a C# property and cannot be translated to SQL. Queries express the
+        /// same condition explicitly — see CarQueries.WherePromoted.
+        /// </summary>
+        public bool IsPromoted =>
+            PromotionTier != PromotionTier.None
+            && PromotedUntilUtc > DateTime.UtcNow
+            && Status == ListingStatus.Active;
+
+        /// <summary>Live placement on the two front pages — the top tier.</summary>
+        public bool IsFrontPagePromoted =>
+            IsPromoted && PromotionTier == PromotionTier.FrontPage;
 
         /// <summary>Draft and Archived listings exist only for their seller and admins.</summary>
         public bool IsPubliclyVisible =>

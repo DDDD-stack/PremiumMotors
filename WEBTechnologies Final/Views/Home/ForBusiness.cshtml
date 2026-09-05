@@ -45,7 +45,7 @@
         </div>
 
         <p class="pm-hero-note">
-            No listing fees, no commission, no card details. All we ask for is your NIPT.
+            No listing fees. 0% commission. The only thing you can pay for is advertising.
         </p>
 
         @if (stats.WorthShowing)
@@ -59,6 +59,12 @@
         }
     </div>
 </section>
+
+@* The same premium slot as the consumer page. Showing it here is deliberate: a dealer
+   reading this page is being shown exactly what the top tier buys, using cars that
+   somebody actually paid to put there. *@
+<partial name="_FrontPagePromotions" model="Model.Promoted"
+         view-data='new ViewDataDictionary(ViewData) { ["PromoHeading"] = "What the top tier looks like" }' />
 
 @* --------------------------------------------------------------------------- *@
 <section class="pm-section pm-reveal">
@@ -180,16 +186,20 @@
 <section class="pm-section pm-reveal">
     <div class="pm-signup">
         <div class="pm-signup-col">
-            <h2 class="h4">Registering is free</h2>
+            <h2 class="h4">Registering is free. Selling is free.</h2>
             <p class="pm-muted">
-                There is no plan to pick, no trial to start and nothing to cancel. We do not
-                take a percentage of your sales — the sale happens directly between you and
-                the buyer, and we are not part of it.
+                There is no plan to pick, no trial to start and nothing to cancel. Commission
+                is <strong>0%</strong> — the sale happens directly between you and the buyer,
+                and we take no part of it, ever.
             </p>
-            @* Careful with this paragraph. Nothing in the app checks a NIPT against a
-               register, and User.SellerVerified is never set to true by any code path, so
-               it must not promise a verification we do not perform. See item 2.5 of the
-               pre-release checklist. *@
+            <p class="pm-muted">
+                The one thing you can pay us for is <a href="#advertising">advertising</a>:
+                buying a more prominent place for a car than it would earn on its own. Nothing
+                else on this site costs money, and a listing that is not promoted is not
+                penalised — it just is not advertised.
+            </p>
+            @* Careful with this paragraph. There is no verification anywhere in the app and
+               no plan for one, so it must not hint that a check happens or is coming. *@
             <p class="pm-muted mb-0">
                 We ask for a registration number so that a business account is tied to a real
                 registered business rather than to an address somebody made up this morning.
@@ -226,6 +236,69 @@
             }
         </div>
     </div>
+</section>
+
+@* ---------------------------------------------------------------------------
+   The rate card. Deliberately the only place on the site where money is asked
+   for, and it names what each tier physically does rather than selling
+   "visibility" - a dealer can check every claim here against the marketplace.
+   --------------------------------------------------------------------------- *@
+<section id="advertising" class="pm-section pm-reveal">
+    <div class="pm-section-head">
+        <h2>Advertising — the only thing that costs money</h2>
+        <p class="pm-muted">
+            Two placements. Each one is a real, visible change to where your car appears, and
+            every advertised car is labelled as advertised.
+        </p>
+    </div>
+
+    <div class="row g-4 pm-stagger">
+        <div class="col-md-6">
+            <div class="pm-tier">
+                <div class="pm-tier-head">
+                    <h3 class="h6 mb-0">Promoted listing</h3>
+                </div>
+                <ul class="pm-tick-list">
+                    <li>A highlighted card everywhere the car appears</li>
+                    <li>A slot in the promoted strip at the top of the marketplace</li>
+                    <li>Follows the buyer's filters, so it shows to people already looking
+                        for a car like yours</li>
+                </ul>
+                <p class="small pm-muted mb-0">
+                    Best for a car that is getting views and no offers, where the problem is
+                    position rather than price.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="pm-tier pm-tier-top">
+                <div class="pm-tier-head">
+                    <h3 class="h6 mb-0">Front page</h3>
+                    <span class="pm-tier-flag">Most expensive</span>
+                </div>
+                <ul class="pm-tick-list">
+                    <li>Everything in a promoted listing</li>
+                    <li>A slot on <strong>both</strong> front pages — the buyers' one and this
+                        one — directly beneath the headline</li>
+                    <li>Seen before a visitor has decided what they are looking for, which is
+                        the only inventory on the site that can do that</li>
+                </ul>
+                <p class="small pm-muted mb-0">
+                    Three slots at a time, on purpose. The moment it becomes a wall of cars it
+                    stops being worth buying.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    @* No prices, because none are set and inventing them here would be the one lie on an
+       otherwise checkable page. There is no checkout either - see the pre-release checklist. *@
+    <p class="pm-muted small mt-4 mb-0">
+        Placements are arranged with us directly for now — there is no self-service checkout
+        yet, and rates are not published. Every promotion runs for a fixed period and then
+        lapses on its own; nothing renews without you asking.
+    </p>
 </section>
 
 @* --------------------------------------------------------------------------- *@

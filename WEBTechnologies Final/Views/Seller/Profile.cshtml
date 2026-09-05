@@ -21,17 +21,6 @@
                                 ? AppTime.ToDisplay(s).ToString("dd MMMM yyyy") : "—")
                         </div>
                     </div>
-                    @if (Model.IsVerified)
-                    {
-                        <span class="badge bg-success">Verified</span>
-                    }
-                    else
-                    {
-                        @* Nothing sets SellerVerified yet — the document-check flow is not built. *@
-                        <span class="badge bg-secondary" title="Document verification is not live yet">
-                            Unverified
-                        </span>
-                    }
                 </div>
 
                 <form asp-action="Profile" method="post">
@@ -79,14 +68,20 @@
 
     <div class="col-lg-5 mt-3 mt-lg-0">
         <div class="card">
-            <div class="card-header">Coming soon</div>
+            <div class="card-header">How buyers judge you here</div>
             <div class="card-body small pm-muted">
-                @* Written down here rather than left implicit so the gaps are visible to
-                   anyone using the panel, not just to whoever reads the code. *@
-                <ul class="mb-0 ps-3">
-                    <li>Dealer verification (business registration, VAT number)</li>
-                    <li>Paid listing boosts</li>
-                </ul>
+                @* There is no verified badge on this site, for anyone. Saying what DOES
+                   count stops the absence of a badge reading as a black mark. *@
+                <p>
+                    There is no verification badge on PremiumMotors. Checking a registration
+                    number properly means checking it against the state register, and we have
+                    no route to that — so nobody gets a badge rather than a few people getting
+                    a meaningless one.
+                </p>
+                <p class="mb-0">
+                    What buyers actually see is your rating, and only someone who completed a
+                    purchase from you can leave one.
+                </p>
             </div>
         </div>
     </div>

@@ -52,7 +52,6 @@ namespace WEBTechnologies_Final.Models
         [Phone(ErrorMessage = "Enter a phone number people can actually dial.")]
         public string? PublicPhone { get; set; }
 
-        public bool IsVerified { get; set; }
         public bool IsBusiness { get; set; }
         public DateTime? SellerSinceUtc { get; set; }
     }

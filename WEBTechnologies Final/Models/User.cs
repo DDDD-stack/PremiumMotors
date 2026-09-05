@@ -66,11 +66,11 @@ namespace WEBTechnologies_Final.Models
         /// </summary>
         public string? PublicPhone { get; set; }
 
-        /// <summary>
-        /// PLACEHOLDER: dealers will need document checks (business registration, VAT number)
-        /// before this is set. Nothing sets it to true yet.
-        /// </summary>
-        public bool SellerVerified { get; set; }
+        // Dealer verification was removed on 5 September 2026. Checking a NIPT means checking
+        // it against the state business register, and there is no route to that; a badge that
+        // is never granted is worse than no badge, because the absence of one reads as a
+        // judgement on the dealer rather than as a feature we never built. Anyone can register
+        // as a dealer. The registration number below is recorded, not verified.
 
         // ---------- Business details ----------
         // Collected once at "Register as a business" so that opting into selling never has to

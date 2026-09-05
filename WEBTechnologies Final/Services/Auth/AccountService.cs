@@ -108,7 +108,8 @@ namespace WEBTechnologies_Final.Services.Auth
             user.Website = Blank(form.Website);
             user.ContactName = form.ContactName.Trim();
 
-            // SellerVerified stays false: no document check exists yet. See docs/SELLER-PANEL.md.
+            // Nothing here is verified against the business register, and there is no badge
+            // to grant - see the note on SellerService. These details are a record, not a check.
 
             await _db.SaveChangesAsync(ct);
             return AccountResult.Ok(user);

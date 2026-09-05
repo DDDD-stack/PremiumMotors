@@ -48,8 +48,7 @@ namespace WEBTechnologies_Final.Services.Marketplace
                         AvatarPath = d != null && d.LogoPath != null ? d.LogoPath : u.AvatarPath,
                         RatingAverage = u.RatingAverage,
                         RatingCount = u.RatingCount,
-                        DealershipSlug = d != null ? d.Slug : null,
-                        Verified = u.SellerVerified
+                        DealershipSlug = d != null ? d.Slug : null
                     }).ToListAsync(ct)).ToDictionary(s => s.UserId);
 
             // The highest price a listing has ever been asked. Both columns matter: a change
@@ -105,7 +104,6 @@ namespace WEBTechnologies_Final.Services.Marketplace
         public decimal RatingAverage { get; set; }
         public int RatingCount { get; set; }
         public string? DealershipSlug { get; set; }
-        public bool Verified { get; set; }
 
         public bool IsDealer => Type == SellerType.Dealer;
         public bool HasRating => RatingCount > 0;

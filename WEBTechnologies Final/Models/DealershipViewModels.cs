@@ -35,7 +35,6 @@ namespace WEBTechnologies_Final.Models
         public string? AvatarPath { get; set; }
         public string? Location { get; set; }
         public DateTime MemberSince { get; set; }
-        public bool Verified { get; set; }
 
         public decimal RatingAverage { get; set; }
         public int RatingCount { get; set; }

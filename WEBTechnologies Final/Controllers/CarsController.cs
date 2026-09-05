@@ -54,6 +54,11 @@ namespace WEBTechnologies_Final.Controllers
             if (fuel.HasValue) query = query.Where(c => c.FuelType == fuel.Value);
             if (gearbox.HasValue) query = query.Where(c => c.Transmission == gearbox.Value);
 
+            // Captured before sorting and paging, so the promoted strip is drawn from exactly
+            // the same filtered set the buyer is looking at. A promoted diesel estate shown to
+            // someone filtering for petrol hatchbacks is worth nothing to either of them.
+            var filtered = query;
+
             query = sortBy switch
             {
                 "price_asc" => query.OrderBy(c => c.Price),
@@ -70,22 +75,41 @@ namespace WEBTechnologies_Final.Controllers
             var totalCount = await query.CountAsync();
             var cars = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
+            // Page one only. A promoted strip repeated above every page stops being placement
+            // and starts being furniture.
+            //
+            // These listings are NOT removed from the grid below. Taking them out would make
+            // TotalCount lie and would hide a matching car from the position a buyer expects
+            // to find it in; the seller paid for extra exposure, not for a different search.
+            var promoted = page == 1
+                ? await filtered
+                    .WherePromoted(PromotionTier.Promoted, DateTime.UtcNow)
+                    .OrderByPromotion()
+                    .Take(3)
+                    .ToListAsync()
+                : new List<Car>();
+
             var listed = _context.Cars
                 .Where(c => c.Status != ListingStatus.Draft && c.Status != ListingStatus.Archived);
             var makes = await listed.Select(c => c.Make).Distinct().OrderBy(m => m).ToListAsync();
             var models = await listed.Select(c => c.Model).Distinct().OrderBy(m => m).ToListAsync();
             var years = await listed.Select(c => c.Year).Distinct().OrderByDescending(y => y).ToListAsync();
 
+            // Both strips are made of the same card, so they need the same lookups. Built from
+            // everything the page will actually render, in one pass rather than two.
+            var onPage = cars.Concat(promoted).DistinctBy(c => c.Id).ToList();
+
             // One query for every favourite on this page, rather than one per card.
-            await LoadFavouritesAsync(cars.Select(c => c.Id));
+            await LoadFavouritesAsync(onPage.Select(c => c.Id));
 
             // Seller bylines and price history for the whole page in two queries. See
             // ListingExtrasService for why this is not done per card.
-            await LoadExtrasAsync(cars);
+            await LoadExtrasAsync(onPage);
 
             var vm = new CarListViewModel
             {
                 Cars = cars,
+                Promoted = promoted,
                 Search = search,
                 Type = type,
                 Make = make,

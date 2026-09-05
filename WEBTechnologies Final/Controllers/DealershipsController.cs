@@ -87,7 +87,6 @@ namespace WEBTechnologies_Final.Controllers
                 SellerType = owner.SellerType,
                 AvatarPath = dealership.LogoPath ?? owner.AvatarPath,
                 MemberSince = owner.SellerSinceUtc ?? owner.RegisteredUtc,
-                Verified = owner.SellerVerified,
                 RatingAverage = owner.RatingAverage,
                 RatingCount = owner.RatingCount,
                 Cars = cars,

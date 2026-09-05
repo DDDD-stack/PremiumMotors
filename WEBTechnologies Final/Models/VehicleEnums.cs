@@ -72,10 +72,37 @@ namespace WEBTechnologies_Final.Models
         [Display(Name = "Withdrawn")] Withdrawn
     }
 
-    /// <summary>Drives seller verification requirements and how a seller is presented.</summary>
+    /// <summary>How a seller is presented on their listings and in the directory.</summary>
     public enum SellerType
     {
         [Display(Name = "Private seller")] Private,
         [Display(Name = "Dealer")] Dealer
+    }
+
+    /// <summary>
+    /// Paid placement. Selling advertising is the only way money changes hands on this site —
+    /// listing is free and we take nothing from a sale — so this enum is the entire product
+    /// catalogue, and the tiers are ordered by what they cost.
+    ///
+    /// Each tier includes everything below it. A promotion always has an expiry
+    /// (<see cref="Car.PromotedUntilUtc"/>): placement that never lapses can only be sold once.
+    /// </summary>
+    public enum PromotionTier
+    {
+        /// <summary>An ordinary listing. Nobody paid for anything.</summary>
+        [Display(Name = "Not promoted")] None = 0,
+
+        /// <summary>
+        /// Highlighted card wherever it appears, plus a slot in the promoted strip at the top
+        /// of the marketplace.
+        /// </summary>
+        [Display(Name = "Promoted in the marketplace")] Promoted = 1,
+
+        /// <summary>
+        /// The above, plus a slot on both front pages — the consumer one and the business one.
+        /// The most expensive thing we sell, because it is the only inventory that is seen
+        /// before a visitor has decided what they are looking for.
+        /// </summary>
+        [Display(Name = "Front page")] FrontPage = 2
     }
 }

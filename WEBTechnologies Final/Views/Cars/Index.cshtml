@@ -128,6 +128,27 @@
     </div>
 
     <div class="col-lg-9">
+        @* Paid placement, matching whatever the buyer has filtered to. Labelled as an advert
+           and visually fenced off from the results underneath, so nobody has to guess which
+           is which. These cars appear in the grid below as well. *@
+        @if (Model.Promoted.Count > 0)
+        {
+            <section class="pm-promoted-strip" aria-label="Promoted listings">
+                <div class="pm-promoted-head">
+                    <h2 class="h6 mb-0">Promoted listings</h2>
+                    <span class="pm-promoted-note">Paid placement by the seller</span>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3">
+                    @foreach (var car in Model.Promoted)
+                    {
+                        <div class="col">
+                            <partial name="_CarCard" model="car" />
+                        </div>
+                    }
+                </div>
+            </section>
+        }
+
         @if (Model.Cars.Count == 0)
         {
             <div class="pm-empty">

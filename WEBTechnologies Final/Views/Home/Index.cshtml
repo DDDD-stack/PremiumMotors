@@ -56,6 +56,11 @@
     </div>
 </section>
 
+@* The premium advertising slot: first thing below the hero, before anything we wrote
+   ourselves. Renders nothing when nobody has bought it. *@
+<partial name="_FrontPagePromotions" model="Model.Promoted"
+         view-data='new ViewDataDictionary(ViewData) { ["PromoHeading"] = "Featured this week" }' />
+
 @* --------------------------------------------------------------------------- *@
 <section class="pm-section pm-reveal">
     <div class="pm-section-head">
@@ -214,8 +219,8 @@
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">Nothing to pay</h3>
-                <p>Browsing, offering, messaging and listing are all free. We do not take a cut of your sale.</p>
+                <h3 class="h6">0% commission</h3>
+                <p>Browsing, offering, messaging and listing are all free, and we take no cut of any sale. Sellers can pay to advertise a car — those are always labelled <strong>Promoted</strong>.</p>
             </div>
         </div>
     </div>
@@ -267,7 +272,8 @@
             <h2 class="h4 mb-1">Selling more than one car?</h2>
             <p class="mb-0">
                 Business accounts get a public shopfront, sales analytics and an inbox for
-                every offer. Registration is free and needs nothing but your NIPT.
+                every offer. Registration is free, commission is 0%, and the only thing that
+                costs money is advertising a car.
             </p>
         </div>
         <a asp-controller="Home" asp-action="ForBusiness" class="btn btn-lg btn-warning fw-semibold flex-shrink-0">

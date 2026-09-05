@@ -13,10 +13,6 @@
         <div class="pm-seller-headline">
             <h1>
                 @Model.DisplayName
-                @if (Model.Verified)
-                {
-                    <span class="pm-verified" title="Verified dealer">✓</span>
-                }
             </h1>
             <p class="pm-seller-sub">
                 <span class="pm-seller-type @(Model.IsDealer ? "is-dealer" : "is-private")">

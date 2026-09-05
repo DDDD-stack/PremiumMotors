@@ -83,10 +83,6 @@ else
                             <div class="pm-dealer-title">
                                 <h2 class="h6 mb-0">
                                     @dealer.Name
-                                    @if (dealer.Verified)
-                                    {
-                                        <span class="pm-verified" title="Verified dealer">✓</span>
-                                    }
                                 </h2>
                                 @if (!string.IsNullOrWhiteSpace(dealer.Location))
                                 {

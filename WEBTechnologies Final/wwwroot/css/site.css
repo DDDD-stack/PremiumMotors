@@ -1190,13 +1190,6 @@ h1, h2, h3, h4 {
 .pm-seller-type.is-dealer  { background: var(--pm-primary-soft); color: var(--pm-primary-dark); }
 .pm-seller-type.is-private { background: var(--pm-surface-sunken); color: var(--pm-ink-soft); }
 
-.pm-verified {
-    display: inline-block;
-    margin-left: .15rem;
-    color: var(--pm-success);
-    font-weight: 700;
-}
-
 .pm-byline-rating { white-space: nowrap; }
 
 /* === Ratings ==================================================== */
@@ -1928,3 +1921,109 @@ html.pm-cta-on .pm-header-cta {
     color: var(--pm-ink-faint);
     margin-top: .15rem;
 }
+
+/* === Paid placement ============================================= */
+
+/* Advertising is the only thing anyone buys here, so a promoted card has to be
+   obviously different from an ordinary one - otherwise there is nothing to sell -
+   while still being the same card, so a buyer can compare it like for like. Warm
+   border and a warm glow; no change to layout, type or photo size. */
+.car-card.is-promoted {
+    border-color: var(--pm-accent);
+    box-shadow: 0 0 0 1px var(--pm-accent), var(--pm-shadow-md);
+}
+
+.car-card.is-promoted:hover {
+    box-shadow: 0 0 0 1px var(--pm-accent), var(--pm-shadow-lg);
+}
+
+/* Top-right, so it never collides with the status badge or the price-drop flag,
+   both of which sit on the left. */
+.pm-badge-promoted {
+    position: absolute;
+    top: .6rem;
+    right: .6rem;
+    z-index: 2;
+    background: var(--pm-accent);
+    color: #23180a;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    padding: .3rem .55rem;
+    border-radius: 999px;
+    box-shadow: var(--pm-shadow-sm);
+}
+
+/* --- The strip at the top of the marketplace ------------------------ */
+
+.pm-promoted-strip {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--pm-border);
+    border-radius: var(--pm-radius);
+    background: var(--pm-surface-sunken);
+}
+
+.pm-promoted-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: .75rem;
+    flex-wrap: wrap;
+    margin-bottom: .85rem;
+}
+
+/* Never hidden, never shrunk to nothing: an advert that does not say it is an
+   advert is a search result that lies. */
+.pm-promoted-note {
+    font-size: .75rem;
+    color: var(--pm-ink-faint);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+}
+
+/* --- The front-page slot -------------------------------------------- */
+
+.pm-promoted-front {
+    /* Enough separation from the hero above that it does not read as part of
+       what we are saying ourselves. */
+    border-bottom: 1px solid var(--pm-border);
+}
+
+/* --- Rate card ------------------------------------------------------- */
+
+.pm-tier {
+    height: 100%;
+    padding: 1.5rem;
+    background: var(--pm-surface);
+    border: 1px solid var(--pm-border);
+    border-radius: var(--pm-radius);
+    box-shadow: var(--pm-shadow-sm);
+}
+
+.pm-tier-top {
+    border-color: var(--pm-accent);
+    box-shadow: 0 0 0 1px var(--pm-accent), var(--pm-shadow-md);
+}
+
+.pm-tier-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    margin-bottom: .9rem;
+}
+
+.pm-tier-flag {
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    color: #23180a;
+    background: var(--pm-accent);
+    padding: .25rem .5rem;
+    border-radius: 999px;
+}
+
+.pm-tier .pm-tick-list li { margin-bottom: .45rem; }

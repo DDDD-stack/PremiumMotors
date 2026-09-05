@@ -275,7 +275,6 @@ namespace WEBTechnologies_Final.Controllers
                 DisplayName = user.SellerDisplayName,
                 Location = user.SellerLocation,
                 PublicPhone = user.PublicPhone,
-                IsVerified = user.SellerVerified,
                 IsBusiness = user.IsBusiness,
                 SellerSinceUtc = user.SellerSinceUtc
             });
@@ -367,7 +366,6 @@ namespace WEBTechnologies_Final.Controllers
                 AvatarPath = dealership?.LogoPath ?? user.AvatarPath,
                 Location = user.SellerLocation,
                 MemberSince = user.SellerSinceUtc ?? user.RegisteredUtc,
-                Verified = user.SellerVerified,
                 RatingAverage = user.RatingAverage,
                 RatingCount = user.RatingCount,
                 Reviews = await _reviews.ForSellerAsync(user.Id),

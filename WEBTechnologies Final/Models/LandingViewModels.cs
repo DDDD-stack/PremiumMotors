@@ -30,6 +30,13 @@ namespace WEBTechnologies_Final.Models
         /// </summary>
         public List<Car> Featured { get; set; } = new();
 
+        /// <summary>
+        /// Top-tier paid placement. The most expensive thing on the rate card, because it is
+        /// the only inventory seen before a visitor has decided what they are looking for.
+        /// Always labelled as advertising where it renders.
+        /// </summary>
+        public List<Car> Promoted { get; set; } = new();
+
         public MarketplaceStats Stats { get; set; } = new();
 
         public bool IsLoggedIn { get; set; }
@@ -42,6 +49,14 @@ namespace WEBTechnologies_Final.Models
     public class BusinessLandingViewModel
     {
         public List<DealershipCard> Dealerships { get; set; } = new();
+
+        /// <summary>
+        /// Top-tier paid placement. The most expensive thing on the rate card, because it is
+        /// the only inventory seen before a visitor has decided what they are looking for.
+        /// Always labelled as advertising where it renders.
+        /// </summary>
+        public List<Car> Promoted { get; set; } = new();
+
 
         public MarketplaceStats Stats { get; set; } = new();
 

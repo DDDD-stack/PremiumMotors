@@ -17,9 +17,14 @@
 
     decimal? wasPrice = null;
     if (drops != null && drops.TryGetValue(Model.Id, out var high)) wasPrice = high;
+
+    @* Paid placement is read off the listing itself rather than passed in, so a promoted car
+       looks promoted everywhere it appears - the marketplace strip, the results grid, the
+       front pages and the dealership page - without every caller having to remember. *@
+    var promoted = Model.IsPromoted;
 }
 
-<div class="card h-100 car-card">
+<div class="card h-100 car-card @(promoted ? "is-promoted" : "")">
     <a asp-controller="Cars" asp-action="Details" asp-route-id="@Model.Id"
        class="car-thumb pm-media" aria-label="View @Model.Title">
         <img src="@Model.PrimaryImage" alt="@Model.Title" loading="lazy" decoding="async"
@@ -33,6 +38,15 @@
         @if (Model.Status == ListingStatus.Active && wasPrice != null)
         {
             <span class="pm-badge-float pm-badge-drop">Price drop</span>
+        }
+        @if (promoted)
+        {
+            @* Labelled, not disguised. Paid placement that does not say it is paid is an
+               advert pretending to be a search result, and in most of Europe that is also
+               illegal. The label is the cheap part; the prominence is what was bought. *@
+            <span class="pm-badge-promoted" title="The seller paid for this placement">
+                Promoted
+            </span>
         }
     </a>
     <div class="card-body d-flex flex-column">

@@ -42,10 +42,5 @@ namespace WEBTechnologies_Final.Models
         [StringLength(80)]
         public string ContactName { get; set; } = string.Empty;
 
-        /// <summary>
-        /// PLACEHOLDER: nothing sets this to true yet. Verification needs document upload and
-        /// a review queue — see docs/SELLER-PANEL.md.
-        /// </summary>
-        public bool IsVerified { get; set; }
     }
 }

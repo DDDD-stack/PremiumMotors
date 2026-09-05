@@ -198,6 +198,6 @@ namespace WEBTechnologies_Final.Controllers.Api
 
         private static SellerProfileDto ToDto(User u) => new(
             u.Id, u.Username, u.IsSeller, u.SellerType,
-            u.SellerDisplayName, u.SellerLocation, u.SellerVerified, u.SellerSinceUtc);
+            u.SellerDisplayName, u.SellerLocation, u.SellerSinceUtc);
     }
 }

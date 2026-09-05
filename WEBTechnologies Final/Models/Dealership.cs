@@ -69,12 +69,6 @@ namespace WEBTechnologies_Final.Models
         [StringLength(200)]
         public string? OpeningHours { get; set; }
 
-        /// <summary>
-        /// Mirrors User.SellerVerified. Nothing sets it true yet - there is still no document
-        /// check - and no badge is shown while it is false. See the pre-release checklist.
-        /// </summary>
-        public bool Verified { get; set; }
-
         public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
 
         public User? Owner { get; set; }

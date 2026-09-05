@@ -1,0 +1,126 @@
+@model IEnumerable<Car>
+@{
+    ViewData["Title"] = "Paid placement";
+    var cars = Model.ToList();
+    var live = cars.Count(c => c.IsPromoted);
+    var frontPage = cars.Count(c => c.IsFrontPagePromoted);
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>Paid placement</h1>
+        <p class="pm-muted mb-0">
+            Advertising is the only thing anyone pays for on this site. There is no checkout —
+            arrange the money off-site, then grant the placement here.
+        </p>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="pm-stat">
+            <span class="pm-stat-value">@live</span>
+            <span class="pm-stat-label">Placements running</span>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="pm-stat">
+            <span class="pm-stat-value">@frontPage</span>
+            <span class="pm-stat-label">On the front pages</span>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="pm-stat">
+            @* Three is what both front pages render. Selling a fourth is not blocked here,
+               but it would never be seen, so the number is worth having in front of you. *@
+            <span class="pm-stat-value">@(frontPage > 3 ? "Oversold" : "OK")</span>
+            <span class="pm-stat-label">Front page has 3 slots</span>
+        </div>
+    </div>
+</div>
+
+@if (cars.Count == 0)
+{
+    <div class="pm-empty">
+        <h2 class="h5">No active listings</h2>
+        <p class="pm-muted mb-0">Only an active listing can carry advertising.</p>
+    </div>
+}
+else
+{
+    <div class="table-responsive pm-table-wrap">
+        <table class="table align-middle pm-table">
+            <thead>
+                <tr>
+                    <th scope="col">Car</th>
+                    <th scope="col">Seller</th>
+                    <th scope="col">Placement</th>
+                    <th scope="col">Runs until</th>
+                    <th scope="col" class="text-end">Set placement</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var car in cars)
+                {
+                    <tr>
+                        <td data-label="Car">
+                            <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id">@car.Title</a>
+                            <div class="small pm-muted">@car.Price.ToString("C")</div>
+                        </td>
+                        <td data-label="Seller">@(car.OwnerUsername ?? "—")</td>
+                        <td data-label="Placement">
+                            @if (car.IsPromoted)
+                            {
+                                <span class="badge @(car.IsFrontPagePromoted ? "bg-warning text-dark" : "bg-primary")">
+                                    @(car.IsFrontPagePromoted ? "Front page" : "Promoted")
+                                </span>
+                            }
+                            else if (car.PromotedUntilUtc is not null)
+                            {
+                                @* Kept rather than cleared, so a lapsed advert is still visible
+                                   as something that was once sold. *@
+                                <span class="badge bg-secondary">Lapsed</span>
+                            }
+                            else
+                            {
+                                <span class="pm-muted small">—</span>
+                            }
+                        </td>
+                        <td data-label="Runs until">
+                            @if (car.PromotedUntilUtc is DateTime until)
+                            {
+                                <span class="small">@AppTime.ToDisplay(until).ToString("dd MMM yyyy, HH:mm")</span>
+                            }
+                            else
+                            {
+                                <span class="pm-muted small">—</span>
+                            }
+                        </td>
+                        <td class="text-end pm-cell-actions">
+                            <form asp-action="Promote" method="post" class="d-flex gap-2 justify-content-end align-items-center flex-wrap">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@car.Id" />
+                                <select name="tier" class="form-select form-select-sm w-auto" aria-label="Placement tier">
+                                    <option value="@PromotionTier.Promoted">Promoted</option>
+                                    <option value="@PromotionTier.FrontPage">Front page</option>
+                                </select>
+                                <input type="number" name="days" value="30" min="1" max="365"
+                                       class="form-control form-control-sm" style="width:5.5rem"
+                                       aria-label="Days" />
+                                <button type="submit" class="btn btn-sm btn-primary">Start</button>
+                            </form>
+                            @if (car.PromotedUntilUtc is not null)
+                            {
+                                <form asp-action="EndPromotion" method="post" class="d-inline mt-1">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@car.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">End now</button>
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

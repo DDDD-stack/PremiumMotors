@@ -45,11 +45,14 @@ namespace WEBTechnologies_Final.Controllers
                 .Take(6)
                 .ToListAsync();
 
-            await LoadCardExtrasAsync(featured);
+            var promoted = await FrontPagePromotionsAsync();
+
+            await LoadCardExtrasAsync(featured.Concat(promoted).DistinctBy(c => c.Id).ToList());
 
             var vm = new HomeLandingViewModel
             {
                 Featured = featured,
+                Promoted = promoted,
                 Stats = await StatsAsync(),
                 IsLoggedIn = HttpContext.Session.GetInt32(SessionKeys.UserId) is not null
             };
@@ -78,9 +81,13 @@ namespace WEBTechnologies_Final.Controllers
                     .FirstOrDefaultAsync();
             }
 
+            var promoted = await FrontPagePromotionsAsync();
+            await LoadCardExtrasAsync(promoted);
+
             var vm = new BusinessLandingViewModel
             {
                 Dealerships = dealerships,
+                Promoted = promoted,
                 Stats = await StatsAsync(),
                 IsLoggedIn = userId is not null,
                 IsBusinessAccount = isBusiness
@@ -89,6 +96,20 @@ namespace WEBTechnologies_Final.Controllers
             ViewData["HeaderCta"] = true;
             return View(vm);
         }
+
+        /// <summary>
+        /// The top advertising tier: listings placed on both front pages.
+        ///
+        /// Three at most. The value of this slot is that it is nearly the only thing on the
+        /// page competing for attention, and it stops being worth paying for the moment it
+        /// becomes a wall — so the scarcity is the product, not a limitation.
+        /// </summary>
+        private Task<List<Car>> FrontPagePromotionsAsync() =>
+            _db.Cars.AsNoTracking()
+                .WherePromoted(PromotionTier.FrontPage, DateTime.UtcNow)
+                .OrderByPromotion()
+                .Take(3)
+                .ToListAsync();
 
         /// <summary>
         /// Four counts in one round trip each. Cheap enough to run per request at this size,

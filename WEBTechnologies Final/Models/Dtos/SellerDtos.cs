@@ -14,7 +14,6 @@ namespace WEBTechnologies_Final.Models.Dtos
         SellerType SellerType,
         string? DisplayName,
         string? Location,
-        bool IsVerified,
         DateTime? SellerSinceUtc);
 
     public class BecomeSellerRequest

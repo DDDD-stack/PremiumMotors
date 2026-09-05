@@ -70,7 +70,6 @@ namespace WEBTechnologies_Final.Controllers
                 AvatarPath = user.AvatarPath,
                 Location = user.SellerLocation,
                 MemberSince = user.SellerSinceUtc ?? user.RegisteredUtc,
-                Verified = user.SellerVerified,
                 RatingAverage = user.RatingAverage,
                 RatingCount = user.RatingCount,
                 Cars = cars,
