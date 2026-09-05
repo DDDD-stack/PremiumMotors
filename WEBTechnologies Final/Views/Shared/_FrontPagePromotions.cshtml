@@ -5,21 +5,21 @@
        a placeholder in it advertises that we have no advertisers. *@
     if (Model.Count == 0) { return; }
 
-    var heading = ViewData["PromoHeading"] as string ?? "Featured this week";
+    var heading = ViewData["PromoHeading"] as string ?? L["Featured this week"].Value;
 }
 
-<section class="pm-section pm-promoted-front pm-reveal" aria-label="Advertised listings">
+<section class="pm-section pm-promoted-front pm-reveal" aria-label="@L["Advertised listings"]">
     <div class="pm-section-head pm-section-head-row">
         <div>
             <h2>@heading</h2>
             @* Says "advertisement" in plain words. Paid placement dressed as an editorial
                pick is a dark pattern, and across the EU it is also unlawful. *@
             <p class="pm-muted mb-0">
-                Advertisement — these sellers paid for this space.
+                @L["Advertisement — these sellers paid for this space."]
             </p>
         </div>
         <a asp-controller="Home" asp-action="ForBusiness" class="btn btn-sm btn-outline-primary d-none d-md-inline-block">
-            Advertise here
+            @L["Advertise here"]
         </a>
     </div>
 

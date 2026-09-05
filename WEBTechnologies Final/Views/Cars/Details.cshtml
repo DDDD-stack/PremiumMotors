@@ -23,7 +23,7 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb small">
-        <li class="breadcrumb-item"><a asp-action="Index">Cars for sale</a></li>
+        <li class="breadcrumb-item"><a asp-action="Index">@L["Cars for sale"]</a></li>
         <li class="breadcrumb-item active text-truncate" style="max-width:60vw" aria-current="page">@Model.Title</li>
     </ol>
 </nav>
@@ -61,17 +61,17 @@
             {
                 <button class="carousel-control-prev" type="button" data-bs-target="#carGallery" data-bs-slide="prev">
                     <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous photo</span>
+                    <span class="visually-hidden">@L["Previous photo"]</span>
                 </button>
                 <button class="carousel-control-next" type="button" data-bs-target="#carGallery" data-bs-slide="next">
                     <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next photo</span>
+                    <span class="visually-hidden">@L["Next photo"]</span>
                 </button>
                 <div class="carousel-indicators">
                     @for (var i = 0; i < images.Count; i++)
                     {
                         <button type="button" data-bs-target="#carGallery" data-bs-slide-to="@i"
-                                class="@(i == 0 ? "active" : "")" aria-label="Photo @(i + 1)"></button>
+                                class="@(i == 0 ? "active" : "")" aria-label="@L["Photo {0}", i + 1]"></button>
                     }
                 </div>
             }
@@ -79,57 +79,57 @@
 
         <div class="card mt-3 mt-lg-4">
             <div class="card-body">
-                <h2 class="h5 mb-3">Specification</h2>
+                <h2 class="h5 mb-3">@L["Specification"]</h2>
                 <div class="pm-spec-grid">
-                    <dl class="pm-spec-item"><dt>Mileage</dt><dd>@Model.Mileage.ToString("N0") km</dd></dl>
-                    <dl class="pm-spec-item"><dt>Fuel</dt><dd>@Model.FuelType</dd></dl>
-                    <dl class="pm-spec-item"><dt>Gearbox</dt><dd>@Model.Transmission</dd></dl>
-                    <dl class="pm-spec-item"><dt>Drivetrain</dt><dd>@Model.Drivetrain</dd></dl>
-                    <dl class="pm-spec-item"><dt>Year</dt><dd>@Model.Year</dd></dl>
-                    <dl class="pm-spec-item"><dt>Condition</dt><dd>@Model.Condition</dd></dl>
+                    <dl class="pm-spec-item"><dt>@L["Mileage"]</dt><dd>@Model.Mileage.ToString("N0") km</dd></dl>
+                    <dl class="pm-spec-item"><dt>@L["Fuel"]</dt><dd>@L[EnumText.Display(Model.FuelType)]</dd></dl>
+                    <dl class="pm-spec-item"><dt>@L["Gearbox"]</dt><dd>@L[EnumText.Display(Model.Transmission)]</dd></dl>
+                    <dl class="pm-spec-item"><dt>@L["Drivetrain"]</dt><dd>@L[EnumText.Display(Model.Drivetrain)]</dd></dl>
+                    <dl class="pm-spec-item"><dt>@L["Year"]</dt><dd>@Model.Year</dd></dl>
+                    <dl class="pm-spec-item"><dt>@L["Condition"]</dt><dd>@L[EnumText.Display(Model.Condition)]</dd></dl>
                     @if (Model.EngineSizeCc is int cc)
                     {
-                        <dl class="pm-spec-item"><dt>Engine</dt><dd>@cc.ToString("N0") cc</dd></dl>
+                        <dl class="pm-spec-item"><dt>@L["Engine"]</dt><dd>@cc.ToString("N0") cc</dd></dl>
                     }
                     @if (Model.PowerHp is int hp)
                     {
-                        <dl class="pm-spec-item"><dt>Power</dt><dd>@hp hp</dd></dl>
+                        <dl class="pm-spec-item"><dt>@L["Power"]</dt><dd>@hp @L["hp"]</dd></dl>
                     }
                     @if (Model.Doors is int doors)
                     {
-                        <dl class="pm-spec-item"><dt>Doors</dt><dd>@doors</dd></dl>
+                        <dl class="pm-spec-item"><dt>@L["Doors"]</dt><dd>@doors</dd></dl>
                     }
                     @if (Model.Seats is int seats)
                     {
-                        <dl class="pm-spec-item"><dt>Seats</dt><dd>@seats</dd></dl>
+                        <dl class="pm-spec-item"><dt>@L["Seats"]</dt><dd>@seats</dd></dl>
                     }
                     @if (!string.IsNullOrWhiteSpace(Model.ExteriorColour))
                     {
-                        <dl class="pm-spec-item"><dt>Colour</dt><dd>@Model.ExteriorColour</dd></dl>
+                        <dl class="pm-spec-item"><dt>@L["Colour"]</dt><dd>@Model.ExteriorColour</dd></dl>
                     }
                     @if (Model.PreviousOwners is int owners)
                     {
-                        <dl class="pm-spec-item"><dt>Previous owners</dt><dd>@owners</dd></dl>
+                        <dl class="pm-spec-item"><dt>@L["Previous owners"]</dt><dd>@owners</dd></dl>
                     }
                     @if (Model.FirstRegistration is DateTime reg)
                     {
-                        <dl class="pm-spec-item"><dt>First registered</dt><dd>@reg.ToString("MM/yyyy")</dd></dl>
+                        <dl class="pm-spec-item"><dt>@L["First registered"]</dt><dd>@reg.ToString("MM/yyyy")</dd></dl>
                     }
-                    <dl class="pm-spec-item"><dt>Service history</dt><dd>@Model.ServiceHistory</dd></dl>
+                    <dl class="pm-spec-item"><dt>@L["Service history"]</dt><dd>@L[EnumText.Display(Model.ServiceHistory)]</dd></dl>
                     <dl class="pm-spec-item">
-                        <dt>Accident history</dt>
-                        <dd>@(Model.HasAccidentHistory ? "Declared" : "None declared")</dd>
+                        <dt>@L["Accident history"]</dt>
+                        <dd>@(Model.HasAccidentHistory ? L["Declared"] : L["None declared"])</dd>
                     </dl>
                     @if (!string.IsNullOrWhiteSpace(Model.Vin))
                     {
                         @* The VIN itself is never rendered — only that the seller recorded one. *@
-                        <dl class="pm-spec-item"><dt>VIN</dt><dd>On file — ask the seller</dd></dl>
+                        <dl class="pm-spec-item"><dt>@L["VIN"]</dt><dd>@L["On file — ask the seller"]</dd></dl>
                     }
                 </div>
 
                 @if (!string.IsNullOrWhiteSpace(Model.ServiceHistoryNotes))
                 {
-                    <h3 class="h6 mt-4">Service record</h3>
+                    <h3 class="h6 mt-4">@L["Service record"]</h3>
                     <p class="mb-0 pm-break" style="white-space: pre-line">@Model.ServiceHistoryNotes</p>
                 }
             </div>
@@ -137,7 +137,7 @@
 
         <div class="card mt-3 mt-lg-4">
             <div class="card-body">
-                <h2 class="h5">Description</h2>
+                <h2 class="h5">@L["Description"]</h2>
                 <p class="mb-0 pm-break" style="white-space: pre-line">@Model.Description</p>
             </div>
         </div>
@@ -154,13 +154,13 @@
 
                     <ul class="pm-spec-line mb-3">
                         <li>@Model.Mileage.ToString("N0") km</li>
-                        <li>@Model.FuelType</li>
-                        <li>@Model.Transmission</li>
+                        <li>@L[EnumText.Display(Model.FuelType)]</li>
+                        <li>@L[EnumText.Display(Model.Transmission)]</li>
                         <li>@Model.Country@(string.IsNullOrWhiteSpace(Model.City) ? "" : " · " + Model.City)</li>
                     </ul>
 
                     <div class="pm-price-box mb-3 d-flex justify-content-between align-items-center">
-                        <span class="pm-muted small">Asking price</span>
+                        <span class="pm-muted small">@L["Asking price"]</span>
                         <span class="text-end">
                             <span class="fw-bold text-primary fs-4">@Model.Price.ToString("C")</span>
                             @if (wasPrice is decimal was)
@@ -185,7 +185,7 @@
                     @if (Model.ViewCount > 0)
                     {
                         <p class="small pm-muted mb-3">
-                            @Model.ViewCount.ToString("N0") view@(Model.ViewCount == 1 ? "" : "s")
+                            @(Model.ViewCount == 1 ? L["1 view"] : L["{0} views", Model.ViewCount.ToString("N0")])
                         </p>
                     }
 
@@ -193,12 +193,12 @@
                     {
                         <div class="alert @(isWinningBuyer ? "alert-success" : "alert-secondary") mb-3">
                             <strong>
-                                @(isWinningBuyer ? "You bought this car." : "This car has been sold.")
+                                @(isWinningBuyer ? L["You bought this car."] : L["This car has been sold."])
                             </strong>
                             @if ((isSeller || isWinningBuyer) && Model.SoldPrice is decimal sp)
                             {
                                 <div class="small">
-                                    Agreed at @sp.ToString("C")@(isSeller ? " with " + Model.SoldTo : "").
+                                    @(isSeller ? L["Agreed at {0} with {1}.", sp.ToString("C"), Model.SoldTo ?? string.Empty] : L["Agreed at {0}.", sp.ToString("C")])
                                 </div>
                             }
                         </div>
@@ -208,22 +208,22 @@
                         @if (isWinningBuyer)
                         {
                             <div class="alert alert-success mb-3">
-                                <strong>Your offer was accepted.</strong>
+                                <strong>@L["Your offer was accepted."]</strong>
                                 <div class="small">
                                     @if (Model.SoldPrice is decimal agreed)
                                     {
-                                        <text>Agreed at @agreed.ToString("C"). </text>
+                                        <text>@L["Agreed at {0}.", agreed.ToString("C")] </text>
                                     }
-                                    Contact the seller below to arrange payment and collection.
+                                    @L["Contact the seller below to arrange payment and collection."]
                                 </div>
                             </div>
                         }
                         else
                         {
                             <div class="alert alert-warning mb-3">
-                                <strong>Reserved.</strong>
+                                <strong>@L["Reserved."]</strong>
                                 <div class="small">
-                                    The seller has accepted an offer and is completing the sale.
+                                    @L["The seller has accepted an offer and is completing the sale."]
                                 </div>
                             </div>
                         }
@@ -233,13 +233,13 @@
                                 <form asp-controller="Seller" asp-action="MarkSold" method="post">
                                     <input type="hidden" name="carId" value="@Model.Id" />
                                     <input type="hidden" name="returnUrl" value="@returnUrl" />
-                                    <button type="submit" class="btn btn-success w-100">Mark as sold</button>
+                                    <button type="submit" class="btn btn-success w-100">@L["Mark as sold"]</button>
                                 </form>
                                 <form asp-controller="Seller" asp-action="Reopen" method="post">
                                     <input type="hidden" name="carId" value="@Model.Id" />
                                     <input type="hidden" name="returnUrl" value="@returnUrl" />
                                     <button type="submit" class="btn btn-outline-secondary w-100">
-                                        Sale fell through — relist
+                                        @L["Sale fell through — relist"]
                                     </button>
                                 </form>
                             </div>
@@ -248,26 +248,26 @@
                     else if (isSeller)
                     {
                         <div class="alert alert-info mb-3">
-                            This is your listing. Offers from buyers appear below.
+                            @L["This is your listing. Offers from buyers appear below."]
                         </div>
                     }
                     else if (string.IsNullOrEmpty(currentUser))
                     {
                         <div class="alert alert-warning">
-                            <strong>Log in to make an offer.</strong>
+                            <strong>@L["Log in to make an offer."]</strong>
                             <div class="small">
-                                Offers, written messages and favourites need a free account.
+                                @L["Offers, written messages and favourites need a free account."]
                                 @if (Model.Status == ListingStatus.Active && ViewData["ListingPhone"] is not null)
                                 {
-                                    <text>Or just ring the seller on the number below.</text>
+                                    <text>@L["Or just ring the seller on the number below."]</text>
                                 }
                             </div>
                         </div>
                         <div class="d-grid gap-2 mb-3">
                             <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@returnUrl"
-                               class="btn btn-primary">Log in to make an offer</a>
+                               class="btn btn-primary">@L["Log in to make an offer"]</a>
                             <a asp-controller="Account" asp-action="Signup" class="btn btn-outline-primary">
-                                Create an account
+                                @L["Create an account"]
                             </a>
                         </div>
                     }
@@ -277,15 +277,15 @@
                            let them stack duplicates on the seller's inbox. *@
                         <div class="alert alert-primary mb-3">
                             <div class="d-flex justify-content-between align-items-center gap-2">
-                                <strong>Your offer: @myOffer.Amount.ToString("C")</strong>
+                                <strong>@L["Your offer: {0}", myOffer.Amount.ToString("C")]</strong>
                                 <partial name="_OfferStatusBadge" model="myOffer.Status" />
                             </div>
-                            <div class="small mt-1">The seller can accept, decline, or message you first.</div>
+                            <div class="small mt-1">@L["The seller can accept, decline, or message you first."]</div>
                         </div>
                         <form asp-action="WithdrawOffer" method="post" class="d-grid mb-3">
                             <input type="hidden" name="offerId" value="@myOffer.Id" />
                             <input type="hidden" name="carId" value="@Model.Id" />
-                            <button type="submit" class="btn btn-outline-secondary btn-sm">Withdraw my offer</button>
+                            <button type="submit" class="btn btn-outline-secondary btn-sm">@L["Withdraw my offer"]</button>
                         </form>
                     }
                     else
@@ -294,7 +294,7 @@
                         {
                             <div class="alert alert-secondary mb-3">
                                 <div class="d-flex justify-content-between align-items-center gap-2">
-                                    <span>Your last offer: @myOffer.Amount.ToString("C")</span>
+                                    <span>@L["Your last offer: {0}", myOffer.Amount.ToString("C")]</span>
                                     <partial name="_OfferStatusBadge" model="myOffer.Status" />
                                 </div>
                                 @if (!string.IsNullOrWhiteSpace(myOffer.SellerResponse))
@@ -307,20 +307,20 @@
                         <form asp-action="Offer" method="post" class="mb-3">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.Id" />
-                            <label class="form-label" for="offerAmount">Make an offer</label>
+                            <label class="form-label" for="offerAmount">@L["Make an offer"]</label>
                             <div class="input-group mb-2">
                                 <span class="input-group-text">€</span>
                                 <input type="number" id="offerAmount" name="amount" class="form-control"
                                        step="0.01" min="1" inputmode="decimal"
                                        value="@Model.Price" required />
                             </div>
-                            <label class="form-label small" for="offerMessage">Add a note (optional)</label>
+                            <label class="form-label small" for="offerMessage">@L["Add a note (optional)"]</label>
                             <textarea id="offerMessage" name="message" class="form-control mb-2" rows="2"
                                       maxlength="1000"
-                                      placeholder="e.g. Can collect this weekend, cash ready."></textarea>
-                            <button type="submit" class="btn btn-primary w-100">Send offer</button>
+                                      placeholder="@L["e.g. Can collect this weekend, cash ready."]"></textarea>
+                            <button type="submit" class="btn btn-primary w-100">@L["Send offer"]</button>
                             <div class="form-text">
-                                Private to the seller. A note starts a chat so they can ask you questions.
+                                @L["Private to the seller. A note starts a chat so they can ask you questions."]
                             </div>
                         </form>
                     }
@@ -341,7 +341,7 @@
                             var guest = string.IsNullOrEmpty(currentUser);
                             <a href="tel:@listingPhone"
                                class="btn @(guest ? "btn-success" : "btn-outline-secondary")">
-                                📞 Call the seller — @listingPhone
+                                📞 @L["Call the seller"] — @listingPhone
                             </a>
                         }
 
@@ -350,14 +350,14 @@
                             @if (myThreadId is int tid)
                             {
                                 <a asp-controller="Messages" asp-action="Thread" asp-route-id="@tid"
-                                   class="btn btn-outline-primary">💬 Open chat with the seller</a>
+                                   class="btn btn-outline-primary">💬 @L["Open chat with the seller"]</a>
                             }
                             else
                             {
                                 <form asp-action="StartChat" method="post" class="d-grid">
                                     <input type="hidden" name="carId" value="@Model.Id" />
                                     <button type="submit" class="btn btn-outline-primary">
-                                        💬 Message the seller
+                                        💬 @L["Message the seller"]
                                     </button>
                                 </form>
                             }
@@ -365,7 +365,7 @@
                         <partial name="_FavoriteButton" model="Model"
                                  view-data='new ViewDataDictionary(ViewData) { ["FavBtnClass"] = "w-100" }' />
                         <a asp-action="Share" asp-route-id="@Model.Id" class="btn btn-outline-secondary w-100">
-                            🔗 Share this listing
+                            🔗 @L["Share this listing"]
                         </a>
                     </div>
                 </div>
@@ -375,28 +375,27 @@
         @if (isWinningBuyer && ViewData["SellerEmail"] is string sellerEmail)
         {
             <div class="card mt-3 mt-lg-4 border-success">
-                <div class="card-header bg-success text-white">Seller contact details</div>
+                <div class="card-header bg-success text-white">@L["Seller contact details"]</div>
                 <div class="card-body">
                     <p class="small pm-muted mb-2">
-                        The seller accepted your offer. Arrange inspection, payment and handover
-                        directly — PremiumMotors does not handle the money.
+                        @L["The seller accepted your offer. Arrange inspection, payment and handover directly — PremiumMotors does not handle the money."]
                     </p>
                     <dl class="row small mb-0 pm-break">
-                        <dt class="col-4">Seller</dt><dd class="col-8">@ViewData["SellerName"]</dd>
-                        <dt class="col-4">Email</dt><dd class="col-8"><a href="mailto:@sellerEmail">@sellerEmail</a></dd>
+                        <dt class="col-4">@L["Seller"]</dt><dd class="col-8">@ViewData["SellerName"]</dd>
+                        <dt class="col-4">@L["Email"]</dt><dd class="col-8"><a href="mailto:@sellerEmail">@sellerEmail</a></dd>
                         @if (ViewData["SellerPhone"] is string sellerPhone && !string.IsNullOrWhiteSpace(sellerPhone))
                         {
-                            <dt class="col-4">Phone</dt><dd class="col-8"><a href="tel:@sellerPhone">@sellerPhone</a></dd>
+                            <dt class="col-4">@L["Phone"]</dt><dd class="col-8"><a href="tel:@sellerPhone">@sellerPhone</a></dd>
                         }
                         @if (Model.SoldPrice is decimal myPrice)
                         {
-                            <dt class="col-4">Agreed price</dt><dd class="col-8">@myPrice.ToString("C")</dd>
+                            <dt class="col-4">@L["Agreed price"]</dt><dd class="col-8">@myPrice.ToString("C")</dd>
                         }
                     </dl>
                     @if (myThreadId is int chatId)
                     {
                         <a asp-controller="Messages" asp-action="Thread" asp-route-id="@chatId"
-                           class="btn btn-sm btn-outline-primary mt-3">💬 Continue the chat</a>
+                           class="btn btn-sm btn-outline-primary mt-3">💬 @L["Continue the chat"]</a>
                     }
                 </div>
             </div>
@@ -405,22 +404,21 @@
         @if (isSeller && Model.SoldToUserId is not null && ViewData["BuyerEmail"] is string buyerEmail)
         {
             <div class="card mt-3 mt-lg-4 border-success">
-                <div class="card-header bg-success text-white">Buyer contact details</div>
+                <div class="card-header bg-success text-white">@L["Buyer contact details"]</div>
                 <div class="card-body">
                     <p class="small pm-muted mb-2">
-                        You accepted this buyer's offer. Arrange inspection, payment and handover
-                        directly — the sale happens between you and the buyer.
+                        @L["You accepted this buyer's offer. Arrange inspection, payment and handover directly — the sale happens between you and the buyer."]
                     </p>
                     <dl class="row small mb-0 pm-break">
-                        <dt class="col-4">Buyer</dt><dd class="col-8">@Model.SoldTo</dd>
-                        <dt class="col-4">Email</dt><dd class="col-8"><a href="mailto:@buyerEmail">@buyerEmail</a></dd>
+                        <dt class="col-4">@L["Buyer"]</dt><dd class="col-8">@Model.SoldTo</dd>
+                        <dt class="col-4">@L["Email"]</dt><dd class="col-8"><a href="mailto:@buyerEmail">@buyerEmail</a></dd>
                         @if (ViewData["BuyerPhone"] is string buyerPhone && !string.IsNullOrWhiteSpace(buyerPhone))
                         {
-                            <dt class="col-4">Phone</dt><dd class="col-8"><a href="tel:@buyerPhone">@buyerPhone</a></dd>
+                            <dt class="col-4">@L["Phone"]</dt><dd class="col-8"><a href="tel:@buyerPhone">@buyerPhone</a></dd>
                         }
                         @if (Model.SoldPrice is decimal agreed)
                         {
-                            <dt class="col-4">Agreed price</dt><dd class="col-8">@agreed.ToString("C")</dd>
+                            <dt class="col-4">@L["Agreed price"]</dt><dd class="col-8">@agreed.ToString("C")</dd>
                         }
                     </dl>
                 </div>
@@ -438,17 +436,17 @@
 
             <div class="card mt-3 mt-lg-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Offers (@Model.Offers.Count)</span>
+                    <span>@L["Offers ({0})", Model.Offers.Count]</span>
                     @if (pending.Count > 0)
                     {
-                        <span class="badge bg-primary">@pending.Count awaiting reply</span>
+                        <span class="badge bg-primary">@L["{0} awaiting reply", pending.Count]</span>
                     }
                 </div>
 
                 @if (Model.Offers.Count == 0)
                 {
                     <div class="card-body pm-muted small">
-                        No offers yet. Buyers can send you a private offer from this page.
+                        @L["No offers yet. Buyers can send you a private offer from this page."]
                     </div>
                 }
                 else
@@ -484,14 +482,14 @@
                                     @if (threadId is int existing)
                                     {
                                         <a asp-controller="Messages" asp-action="Thread" asp-route-id="@existing"
-                                           class="btn btn-sm btn-outline-primary">💬 Chat</a>
+                                           class="btn btn-sm btn-outline-primary">💬 @L["Chat"]</a>
                                     }
                                     else if (offer.BuyerId is int buyerId)
                                     {
                                         <form asp-action="StartChat" method="post" class="d-inline">
                                             <input type="hidden" name="carId" value="@Model.Id" />
                                             <input type="hidden" name="buyerId" value="@buyerId" />
-                                            <button type="submit" class="btn btn-sm btn-outline-primary">💬 Chat</button>
+                                            <button type="submit" class="btn btn-sm btn-outline-primary">💬 @L["Chat"]</button>
                                         </form>
                                     }
 
@@ -500,12 +498,12 @@
                                         <form asp-controller="Seller" asp-action="AcceptOffer" method="post" class="d-inline">
                                             <input type="hidden" name="offerId" value="@offer.Id" />
                                             <input type="hidden" name="returnUrl" value="@returnUrl" />
-                                            <button type="submit" class="btn btn-sm btn-success">Accept</button>
+                                            <button type="submit" class="btn btn-sm btn-success">@L["Accept"]</button>
                                         </form>
                                         <form asp-controller="Seller" asp-action="DeclineOffer" method="post" class="d-inline">
                                             <input type="hidden" name="offerId" value="@offer.Id" />
                                             <input type="hidden" name="returnUrl" value="@returnUrl" />
-                                            <button type="submit" class="btn btn-sm btn-outline-danger">Decline</button>
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">@L["Decline"]</button>
                                         </form>
                                     }
                                 </div>
@@ -524,7 +522,7 @@
 {
     <section class="card shadow-sm mt-4">
         <div class="card-body">
-            <h2 class="pm-section-title mb-3">Price history</h2>
+            <h2 class="pm-section-title mb-3">@L["Price history"]</h2>
             <ul class="pm-price-history">
                 @foreach (var change in priceHistory)
                 {
@@ -540,7 +538,7 @@
                         }
                         else
                         {
-                            <span class="pm-muted small">listed</span>
+                            <span class="pm-muted small">@L["listed"]</span>
                         }
                     </li>
                 }
@@ -554,8 +552,8 @@
     <section class="mt-5">
         <div class="pm-page-head">
             <div>
-                <h2 class="h5 mb-0">Similar cars</h2>
-                <p class="pm-muted small mb-0">Same body type, around the same money.</p>
+                <h2 class="h5 mb-0">@L["Similar cars"]</h2>
+                <p class="pm-muted small mb-0">@L["Same body type, around the same money."]</p>
             </div>
         </div>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3 g-md-4 pm-stagger">
@@ -572,8 +570,8 @@
     <section class="mt-5">
         <div class="pm-page-head">
             <div>
-                <h2 class="h5 mb-0">Recently viewed</h2>
-                <p class="pm-muted small mb-0">Cars you looked at earlier in this visit.</p>
+                <h2 class="h5 mb-0">@L["Recently viewed"]</h2>
+                <p class="pm-muted small mb-0">@L["Cars you looked at earlier in this visit."]</p>
             </div>
         </div>
         <div class="row row-cols-2 row-cols-xl-4 g-3 pm-stagger">

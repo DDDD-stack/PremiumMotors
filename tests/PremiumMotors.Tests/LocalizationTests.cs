@@ -83,9 +83,13 @@ public class LocalizationTests
     {
         // A key copied into a resx without being translated looks finished and is not. The
         // exceptions are the words that are genuinely the same in every language.
+        // Borrowed words, abbreviations and body-type names that genuinely do not change.
+        // Kept as an explicit list rather than a rule, so adding one is a decision somebody
+        // made rather than a translation nobody got round to.
         var sameInEveryLanguage = new HashSet<string>
         {
-            "Admin", "CVT", "Diesel", "Draft", "Manual", "Min", "Max", "Model", "Privacy"
+            "Admin", "CVT", "Chat", "Diesel", "Draft", "Email", "Hatchback", "Manual",
+            "Max", "Min", "Model", "Privacy", "SUV", "Sedan", "VIN"
         };
 
         foreach (var culture in TranslatedLanguages())
@@ -99,6 +103,27 @@ public class LocalizationTests
 
                 Assert.False(key == value,
                     $"{culture}: \"{key}\" is still the English text.");
+            }
+        }
+    }
+
+    [Fact]
+    public void No_two_keys_differ_only_by_capitalisation()
+    {
+        // .resx resource names are matched CASE-INSENSITIVELY. "Cars for sale" and
+        // "cars for sale" are the same name, so having both makes the compiler drop one with
+        // only a build warning - and the dropped one then renders in English forever. This
+        // bit exactly three strings when the landing pages were translated.
+        foreach (var culture in TranslatedLanguages())
+        {
+            var seen = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+            foreach (DictionaryEntry entry in ResourceSetFor(culture))
+            {
+                var key = (string)entry.Key;
+                Assert.False(seen.TryGetValue(key, out var clash),
+                    $"{culture}: \"{key}\" and \"{clash}\" are the same resource name.");
+                seen[key] = key;
             }
         }
     }

@@ -70,11 +70,32 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="0% commission" xml:space="preserve">
+    <value>0% di commissione</value>
+  </data>
   <data name="1 car sold through PremiumMotors" xml:space="preserve">
     <value>1 auto venduta tramite PremiumMotors</value>
   </data>
   <data name="1 listing" xml:space="preserve">
     <value>1 annuncio</value>
+  </data>
+  <data name="1 view" xml:space="preserve">
+    <value>1 visualizzazione</value>
+  </data>
+  <data name="A highlighted card everywhere the car appears" xml:space="preserve">
+    <value>Una scheda in evidenza ovunque compaia l'auto</value>
+  </data>
+  <data name="A named contact person for the account" xml:space="preserve">
+    <value>Una persona di riferimento per l'account</value>
+  </data>
+  <data name="A personal account lists a car just as well, and costs nothing either." xml:space="preserve">
+    <value>Un account personale pubblica un'auto altrettanto bene, e non costa nulla.</value>
+  </data>
+  <data name="A place near the top of the first page of results, mixed in with the free listings rather than fenced off above them" xml:space="preserve">
+    <value>Un posto vicino alla cima della prima pagina dei risultati, mescolato agli annunci gratuiti anziché isolato sopra di essi</value>
+  </data>
+  <data name="A price, not an ultimatum" xml:space="preserve">
+    <value>Un prezzo, non un ultimatum</value>
   </data>
   <data name="A promotion stops the moment a car is reserved or sold, so this page never shows you something you cannot still buy. That is enforced by the software, not by somebody remembering." xml:space="preserve">
     <value>La promozione si interrompe nel momento in cui un'auto viene prenotata o venduta, quindi questa pagina non ti mostra mai qualcosa che non puoi più comprare. Lo garantisce il software, non qualcuno che deve ricordarsene.</value>
@@ -82,20 +103,80 @@
   <data name="A public dealership page buyers can browse" xml:space="preserve">
     <value>Una pagina pubblica della concessionaria che gli acquirenti possono sfogliare</value>
   </data>
+  <data name="A reputation you can point at" xml:space="preserve">
+    <value>Una reputazione che puoi mostrare</value>
+  </data>
+  <data name="A shopfront of your own" xml:space="preserve">
+    <value>Una vetrina tutta tua</value>
+  </data>
+  <data name="A slot on" xml:space="preserve">
+    <value>Uno spazio su</value>
+  </data>
+  <data name="A slot on both front pages — the buyers' one and this one — directly beneath the headline" xml:space="preserve">
+    <value>Uno spazio su entrambe le home page — quella degli acquirenti e questa — subito sotto il titolo</value>
+  </data>
+  <data name="Accept" xml:space="preserve">
+    <value>Accetta</value>
+  </data>
+  <data name="Accept the buyer who is financed, local and ready — not just the one waving the biggest number. Declining costs you nothing and the listing stays live." xml:space="preserve">
+    <value>Accetta l'acquirente che ha il finanziamento, è della zona ed è pronto — non solo quello che agita la cifra più alta. Rifiutare non ti costa nulla e l'annuncio resta online.</value>
+  </data>
   <data name="Accepting offers" xml:space="preserve">
     <value>Accetta offerte</value>
+  </data>
+  <data name="Accident history" xml:space="preserve">
+    <value>Storico incidenti</value>
   </data>
   <data name="Active" xml:space="preserve">
     <value>Attivo</value>
   </data>
+  <data name="Add a note (optional)" xml:space="preserve">
+    <value>Aggiungi una nota (facoltativa)</value>
+  </data>
   <data name="Admin" xml:space="preserve">
     <value>Admin</value>
+  </data>
+  <data name="Advertise here" xml:space="preserve">
+    <value>Fai pubblicità qui</value>
+  </data>
+  <data name="Advertised listings" xml:space="preserve">
+    <value>Annunci pubblicitari</value>
+  </data>
+  <data name="Advertisement — these sellers paid for this space." xml:space="preserve">
+    <value>Pubblicità — questi venditori hanno pagato per questo spazio.</value>
+  </data>
+  <data name="Advertising — the only thing that costs money" xml:space="preserve">
+    <value>La pubblicità — l'unica cosa che costa</value>
+  </data>
+  <data name="Agree and collect" xml:space="preserve">
+    <value>Accordatevi e ritira</value>
+  </data>
+  <data name="Agreed at {0} with {1}." xml:space="preserve">
+    <value>Concordato a {0} con {1}.</value>
+  </data>
+  <data name="Agreed at {0}." xml:space="preserve">
+    <value>Concordato a {0}.</value>
+  </data>
+  <data name="Agreed price" xml:space="preserve">
+    <value>Prezzo concordato</value>
   </data>
   <data name="All listings" xml:space="preserve">
     <value>Tutti gli annunci</value>
   </data>
+  <data name="All of it included, from the day you register." xml:space="preserve">
+    <value>Tutto incluso, dal giorno in cui ti registri.</value>
+  </data>
+  <data name="All-wheel drive" xml:space="preserve">
+    <value>Trazione integrale</value>
+  </data>
+  <data name="Already have a business account?" xml:space="preserve">
+    <value>Hai già un account aziendale?</value>
+  </data>
   <data name="Already have an account?" xml:space="preserve">
     <value>Hai già un account?</value>
+  </data>
+  <data name="An email address and a phone number" xml:space="preserve">
+    <value>Un indirizzo email e un numero di telefono</value>
   </data>
   <data name="Any" xml:space="preserve">
     <value>Qualsiasi</value>
@@ -124,6 +205,9 @@
   <data name="Archived" xml:space="preserve">
     <value>Archiviato</value>
   </data>
+  <data name="Ask first" xml:space="preserve">
+    <value>Chiedi prima</value>
+  </data>
   <data name="Asking price" xml:space="preserve">
     <value>Prezzo richiesto</value>
   </data>
@@ -133,8 +217,17 @@
   <data name="Available" xml:space="preserve">
     <value>Disponibile</value>
   </data>
+  <data name="Be the first to list a car" xml:space="preserve">
+    <value>Sii il primo a pubblicare un'auto</value>
+  </data>
+  <data name="Best for a car that is getting views and no offers, where the problem is position rather than price." xml:space="preserve">
+    <value>Ideale per un'auto che riceve visualizzazioni ma nessuna offerta, dove il problema è la posizione e non il prezzo.</value>
+  </data>
   <data name="Both kinds of account can browse, save cars and make offers." xml:space="preserve">
     <value>Entrambi i tipi di account possono sfogliare, salvare auto e fare offerte.</value>
+  </data>
+  <data name="Browse and filter every listing" xml:space="preserve">
+    <value>Sfoglia e filtra ogni annuncio</value>
   </data>
   <data name="Browse and save listings" xml:space="preserve">
     <value>Sfoglia e salva gli annunci</value>
@@ -151,11 +244,29 @@
   <data name="Browse everything" xml:space="preserve">
     <value>Sfoglia tutto</value>
   </data>
+  <data name="Browse the dealership directory and seller ratings" xml:space="preserve">
+    <value>Sfoglia l'elenco delle concessionarie e le valutazioni dei venditori</value>
+  </data>
   <data name="Browse the marketplace" xml:space="preserve">
     <value>Sfoglia il mercato</value>
   </data>
+  <data name="Browsing, offering, messaging and listing are all free, and we take no cut of any sale. Sellers can pay to advertise a car — those are always labelled" xml:space="preserve">
+    <value>Sfogliare, fare offerte, scrivere messaggi e pubblicare sono tutte cose gratuite, e non prendiamo nulla su nessuna vendita. I venditori possono pagare per pubblicizzare un'auto — quelle sono sempre contrassegnate come</value>
+  </data>
   <data name="Business account" xml:space="preserve">
     <value>Account aziendale</value>
+  </data>
+  <data name="Business accounts get a public shopfront, sales analytics and an inbox for every offer. Registration is free, commission is 0%, and the only thing that costs money is advertising a car." xml:space="preserve">
+    <value>Gli account aziendali ottengono una vetrina pubblica, statistiche di vendita e una casella per ogni offerta. La registrazione è gratuita, la commissione è dello 0% e l'unica cosa che costa è pubblicizzare un'auto.</value>
+  </data>
+  <data name="Buy and sell cars by private offer" xml:space="preserve">
+    <value>Compra e vendi auto con offerte private</value>
+  </data>
+  <data name="Buyer" xml:space="preserve">
+    <value>Acquirente</value>
+  </data>
+  <data name="Buyer contact details" xml:space="preserve">
+    <value>Dati di contatto dell'acquirente</value>
   </data>
   <data name="CNG" xml:space="preserve">
     <value>Metano</value>
@@ -163,11 +274,23 @@
   <data name="CVT" xml:space="preserve">
     <value>CVT</value>
   </data>
+  <data name="Call the seller" xml:space="preserve">
+    <value>Chiama il venditore</value>
+  </data>
   <data name="Cars for sale" xml:space="preserve">
     <value>Auto in vendita</value>
   </data>
+  <data name="Cars you looked at earlier in this visit." xml:space="preserve">
+    <value>Auto che hai guardato prima durante questa visita.</value>
+  </data>
   <data name="Change language. Current language: {0}" xml:space="preserve">
     <value>Cambia lingua. Lingua attuale: {0}</value>
+  </data>
+  <data name="Chat" xml:space="preserve">
+    <value>Chat</value>
+  </data>
+  <data name="Classifieds make you pay the sticker. Auctions make you bid in public against strangers. This is neither." xml:space="preserve">
+    <value>Gli annunci classici ti fanno pagare il prezzo esposto. Le aste ti fanno rilanciare in pubblico contro sconosciuti. Questo non è né l'uno né l'altro.</value>
   </data>
   <data name="Clear" xml:space="preserve">
     <value>Azzera</value>
@@ -178,8 +301,35 @@
   <data name="Clear filters" xml:space="preserve">
     <value>Azzera i filtri</value>
   </data>
+  <data name="Colour" xml:space="preserve">
+    <value>Colore</value>
+  </data>
+  <data name="Condition" xml:space="preserve">
+    <value>Condizioni</value>
+  </data>
+  <data name="Contact the seller below to arrange payment and collection." xml:space="preserve">
+    <value>Contatta il venditore qui sotto per organizzare pagamento e ritiro.</value>
+  </data>
+  <data name="Continue the chat" xml:space="preserve">
+    <value>Continua la chat</value>
+  </data>
+  <data name="Convertible" xml:space="preserve">
+    <value>Cabrio</value>
+  </data>
+  <data name="Coupe" xml:space="preserve">
+    <value>Coupé</value>
+  </data>
+  <data name="Create a free account" xml:space="preserve">
+    <value>Crea un account gratuito</value>
+  </data>
   <data name="Create an account" xml:space="preserve">
     <value>Crea un account</value>
+  </data>
+  <data name="Damaged / repairable" xml:space="preserve">
+    <value>Incidentata / riparabile</value>
+  </data>
+  <data name="Dealer shopfronts" xml:space="preserve">
+    <value>Vetrine delle concessionarie</value>
   </data>
   <data name="Dealership closed" xml:space="preserve">
     <value>Attività chiusa</value>
@@ -187,23 +337,86 @@
   <data name="Dealerships" xml:space="preserve">
     <value>Concessionarie</value>
   </data>
+  <data name="Dealerships already trading here" xml:space="preserve">
+    <value>Concessionarie già attive qui</value>
+  </data>
+  <data name="Declared" xml:space="preserve">
+    <value>Dichiarato</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Rifiuta</value>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Descrizione</value>
+  </data>
   <data name="Diesel" xml:space="preserve">
     <value>Diesel</value>
+  </data>
+  <data name="Doors" xml:space="preserve">
+    <value>Porte</value>
   </data>
   <data name="Draft" xml:space="preserve">
     <value>Bozza</value>
   </data>
+  <data name="Draft, active, reserved, sold and archived — move a car between them in one click. Relist an unsold car without retyping it. Every price change is recorded, so your own history is auditable." xml:space="preserve">
+    <value>Bozza, attivo, prenotato, venduto e archiviato — sposta un'auto tra questi stati con un clic. Ripubblica un'auto invenduta senza riscriverla. Ogni variazione di prezzo viene registrata, quindi il tuo storico è verificabile.</value>
+  </data>
+  <data name="Drivetrain" xml:space="preserve">
+    <value>Trazione</value>
+  </data>
   <data name="Electric" xml:space="preserve">
     <value>Elettrico</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Engine" xml:space="preserve">
+    <value>Motore</value>
+  </data>
+  <data name="Every business account gets a" xml:space="preserve">
+    <value>Ogni account aziendale ottiene una</value>
+  </data>
+  <data name="Every business account gets a page like these." xml:space="preserve">
+    <value>Ogni account aziendale ottiene una pagina come queste.</value>
+  </data>
+  <data name="Every buyer who walks your forecourt already knows your lowest advertised price — because you advertised it. Here, buyers come to you with a number instead, one at a time, in private. You keep the margin you would otherwise have posted on a banner." xml:space="preserve">
+    <value>Ogni acquirente che entra nel tuo piazzale conosce già il tuo prezzo più basso pubblicizzato — perché lo hai pubblicizzato tu. Qui invece sono gli acquirenti a venire da te con una cifra, uno alla volta, in privato. Tieni il margine che altrimenti avresti scritto su un cartello.</value>
+  </data>
+  <data name="Every car here has a price on it. None of them are take-it-or-leave-it. You make a private offer, the seller answers, and nobody else ever sees what you bid." xml:space="preserve">
+    <value>Ogni auto qui ha un prezzo. Nessuna è prendere o lasciare. Tu fai un'offerta privata, il venditore risponde, e nessun altro vede mai quanto hai offerto.</value>
   </data>
   <data name="Every car here is still available, and its seller has paid to be seen this week." xml:space="preserve">
     <value>Ogni auto qui è ancora disponibile e il suo venditore ha pagato per essere visto questa settimana.</value>
   </data>
+  <data name="Every conversation is tied to the car it is about and kept in one thread, so a handover six weeks later is not an argument about who said what." xml:space="preserve">
+    <value>Ogni conversazione è legata all'auto di cui parla e resta in un unico filo, così una consegna sei settimane dopo non diventa una discussione su chi ha detto cosa.</value>
+  </data>
+  <data name="Every listing names its seller and says plainly whether they are a private seller or a dealership." xml:space="preserve">
+    <value>Ogni annuncio indica il suo venditore e dice chiaramente se si tratta di un privato o di una concessionaria.</value>
+  </data>
   <data name="Everything in a personal account" xml:space="preserve">
     <value>Tutto ciò che offre un account personale</value>
   </data>
+  <data name="Everything in a promoted listing" xml:space="preserve">
+    <value>Tutto quello che offre un annuncio promosso</value>
+  </data>
   <data name="Favourites" xml:space="preserve">
     <value>Preferiti</value>
+  </data>
+  <data name="Featured this week" xml:space="preserve">
+    <value>In evidenza questa settimana</value>
+  </data>
+  <data name="Filter by price, mileage, fuel and gearbox. Each listing carries the full specification and whatever service history the seller recorded." xml:space="preserve">
+    <value>Filtra per prezzo, chilometraggio, alimentazione e cambio. Ogni annuncio riporta la scheda tecnica completa e lo storico dei tagliandi che il venditore ha registrato.</value>
+  </data>
+  <data name="Find a car" xml:space="preserve">
+    <value>Trova un'auto</value>
+  </data>
+  <data name="First registered" xml:space="preserve">
+    <value>Prima immatricolazione</value>
+  </data>
+  <data name="Follows the buyer's filters, so it shows to people already looking for a car like yours" xml:space="preserve">
+    <value>Segue i filtri dell'acquirente, quindi compare a chi sta già cercando un'auto come la tua</value>
   </data>
   <data name="For businesses" xml:space="preserve">
     <value>Per le aziende</value>
@@ -214,11 +427,44 @@
   <data name="For dealers and garages selling regularly. Your seller panel is unlocked the moment you register." xml:space="preserve">
     <value>Per concessionarie e officine che vendono regolarmente. Il pannello venditore si attiva nel momento in cui ti registri.</value>
   </data>
+  <data name="For dealerships" xml:space="preserve">
+    <value>Per le concessionarie</value>
+  </data>
+  <data name="For parts" xml:space="preserve">
+    <value>Per ricambi</value>
+  </data>
+  <data name="Four steps, and you can stop at any of them." xml:space="preserve">
+    <value>Quattro passi, e puoi fermarti a uno qualsiasi.</value>
+  </data>
+  <data name="Free, and about a minute to set up." xml:space="preserve">
+    <value>Gratuito, e serve circa un minuto.</value>
+  </data>
+  <data name="Fresh on the marketplace" xml:space="preserve">
+    <value>Novità sul mercato</value>
+  </data>
+  <data name="Front page" xml:space="preserve">
+    <value>Home page</value>
+  </data>
+  <data name="Front-wheel drive" xml:space="preserve">
+    <value>Trazione anteriore</value>
+  </data>
   <data name="Fuel" xml:space="preserve">
     <value>Alimentazione</value>
   </data>
+  <data name="Full main-dealer history" xml:space="preserve">
+    <value>Storico completo presso officina ufficiale</value>
+  </data>
+  <data name="Full service history" xml:space="preserve">
+    <value>Storico tagliandi completo</value>
+  </data>
   <data name="Gearbox" xml:space="preserve">
     <value>Cambio</value>
+  </data>
+  <data name="Hatchback" xml:space="preserve">
+    <value>Utilitaria</value>
+  </data>
+  <data name="How buying works" xml:space="preserve">
+    <value>Come si compra</value>
   </data>
   <data name="How it works" xml:space="preserve">
     <value>Come funziona</value>
@@ -229,6 +475,12 @@
   <data name="Hybrid" xml:space="preserve">
     <value>Ibrido</value>
   </data>
+  <data name="If a car has been reduced, the listing says so and shows what it used to cost. No quietly edited numbers." xml:space="preserve">
+    <value>Se un'auto è stata ribassata, l'annuncio lo dice e mostra quanto costava prima. Niente cifre modificate di nascosto.</value>
+  </data>
+  <data name="If they accept, you swap contact details and the car is reserved for you. Payment and handover happen directly between you — PremiumMotors never holds your money." xml:space="preserve">
+    <value>Se accetta, vi scambiate i contatti e l'auto viene prenotata per te. Pagamento e consegna avvengono direttamente tra voi — PremiumMotors non tiene mai i tuoi soldi.</value>
+  </data>
   <data name="Include cars already sold" xml:space="preserve">
     <value>Includi le auto già vendute</value>
   </data>
@@ -238,17 +490,38 @@
   <data name="LPG" xml:space="preserve">
     <value>GPL</value>
   </data>
+  <data name="Leave a rating once you have bought" xml:space="preserve">
+    <value>Lascia una valutazione dopo aver comprato</value>
+  </data>
+  <data name="List your own car" xml:space="preserve">
+    <value>Pubblica la tua auto</value>
+  </data>
   <data name="Listing pages" xml:space="preserve">
     <value>Pagine degli annunci</value>
   </data>
   <data name="Log in" xml:space="preserve">
     <value>Accedi</value>
   </data>
+  <data name="Log in to make an offer" xml:space="preserve">
+    <value>Accedi per fare un'offerta</value>
+  </data>
+  <data name="Log in to make an offer." xml:space="preserve">
+    <value>Accedi per fare un'offerta.</value>
+  </data>
   <data name="Log out" xml:space="preserve">
     <value>Esci</value>
   </data>
+  <data name="Looking around without an account" xml:space="preserve">
+    <value>Guardarsi intorno senza un account</value>
+  </data>
   <data name="Make" xml:space="preserve">
     <value>Marca</value>
+  </data>
+  <data name="Make a private offer" xml:space="preserve">
+    <value>Fai un'offerta privata</value>
+  </data>
+  <data name="Make an offer" xml:space="preserve">
+    <value>Fai un'offerta</value>
   </data>
   <data name="Make or model" xml:space="preserve">
     <value>Marca o modello</value>
@@ -265,6 +538,9 @@
   <data name="Manual" xml:space="preserve">
     <value>Manuale</value>
   </data>
+  <data name="Mark as sold" xml:space="preserve">
+    <value>Segna come venduta</value>
+  </data>
   <data name="Marketplace views" xml:space="preserve">
     <value>Viste del mercato</value>
   </data>
@@ -277,8 +553,23 @@
   <data name="Message sellers" xml:space="preserve">
     <value>Scrivi ai venditori</value>
   </data>
+  <data name="Message the seller" xml:space="preserve">
+    <value>Scrivi al venditore</value>
+  </data>
+  <data name="Message the seller from the listing. VIN, service book, a viewing — all before you commit to a number." xml:space="preserve">
+    <value>Scrivi al venditore dall'annuncio. Numero di telaio, libretto dei tagliandi, un appuntamento per vederla — tutto prima di impegnarti con una cifra.</value>
+  </data>
+  <data name="Message the seller in writing, with a record of it" xml:space="preserve">
+    <value>Scrivi al venditore per iscritto, con traccia della conversazione</value>
+  </data>
   <data name="Messages" xml:space="preserve">
     <value>Messaggi</value>
+  </data>
+  <data name="Messaging with a record" xml:space="preserve">
+    <value>Messaggi con traccia</value>
+  </data>
+  <data name="Mileage" xml:space="preserve">
+    <value>Chilometraggio</value>
   </data>
   <data name="Min" xml:space="preserve">
     <value>Min</value>
@@ -289,17 +580,47 @@
   <data name="Model year" xml:space="preserve">
     <value>Anno</value>
   </data>
+  <data name="Most expensive" xml:space="preserve">
+    <value>Il più costoso</value>
+  </data>
+  <data name="New" xml:space="preserve">
+    <value>Nuova</value>
+  </data>
   <data name="New here?" xml:space="preserve">
     <value>Sei nuovo?</value>
   </data>
   <data name="Next" xml:space="preserve">
     <value>Avanti</value>
   </data>
+  <data name="Next photo" xml:space="preserve">
+    <value>Foto successiva</value>
+  </data>
+  <data name="No account needed to look around. Registration is free, and takes about a minute." xml:space="preserve">
+    <value>Non serve un account per guardare. La registrazione è gratuita e richiede circa un minuto.</value>
+  </data>
+  <data name="No cars are listed yet." xml:space="preserve">
+    <value>Non c'è ancora nessuna auto pubblicata.</value>
+  </data>
   <data name="No cars match your search" xml:space="preserve">
     <value>Nessuna auto corrisponde alla tua ricerca</value>
   </data>
+  <data name="No listing fees. 0% commission. The only thing you can pay for is advertising." xml:space="preserve">
+    <value>Nessun costo di pubblicazione. 0% di commissione. L'unica cosa che puoi pagare è la pubblicità.</value>
+  </data>
+  <data name="No offers yet. Buyers can send you a private offer from this page." xml:space="preserve">
+    <value>Ancora nessuna offerta. Gli acquirenti possono inviarti un'offerta privata da questa pagina.</value>
+  </data>
+  <data name="No service history" xml:space="preserve">
+    <value>Nessuno storico tagliandi</value>
+  </data>
   <data name="No sold cars match that" xml:space="preserve">
     <value>Nessuna auto venduta corrisponde</value>
+  </data>
+  <data name="None declared" xml:space="preserve">
+    <value>Nessuno dichiarato</value>
+  </data>
+  <data name="Not specified" xml:space="preserve">
+    <value>Non specificato</value>
   </data>
   <data name="Not visible to buyers yet" xml:space="preserve">
     <value>Non ancora visibile agli acquirenti</value>
@@ -313,14 +634,56 @@
   <data name="Nothing sold yet" xml:space="preserve">
     <value>Ancora nessuna vendita</value>
   </data>
+  <data name="Offer privately" xml:space="preserve">
+    <value>Offri in privato</value>
+  </data>
+  <data name="Offers ({0})" xml:space="preserve">
+    <value>Offerte ({0})</value>
+  </data>
+  <data name="Offers arrive in your panel with the buyer attached. Accept with a note, decline with a reason, or open a conversation first. Accepting one declines the rest automatically and reserves the car." xml:space="preserve">
+    <value>Le offerte arrivano nel tuo pannello con l'acquirente allegato. Accetta con una nota, rifiuta con una motivazione, o apri prima una conversazione. Accettarne una rifiuta automaticamente le altre e prenota l'auto.</value>
+  </data>
+  <data name="Offers, written messages and favourites need a free account." xml:space="preserve">
+    <value>Offerte, messaggi scritti e preferiti richiedono un account gratuito.</value>
+  </data>
+  <data name="On a classifieds site the advertised price is the ceiling and everyone negotiates down from it. Here a buyer has to name a number first, and plenty of them name one you would not have asked for." xml:space="preserve">
+    <value>Su un sito di annunci il prezzo pubblicizzato è il tetto e tutti trattano al ribasso partendo da lì. Qui è l'acquirente a dover dire per primo una cifra, e molti ne dicono una che tu non avresti chiesto.</value>
+  </data>
+  <data name="On file — ask the seller" xml:space="preserve">
+    <value>Registrato — chiedi al venditore</value>
+  </data>
   <data name="Once cars start selling here they will be listed on this page, with what they actually went for." xml:space="preserve">
     <value>Quando le auto inizieranno a vendersi qui, appariranno in questa pagina con il prezzo a cui sono state effettivamente vendute.</value>
+  </data>
+  <data name="One inbox for every offer" xml:space="preserve">
+    <value>Una sola casella per tutte le offerte</value>
+  </data>
+  <data name="Only a buyer who completed a purchase from you can leave a rating, so the score on your shopfront is worth something. It shows on every listing you put up." xml:space="preserve">
+    <value>Solo un acquirente che ha completato un acquisto da te può lasciare una valutazione, quindi il punteggio sulla tua vetrina vale qualcosa. Compare su ogni annuncio che pubblichi.</value>
+  </data>
+  <data name="Only a confirmed buyer can review a seller, so a five-star average means five completed sales — not five friends." xml:space="preserve">
+    <value>Solo un acquirente confermato può recensire un venditore, quindi una media di cinque stelle significa cinque vendite concluse — non cinque amici.</value>
+  </data>
+  <data name="Only the seller sees your number. Other buyers never do, and neither does the public. You are not bidding against a crowd or against a clock." xml:space="preserve">
+    <value>Solo il venditore vede la tua cifra. Gli altri acquirenti non la vedono mai, e nemmeno il pubblico. Non stai rilanciando contro una folla né contro un cronometro.</value>
+  </data>
+  <data name="Open any car and read the full specification" xml:space="preserve">
+    <value>Apri qualsiasi auto e leggi la scheda tecnica completa</value>
+  </data>
+  <data name="Open chat with the seller" xml:space="preserve">
+    <value>Apri la chat con il venditore</value>
+  </data>
+  <data name="Or just ring the seller on the number below." xml:space="preserve">
+    <value>Oppure chiama semplicemente il venditore al numero qui sotto.</value>
   </data>
   <data name="Other" xml:space="preserve">
     <value>Altro</value>
   </data>
   <data name="Pages" xml:space="preserve">
     <value>Pagine</value>
+  </data>
+  <data name="Partial service history" xml:space="preserve">
+    <value>Storico tagliandi parziale</value>
   </data>
   <data name="Paying to be seen is the closest thing to evidence that a seller is serious and will answer the phone. It is not proof, and it says nothing about the car — but a listing somebody forgot about six months ago is not on here." xml:space="preserve">
     <value>Pagare per essere visti è la cosa più vicina a una prova che un venditore faccia sul serio e risponda al telefono. Non è una prova e non dice nulla sull'auto — ma un annuncio che qualcuno ha dimenticato sei mesi fa non è qui.</value>
@@ -331,11 +694,23 @@
   <data name="Petrol" xml:space="preserve">
     <value>Benzina</value>
   </data>
+  <data name="Phone" xml:space="preserve">
+    <value>Telefono</value>
+  </data>
+  <data name="Photo {0}" xml:space="preserve">
+    <value>Foto {0}</value>
+  </data>
+  <data name="Pickup" xml:space="preserve">
+    <value>Pick-up</value>
+  </data>
   <data name="Placement" xml:space="preserve">
     <value>Posizionamento</value>
   </data>
   <data name="Placement is limited and dated. If this page ever becomes as long as the marketplace itself, it stops being worth reading — so it will not." xml:space="preserve">
     <value>Il posizionamento è limitato e ha una scadenza. Se questa pagina diventasse lunga quanto il mercato stesso, non varrebbe più la pena leggerla — quindi non accadrà.</value>
+  </data>
+  <data name="Placements are arranged with us directly for now — there is no self-service checkout yet, and rates are not published. Every promotion runs for a fixed period and then lapses on its own; nothing renews without you asking. You are sent a reference for each one so you can quote it if you ever need to ask us about it." xml:space="preserve">
+    <value>Per ora i posizionamenti si concordano direttamente con noi — non esiste ancora un pagamento self-service e le tariffe non sono pubblicate. Ogni promozione dura un periodo fisso e poi scade da sola; nulla si rinnova senza che tu lo chieda. Per ciascuna ti viene inviato un riferimento, che puoi citare se un giorno dovessi chiederci qualcosa a riguardo.</value>
   </data>
   <data name="Plug-in hybrid" xml:space="preserve">
     <value>Ibrido plug-in</value>
@@ -343,11 +718,29 @@
   <data name="Post a car" xml:space="preserve">
     <value>Pubblica un'auto</value>
   </data>
+  <data name="Power" xml:space="preserve">
+    <value>Potenza</value>
+  </data>
   <data name="PremiumMotors - buy and sell cars. Browse listings and send private offers to sellers." xml:space="preserve">
     <value>PremiumMotors - compra e vendi auto. Sfoglia gli annunci e invia offerte private ai venditori.</value>
   </data>
+  <data name="PremiumMotors for business" xml:space="preserve">
+    <value>PremiumMotors per le aziende</value>
+  </data>
+  <data name="PremiumMotors for buyers and sellers" xml:space="preserve">
+    <value>PremiumMotors per acquirenti e venditori</value>
+  </data>
+  <data name="PremiumMotors for dealerships" xml:space="preserve">
+    <value>PremiumMotors per le concessionarie</value>
+  </data>
   <data name="Prev" xml:space="preserve">
     <value>Indietro</value>
+  </data>
+  <data name="Previous owners" xml:space="preserve">
+    <value>Proprietari precedenti</value>
+  </data>
+  <data name="Previous photo" xml:space="preserve">
+    <value>Foto precedente</value>
   </data>
   <data name="Price (EUR)" xml:space="preserve">
     <value>Prezzo (EUR)</value>
@@ -355,17 +748,47 @@
   <data name="Price drop" xml:space="preserve">
     <value>Prezzo ribassato</value>
   </data>
+  <data name="Price history" xml:space="preserve">
+    <value>Storico dei prezzi</value>
+  </data>
+  <data name="Price history in the open" xml:space="preserve">
+    <value>Storico dei prezzi alla luce del sole</value>
+  </data>
   <data name="Privacy" xml:space="preserve">
     <value>Privacy</value>
+  </data>
+  <data name="Private offers, not auctions" xml:space="preserve">
+    <value>Offerte private, non aste</value>
+  </data>
+  <data name="Private to the seller. A note starts a chat so they can ask you questions." xml:space="preserve">
+    <value>Privata, la vede solo il venditore. Una nota apre una chat così può farti domande.</value>
   </data>
   <data name="Promoted" xml:space="preserve">
     <value>Promosso</value>
   </data>
+  <data name="Promoted listing" xml:space="preserve">
+    <value>Annuncio promosso</value>
+  </data>
+  <data name="Proof that sales complete" xml:space="preserve">
+    <value>La prova che le vendite si concludono</value>
+  </data>
+  <data name="Ratings from people who actually bought" xml:space="preserve">
+    <value>Valutazioni di chi ha davvero comprato</value>
+  </data>
+  <data name="Read the full explanation" xml:space="preserve">
+    <value>Leggi la spiegazione completa</value>
+  </data>
   <data name="Ready to deal" xml:space="preserve">
     <value>Pronti a trattare</value>
   </data>
+  <data name="Rear-wheel drive" xml:space="preserve">
+    <value>Trazione posteriore</value>
+  </data>
   <data name="Recently sold" xml:space="preserve">
     <value>Venduti di recente</value>
+  </data>
+  <data name="Recently viewed" xml:space="preserve">
+    <value>Visti di recente</value>
   </data>
   <data name="Reduced from {0}" xml:space="preserve">
     <value>Ribassato da {0}</value>
@@ -379,8 +802,44 @@
   <data name="Register as a person" xml:space="preserve">
     <value>Registrati come privato</value>
   </data>
+  <data name="Register your dealership" xml:space="preserve">
+    <value>Registra la tua concessionaria</value>
+  </data>
+  <data name="Register your dealership — free" xml:space="preserve">
+    <value>Registra la tua concessionaria — gratis</value>
+  </data>
+  <data name="Registered business name and trading address" xml:space="preserve">
+    <value>Ragione sociale e indirizzo di attività</value>
+  </data>
+  <data name="Registering is free. Selling is free." xml:space="preserve">
+    <value>Registrarsi è gratis. Vendere è gratis.</value>
+  </data>
   <data name="Reserved" xml:space="preserve">
     <value>Prenotato</value>
+  </data>
+  <data name="Reserved." xml:space="preserve">
+    <value>Prenotata.</value>
+  </data>
+  <data name="Revenue per month, offers per month, views over the last thirty days, and a listing-by-listing table. Views per offer tells you which cars are being looked at and passed over — usually a pricing problem, not a photo problem." xml:space="preserve">
+    <value>Ricavi al mese, offerte al mese, visualizzazioni negli ultimi trenta giorni e una tabella annuncio per annuncio. Le visualizzazioni per offerta ti dicono quali auto vengono guardate e scartate — di solito è un problema di prezzo, non di foto.</value>
+  </data>
+  <data name="Ring the seller directly" xml:space="preserve">
+    <value>Chiamare direttamente il venditore</value>
+  </data>
+  <data name="SUV" xml:space="preserve">
+    <value>SUV</value>
+  </data>
+  <data name="Sale fell through — relist" xml:space="preserve">
+    <value>La vendita è saltata — ripubblica</value>
+  </data>
+  <data name="Sales analytics" xml:space="preserve">
+    <value>Statistiche di vendita</value>
+  </data>
+  <data name="Same body type, around the same money." xml:space="preserve">
+    <value>Stessa carrozzeria, più o meno la stessa cifra.</value>
+  </data>
+  <data name="Save cars to favourites and get the price-drop flag" xml:space="preserve">
+    <value>Salva le auto nei preferiti e ricevi la segnalazione di ribasso</value>
   </data>
   <data name="Search" xml:space="preserve">
     <value>Cerca</value>
@@ -391,11 +850,35 @@
   <data name="Search sold cars" xml:space="preserve">
     <value>Cerca tra le auto vendute</value>
   </data>
+  <data name="Seats" xml:space="preserve">
+    <value>Posti</value>
+  </data>
+  <data name="Sedan" xml:space="preserve">
+    <value>Berlina</value>
+  </data>
+  <data name="See all {0}" xml:space="preserve">
+    <value>Vedi tutte le {0}</value>
+  </data>
+  <data name="See the directory" xml:space="preserve">
+    <value>Vedi l'elenco</value>
+  </data>
+  <data name="See what has recently sold" xml:space="preserve">
+    <value>Vedi cosa è stato venduto di recente</value>
+  </data>
   <data name="See what they went for." xml:space="preserve">
     <value>Guarda a quanto sono state vendute.</value>
   </data>
+  <data name="Seen before a visitor has decided what they are looking for, which is the only inventory on the site that can do that" xml:space="preserve">
+    <value>Visto prima che il visitatore abbia deciso cosa cerca, ed è l'unico spazio del sito che può farlo</value>
+  </data>
   <data name="Sell your own car when you want to" xml:space="preserve">
     <value>Vendi la tua auto quando vuoi</value>
+  </data>
+  <data name="Seller" xml:space="preserve">
+    <value>Venditore</value>
+  </data>
+  <data name="Seller contact details" xml:space="preserve">
+    <value>Dati di contatto del venditore</value>
   </data>
   <data name="Seller panel" xml:space="preserve">
     <value>Pannello venditore</value>
@@ -403,14 +886,41 @@
   <data name="Seller panel from day one" xml:space="preserve">
     <value>Pannello venditore dal primo giorno</value>
   </data>
+  <data name="Sellers set an asking price so you know roughly where you stand. What you offer is up to you — below it, at it, or above it if you really want the car." xml:space="preserve">
+    <value>I venditori indicano un prezzo richiesto così sai più o meno dove ti trovi. Quanto offri dipende da te — sotto, uguale, o sopra se l'auto ti interessa davvero.</value>
+  </data>
+  <data name="Selling more than one car?" xml:space="preserve">
+    <value>Vendi più di un'auto?</value>
+  </data>
+  <data name="Selling one car, not a forecourt?" xml:space="preserve">
+    <value>Vendi una sola auto, non un piazzale?</value>
+  </data>
   <data name="Semi-automatic" xml:space="preserve">
     <value>Semiautomatico</value>
+  </data>
+  <data name="Send offer" xml:space="preserve">
+    <value>Invia offerta</value>
+  </data>
+  <data name="Send what the car is worth to you. You can withdraw it any time before the seller answers." xml:space="preserve">
+    <value>Invia quanto vale l'auto per te. Puoi ritirarla in qualsiasi momento prima che il venditore risponda.</value>
+  </data>
+  <data name="Service history" xml:space="preserve">
+    <value>Storico tagliandi</value>
+  </data>
+  <data name="Service record" xml:space="preserve">
+    <value>Registro dei tagliandi</value>
+  </data>
+  <data name="Share this listing" xml:space="preserve">
+    <value>Condividi questo annuncio</value>
   </data>
   <data name="Show everything sold recently" xml:space="preserve">
     <value>Mostra tutto il venduto di recente</value>
   </data>
   <data name="Showing {0}–{1} of {2} listings" xml:space="preserve">
     <value>Mostrati {0}–{1} di {2} annunci</value>
+  </data>
+  <data name="Similar cars" xml:space="preserve">
+    <value>Auto simili</value>
   </data>
   <data name="Skip to content" xml:space="preserve">
     <value>Vai al contenuto</value>
@@ -424,20 +934,71 @@
   <data name="Sort by" xml:space="preserve">
     <value>Ordina per</value>
   </data>
+  <data name="Specification" xml:space="preserve">
+    <value>Scheda tecnica</value>
+  </data>
+  <data name="Sports Car" xml:space="preserve">
+    <value>Auto sportiva</value>
+  </data>
   <data name="Start selling" xml:space="preserve">
     <value>Inizia a vendere</value>
+  </data>
+  <data name="Stock management" xml:space="preserve">
+    <value>Gestione del parco auto</value>
+  </data>
+  <data name="Stop discounting in public." xml:space="preserve">
+    <value>Smetti di scontare in pubblico.</value>
   </data>
   <data name="Taken off the market by the seller" xml:space="preserve">
     <value>Ritirato dal mercato dal venditore</value>
   </data>
+  <data name="Ten private offers on a car is ten independent valuations. Price the next one from evidence instead of from what the dealer down the road is asking." xml:space="preserve">
+    <value>Dieci offerte private su un'auto sono dieci valutazioni indipendenti. Prezza la prossima sui dati e non su quanto chiede il concessionario in fondo alla strada.</value>
+  </data>
   <data name="Terms" xml:space="preserve">
     <value>Termini</value>
+  </data>
+  <data name="The" xml:space="preserve">
+    <value>La pagina</value>
+  </data>
+  <data name="The asking price is where the conversation starts." xml:space="preserve">
+    <value>Il prezzo richiesto è dove comincia la trattativa.</value>
+  </data>
+  <data name="The first ones will show up here the moment they go live." xml:space="preserve">
+    <value>Le prime compariranno qui appena vengono pubblicate.</value>
+  </data>
+  <data name="The idea" xml:space="preserve">
+    <value>L'idea</value>
+  </data>
+  <data name="The latest cars listed. Click any of them to see the whole listing." xml:space="preserve">
+    <value>Le ultime auto pubblicate. Clicca su una qualsiasi per vedere l'annuncio completo.</value>
+  </data>
+  <data name="The one thing you can pay us for is" xml:space="preserve">
+    <value>L'unica cosa per cui puoi pagarci è</value>
+  </data>
+  <data name="The seller accepted your offer. Arrange inspection, payment and handover directly — PremiumMotors does not handle the money." xml:space="preserve">
+    <value>Il venditore ha accettato la tua offerta. Organizzate direttamente visione, pagamento e consegna — PremiumMotors non gestisce il denaro.</value>
+  </data>
+  <data name="The seller can accept, decline, or message you first." xml:space="preserve">
+    <value>Il venditore può accettare, rifiutare, o scriverti prima.</value>
   </data>
   <data name="The seller has accepted an offer" xml:space="preserve">
     <value>Il venditore ha accettato un'offerta</value>
   </data>
+  <data name="The seller has accepted an offer and is completing the sale." xml:space="preserve">
+    <value>Il venditore ha accettato un'offerta e sta concludendo la vendita.</value>
+  </data>
   <data name="The seller paid for this placement" xml:space="preserve">
     <value>Il venditore ha pagato per questo posizionamento</value>
+  </data>
+  <data name="The seller picks who they sell to" xml:space="preserve">
+    <value>È il venditore a scegliere a chi vendere</value>
+  </data>
+  <data name="The tools you get" xml:space="preserve">
+    <value>Gli strumenti che ottieni</value>
+  </data>
+  <data name="There is no plan to pick, no trial to start and nothing to cancel. Commission is 0% — the sale happens directly between you and the buyer, and we take no part of it, ever." xml:space="preserve">
+    <value>Non c'è un piano da scegliere, nessuna prova da attivare e niente da disdire. La commissione è dello 0% — la vendita avviene direttamente tra te e l'acquirente, e noi non ne prendiamo mai nulla.</value>
   </data>
   <data name="These are promoted listings — the sellers paid for the placement. That buys position, and nothing else: it does not change a car's price, mileage, condition or history, and we do not check any of those on this page or anywhere else." xml:space="preserve">
     <value>Questi sono annunci promossi — i venditori hanno pagato per il posizionamento. Questo compra solo posizione, nient'altro: non cambia prezzo, chilometraggio, condizioni o storia di un'auto, e noi non verifichiamo nessuna di queste cose né qui né altrove.</value>
@@ -445,11 +1006,26 @@
   <data name="These sellers want to sell" xml:space="preserve">
     <value>Questi venditori vogliono vendere</value>
   </data>
+  <data name="They are never forced to take the highest number. Message first, ask about the service book, arrange a viewing — then decide." xml:space="preserve">
+    <value>Non è mai obbligato ad accettare la cifra più alta. Scrivi prima, chiedi del libretto dei tagliandi, fissa un appuntamento — poi decidi.</value>
+  </data>
   <data name="This car has been sold" xml:space="preserve">
     <value>Questa auto è stata venduta</value>
   </data>
+  <data name="This car has been sold." xml:space="preserve">
+    <value>Questa auto è stata venduta.</value>
+  </data>
+  <data name="This is your listing. Offers from buyers appear below." xml:space="preserve">
+    <value>Questo è il tuo annuncio. Le offerte degli acquirenti compaiono qui sotto.</value>
+  </data>
   <data name="This page only covers the last {0} days. Try a different make or model." xml:space="preserve">
     <value>Questa pagina copre solo gli ultimi {0} giorni. Prova con una marca o un modello diverso.</value>
+  </data>
+  <data name="Three slots at a time, on purpose. The moment it becomes a wall of cars it stops being worth buying." xml:space="preserve">
+    <value>Tre spazi alla volta, di proposito. Nel momento in cui diventa un muro di auto smette di valere la spesa.</value>
+  </data>
+  <data name="Three things that change when offers are private." xml:space="preserve">
+    <value>Tre cose che cambiano quando le offerte sono private.</value>
   </data>
   <data name="Toggle navigation" xml:space="preserve">
     <value>Apri o chiudi il menu</value>
@@ -460,11 +1036,26 @@
   <data name="Try raising your budget, allowing more mileage, or clearing a filter." xml:space="preserve">
     <value>Prova ad alzare il budget, ad accettare più chilometri o a togliere un filtro.</value>
   </data>
+  <data name="Two placements. Each one is a real, visible change to where your car appears, and every advertised car is labelled as advertised." xml:space="preserve">
+    <value>Due posizionamenti. Ognuno è un cambiamento reale e visibile di dove compare la tua auto, e ogni auto pubblicizzata è contrassegnata come tale.</value>
+  </data>
   <data name="Type" xml:space="preserve">
     <value>Tipo</value>
   </data>
+  <data name="Used" xml:space="preserve">
+    <value>Usata</value>
+  </data>
   <data name="Useful for judging a price." xml:space="preserve">
     <value>Utile per valutare un prezzo.</value>
+  </data>
+  <data name="VAT number and website are optional and can be added later." xml:space="preserve">
+    <value>Partita IVA e sito web sono facoltativi e si possono aggiungere in seguito.</value>
+  </data>
+  <data name="VIN" xml:space="preserve">
+    <value>Numero di telaio</value>
+  </data>
+  <data name="Van" xml:space="preserve">
+    <value>Furgone</value>
   </data>
   <data name="View" xml:space="preserve">
     <value>Vedi</value>
@@ -472,22 +1063,151 @@
   <data name="View {0}" xml:space="preserve">
     <value>Vedi {0}</value>
   </data>
+  <data name="Wagon" xml:space="preserve">
+    <value>Station wagon</value>
+  </data>
+  <data name="We ask for a registration number so that a business account is tied to a real registered business rather than to an address somebody made up this morning. We record it with your account and nothing else: we do not check it against any register, and no listing on this site carries a verified badge." xml:space="preserve">
+    <value>Chiediamo un numero di registrazione perché un account aziendale sia legato a un'impresa realmente registrata e non a un indirizzo inventato stamattina. Lo registriamo insieme al tuo account e nulla più: non lo verifichiamo presso alcun registro, e nessun annuncio su questo sito porta un contrassegno di verifica.</value>
+  </data>
+  <data name="What an account adds" xml:space="preserve">
+    <value>Cosa aggiunge un account</value>
+  </data>
   <data name="What cars actually sell for is usually more useful than what they are advertised at. These are completed sales from the last {0} days, newest first." xml:space="preserve">
     <value>Il prezzo a cui le auto vengono davvero vendute è di solito più utile di quello a cui sono pubblicizzate. Queste sono vendite concluse degli ultimi {0} giorni, dalle più recenti.</value>
+  </data>
+  <data name="What the top tier looks like" xml:space="preserve">
+    <value>Che aspetto ha il livello più alto</value>
   </data>
   <data name="What this page is." xml:space="preserve">
     <value>Che cos'è questa pagina.</value>
   </data>
+  <data name="What you will need" xml:space="preserve">
+    <value>Cosa ti servirà</value>
+  </data>
   <data name="When sellers promote a car it appears here until their placement runs out." xml:space="preserve">
     <value>Quando un venditore promuove un'auto, questa appare qui finché il posizionamento non scade.</value>
+  </data>
+  <data name="Where the money is" xml:space="preserve">
+    <value>Dove stanno i soldi</value>
+  </data>
+  <data name="Why buy here" xml:space="preserve">
+    <value>Perché comprare qui</value>
+  </data>
+  <data name="Withdraw my offer" xml:space="preserve">
+    <value>Ritira la mia offerta</value>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Anno</value>
+  </data>
+  <data name="You accepted this buyer's offer. Arrange inspection, payment and handover directly — the sale happens between you and the buyer." xml:space="preserve">
+    <value>Hai accettato l'offerta di questo acquirente. Organizzate direttamente visione, pagamento e consegna — la vendita avviene tra te e l'acquirente.</value>
+  </data>
+  <data name="You are never forced to take the highest" xml:space="preserve">
+    <value>Non sei mai obbligato ad accettare l'offerta più alta</value>
+  </data>
+  <data name="You bought this car." xml:space="preserve">
+    <value>Hai comprato questa auto.</value>
+  </data>
+  <data name="You can see who you are dealing with" xml:space="preserve">
+    <value>Vedi con chi hai a che fare</value>
+  </data>
+  <data name="You find out what a car is really worth" xml:space="preserve">
+    <value>Scopri quanto vale davvero un'auto</value>
+  </data>
+  <data name="You get the whole marketplace. Just not the parts that need to know who you are." xml:space="preserve">
+    <value>Ottieni tutto il mercato. Solo non le parti che hanno bisogno di sapere chi sei.</value>
+  </data>
+  <data name="Your NIPT" xml:space="preserve">
+    <value>Il tuo NIPT</value>
+  </data>
+  <data name="Your floor stays yours" xml:space="preserve">
+    <value>Il tuo prezzo minimo resta tuo</value>
+  </data>
+  <data name="Your last offer: {0}" xml:space="preserve">
+    <value>La tua ultima offerta: {0}</value>
+  </data>
+  <data name="Your logo, banner, address, opening hours and every car you have, on one page with a clean address you can print on a business card. Buyers browse the" xml:space="preserve">
+    <value>Il tuo logo, la tua immagine di copertina, l'indirizzo, gli orari e tutte le auto che hai, su un'unica pagina con un indirizzo pulito che puoi stampare su un biglietto da visita. Gli acquirenti sfogliano</value>
+  </data>
+  <data name="Your offer stays between you two" xml:space="preserve">
+    <value>La tua offerta resta tra voi due</value>
+  </data>
+  <data name="Your offer was accepted." xml:space="preserve">
+    <value>La tua offerta è stata accettata.</value>
+  </data>
+  <data name="Your offer: {0}" xml:space="preserve">
+    <value>La tua offerta: {0}</value>
+  </data>
+  <data name="advertising" xml:space="preserve">
+    <value>la pubblicità</value>
+  </data>
+  <data name="buying a more prominent place for a car than it would earn on its own. Nothing else on this site costs money, and a listing that is not promoted is not penalised — it just is not advertised." xml:space="preserve">
+    <value>comprare per un'auto un posto più in vista di quello che si guadagnerebbe da sola. Nient'altro su questo sito costa, e un annuncio non promosso non viene penalizzato — semplicemente non è pubblicizzato.</value>
+  </data>
+  <data name="by name and by city, not just by car." xml:space="preserve">
+    <value>per nome e per città, non solo per auto.</value>
+  </data>
+  <data name="cars listed" xml:space="preserve">
+    <value>auto pubblicate</value>
+  </data>
+  <data name="commission on a sale" xml:space="preserve">
+    <value>di commissione su una vendita</value>
+  </data>
+  <data name="dealership directory" xml:space="preserve">
+    <value>l'elenco delle concessionarie</value>
+  </data>
+  <data name="dealerships trading" xml:space="preserve">
+    <value>concessionarie attive</value>
+  </data>
+  <data name="e.g. Can collect this weekend, cash ready." xml:space="preserve">
+    <value>es. Posso ritirarla questo fine settimana, contanti pronti.</value>
+  </data>
+  <data name="hp" xml:space="preserve">
+    <value>CV</value>
+  </data>
+  <data name="listed" xml:space="preserve">
+    <value>pubblicata</value>
+  </data>
+  <data name="on the number shown in the listing" xml:space="preserve">
+    <value>al numero indicato nell'annuncio</value>
+  </data>
+  <data name="page lists what actually changed hands, and for how much." xml:space="preserve">
+    <value>elenca cosa ha davvero cambiato proprietario, e a quanto.</value>
+  </data>
+  <data name="page of its own" xml:space="preserve">
+    <value>pagina tutta sua</value>
   </data>
   <data name="page {0} of {1}" xml:space="preserve">
     <value>pagina {0} di {1}</value>
   </data>
+  <data name="sellers" xml:space="preserve">
+    <value>venditori</value>
+  </data>
+  <data name="sold through the site" xml:space="preserve">
+    <value>vendute tramite il sito</value>
+  </data>
+  <data name="the business registration number" xml:space="preserve">
+    <value>il numero di registrazione dell'impresa</value>
+  </data>
+  <data name="the page of currently promoted cars" xml:space="preserve">
+    <value>la pagina delle auto attualmente promosse</value>
+  </data>
+  <data name="the whole forecourt in one place." xml:space="preserve">
+    <value>tutto il piazzale in un unico posto.</value>
+  </data>
+  <data name="{0} awaiting reply" xml:space="preserve">
+    <value>{0} in attesa di risposta</value>
+  </data>
   <data name="{0} cars sold through PremiumMotors" xml:space="preserve">
     <value>{0} auto vendute tramite PremiumMotors</value>
   </data>
+  <data name="{0} in stock" xml:space="preserve">
+    <value>{0} disponibili</value>
+  </data>
   <data name="{0} listings" xml:space="preserve">
     <value>{0} annunci</value>
+  </data>
+  <data name="{0} views" xml:space="preserve">
+    <value>{0} visualizzazioni</value>
   </data>
 </root>

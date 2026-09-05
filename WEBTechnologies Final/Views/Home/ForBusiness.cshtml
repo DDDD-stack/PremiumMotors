@@ -1,6 +1,6 @@
 @model BusinessLandingViewModel
 @{
-    ViewData["Title"] = "PremiumMotors for dealerships";
+    ViewData["Title"] = L["PremiumMotors for dealerships"].Value;
     var stats = Model.Stats;
 }
 
@@ -11,37 +11,35 @@
    --------------------------------------------------------------------------- *@
 <section class="pm-hero pm-hero-biz pm-bleed">
     <div class="pm-hero-inner pm-stagger">
-        <p class="pm-eyebrow">For dealerships</p>
+        <p class="pm-eyebrow">@L["For dealerships"]</p>
 
-        <h1 class="pm-hero-title">Stop discounting in public.</h1>
+        <h1 class="pm-hero-title">@L["Stop discounting in public."]</h1>
 
         <p class="pm-hero-sub">
-            Every buyer who walks your forecourt already knows your lowest advertised price —
-            because you advertised it. Here, buyers come to you with a number instead, one at a
-            time, in private. You keep the margin you would otherwise have posted on a banner.
+            @L["Every buyer who walks your forecourt already knows your lowest advertised price — because you advertised it. Here, buyers come to you with a number instead, one at a time, in private. You keep the margin you would otherwise have posted on a banner."]
         </p>
 
         <div class="pm-hero-cta">
             <a asp-controller="Account" asp-action="RegisterBusiness"
                class="btn btn-lg btn-warning fw-semibold pm-cta-main" data-pm-cta-anchor>
-                Register your dealership — free
+                @L["Register your dealership — free"]
             </a>
             <a asp-controller="Cars" asp-action="Index" class="btn btn-lg btn-outline-light">
-                Browse the marketplace
+                @L["Browse the marketplace"]
             </a>
         </div>
 
         <p class="pm-hero-note">
-            No listing fees. 0% commission. The only thing you can pay for is advertising.
+            @L["No listing fees. 0% commission. The only thing you can pay for is advertising."]
         </p>
 
         @if (stats.WorthShowing)
         {
             <dl class="pm-stat-strip">
-                <div><dt>0%</dt><dd>commission on a sale</dd></div>
-                <div><dt>@stats.DealershipCount</dt><dd>dealerships trading</dd></div>
-                <div><dt>@stats.ActiveListings</dt><dd>cars listed</dd></div>
-                <div><dt>@stats.SoldCount</dt><dd>sold through the site</dd></div>
+                <div><dt>0%</dt><dd>@L["commission on a sale"]</dd></div>
+                <div><dt>@stats.DealershipCount</dt><dd>@L["dealerships trading"]</dd></div>
+                <div><dt>@stats.ActiveListings</dt><dd>@L["cars listed"]</dd></div>
+                <div><dt>@stats.SoldCount</dt><dd>@L["sold through the site"]</dd></div>
             </dl>
         }
     </div>
@@ -51,44 +49,40 @@
    reading this page is being shown exactly what the top tier buys, using cars that
    somebody actually paid to put there. *@
 <partial name="_FrontPagePromotions" model="Model.Promoted"
-         view-data='new ViewDataDictionary(ViewData) { ["PromoHeading"] = "What the top tier looks like" }' />
+         view-data='new ViewDataDictionary(ViewData) { ["PromoHeading"] = L["What the top tier looks like"].Value }' />
 
 @* --------------------------------------------------------------------------- *@
 <section class="pm-section pm-reveal">
     <div class="pm-section-head">
-        <h2>Where the money is</h2>
-        <p class="pm-muted">Three things that change when offers are private.</p>
+        <h2>@L["Where the money is"]</h2>
+        <p class="pm-muted">@L["Three things that change when offers are private."]</p>
     </div>
 
     <div class="row g-4 pm-stagger">
         <div class="col-md-4">
             <div class="pm-idea-card">
                 <span class="pm-idea-num">01</span>
-                <h3 class="h6">Your floor stays yours</h3>
+                <h3 class="h6">@L["Your floor stays yours"]</h3>
                 <p>
-                    On a classifieds site the advertised price is the ceiling and everyone
-                    negotiates down from it. Here a buyer has to name a number first, and
-                    plenty of them name one you would not have asked for.
+                    @L["On a classifieds site the advertised price is the ceiling and everyone negotiates down from it. Here a buyer has to name a number first, and plenty of them name one you would not have asked for."]
                 </p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="pm-idea-card">
                 <span class="pm-idea-num">02</span>
-                <h3 class="h6">You are never forced to take the highest</h3>
+                <h3 class="h6">@L["You are never forced to take the highest"]</h3>
                 <p>
-                    Accept the buyer who is financed, local and ready — not just the one waving
-                    the biggest number. Declining costs you nothing and the listing stays live.
+                    @L["Accept the buyer who is financed, local and ready — not just the one waving the biggest number. Declining costs you nothing and the listing stays live."]
                 </p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="pm-idea-card">
                 <span class="pm-idea-num">03</span>
-                <h3 class="h6">You find out what a car is really worth</h3>
+                <h3 class="h6">@L["You find out what a car is really worth"]</h3>
                 <p>
-                    Ten private offers on a car is ten independent valuations. Price the next
-                    one from evidence instead of from what the dealer down the road is asking.
+                    @L["Ten private offers on a car is ten independent valuations. Price the next one from evidence instead of from what the dealer down the road is asking."]
                 </p>
             </div>
         </div>
@@ -98,68 +92,58 @@
 @* --------------------------------------------------------------------------- *@
 <section class="pm-section pm-reveal">
     <div class="pm-section-head">
-        <h2>The tools you get</h2>
-        <p class="pm-muted">All of it included, from the day you register.</p>
+        <h2>@L["The tools you get"]</h2>
+        <p class="pm-muted">@L["All of it included, from the day you register."]</p>
     </div>
 
     <div class="row g-4 pm-stagger">
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">A shopfront of your own</h3>
+                <h3 class="h6">@L["A shopfront of your own"]</h3>
                 <p>
-                    Your logo, banner, address, opening hours and every car you have, on one
-                    page with a clean address you can print on a business card. Buyers browse
-                    the <a asp-controller="Dealerships" asp-action="Index">dealership directory</a>
-                    by name and by city, not just by car.
+                    @L["Your logo, banner, address, opening hours and every car you have, on one page with a clean address you can print on a business card. Buyers browse the"]
+                    <a asp-controller="Dealerships" asp-action="Index">@L["dealership directory"]</a>
+                    @L["by name and by city, not just by car."]
                 </p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">Sales analytics</h3>
+                <h3 class="h6">@L["Sales analytics"]</h3>
                 <p>
-                    Revenue per month, offers per month, views over the last thirty days, and a
-                    listing-by-listing table. Views per offer tells you which cars are being
-                    looked at and passed over — usually a pricing problem, not a photo problem.
+                    @L["Revenue per month, offers per month, views over the last thirty days, and a listing-by-listing table. Views per offer tells you which cars are being looked at and passed over — usually a pricing problem, not a photo problem."]
                 </p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">One inbox for every offer</h3>
+                <h3 class="h6">@L["One inbox for every offer"]</h3>
                 <p>
-                    Offers arrive in your panel with the buyer attached. Accept with a note,
-                    decline with a reason, or open a conversation first. Accepting one declines
-                    the rest automatically and reserves the car.
+                    @L["Offers arrive in your panel with the buyer attached. Accept with a note, decline with a reason, or open a conversation first. Accepting one declines the rest automatically and reserves the car."]
                 </p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">Stock management</h3>
+                <h3 class="h6">@L["Stock management"]</h3>
                 <p>
-                    Draft, active, reserved, sold and archived — move a car between them in one
-                    click. Relist an unsold car without retyping it. Every price change is
-                    recorded, so your own history is auditable.
+                    @L["Draft, active, reserved, sold and archived — move a car between them in one click. Relist an unsold car without retyping it. Every price change is recorded, so your own history is auditable."]
                 </p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">A reputation you can point at</h3>
+                <h3 class="h6">@L["A reputation you can point at"]</h3>
                 <p>
-                    Only a buyer who completed a purchase from you can leave a rating, so the
-                    score on your shopfront is worth something. It shows on every listing you
-                    put up.
+                    @L["Only a buyer who completed a purchase from you can leave a rating, so the score on your shopfront is worth something. It shows on every listing you put up."]
                 </p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">Messaging with a record</h3>
+                <h3 class="h6">@L["Messaging with a record"]</h3>
                 <p>
-                    Every conversation is tied to the car it is about and kept in one thread,
-                    so a handover six weeks later is not an argument about who said what.
+                    @L["Every conversation is tied to the car it is about and kept in one thread, so a handover six weeks later is not an argument about who said what."]
                 </p>
             </div>
         </div>
@@ -173,44 +157,38 @@
 <section class="pm-section pm-reveal">
     <div class="pm-signup">
         <div class="pm-signup-col">
-            <h2 class="h4">Registering is free. Selling is free.</h2>
+            <h2 class="h4">@L["Registering is free. Selling is free."]</h2>
             <p class="pm-muted">
-                There is no plan to pick, no trial to start and nothing to cancel. Commission
-                is <strong>0%</strong> — the sale happens directly between you and the buyer,
-                and we take no part of it, ever.
+                @L["There is no plan to pick, no trial to start and nothing to cancel. Commission is 0% — the sale happens directly between you and the buyer, and we take no part of it, ever."]
             </p>
             <p class="pm-muted">
-                The one thing you can pay us for is <a href="#advertising">advertising</a>:
-                buying a more prominent place for a car than it would earn on its own. Nothing
-                else on this site costs money, and a listing that is not promoted is not
-                penalised — it just is not advertised.
+                @L["The one thing you can pay us for is"] <a href="#advertising">@L["advertising"]</a>:
+                @L["buying a more prominent place for a car than it would earn on its own. Nothing else on this site costs money, and a listing that is not promoted is not penalised — it just is not advertised."]
             </p>
             @* Careful with this paragraph. There is no verification anywhere in the app and
-               no plan for one, so it must not hint that a check happens or is coming. *@
+               no plan for one, so it must not hint that a check happens or is coming. The
+               previous wording ended "...until we do", which promised exactly that. *@
             <p class="pm-muted mb-0">
-                We ask for a registration number so that a business account is tied to a real
-                registered business rather than to an address somebody made up this morning.
-                We record it with your account; we do not check it against a public register
-                yet, and no listing carries a verified badge until we do.
+                @L["We ask for a registration number so that a business account is tied to a real registered business rather than to an address somebody made up this morning. We record it with your account and nothing else: we do not check it against any register, and no listing on this site carries a verified badge."]
             </p>
         </div>
 
         <div class="pm-signup-col">
-            <h2 class="h5">What you will need</h2>
+            <h2 class="h5">@L["What you will need"]</h2>
             <ol class="pm-tick-list pm-tick-num">
-                <li><strong>Your NIPT</strong> — the business registration number</li>
-                <li>Registered business name and trading address</li>
-                <li>A named contact person for the account</li>
-                <li>An email address and a phone number</li>
+                <li><strong>@L["Your NIPT"]</strong> — @L["the business registration number"]</li>
+                <li>@L["Registered business name and trading address"]</li>
+                <li>@L["A named contact person for the account"]</li>
+                <li>@L["An email address and a phone number"]</li>
             </ol>
-            <p class="pm-muted small">VAT number and website are optional and can be added later.</p>
+            <p class="pm-muted small">@L["VAT number and website are optional and can be added later."]</p>
 
             <a asp-controller="Account" asp-action="RegisterBusiness" class="btn btn-lg btn-primary fw-semibold">
-                Register your dealership
+                @L["Register your dealership"]
             </a>
             <p class="small pm-muted mt-2 mb-0">
-                Already have a business account?
-                <a asp-controller="Account" asp-action="Login">Log in</a>.
+                @L["Already have a business account?"]
+                <a asp-controller="Account" asp-action="Login">@L["Log in"]</a>.
             </p>
         </div>
     </div>
@@ -223,10 +201,9 @@
    --------------------------------------------------------------------------- *@
 <section id="advertising" class="pm-section pm-reveal">
     <div class="pm-section-head">
-        <h2>Advertising — the only thing that costs money</h2>
+        <h2>@L["Advertising — the only thing that costs money"]</h2>
         <p class="pm-muted">
-            Two placements. Each one is a real, visible change to where your car appears, and
-            every advertised car is labelled as advertised.
+            @L["Two placements. Each one is a real, visible change to where your car appears, and every advertised car is labelled as advertised."]
         </p>
     </div>
 
@@ -234,20 +211,17 @@
         <div class="col-md-6">
             <div class="pm-tier">
                 <div class="pm-tier-head">
-                    <h3 class="h6 mb-0">Promoted listing</h3>
+                    <h3 class="h6 mb-0">@L["Promoted listing"]</h3>
                 </div>
                 <ul class="pm-tick-list">
-                    <li>A highlighted card everywhere the car appears</li>
-                    <li>A place near the top of the first page of results, mixed in with the
-                        free listings rather than fenced off above them</li>
-                    <li>A slot on <a asp-controller="Cars" asp-action="Featured">Ready to deal</a>,
-                        the page of currently promoted cars</li>
-                    <li>Follows the buyer's filters, so it shows to people already looking
-                        for a car like yours</li>
+                    <li>@L["A highlighted card everywhere the car appears"]</li>
+                    <li>@L["A place near the top of the first page of results, mixed in with the free listings rather than fenced off above them"]</li>
+                    <li>@L["A slot on"] <a asp-controller="Cars" asp-action="Featured">@L["Ready to deal"]</a>,
+                        @L["the page of currently promoted cars"]</li>
+                    <li>@L["Follows the buyer's filters, so it shows to people already looking for a car like yours"]</li>
                 </ul>
                 <p class="small pm-muted mb-0">
-                    Best for a car that is getting views and no offers, where the problem is
-                    position rather than price.
+                    @L["Best for a car that is getting views and no offers, where the problem is position rather than price."]
                 </p>
             </div>
         </div>
@@ -255,19 +229,16 @@
         <div class="col-md-6">
             <div class="pm-tier pm-tier-top">
                 <div class="pm-tier-head">
-                    <h3 class="h6 mb-0">Front page</h3>
-                    <span class="pm-tier-flag">Most expensive</span>
+                    <h3 class="h6 mb-0">@L["Front page"]</h3>
+                    <span class="pm-tier-flag">@L["Most expensive"]</span>
                 </div>
                 <ul class="pm-tick-list">
-                    <li>Everything in a promoted listing</li>
-                    <li>A slot on <strong>both</strong> front pages — the buyers' one and this
-                        one — directly beneath the headline</li>
-                    <li>Seen before a visitor has decided what they are looking for, which is
-                        the only inventory on the site that can do that</li>
+                    <li>@L["Everything in a promoted listing"]</li>
+                    <li>@L["A slot on both front pages — the buyers' one and this one — directly beneath the headline"]</li>
+                    <li>@L["Seen before a visitor has decided what they are looking for, which is the only inventory on the site that can do that"]</li>
                 </ul>
                 <p class="small pm-muted mb-0">
-                    Three slots at a time, on purpose. The moment it becomes a wall of cars it
-                    stops being worth buying.
+                    @L["Three slots at a time, on purpose. The moment it becomes a wall of cars it stops being worth buying."]
                 </p>
             </div>
         </div>
@@ -276,9 +247,7 @@
     @* No prices, because none are set and inventing them here would be the one lie on an
        otherwise checkable page. There is no checkout either - see the pre-release checklist. *@
     <p class="pm-muted small mt-4 mb-0">
-        Placements are arranged with us directly for now — there is no self-service checkout
-        yet, and rates are not published. Every promotion runs for a fixed period and then
-        lapses on its own; nothing renews without you asking.
+        @L["Placements are arranged with us directly for now — there is no self-service checkout yet, and rates are not published. Every promotion runs for a fixed period and then lapses on its own; nothing renews without you asking. You are sent a reference for each one so you can quote it if you ever need to ask us about it."]
     </p>
 </section>
 
@@ -288,11 +257,11 @@
     <section class="pm-section pm-reveal">
         <div class="pm-section-head pm-section-head-row">
             <div>
-                <h2>Dealerships already trading here</h2>
-                <p class="pm-muted mb-0">Every business account gets a page like these.</p>
+                <h2>@L["Dealerships already trading here"]</h2>
+                <p class="pm-muted mb-0">@L["Every business account gets a page like these."]</p>
             </div>
             <a asp-controller="Dealerships" asp-action="Index" class="btn btn-outline-primary d-none d-md-inline-block">
-                See the directory
+                @L["See the directory"]
             </a>
         </div>
 
@@ -309,7 +278,7 @@
                             <span class="pm-dealer-mini-meta">@dealer.Location</span>
                         }
                         <span class="pm-dealer-mini-meta">
-                            @dealer.ListingCount in stock
+                            @L["{0} in stock", dealer.ListingCount]
                             @if (dealer.RatingCount > 0)
                             {
                                 <text>· @dealer.RatingAverage.ToString("0.0") ★</text>
@@ -326,13 +295,13 @@
 <section class="pm-band pm-bleed pm-reveal">
     <div class="pm-band-inner">
         <div>
-            <h2 class="h4 mb-1">Selling one car, not a forecourt?</h2>
+            <h2 class="h4 mb-1">@L["Selling one car, not a forecourt?"]</h2>
             <p class="mb-0">
-                A personal account lists a car just as well, and costs nothing either.
+                @L["A personal account lists a car just as well, and costs nothing either."]
             </p>
         </div>
         <a asp-controller="Home" asp-action="Index" class="btn btn-lg btn-warning fw-semibold flex-shrink-0">
-            PremiumMotors for buyers and sellers
+            @L["PremiumMotors for buyers and sellers"]
         </a>
     </div>
 </section>

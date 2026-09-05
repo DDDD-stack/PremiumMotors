@@ -1,6 +1,6 @@
 @model HomeLandingViewModel
 @{
-    ViewData["Title"] = "Buy and sell cars by private offer";
+    ViewData["Title"] = L["Buy and sell cars by private offer"].Value;
     var stats = Model.Stats;
 }
 
@@ -11,37 +11,41 @@
    --------------------------------------------------------------------------- *@
 <section class="pm-hero pm-bleed">
     <div class="pm-hero-inner pm-stagger">
-        <p class="pm-eyebrow">Private offers, not auctions</p>
+        <p class="pm-eyebrow">@L["Private offers, not auctions"]</p>
 
-        <h1 class="pm-hero-title">The asking price is where<br class="d-none d-md-inline" /> the conversation starts.</h1>
+        @* One sentence, not two joined by a line break: the break is decoration, and a
+           language that words this differently must be free to break it elsewhere. *@
+        <h1 class="pm-hero-title">@L["The asking price is where the conversation starts."]</h1>
 
         <p class="pm-hero-sub">
-            Every car here has a price on it. None of them are take-it-or-leave-it. You make a
-            private offer, the seller answers, and nobody else ever sees what you bid.
+            @L["Every car here has a price on it. None of them are take-it-or-leave-it. You make a private offer, the seller answers, and nobody else ever sees what you bid."]
         </p>
 
         <div class="pm-hero-cta">
             <a asp-controller="Cars" asp-action="Index"
                class="btn btn-lg btn-warning fw-semibold pm-cta-main" data-pm-cta-anchor>
-                Browse the marketplace
+                @L["Browse the marketplace"]
             </a>
 
             <a asp-controller="Account" asp-action="Signup" class="btn btn-lg btn-outline-light">
-                Create a free account
+                @L["Create a free account"]
             </a>
         </div>
 
         <p class="pm-hero-note">
-            No account needed to look around. Registration is free, and takes about a minute.
+            @L["No account needed to look around. Registration is free, and takes about a minute."]
         </p>
 
         @if (stats.WorthShowing)
         {
             <dl class="pm-stat-strip">
-                <div><dt>@stats.ActiveListings</dt><dd>cars for sale</dd></div>
-                <div><dt>@stats.DealershipCount</dt><dd>dealerships</dd></div>
-                <div><dt>@stats.SellerCount</dt><dd>sellers</dd></div>
-                <div><dt>@stats.SoldCount</dt><dd>sold through the site</dd></div>
+                @* Capitalised because .resx names are matched case-insensitively: "cars for sale" and
+                   the browse heading "Cars for sale" are the SAME resource name, and having both
+                   silently drops one of them at build time. One phrase, one key. *@
+                <div><dt>@stats.ActiveListings</dt><dd>@L["Cars for sale"]</dd></div>
+                <div><dt>@stats.DealershipCount</dt><dd>@L["Dealerships"]</dd></div>
+                <div><dt>@stats.SellerCount</dt><dd>@L["sellers"]</dd></div>
+                <div><dt>@stats.SoldCount</dt><dd>@L["sold through the site"]</dd></div>
             </dl>
         }
     </div>
@@ -50,15 +54,14 @@
 @* The premium advertising slot: first thing below the hero, before anything we wrote
    ourselves. Renders nothing when nobody has bought it. *@
 <partial name="_FrontPagePromotions" model="Model.Promoted"
-         view-data='new ViewDataDictionary(ViewData) { ["PromoHeading"] = "Featured this week" }' />
+         view-data='new ViewDataDictionary(ViewData) { ["PromoHeading"] = L["Featured this week"].Value }' />
 
 @* --------------------------------------------------------------------------- *@
 <section class="pm-section pm-reveal">
     <div class="pm-section-head">
-        <h2>The idea</h2>
+        <h2>@L["The idea"]</h2>
         <p class="pm-muted">
-            Classifieds make you pay the sticker. Auctions make you bid in public against
-            strangers. This is neither.
+            @L["Classifieds make you pay the sticker. Auctions make you bid in public against strangers. This is neither."]
         </p>
     </div>
 
@@ -66,30 +69,27 @@
         <div class="col-md-4">
             <div class="pm-idea-card">
                 <span class="pm-idea-num">01</span>
-                <h3 class="h6">A price, not an ultimatum</h3>
+                <h3 class="h6">@L["A price, not an ultimatum"]</h3>
                 <p>
-                    Sellers set an asking price so you know roughly where you stand. What you
-                    offer is up to you — below it, at it, or above it if you really want the car.
+                    @L["Sellers set an asking price so you know roughly where you stand. What you offer is up to you — below it, at it, or above it if you really want the car."]
                 </p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="pm-idea-card">
                 <span class="pm-idea-num">02</span>
-                <h3 class="h6">Your offer stays between you two</h3>
+                <h3 class="h6">@L["Your offer stays between you two"]</h3>
                 <p>
-                    Only the seller sees your number. Other buyers never do, and neither does
-                    the public. You are not bidding against a crowd or against a clock.
+                    @L["Only the seller sees your number. Other buyers never do, and neither does the public. You are not bidding against a crowd or against a clock."]
                 </p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="pm-idea-card">
                 <span class="pm-idea-num">03</span>
-                <h3 class="h6">The seller picks who they sell to</h3>
+                <h3 class="h6">@L["The seller picks who they sell to"]</h3>
                 <p>
-                    They are never forced to take the highest number. Message first, ask about
-                    the service book, arrange a viewing — then decide.
+                    @L["They are never forced to take the highest number. Message first, ask about the service book, arrange a viewing — then decide."]
                 </p>
             </div>
         </div>
@@ -99,32 +99,32 @@
 @* --------------------------------------------------------------------------- *@
 <section class="pm-section pm-reveal">
     <div class="pm-section-head">
-        <h2>How buying works</h2>
-        <p class="pm-muted">Four steps, and you can stop at any of them.</p>
+        <h2>@L["How buying works"]</h2>
+        <p class="pm-muted">@L["Four steps, and you can stop at any of them."]</p>
     </div>
 
     <ol class="pm-flow pm-stagger">
         <li>
-            <h3 class="h6">Find a car</h3>
-            <p>Filter by price, mileage, fuel and gearbox. Each listing carries the full specification and whatever service history the seller recorded.</p>
+            <h3 class="h6">@L["Find a car"]</h3>
+            <p>@L["Filter by price, mileage, fuel and gearbox. Each listing carries the full specification and whatever service history the seller recorded."]</p>
         </li>
         <li>
-            <h3 class="h6">Ask first</h3>
-            <p>Message the seller from the listing. VIN, service book, a viewing — all before you commit to a number.</p>
+            <h3 class="h6">@L["Ask first"]</h3>
+            <p>@L["Message the seller from the listing. VIN, service book, a viewing — all before you commit to a number."]</p>
         </li>
         <li>
-            <h3 class="h6">Offer privately</h3>
-            <p>Send what the car is worth to you. You can withdraw it any time before the seller answers.</p>
+            <h3 class="h6">@L["Offer privately"]</h3>
+            <p>@L["Send what the car is worth to you. You can withdraw it any time before the seller answers."]</p>
         </li>
         <li>
-            <h3 class="h6">Agree and collect</h3>
-            <p>If they accept, you swap contact details and the car is reserved for you. Payment and handover happen directly between you — PremiumMotors never holds your money.</p>
+            <h3 class="h6">@L["Agree and collect"]</h3>
+            <p>@L["If they accept, you swap contact details and the car is reserved for you. Payment and handover happen directly between you — PremiumMotors never holds your money."]</p>
         </li>
     </ol>
 
     <div class="text-center mt-4">
         <a asp-controller="Home" asp-action="HowItWorks" class="btn btn-outline-primary">
-            Read the full explanation
+            @L["Read the full explanation"]
         </a>
     </div>
 </section>
@@ -136,20 +136,20 @@
 <section id="featured" class="pm-section pm-reveal">
     <div class="pm-section-head pm-section-head-row">
         <div>
-            <h2>Fresh on the marketplace</h2>
-            <p class="pm-muted mb-0">The latest cars listed. Click any of them to see the whole listing.</p>
+            <h2>@L["Fresh on the marketplace"]</h2>
+            <p class="pm-muted mb-0">@L["The latest cars listed. Click any of them to see the whole listing."]</p>
         </div>
         <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-primary d-none d-md-inline-block">
-            See all @stats.ActiveListings
+            @L["See all {0}", stats.ActiveListings]
         </a>
     </div>
 
     @if (Model.Featured.Count == 0)
     {
         <div class="pm-empty">
-            <p class="mb-2"><strong>No cars are listed yet.</strong></p>
-            <p class="pm-muted mb-3">The first ones will show up here the moment they go live.</p>
-            <a asp-controller="Seller" asp-action="Start" class="btn btn-primary">Be the first to list a car</a>
+            <p class="mb-2"><strong>@L["No cars are listed yet."]</strong></p>
+            <p class="pm-muted mb-3">@L["The first ones will show up here the moment they go live."]</p>
+            <a asp-controller="Seller" asp-action="Start" class="btn btn-primary">@L["Be the first to list a car"]</a>
         </div>
     }
     else
@@ -165,7 +165,7 @@
 
         <div class="text-center mt-4">
             <a asp-controller="Cars" asp-action="Index" class="btn btn-lg btn-primary fw-semibold">
-                Browse the marketplace
+                @L["Browse the marketplace"]
             </a>
         </div>
     }
@@ -174,44 +174,44 @@
 @* --------------------------------------------------------------------------- *@
 <section class="pm-section pm-reveal">
     <div class="pm-section-head">
-        <h2>Why buy here</h2>
+        <h2>@L["Why buy here"]</h2>
     </div>
 
     <div class="row g-4 pm-stagger">
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">You can see who you are dealing with</h3>
-                <p>Every listing names its seller and says plainly whether they are a private seller or a dealership.</p>
+                <h3 class="h6">@L["You can see who you are dealing with"]</h3>
+                <p>@L["Every listing names its seller and says plainly whether they are a private seller or a dealership."]</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">Ratings from people who actually bought</h3>
-                <p>Only a confirmed buyer can review a seller, so a five-star average means five completed sales — not five friends.</p>
+                <h3 class="h6">@L["Ratings from people who actually bought"]</h3>
+                <p>@L["Only a confirmed buyer can review a seller, so a five-star average means five completed sales — not five friends."]</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">Price history in the open</h3>
-                <p>If a car has been reduced, the listing says so and shows what it used to cost. No quietly edited numbers.</p>
+                <h3 class="h6">@L["Price history in the open"]</h3>
+                <p>@L["If a car has been reduced, the listing says so and shows what it used to cost. No quietly edited numbers."]</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">Proof that sales complete</h3>
-                <p>The <a asp-controller="Cars" asp-action="Sold">recently sold</a> page lists what actually changed hands, and for how much.</p>
+                <h3 class="h6">@L["Proof that sales complete"]</h3>
+                <p>@L["The"] <a asp-controller="Cars" asp-action="Sold">@L["Recently sold"]</a> @L["page lists what actually changed hands, and for how much."]</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">Dealer shopfronts</h3>
-                <p>Every business account gets a <a asp-controller="Dealerships" asp-action="Index">page of its own</a> — the whole forecourt in one place.</p>
+                <h3 class="h6">@L["Dealer shopfronts"]</h3>
+                <p>@L["Every business account gets a"] <a asp-controller="Dealerships" asp-action="Index">@L["page of its own"]</a> — @L["the whole forecourt in one place."]</p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">0% commission</h3>
-                <p>Browsing, offering, messaging and listing are all free, and we take no cut of any sale. Sellers can pay to advertise a car — those are always labelled <strong>Promoted</strong>.</p>
+                <h3 class="h6">@L["0% commission"]</h3>
+                <p>@L["Browsing, offering, messaging and listing are all free, and we take no cut of any sale. Sellers can pay to advertise a car — those are always labelled"] <strong>@L["Promoted"]</strong>.</p>
             </div>
         </div>
     </div>
@@ -225,29 +225,29 @@
 <section class="pm-section pm-reveal">
     <div class="pm-guest">
         <div class="pm-guest-col">
-            <h2 class="h5">Looking around without an account</h2>
-            <p class="pm-muted">You get the whole marketplace. Just not the parts that need to know who you are.</p>
+            <h2 class="h5">@L["Looking around without an account"]</h2>
+            <p class="pm-muted">@L["You get the whole marketplace. Just not the parts that need to know who you are."]</p>
             <ul class="pm-tick-list">
-                <li>Browse and filter every listing</li>
-                <li>Open any car and read the full specification</li>
-                <li>Browse the dealership directory and seller ratings</li>
-                <li>See what has recently sold</li>
-                <li><strong>Ring the seller directly</strong> on the number shown in the listing</li>
+                <li>@L["Browse and filter every listing"]</li>
+                <li>@L["Open any car and read the full specification"]</li>
+                <li>@L["Browse the dealership directory and seller ratings"]</li>
+                <li>@L["See what has recently sold"]</li>
+                <li><strong>@L["Ring the seller directly"]</strong> @L["on the number shown in the listing"]</li>
             </ul>
         </div>
         <div class="pm-guest-col">
-            <h2 class="h5">What an account adds</h2>
-            <p class="pm-muted">Free, and about a minute to set up.</p>
+            <h2 class="h5">@L["What an account adds"]</h2>
+            <p class="pm-muted">@L["Free, and about a minute to set up."]</p>
             <ul class="pm-lock-list">
-                <li>Make a private offer</li>
-                <li>Message the seller in writing, with a record of it</li>
-                <li>Save cars to favourites and get the price-drop flag</li>
-                <li>Leave a rating once you have bought</li>
-                <li>List your own car</li>
+                <li>@L["Make a private offer"]</li>
+                <li>@L["Message the seller in writing, with a record of it"]</li>
+                <li>@L["Save cars to favourites and get the price-drop flag"]</li>
+                <li>@L["Leave a rating once you have bought"]</li>
+                <li>@L["List your own car"]</li>
             </ul>
             <div class="d-flex flex-wrap gap-2 mt-3">
-                <a asp-controller="Account" asp-action="Signup" class="btn btn-primary">Create a free account</a>
-                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary">Log in</a>
+                <a asp-controller="Account" asp-action="Signup" class="btn btn-primary">@L["Create a free account"]</a>
+                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary">@L["Log in"]</a>
             </div>
         </div>
     </div>
@@ -257,15 +257,13 @@
 <section class="pm-band pm-bleed pm-reveal">
     <div class="pm-band-inner">
         <div>
-            <h2 class="h4 mb-1">Selling more than one car?</h2>
+            <h2 class="h4 mb-1">@L["Selling more than one car?"]</h2>
             <p class="mb-0">
-                Business accounts get a public shopfront, sales analytics and an inbox for
-                every offer. Registration is free, commission is 0%, and the only thing that
-                costs money is advertising a car.
+                @L["Business accounts get a public shopfront, sales analytics and an inbox for every offer. Registration is free, commission is 0%, and the only thing that costs money is advertising a car."]
             </p>
         </div>
         <a asp-controller="Home" asp-action="ForBusiness" class="btn btn-lg btn-warning fw-semibold flex-shrink-0">
-            PremiumMotors for business
+            @L["PremiumMotors for business"]
         </a>
     </div>
 </section>
