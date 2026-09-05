@@ -18,6 +18,14 @@ namespace WEBTechnologies_Final.Models.Dtos
         [Required, StringLength(100, MinimumLength = 6)]
         public string Password { get; set; } = string.Empty;
 
+        /// <summary>
+        /// The API had no terms checkbox at all, while both web forms refused to submit
+        /// without one. An account is an account however it was created, so the same
+        /// acceptance is required here.
+        /// </summary>
+        [MustBeTrue(ErrorMessage = "You must accept the Terms and Privacy Policy to create an account.")]
+        public bool AcceptTerms { get; set; }
+
         /// <summary>Optional client label ("ios", "android", "web") shown in the session list.</summary>
         public string? Device { get; set; }
     }

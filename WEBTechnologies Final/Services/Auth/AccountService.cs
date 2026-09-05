@@ -59,7 +59,15 @@ namespace WEBTechnologies_Final.Services.Auth
                 PasswordHash = PasswordHasher.Hash(password!),
                 Role = Roles.User,
                 IsActive = true,
-                RegisteredUtc = DateTime.UtcNow
+                RegisteredUtc = DateTime.UtcNow,
+
+                // Recorded here rather than in the controller because there are three ways in
+                // - the web form, the business form and the API - and an account created down
+                // any of them with no record of what it agreed to is the one this would be
+                // needed for. The form cannot be submitted without ticking the box; this is
+                // what makes that fact survive the request.
+                TermsAcceptedUtc = DateTime.UtcNow,
+                TermsVersion = LegalDocuments.Version
             };
 
             _db.Users.Add(user);

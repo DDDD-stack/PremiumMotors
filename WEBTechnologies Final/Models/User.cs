@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
 namespace WEBTechnologies_Final.Models
@@ -76,6 +77,25 @@ namespace WEBTechnologies_Final.Models
         /// was carried out is part of being able to show that it was.
         /// </summary>
         public DateTime? AnonymizedUtc { get; set; }
+
+        /// <summary>
+        /// When this user accepted the terms, and null for accounts created before acceptance
+        /// was recorded.
+        ///
+        /// The registration form has always had the checkbox and has always refused to submit
+        /// without it. Nothing stored the answer, which meant the site could not show WHAT
+        /// anyone agreed to or WHEN - and that is the first question asked in any dispute, and
+        /// the one thing an unrecorded checkbox cannot answer.
+        /// </summary>
+        public DateTime? TermsAcceptedUtc { get; set; }
+
+        /// <summary>
+        /// Which version of the terms was accepted. A timestamp alone is worthless the moment
+        /// the terms are edited: without this, proving what somebody agreed to means proving
+        /// what the page said on a particular day, which nobody can do.
+        /// </summary>
+        [MaxLength(20)]
+        public string? TermsVersion { get; set; }
 
         // Dealer verification was removed on 5 September 2026. Checking a NIPT means checking
         // it against the state business register, and there is no route to that; a badge that
