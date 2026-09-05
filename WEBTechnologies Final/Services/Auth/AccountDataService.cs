@@ -93,6 +93,11 @@ namespace WEBTechnologies_Final.Services.Auth
             user.Username = handle;
             user.Email = $"{handle}@deleted.invalid";
             user.Phone = string.Empty;
+            // The opt-in number shown on the seller's own listings to signed-out visitors.
+            // Missing this meant an erased account kept publishing its owner's phone number
+            // on every listing they had ever posted - the one piece of personal data on this
+            // site that is deliberately public, and therefore the one that matters most.
+            user.PublicPhone = null;
             user.EmailVerifiedUtc = null;
             user.IsActive = false;
             // Unusable random hash: no password can ever match, and no reset can be requested
@@ -114,6 +119,24 @@ namespace WEBTechnologies_Final.Services.Auth
                 .ExecuteUpdateAsync(s => s.SetProperty(c => c.OwnerUsername, handle), ct);
             await _db.Offers.Where(o => o.BuyerId == null && o.BuyerUsername == oldUsername)
                 .ExecuteUpdateAsync(s => s.SetProperty(o => o.BuyerUsername, handle), ct);
+
+            // A dealership is a public shopfront carrying a name, an address, a phone number
+            // and a website. For a sole trader all four are personal data, and none of them
+            // survive an erasure request. The row itself is kept rather than deleted so that
+            // listings pointing at it keep rendering; what made it identifiable does not.
+            //
+            // NOT cleared: the logo and banner images. A company mark is not obviously
+            // personal data, deleting the files needs the storage layer rather than the
+            // database, and getting it wrong in either direction is worse than asking. Open
+            // question in the LEGAL notepad.
+            await _db.Dealerships.Where(d => d.OwnerUserId == userId)
+                .ExecuteUpdateAsync(s => s
+                    .SetProperty(d => d.Name, handle)
+                    .SetProperty(d => d.About, (string?)null)
+                    .SetProperty(d => d.Address, (string?)null)
+                    .SetProperty(d => d.Phone, (string?)null)
+                    .SetProperty(d => d.Website, (string?)null)
+                    .SetProperty(d => d.OpeningHours, (string?)null), ct);
 
             // Preferences and credentials carry no retention justification at all.
             await _db.UserFavoriteCars.Where(f => f.UserId == userId).ExecuteDeleteAsync(ct);
