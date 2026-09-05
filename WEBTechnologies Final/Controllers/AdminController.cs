@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using WEBTechnologies_Final.Data;
 using WEBTechnologies_Final.Models;
 using WEBTechnologies_Final.Services;
@@ -15,10 +16,13 @@ namespace WEBTechnologies_Final.Controllers
         private readonly IPhotoStorage _photos;
         private readonly AppDbContext _db;
         private readonly PromotionService _promotions;
+        private readonly IStringLocalizer<SharedResource> _text;
 
         public AdminController(
-            ApiClient api, IPhotoStorage photos, AppDbContext db, PromotionService promotions)
+            ApiClient api, IPhotoStorage photos, AppDbContext db, PromotionService promotions,
+            IStringLocalizer<SharedResource> text)
         {
+            _text = text;
             _api = api;
             _photos = photos;
             _db = db;
@@ -47,7 +51,7 @@ namespace WEBTechnologies_Final.Controllers
             car.Status = ListingStatus.Active;
             car.PublishedUtc = DateTime.UtcNow;
             await _api.CreateCarAsync(car);
-            TempData["Success"] = $"\"{car.Title}\" was posted to the marketplace.";
+            TempData["Success"] = _text["\"{0}\" was posted to the marketplace.", car.Title].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -78,7 +82,7 @@ namespace WEBTechnologies_Final.Controllers
                 await _photos.DeleteAsync(path);
 
             if (upload.Errors.Count > 0) TempData["Error"] = string.Join(" ", upload.Errors);
-            TempData["Success"] = car.Title + " was updated.";
+            TempData["Success"] = _text["{0} was updated.", car.Title].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -93,7 +97,7 @@ namespace WEBTechnologies_Final.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (!await _api.DeleteCarAsync(id)) return NotFound();
-            TempData["Success"] = "Listing deleted.";
+            TempData["Success"] = _text["Listing deleted."].Value;
             return RedirectToAction(nameof(Index));
         }
 
@@ -196,10 +200,12 @@ namespace WEBTechnologies_Final.Controllers
             // The reference is in the message because this is the moment somebody has to pass
             // it on: there is no checkout and no automatic receipt yet, so an admin who cannot
             // see the code here has no way to give it to the seller.
-            TempData["Success"] =
-                $"\"{promotion.CarTitle}\" is now {tier} placement until " +
-                $"{AppTime.ToDisplay(promotion.EndsUtc):dd MMM yyyy}. " +
-                $"Reference {promotion.Reference} — send this to the seller.";
+            TempData["Success"] = _text[
+                "\"{0}\" is now {1} placement until {2}. Reference {3} - send this to the seller.",
+                promotion.CarTitle,
+                _text[tier == PromotionTier.FrontPage ? "Front page" : "Promoted"].Value,
+                AppTime.ToDisplay(promotion.EndsUtc).ToString("dd MMM yyyy"),
+                promotion.Reference].Value;
 
             return RedirectToAction(nameof(Promotions));
         }
@@ -215,7 +221,7 @@ namespace WEBTechnologies_Final.Controllers
             var ended = await _promotions.EndAsync(id, "Ended by an administrator");
             if (!ended) return NotFound();
 
-            TempData["Success"] = "Placement ended. The receipt is kept and records the date.";
+            TempData["Success"] = _text["Placement ended. The receipt is kept and records the date."].Value;
             return RedirectToAction(nameof(Promotions));
         }
     }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using WEBTechnologies_Final.Data;
 using WEBTechnologies_Final.Models;
 using WEBTechnologies_Final.Services;
@@ -20,11 +21,13 @@ namespace WEBTechnologies_Final.Controllers
         private readonly ReviewService _reviews;
         private readonly ListingExtrasService _extras;
         private readonly DealershipService _dealerships;
+        private readonly IStringLocalizer<SharedResource> _text;
 
         public SellersController(
             AppDbContext db, ReviewService reviews, ListingExtrasService extras,
-            DealershipService dealerships)
+            DealershipService dealerships, IStringLocalizer<SharedResource> text)
         {
+            _text = text;
             _db = db;
             _reviews = reviews;
             _extras = extras;
@@ -96,13 +99,13 @@ namespace WEBTechnologies_Final.Controllers
 
             if (car.Status != ListingStatus.Sold || car.SoldToUserId != userId)
             {
-                TempData["Error"] = "You can only review a seller you actually bought a car from.";
+                TempData["Error"] = _text["You can only review a seller you actually bought a car from."].Value;
                 return RedirectToAction("Purchases", "Account");
             }
 
             if (await _db.SellerReviews.AnyAsync(r => r.CarId == carId))
             {
-                TempData["Error"] = "You have already reviewed this purchase.";
+                TempData["Error"] = _text["You have already reviewed this purchase."].Value;
                 return RedirectToAction("Purchases", "Account");
             }
 
@@ -123,14 +126,14 @@ namespace WEBTechnologies_Final.Controllers
                 var car = await _db.Cars.AsNoTracking().FirstOrDefaultAsync(c => c.Id == vm.CarId);
                 if (car is null) return NotFound();
 
-                ModelState.AddModelError(string.Empty, result.Error!);
+                ModelState.AddModelError(string.Empty, _text[result.Error!].Value);
                 var form = await BuildFormAsync(car);
                 form.Rating = vm.Rating;
                 form.Comment = vm.Comment;
                 return View(form);
             }
 
-            TempData["Success"] = "Thanks — your review is now on the seller's profile.";
+            TempData["Success"] = _text["Thanks - your review is now on the seller's profile."].Value;
             return RedirectToAction("Purchases", "Account");
         }
 

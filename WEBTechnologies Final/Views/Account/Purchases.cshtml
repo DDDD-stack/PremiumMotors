@@ -1,14 +1,14 @@
 @model List<Car>
 @{
-    ViewData["Title"] = "My purchases";
+    ViewData["Title"] = L["My purchases"].Value;
     var sellers = ViewData["Sellers"] as Dictionary<int, User> ?? new();
     var reviewed = ViewData["Reviewed"] as List<int> ?? new();
 }
 
 <div class="pm-page-head">
     <div>
-        <h1>My purchases</h1>
-        <p class="pm-muted mb-0 small">Cars where the seller accepted your offer.</p>
+        <h1>@L["My purchases"]</h1>
+        <p class="pm-muted mb-0 small">@L["Cars where the seller accepted your offer."]</p>
     </div>
 </div>
 
@@ -18,11 +18,11 @@
 {
     <div class="pm-empty">
         <div class="pm-empty-icon" aria-hidden="true">🔑</div>
-        <h2 class="h5">Nothing here yet</h2>
+        <h2 class="h5">@L["Nothing here yet"]</h2>
         <p class="pm-muted mb-3">
-            When a seller accepts one of your offers, the car and their contact details appear here.
+            @L["When a seller accepts one of your offers, the car and their contact details appear here."]
         </p>
-        <a asp-controller="Cars" asp-action="Index" class="btn btn-primary">Browse cars</a>
+        <a asp-controller="Cars" asp-action="Index" class="btn btn-primary">@L["Browse cars"]</a>
     </div>
 }
 else
@@ -50,18 +50,18 @@ else
                                 </div>
 
                                 <div class="small pm-muted mb-2">
-                                    @car.Mileage.ToString("N0") km · @car.FuelType
+                                    @L["{0} km", car.Mileage.ToString("N0")] · @L[EnumText.Display(car.FuelType)]
                                 </div>
 
                                 <div class="d-flex justify-content-between align-items-baseline">
-                                    <span class="small pm-muted">You agreed</span>
+                                    <span class="small pm-muted">@L["You agreed"]</span>
                                     <span class="pm-price">@(car.SoldPrice?.ToString("C") ?? car.Price.ToString("C"))</span>
                                 </div>
 
                                 @if (car.Status == ListingStatus.Reserved)
                                 {
                                     <div class="small text-warning-emphasis mt-1">
-                                        Sale in progress — arrange collection with the seller.
+                                        @L["Sale in progress - arrange collection with the seller."]
                                     </div>
                                 }
 
@@ -71,16 +71,16 @@ else
                                         @if (reviewed.Contains(car.Id))
                                         {
                                             <span class="small pm-muted">
-                                                ✓ You reviewed this seller.
+                                                @L["✓ You reviewed this seller."]
                                             </span>
                                         }
                                         else
                                         {
                                             <a class="btn btn-sm btn-outline-primary"
                                                asp-controller="Sellers" asp-action="Review"
-                                               asp-route-carId="@car.Id">Rate this seller</a>
+                                               asp-route-carId="@car.Id">@L["Rate this seller"]</a>
                                             <div class="small pm-muted mt-1">
-                                                Helps the next buyer know who to trust.
+                                                @L["Helps the next buyer know who to trust."]
                                             </div>
                                         }
                                     </div>
@@ -94,14 +94,14 @@ else
                     @if (seller is not null)
                     {
                         <div class="card-footer bg-transparent">
-                            <div class="small fw-semibold mb-1">Seller contact</div>
+                            <div class="small fw-semibold mb-1">@L["Seller contact"]</div>
                             <dl class="row small mb-0 pm-break">
-                                <dt class="col-4">Name</dt><dd class="col-8">@seller.SellerName</dd>
-                                <dt class="col-4">Email</dt>
+                                <dt class="col-4">@L["Name"]</dt><dd class="col-8">@seller.SellerName</dd>
+                                <dt class="col-4">@L["Email"]</dt>
                                 <dd class="col-8"><a href="mailto:@seller.Email">@seller.Email</a></dd>
                                 @if (!string.IsNullOrWhiteSpace(seller.Phone))
                                 {
-                                    <dt class="col-4">Phone</dt>
+                                    <dt class="col-4">@L["Phone"]</dt>
                                     <dd class="col-8"><a href="tel:@seller.Phone">@seller.Phone</a></dd>
                                 }
                             </dl>

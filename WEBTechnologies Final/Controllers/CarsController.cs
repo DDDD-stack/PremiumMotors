@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Localization;
 using Microsoft.EntityFrameworkCore;
 using WEBTechnologies_Final.Data;
 using WEBTechnologies_Final.Models;
@@ -15,11 +16,14 @@ namespace WEBTechnologies_Final.Controllers
         private readonly ConversationService _conversations;
         private readonly ListingExtrasService _extras;
         private readonly ListingViewService _views;
+        private readonly IStringLocalizer<SharedResource> _text;
 
         public CarsController(
             AppDbContext context, OfferService offers, ConversationService conversations,
-            ListingExtrasService extras, ListingViewService views)
+            ListingExtrasService extras, ListingViewService views,
+            IStringLocalizer<SharedResource> text)
         {
+            _text = text;
             _context = context;
             _offers = offers;
             _conversations = conversations;
@@ -350,12 +354,13 @@ namespace WEBTechnologies_Final.Controllers
             if (!result.Success)
             {
                 if (result.Code == MarketplaceCodes.NotFound) return NotFound();
-                TempData["Error"] = result.Error;
+                TempData["Error"] = _text[result.Error!].Value;
                 return RedirectToAction(nameof(Details), new { id });
             }
 
-            TempData["Success"] =
-                $"Your offer of {amount:C} was sent privately to the seller. You'll see their answer here.";
+            TempData["Success"] = _text[
+                "Your offer of {0} was sent privately to the seller. You will see their answer here.",
+                amount.ToString("C")].Value;
             return RedirectToAction(nameof(Details), new { id });
         }
 
@@ -391,7 +396,7 @@ namespace WEBTechnologies_Final.Controllers
 
             if (!result.Success || result.Value is null)
             {
-                TempData["Error"] = result.Error;
+                TempData["Error"] = _text[result.Error!].Value;
                 return RedirectToAction(nameof(Details), new { id = carId });
             }
 

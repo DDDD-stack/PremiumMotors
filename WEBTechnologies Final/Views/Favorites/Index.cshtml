@@ -1,23 +1,25 @@
 @model IReadOnlyList<Car>
 @{
-    ViewData["Title"] = "My Favourites";
+    ViewData["Title"] = L["My favourites"].Value;
 }
 
 <div class="pm-page-head">
     <div>
-        <h1>♥ My Favourites</h1>
-        <p class="pm-muted mb-0 small">@Model.Count saved listing@(Model.Count == 1 ? "" : "s")</p>
+        <h1>♥ @L["My favourites"]</h1>
+        <p class="pm-muted mb-0 small">
+            @(Model.Count == 1 ? L["1 saved listing"] : L["{0} saved listings", Model.Count])
+        </p>
     </div>
-    <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-primary">Browse cars</a>
+    <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-primary">@L["Browse cars"]</a>
 </div>
 
 @if (Model.Count == 0)
 {
     <div class="pm-empty">
         <div class="pm-empty-icon" aria-hidden="true">♡</div>
-        <h2 class="h5">Nothing saved yet</h2>
-        <p class="pm-muted mb-3">Tap <strong>♡ Favourite</strong> on any car to keep it here.</p>
-        <a asp-controller="Cars" asp-action="Index" class="btn btn-primary">Find a car</a>
+        <h2 class="h5">@L["Nothing saved yet"]</h2>
+        <p class="pm-muted mb-3">@L["Tap <strong>♡ Favourite</strong> on any car to keep it here."]</p>
+        <a asp-controller="Cars" asp-action="Index" class="btn btn-primary">@L["Find a car"]</a>
     </div>
 }
 else

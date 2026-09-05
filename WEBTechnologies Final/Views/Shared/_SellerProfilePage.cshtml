@@ -16,7 +16,7 @@
             </h1>
             <p class="pm-seller-sub">
                 <span class="pm-seller-type @(Model.IsDealer ? "is-dealer" : "is-private")">
-                    @(Model.IsDealer ? "Dealership" : "Private seller")
+                    @(Model.IsDealer ? L["Dealership"] : L["Private seller"])
                 </span>
                 @{
                     var where = d?.Location ?? Model.Location;
@@ -25,16 +25,19 @@
                 {
                     <span class="pm-muted">· @where</span>
                 }
-                <span class="pm-muted">· Selling since @Model.MemberSince.ToString("MMMM yyyy")</span>
+                <span class="pm-muted">· @L["Selling since {0}", Model.MemberSince.ToString("MMMM yyyy")]</span>
             </p>
             <partial name="_Stars" model="@((Model.RatingAverage, Model.RatingCount))" />
         </div>
     </div>
 
     <div class="pm-seller-stats">
-        <div><strong>@Model.ActiveCount</strong><span>in stock</span></div>
-        <div><strong>@Model.SoldCount</strong><span>sold</span></div>
-        <div><strong>@Model.RatingCount</strong><span>review@(Model.RatingCount == 1 ? "" : "s")</span></div>
+        <div><strong>@Model.ActiveCount</strong><span>@L["In stock"]</span></div>
+        <div><strong>@Model.SoldCount</strong><span>@L["Sold"]</span></div>
+        <div>
+            <strong>@Model.RatingCount</strong>
+            <span>@(Model.RatingCount == 1 ? L["Review"] : L["Reviews"])</span>
+        </div>
     </div>
 </div>
 
@@ -51,20 +54,20 @@
             <dl class="pm-spec-grid mb-0">
                 @if (!string.IsNullOrWhiteSpace(d.Address))
                 {
-                    <div><dt>Address</dt><dd>@d.Address</dd></div>
+                    <div><dt>@L["Address"]</dt><dd>@d.Address</dd></div>
                 }
                 @if (!string.IsNullOrWhiteSpace(d.OpeningHours))
                 {
-                    <div><dt>Opening hours</dt><dd>@d.OpeningHours</dd></div>
+                    <div><dt>@L["Opening hours"]</dt><dd>@d.OpeningHours</dd></div>
                 }
                 @if (!string.IsNullOrWhiteSpace(d.Phone))
                 {
-                    <div><dt>Phone</dt><dd><a href="tel:@d.Phone">@d.Phone</a></dd></div>
+                    <div><dt>@L["Phone"]</dt><dd><a href="tel:@d.Phone">@d.Phone</a></dd></div>
                 }
                 @if (!string.IsNullOrWhiteSpace(d.Website))
                 {
                     <div>
-                        <dt>Website</dt>
+                        <dt>@L["Website"]</dt>
                         @* rel=nofollow noopener: an unverified dealer's own link must not pass
                            ranking, and must not be able to reach back through window.opener. *@
                         <dd class="pm-wrap">
@@ -79,9 +82,9 @@
 
 <ul class="nav nav-pills pm-chip-row mb-3">
     <li><a class="pm-chip @(tab == "stock" ? "is-active" : "")"
-           asp-route-tab="stock">Cars (@Model.Cars.Count)</a></li>
+           asp-route-tab="stock">@L["Cars ({0})", Model.Cars.Count]</a></li>
     <li><a class="pm-chip @(tab == "reviews" ? "is-active" : "")"
-           asp-route-tab="reviews">Reviews (@Model.RatingCount)</a></li>
+           asp-route-tab="reviews">@L["Reviews ({0})", Model.RatingCount]</a></li>
 </ul>
 
 @if (tab == "reviews")
@@ -91,8 +94,8 @@
 else if (Model.Cars.Count == 0)
 {
     <div class="pm-empty">
-        <h2 class="h5">Nothing listed right now</h2>
-        <p class="pm-muted mb-0">This seller has no cars on the market at the moment.</p>
+        <h2 class="h5">@L["Nothing listed right now"]</h2>
+        <p class="pm-muted mb-0">@L["This seller has no cars on the market at the moment."]</p>
     </div>
 }
 else

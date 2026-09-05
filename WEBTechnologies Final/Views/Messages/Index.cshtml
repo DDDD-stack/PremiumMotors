@@ -1,13 +1,13 @@
 @using WEBTechnologies_Final.Services.Marketplace
 @model List<ConversationSummary>
 @{
-    ViewData["Title"] = "Messages";
+    ViewData["Title"] = L["Messages"].Value;
 }
 
 <div class="pm-page-head">
     <div>
-        <h1>Messages</h1>
-        <p class="pm-muted mb-0 small">Conversations about cars you are buying or selling.</p>
+        <h1>@L["Messages"]</h1>
+        <p class="pm-muted mb-0 small">@L["Conversations about cars you are buying or selling."]</p>
     </div>
 </div>
 
@@ -15,11 +15,11 @@
 {
     <div class="pm-empty">
         <div class="pm-empty-icon" aria-hidden="true">💬</div>
-        <h2 class="h5">No conversations yet</h2>
+        <h2 class="h5">@L["No conversations yet"]</h2>
         <p class="pm-muted mb-3">
-            Message a seller from any listing, or reply to a buyer who has sent you an offer.
+            @L["Message a seller from any listing, or reply to a buyer who has sent you an offer."]
         </p>
-        <a asp-controller="Cars" asp-action="Index" class="btn btn-primary">Browse cars</a>
+        <a asp-controller="Cars" asp-action="Index" class="btn btn-primary">@L["Browse cars"]</a>
     </div>
 }
 else
@@ -41,7 +41,7 @@ else
                             <div class="small pm-muted text-truncate">
                                 @if (c.LastMessage is null)
                                 {
-                                    <em>No messages yet</em>
+                                    <em>@L["No messages yet"]</em>
                                 }
                                 else
                                 {
@@ -50,11 +50,11 @@ else
                             </div>
                             <div class="d-flex gap-2 align-items-center mt-1">
                                 <span class="badge bg-light text-dark border">
-                                    @(c.ViewerRole == "buyer" ? "You are buying" : "You are selling")
+                                    @(c.ViewerRole == "buyer" ? L["You are buying"] : L["You are selling"])
                                 </span>
                                 @if (c.IsClosed)
                                 {
-                                    <span class="badge bg-secondary">Closed</span>
+                                    <span class="badge bg-secondary">@L["Closed"]</span>
                                 }
                             </div>
                         </div>
@@ -71,7 +71,6 @@ else
     @* Delivery is request-response for now, so say so rather than letting someone sit on
        this page waiting for a message to appear. *@
     <p class="small pm-muted mt-3 mb-0">
-        New messages appear when you open or refresh a conversation. Push notifications are
-        on the roadmap.
+        @L["New messages appear when you open or refresh a conversation. Push notifications are on the roadmap."]
     </p>
 }

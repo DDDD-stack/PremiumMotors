@@ -1,14 +1,14 @@
 @model ChangePasswordViewModel
 @using WEBTechnologies_Final.Models.Dtos
 @{
-    ViewData["Title"] = "Security";
+    ViewData["Title"] = L["Security"].Value;
     var sessions = ViewData["Sessions"] as List<SessionDto> ?? new();
 }
 
 <div class="pm-page-head">
     <div>
-        <h1>Security</h1>
-        <p class="pm-muted mb-0 small">Your password, your signed-in devices, and your data.</p>
+        <h1>@L["Security"]</h1>
+        <p class="pm-muted mb-0 small">@L["Your password, your signed-in devices, and your data."]</p>
     </div>
 </div>
 
@@ -18,7 +18,7 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-body">
-                <h2 class="h6 mb-3">Change password</h2>
+                <h2 class="h6 mb-3">@L["Change password"]</h2>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
@@ -42,11 +42,10 @@
                     </div>
 
                     <div class="form-text mb-3">
-                        Changing your password signs out every other device, which is the point
-                        of changing it after a scare.
+                        @L["Changing your password signs out every other device, which is the point of changing it after a scare."]
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Change password</button>
+                    <button type="submit" class="btn btn-primary">@L["Change password"]</button>
                 </form>
             </div>
         </div>
@@ -54,12 +53,11 @@
 
     <div class="col-lg-6">
         <div class="card mb-3">
-            <div class="card-header">Signed-in devices</div>
+            <div class="card-header">@L["Signed-in devices"]</div>
             @if (sessions.Count == 0)
             {
                 <div class="card-body pm-muted small">
-                    No mobile or app sessions. Signing in on this website uses a browser session
-                    rather than a device token, so it does not appear here.
+                    @L["No mobile or app sessions. Signing in on this website uses a browser session rather than a device token, so it does not appear here."]
                 </div>
             }
             else
@@ -69,14 +67,14 @@
                     {
                         <li class="list-group-item d-flex justify-content-between align-items-center gap-2">
                             <div class="min-w-0">
-                                <div class="fw-semibold text-truncate">@(session.Device ?? "Unknown device")</div>
+                                <div class="fw-semibold text-truncate">@(session.Device ?? L["Unknown device"].Value)</div>
                                 <div class="small pm-muted">
-                                    Signed in @AppTime.ToDisplay(session.CreatedUtc).ToString("dd/MM/yyyy HH:mm")
+                                    @L["Signed in {0}", AppTime.ToDisplay(session.CreatedUtc).ToString("dd/MM/yyyy HH:mm")]
                                 </div>
                             </div>
                             @if (session.IsCurrent)
                             {
-                                <span class="badge bg-success flex-shrink-0">This device</span>
+                                <span class="badge bg-success flex-shrink-0">@L["This device"]</span>
                             }
                         </li>
                     }
@@ -85,19 +83,15 @@
         </div>
 
         <div class="card">
-            <div class="card-header">Your data</div>
+            <div class="card-header">@L["Your data"]</div>
             <div class="card-body small">
                 <p class="pm-muted">
-                    You can download everything we hold about you, or ask for your account to be
-                    erased. Erasure anonymizes your listings and offers rather than deleting them,
-                    because a completed sale is a record the other party has an interest in.
+                    @L["You can download everything we hold about you, or ask for your account to be erased. Erasure anonymizes your listings and offers rather than deleting them, because a completed sale is a record the other party has an interest in."]
                 </p>
                 @* The API implements both; the website screens for them are still to come.
                    Saying so beats a button that does nothing. *@
                 <p class="mb-0 pm-muted">
-                    Both are available on the API today
-                    (<code>/api/v1/me/export</code> and <code>/api/v1/me/delete</code>).
-                    Website screens for them are on the way — email us in the meantime.
+                    @L["Both are available on the API today (<code>/api/v1/me/export</code> and <code>/api/v1/me/delete</code>). Website screens for them are on the way - email us in the meantime."]
                 </p>
             </div>
         </div>

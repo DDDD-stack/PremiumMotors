@@ -1,9 +1,9 @@
 @model Car
 @{
-    ViewData["Title"] = "Share " + Model.Title;
+    ViewData["Title"] = L["Share {0}", Model.Title].Value;
     var url = ViewData["ListingUrl"] as string ?? "";
     var encodedUrl = Uri.EscapeDataString(url);
-    var encodedText = Uri.EscapeDataString($"Check out this {Model.Title} on PremiumMotors!");
+    var encodedText = Uri.EscapeDataString(L["Check out this {0} on PremiumMotors!", Model.Title].Value);
 }
 
 <div class="row justify-content-center">
@@ -13,8 +13,8 @@
                 <img src="@Model.PrimaryImage" class="card-img-top detail-img" alt="@Model.Title" decoding="async" />
             </div>
             <div class="card-body">
-                <h1 class="h4">Share “@Model.Title”</h1>
-                <p class="pm-muted">Asking price: <strong>@Model.Price.ToString("C")</strong></p>
+                <h1 class="h4">@L["Share “{0}”", Model.Title]</h1>
+                <p class="pm-muted">@L["Asking price:"] <strong>@Model.Price.ToString("C")</strong></p>
 
                 @* On a phone this opens the OS share sheet — WhatsApp,
                    Messages, AirDrop and everything else the device has.
@@ -22,13 +22,13 @@
                    missing, leaving the explicit links below as the path. *@
                 <button type="button" class="btn btn-primary w-100 mb-3"
                         data-pm-share="@url" data-pm-share-title="@Model.Title">
-                    📤 Share…
+                    📤 @L["Share…"]
                 </button>
 
-                <label class="form-label" for="shareUrl">Listing link</label>
+                <label class="form-label" for="shareUrl">@L["Listing link"]</label>
                 <div class="input-group mb-3">
                     <input type="text" id="shareUrl" class="form-control" value="@url" readonly />
-                    <button class="btn btn-outline-secondary" type="button" data-pm-copy="#shareUrl">Copy</button>
+                    <button class="btn btn-outline-secondary" type="button" data-pm-copy="#shareUrl">@L["Copy"]</button>
                 </div>
 
                 <div class="row row-cols-2 row-cols-sm-4 g-2">
@@ -51,7 +51,7 @@
                 </div>
 
                 <hr />
-                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-link px-0">&larr; Back to listing</a>
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-link px-0">&larr; @L["Back to listing"]</a>
             </div>
         </div>
     </div>

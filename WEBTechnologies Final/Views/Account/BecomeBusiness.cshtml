@@ -1,13 +1,13 @@
 @model BusinessDetailsViewModel
 @{
-    ViewData["Title"] = "Switch to a business account";
+    ViewData["Title"] = L["Switch to a business account"].Value;
 }
 
 <div class="pm-page-head">
     <div>
-        <h1>Switch to a business account</h1>
+        <h1>@L["Switch to a business account"]</h1>
         <p class="pm-muted mb-0 small">
-            Your listings, offers, messages and rating stay exactly as they are.
+            @L["Your listings, offers, messages and rating stay exactly as they are."]
         </p>
     </div>
 </div>
@@ -24,8 +24,7 @@
                         <label asp-for="BusinessName" class="form-label"></label>
                         <input asp-for="BusinessName" class="form-control" autocapitalize="words" />
                         <div class="form-text">
-                            This replaces your username on every listing you own, and becomes the
-                            name of your dealership page.
+                            @L["This replaces your username on every listing you own, and becomes the name of your dealership page."]
                         </div>
                         <span asp-validation-for="BusinessName" class="text-danger"></span>
                     </div>
@@ -34,8 +33,7 @@
                         <label asp-for="RegistrationNumber" class="form-label"></label>
                         <input asp-for="RegistrationNumber" class="form-control" />
                         <div class="form-text">
-                            Held on record with your account and never shown publicly. We do not
-                            check it against the business register.
+                            @L["Held on record with your account and never shown publicly. We do not check it against the business register."]
                         </div>
                         <span asp-validation-for="RegistrationNumber" class="text-danger"></span>
                     </div>
@@ -43,21 +41,21 @@
                     <div class="mb-3">
                         <label asp-for="VatNumber" class="form-label"></label>
                         <input asp-for="VatNumber" class="form-control" />
-                        <div class="form-text">Optional.</div>
+                        <div class="form-text">@L["Optional."]</div>
                         <span asp-validation-for="VatNumber" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Address" class="form-label"></label>
                         <input asp-for="Address" class="form-control" autocapitalize="words" />
-                        <div class="form-text">Held on record. Whatever you put on your dealership page is the public one.</div>
+                        <div class="form-text">@L["Held on record. Whatever you put on your dealership page is the public one."]</div>
                         <span asp-validation-for="Address" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Location" class="form-label"></label>
                         <input asp-for="Location" class="form-control" autocapitalize="words" />
-                        <div class="form-text">Shown on your listings and used to sort the dealership directory by city.</div>
+                        <div class="form-text">@L["Shown on your listings and used to sort the dealership directory by city."]</div>
                         <span asp-validation-for="Location" class="text-danger"></span>
                     </div>
 
@@ -70,22 +68,20 @@
                     <div class="mb-3">
                         <label asp-for="Website" class="form-label"></label>
                         <input asp-for="Website" class="form-control" type="url" placeholder="https://" />
-                        <div class="form-text">Optional.</div>
+                        <div class="form-text">@L["Optional."]</div>
                         <span asp-validation-for="Website" class="text-danger"></span>
                     </div>
 
                     @* Said once more, immediately above the button, because this is the last
                        point at which somebody can change their mind. *@
                     <div class="alert alert-warning small">
-                        <strong>This cannot be undone from the site.</strong>
-                        Your account becomes a dealership, a public shopfront page is created for
-                        it, and your listings start showing a business name instead of your
-                        username. Nothing you have is deleted.
+                        <strong>@L["This cannot be undone from the site."]</strong>
+                        @L["Your account becomes a dealership, a public shopfront page is created for it, and your listings start showing a business name instead of your username. Nothing you have is deleted."]
                     </div>
 
                     <div class="d-flex flex-wrap gap-2">
-                        <button type="submit" class="btn btn-primary">Switch my account</button>
-                        <a asp-action="GoBusiness" class="btn btn-outline-secondary">Back</a>
+                        <button type="submit" class="btn btn-primary">@L["Switch my account"]</button>
+                        <a asp-action="GoBusiness" class="btn btn-outline-secondary">@L["Back"]</a>
                     </div>
                 </form>
             </div>
@@ -94,13 +90,13 @@
 
     <div class="col-lg-5 mt-3 mt-lg-0">
         <div class="card">
-            <div class="card-header">What happens next</div>
+            <div class="card-header">@L["What happens next"]</div>
             <div class="card-body small pm-muted">
                 <ol class="ps-3 mb-0">
-                    <li>Your account becomes a dealership.</li>
-                    <li>A public shopfront page is created straight away.</li>
-                    <li>You land on that page to add a logo, banner and opening hours.</li>
-                    <li>Your existing listings switch to your business name.</li>
+                    <li>@L["Your account becomes a dealership."]</li>
+                    <li>@L["A public shopfront page is created straight away."]</li>
+                    <li>@L["You land on that page to add a logo, banner and opening hours."]</li>
+                    <li>@L["Your existing listings switch to your business name."]</li>
                 </ol>
             </div>
         </div>

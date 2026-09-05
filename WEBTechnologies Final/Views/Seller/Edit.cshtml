@@ -1,15 +1,15 @@
 @model Car
 @{
-    ViewData["Title"] = "Edit " + Model.Title;
+    ViewData["Title"] = L["Edit {0}", Model.Title].Value;
 }
 
 <div class="pm-page-head">
     <div>
-        <h1>Edit listing</h1>
+        <h1>@L["Edit listing"]</h1>
         <p class="pm-muted mb-0 small">@Model.Title</p>
     </div>
     <a asp-controller="Cars" asp-action="Details" asp-route-id="@Model.Id"
-       class="btn btn-outline-secondary btn-sm">View listing</a>
+       class="btn btn-outline-secondary btn-sm">@L["View listing"]</a>
 </div>
 
 <partial name="_ProfileNav" />
@@ -17,8 +17,13 @@
 @if (Model.Status == ListingStatus.Reserved || Model.Status == ListingStatus.Sold)
 {
     <div class="alert alert-warning">
-        <strong>Careful.</strong> This listing is @Model.Status.ToString().ToLower() — a buyer has
-        already agreed a price against these details. Editing them now changes what they see.
+        @* Two whole sentences rather than a status word dropped into one: "reserved" and
+           "sold" inflect differently in Albanian and Italian, and a lower-cased translated
+           word is not reliably the right form of it. *@
+        <strong>@L["Careful."]</strong>
+        @(Model.Status == ListingStatus.Reserved
+            ? L["This listing is reserved - a buyer has already agreed a price against these details. Editing them now changes what they see."]
+            : L["This listing is sold - a buyer has already agreed a price against these details. Editing them now changes what they see."])
     </div>
 }
 
@@ -28,8 +33,8 @@
             @Html.AntiForgeryToken()
             <partial name="_CarForm" model="Model" />
             <div class="mt-4 d-grid d-sm-flex gap-2">
-                <button type="submit" class="btn btn-primary">Save changes</button>
-                <a asp-action="Listings" class="btn btn-outline-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">@L["Save changes"]</button>
+                <a asp-action="Listings" class="btn btn-outline-secondary">@L["Cancel"]</a>
             </div>
         </form>
     </div>

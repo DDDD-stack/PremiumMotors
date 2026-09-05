@@ -1,16 +1,18 @@
 @model DealershipListViewModel
 @{
-    ViewData["Title"] = "Dealerships";
+    ViewData["Title"] = L["Dealerships"].Value;
 }
 
 <div class="pm-page-head">
     <div>
-        <h1>Dealerships</h1>
+        <h1>@L["Dealerships"]</h1>
         <p class="pm-muted mb-0 small">
-            @Model.TotalCount registered dealer@(Model.TotalCount == 1 ? "" : "s")
+            @(Model.TotalCount == 1
+                ? L["1 registered dealer"]
+                : L["{0} registered dealers", Model.TotalCount])
             @if (Model.TotalPages > 1)
             {
-                <text>· page @Model.Page of @Model.TotalPages</text>
+                <text>· @L["page {0} of {1}", Model.Page, Model.TotalPages]</text>
             }
         </p>
     </div>
@@ -19,14 +21,14 @@
 <form asp-action="Index" method="get" class="card shadow-sm mb-4">
     <div class="card-body row g-2 align-items-end">
         <div class="col-12 col-md-5">
-            <label class="form-label" for="search">Search</label>
+            <label class="form-label" for="search">@L["Search"]</label>
             <input type="search" id="search" name="search" value="@Model.Search"
-                   class="form-control" placeholder="Dealer name or town..." />
+                   class="form-control" placeholder="@L["Dealer name or town..."]" />
         </div>
         <div class="col-6 col-md-3">
-            <label class="form-label" for="city">City</label>
+            <label class="form-label" for="city">@L["City"]</label>
             <select id="city" name="city" class="form-select">
-                <option value="">Anywhere</option>
+                <option value="">@L["Anywhere"]</option>
                 @foreach (var city in Model.Cities)
                 {
                     <option value="@city" selected="@(city == Model.City)">@city</option>
@@ -34,16 +36,16 @@
             </select>
         </div>
         <div class="col-6 col-md-2">
-            <label class="form-label" for="sort">Sort by</label>
+            <label class="form-label" for="sort">@L["Sort by"]</label>
             <select id="sort" name="sort" class="form-select">
-                <option value="stock" selected="@(Model.Sort == "stock")">Most stock</option>
-                <option value="rating" selected="@(Model.Sort == "rating")">Best rated</option>
-                <option value="newest" selected="@(Model.Sort == "newest")">Newest</option>
-                <option value="name" selected="@(Model.Sort == "name")">Name</option>
+                <option value="stock" selected="@(Model.Sort == "stock")">@L["Most stock"]</option>
+                <option value="rating" selected="@(Model.Sort == "rating")">@L["Best rated"]</option>
+                <option value="newest" selected="@(Model.Sort == "newest")">@L["Newest"]</option>
+                <option value="name" selected="@(Model.Sort == "name")">@L["Name"]</option>
             </select>
         </div>
         <div class="col-12 col-md-2 d-grid">
-            <button type="submit" class="btn btn-primary">Search</button>
+            <button type="submit" class="btn btn-primary">@L["Search"]</button>
         </div>
     </div>
 </form>
@@ -51,21 +53,20 @@
 @if (Model.Dealerships.Count == 0)
 {
     <div class="pm-empty">
-        <h2 class="h5">No dealerships found</h2>
+        <h2 class="h5">@L["No dealerships found"]</h2>
         <p class="pm-muted">
             @if (Model.HasActiveFilters)
             {
-                <text>Nothing matches those filters.</text>
-                <a asp-action="Index">Clear them</a>
+                <text>@L["Nothing matches those filters."]</text>
+                <a asp-action="Index">@L["Clear them"]</a>
             }
             else
             {
-                <text>No dealers have registered yet. Businesses get a page here automatically
-                when they register a business account.</text>
+                <text>@L["No dealers have registered yet. Businesses get a page here automatically when they register a business account."]</text>
             }
         </p>
         <a class="btn btn-outline-primary" asp-controller="Account" asp-action="RegisterBusiness">
-            Register as a business
+            @L["Register as a business"]
         </a>
     </div>
 }
@@ -96,8 +97,8 @@ else
                         </div>
 
                         <div class="pm-dealer-counts mt-3">
-                            <span><strong>@dealer.ListingCount</strong> in stock</span>
-                            <span><strong>@dealer.SoldCount</strong> sold</span>
+                            <span><strong>@dealer.ListingCount</strong> @L["In stock"]</span>
+                            <span><strong>@dealer.SoldCount</strong> @L["Sold"]</span>
                         </div>
                     </div>
                 </a>
@@ -107,7 +108,7 @@ else
 
     @if (Model.TotalPages > 1)
     {
-        <nav class="pm-pager" aria-label="Dealership pages">
+        <nav class="pm-pager" aria-label="@L["Dealership pages"]">
             @for (var p = 1; p <= Model.TotalPages; p++)
             {
                 <a class="pm-page @(p == Model.Page ? "is-current" : "")"

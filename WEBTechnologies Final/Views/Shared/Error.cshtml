@@ -1,25 +1,24 @@
 @model ErrorViewModel
 @{
-    ViewData["Title"] = "Something went wrong";
+    ViewData["Title"] = L["Something went wrong"].Value;
 }
 
 <div class="pm-empty mx-auto" style="max-width: 34rem">
     <div class="pm-empty-icon" aria-hidden="true">⚠️</div>
-    <h1 class="h4">Something went wrong</h1>
+    <h1 class="h4">@L["Something went wrong"]</h1>
     <p class="pm-muted">
-        We hit an unexpected error while handling your request. Nothing you
-        entered was lost — try again, or head back to the listings.
+        @L["We hit an unexpected error while handling your request. Nothing you entered was lost - try again, or head back to the listings."]
     </p>
 
     @if (Model.ShowRequestId)
     {
         <p class="small pm-muted pm-break mb-3">
-            Reference: <code>@Model.RequestId</code>
+            @L["Reference:"] <code>@Model.RequestId</code>
         </p>
     }
 
     <div class="d-grid d-sm-flex gap-2 justify-content-center">
-        <a asp-controller="Cars" asp-action="Index" class="btn btn-primary">Back to cars</a>
-        <a href="javascript:history.back()" class="btn btn-outline-secondary">Go back</a>
+        <a asp-controller="Cars" asp-action="Index" class="btn btn-primary">@L["Back to cars"]</a>
+        <a href="javascript:history.back()" class="btn btn-outline-secondary">@L["Go back"]</a>
     </div>
 </div>

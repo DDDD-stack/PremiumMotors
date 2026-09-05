@@ -1,13 +1,13 @@
 @model PublicSellerViewModel
 @{
-    ViewData["Title"] = "Reviews";
+    ViewData["Title"] = L["Reviews"].Value;
 }
 
 <div class="pm-page-head">
     <div>
-        <h1>Your reviews</h1>
+        <h1>@L["Your reviews"]</h1>
         <p class="pm-muted mb-0 small">
-            Left by buyers who completed a purchase from you. You can reply once to each.
+            @L["Left by buyers who completed a purchase from you. You can reply once to each."]
         </p>
     </div>
     <partial name="_Stars" model="@((Model.RatingAverage, Model.RatingCount))" />
@@ -18,10 +18,9 @@
 @if (Model.Reviews.Count == 0)
 {
     <div class="pm-empty">
-        <h2 class="h5">No reviews yet</h2>
+        <h2 class="h5">@L["No reviews yet"]</h2>
         <p class="pm-muted mb-0">
-            A buyer can review you once you have sold them a car. Nothing to do here except
-            keep selling.
+            @L["A buyer can review you once you have sold them a car. Nothing to do here except keep selling."]
         </p>
     </div>
 }
@@ -63,7 +62,7 @@ else
                     {
                         <div class="pm-review-reply mt-3">
                             <div class="small fw-semibold">
-                                Your reply
+                                @L["Your reply"]
                                 <span class="pm-muted fw-normal">
                                     · @review.SellerRepliedUtc?.ToString("d MMM yyyy")
                                 </span>
@@ -76,12 +75,12 @@ else
                         <form asp-action="ReplyToReview" method="post" class="mt-3">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="reviewId" value="@review.Id" />
-                            <label class="form-label small" for="reply-@review.Id">Reply publicly</label>
+                            <label class="form-label small" for="reply-@review.Id">@L["Reply publicly"]</label>
                             <div class="d-flex gap-2">
                                 <input type="text" id="reply-@review.Id" name="reply" class="form-control"
                                        maxlength="1000"
-                                       placeholder="Answer once, in public. It cannot be edited afterwards." />
-                                <button type="submit" class="btn btn-outline-primary">Reply</button>
+                                       placeholder="@L["Answer once, in public. It cannot be edited afterwards."]" />
+                                <button type="submit" class="btn btn-outline-primary">@L["Reply"]</button>
                             </div>
                         </form>
                     }

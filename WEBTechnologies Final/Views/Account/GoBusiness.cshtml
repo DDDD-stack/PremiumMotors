@@ -1,5 +1,5 @@
 @{
-    ViewData["Title"] = "Switch to a business account";
+    ViewData["Title"] = L["Switch to a business account"].Value;
     var dealerships = ViewData["Dealerships"] as int? ?? 0;
     var listings = ViewData["ActiveListings"] as int? ?? 0;
 }
@@ -9,96 +9,86 @@
    rather than about what the site is. *@
 <section class="pm-hero pm-hero-biz pm-bleed">
     <div class="pm-hero-inner">
-        <p class="pm-eyebrow">For dealerships</p>
+        <p class="pm-eyebrow">@L["For dealerships"]</p>
 
-        <h1 class="pm-hero-title">Selling more than one car?</h1>
+        <h1 class="pm-hero-title">@L["Selling more than one car?"]</h1>
 
         <p class="pm-hero-sub">
-            Switch your account to a business account and you keep everything you already have —
-            your listings, your offers, your messages and your rating all come with you. Nothing
-            is transferred, nothing restarts.
+            @L["Switch your account to a business account and you keep everything you already have - your listings, your offers, your messages and your rating all come with you. Nothing is transferred, nothing restarts."]
         </p>
 
         <div class="pm-hero-cta">
             <a asp-action="BecomeBusiness" class="btn btn-lg btn-warning fw-semibold">
-                Switch my account
+                @L["Switch my account"]
             </a>
             <a asp-controller="Seller" asp-action="Dashboard" class="btn btn-lg btn-outline-light">
-                Not now
+                @L["Not now"]
             </a>
         </div>
 
         <p class="pm-hero-note">
-            Free. No commission. All we record is your NIPT and trading address.
+            @L["Free. No commission. All we record is your NIPT and trading address."]
         </p>
     </div>
 </section>
 
 <section class="pm-section">
     <div class="pm-section-head">
-        <h2>What you get that you do not have now</h2>
+        <h2>@L["What you get that you do not have now"]</h2>
     </div>
 
     <div class="row g-4">
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">A shopfront of your own</h3>
+                <h3 class="h6">@L["A shopfront of your own"]</h3>
                 <p>
-                    Your logo, banner, address and opening hours on one page with a clean web
-                    address, listing every car you have. You appear in the
-                    <a asp-controller="Dealerships" asp-action="Index">dealership directory</a>,
-                    which buyers browse by name and by city — @dealerships
-                    @(dealerships == 1 ? "dealership is" : "dealerships are") trading there today.
+                    @L["Your logo, banner, address and opening hours on one page with a clean web address, listing every car you have. You appear in the <a href='{0}'>dealership directory</a>, which buyers browse by name and by city.", Url.Action("Index", "Dealerships") ?? "/Dealerships"]
+                    @(dealerships == 1
+                        ? L["1 dealership is trading there today."]
+                        : L["{0} dealerships are trading there today.", dealerships])
                 </p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">Sales analytics</h3>
+                <h3 class="h6">@L["Sales analytics"]</h3>
                 <p>
-                    Revenue per month, offers per month, views over the last thirty days and a
-                    listing-by-listing table. Views per offer shows which cars are being looked
-                    at and passed over — usually a pricing problem, not a photo problem.
+                    @L["Revenue per month, offers per month, views over the last thirty days and a listing-by-listing table. Views per offer shows which cars are being looked at and passed over - usually a pricing problem, not a photo problem."]
                 </p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">A business identity on every listing</h3>
+                <h3 class="h6">@L["A business identity on every listing"]</h3>
                 <p>
-                    Your listings say <strong>Dealership</strong> and carry your trading name
-                    instead of your username. Across @listings active
-                    @(listings == 1 ? "listing" : "listings") on the site, that is what tells a
-                    buyer who they are dealing with.
+                    @L["Your listings say <strong>Dealership</strong> and carry your trading name instead of your username."]
+                    @(listings == 1
+                        ? L["Across 1 active listing on the site, that is what tells a buyer who they are dealing with."]
+                        : L["Across {0} active listings on the site, that is what tells a buyer who they are dealing with.", listings])
                 </p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">You can advertise</h3>
+                <h3 class="h6">@L["You can advertise"]</h3>
                 <p>
-                    Paid placement is open to business accounts: a highlighted card and a slot
-                    at the top of the marketplace, or the front pages themselves. It is the only
-                    thing on this site that costs money.
+                    @L["Paid placement is open to business accounts: a highlighted card and a slot at the top of the marketplace, or the front pages themselves. It is the only thing on this site that costs money."]
                 </p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">Your rating follows you</h3>
+                <h3 class="h6">@L["Your rating follows you"]</h3>
                 <p>
-                    Ratings live on the account, not on the shopfront, so every review you have
-                    already earned as a private seller appears on your dealership page from day
-                    one. You do not start from zero.
+                    @L["Ratings live on the account, not on the shopfront, so every review you have already earned as a private seller appears on your dealership page from day one. You do not start from zero."]
                 </p>
             </div>
         </div>
         <div class="col-md-6 col-lg-4">
             <div class="pm-why">
-                <h3 class="h6">Everything you have now</h3>
+                <h3 class="h6">@L["Everything you have now"]</h3>
                 <p>
-                    Private offers, the offer inbox, messaging, stock management and 0%
-                    commission are unchanged. Switching adds; it takes nothing away.
+                    @L["Private offers, the offer inbox, messaging, stock management and 0% commission are unchanged. Switching adds; it takes nothing away."]
                 </p>
             </div>
         </div>
@@ -108,39 +98,33 @@
 <section class="pm-section">
     <div class="pm-signup">
         <div class="pm-signup-col">
-            <h2 class="h5">Before you switch</h2>
+            <h2 class="h5">@L["Before you switch"]</h2>
             <p class="pm-muted">
-                Two things worth knowing, because neither is obvious and both are easier to
-                read now than to discover afterwards.
+                @L["Two things worth knowing, because neither is obvious and both are easier to read now than to discover afterwards."]
             </p>
             <ul class="pm-lock-list">
                 <li>
-                    <strong>It is one way.</strong> There is no button to go back to a personal
-                    account. Ask us if you ever need to.
+                    <strong>@L["It is one way."]</strong> @L["There is no button to go back to a personal account. Ask us if you ever need to."]
                 </li>
                 <li>
-                    <strong>Your trading details become public.</strong> Your business name,
-                    town and anything you add to your dealership page — address, phone, opening
-                    hours — are shown to anyone. Your NIPT and VAT number are not.
+                    <strong>@L["Your trading details become public."]</strong> @L["Your business name, town and anything you add to your dealership page - address, phone, opening hours - are shown to anyone. Your NIPT and VAT number are not."]
                 </li>
             </ul>
         </div>
 
         <div class="pm-signup-col">
-            <h2 class="h5">What you will need</h2>
+            <h2 class="h5">@L["What you will need"]</h2>
             <ol class="pm-tick-list pm-tick-num">
-                <li><strong>Your NIPT</strong> — the business registration number</li>
-                <li>Registered business name and trading address</li>
-                <li>A named contact person for the account</li>
+                <li>@L["<strong>Your NIPT</strong> - the business registration number"]</li>
+                <li>@L["Registered business name and trading address"]</li>
+                <li>@L["A named contact person for the account"]</li>
             </ol>
             <p class="pm-muted small">
-                VAT number and website are optional. We record these details; we do not check
-                them against the business register, and no account on this site carries a
-                verified badge.
+                @L["VAT number and website are optional. We record these details; we do not check them against the business register, and no account on this site carries a verified badge."]
             </p>
 
             <a asp-action="BecomeBusiness" class="btn btn-lg btn-primary fw-semibold">
-                Switch my account
+                @L["Switch my account"]
             </a>
         </div>
     </div>

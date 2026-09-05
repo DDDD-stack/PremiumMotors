@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using WEBTechnologies_Final.Services;
 
 namespace WEBTechnologies_Final.Controllers
@@ -8,9 +9,12 @@ namespace WEBTechnologies_Final.Controllers
     {
         private readonly ApiClient _api;
         private readonly ProfileNavService _nav;
+        private readonly IStringLocalizer<SharedResource> _text;
 
-        public FavoritesController(ApiClient api, ProfileNavService nav)
+        public FavoritesController(
+            ApiClient api, ProfileNavService nav, IStringLocalizer<SharedResource> text)
         {
+            _text = text;
             _api = api;
             _nav = nav;
         }
@@ -42,8 +46,8 @@ namespace WEBTechnologies_Final.Controllers
 
             var nowFavorite = await _api.ToggleFavoriteAsync(CurrentUserId, id);
             TempData["Success"] = nowFavorite
-                ? "Added to your favourites."
-                : "Removed from your favourites.";
+                ? _text["Added to your favourites."].Value
+                : _text["Removed from your favourites."].Value;
 
             if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                 return Redirect(returnUrl);

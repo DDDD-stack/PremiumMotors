@@ -1,10 +1,10 @@
 @model SellerProfileViewModel
 @{
-    ViewData["Title"] = "Seller profile";
+    ViewData["Title"] = L["Seller profile"].Value;
 }
 
 <div class="pm-page-head">
-    <h1>Seller profile</h1>
+    <h1>@L["Seller profile"]</h1>
 </div>
 
 <partial name="_ProfileNav" />
@@ -15,7 +15,7 @@
             <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div>
-                        <div class="small pm-muted">Selling since</div>
+                        <div class="small pm-muted">@L["Selling since"]</div>
                         <div class="fw-semibold">
                             @(Model.SellerSinceUtc is DateTime s
                                 ? AppTime.ToDisplay(s).ToString("dd MMMM yyyy") : "—")
@@ -29,14 +29,22 @@
 
                     <div class="mb-3">
                         <label asp-for="SellerType" class="form-label"></label>
-                        <select asp-for="SellerType" class="form-select"
-                                asp-items="Html.GetEnumSelectList<SellerType>()"></select>
+                        @* Written out rather than GetEnumSelectList, which renders the
+                           [Display(Name)] in English with no way in to translate it. *@
+                        <select asp-for="SellerType" class="form-select">
+                            @foreach (var type in Enum.GetValues<SellerType>())
+                            {
+                                <option value="@type" selected="@(Model.SellerType == type)">
+                                    @L[EnumText.Display(type)]
+                                </option>
+                            }
+                        </select>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="DisplayName" class="form-label"></label>
                         <input asp-for="DisplayName" class="form-control" autocapitalize="words" />
-                        <div class="form-text">Shown on your listings. Blank falls back to your username.</div>
+                        <div class="form-text">@L["Shown on your listings. Blank falls back to your username."]</div>
                         <span asp-validation-for="DisplayName" class="text-danger"></span>
                     </div>
 
@@ -49,18 +57,14 @@
                     <div class="mb-3">
                         <label asp-for="PublicPhone" class="form-label"></label>
                         <input asp-for="PublicPhone" class="form-control" type="tel"
-                               inputmode="tel" autocomplete="tel" placeholder="e.g. +355 69 000 0000" />
+                               inputmode="tel" autocomplete="tel" placeholder="@L["e.g. +355 69 000 0000"]" />
                         <div class="form-text">
-                            <strong>Anyone can see this</strong>, including visitors who are not
-                            logged in — it is how someone without an account gets hold of you.
-                            It appears on every listing you own. Leave it blank and buyers can
-                            only reach you by signing in and messaging you. This is not the
-                            number on your account, which stays private until you accept an offer.
+                            @L["<strong>Anyone can see this</strong>, including visitors who are not logged in - it is how someone without an account gets hold of you. It appears on every listing you own. Leave it blank and buyers can only reach you by signing in and messaging you. This is not the number on your account, which stays private until you accept an offer."]
                         </div>
                         <span asp-validation-for="PublicPhone" class="text-danger"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">@L["Save changes"]</button>
                 </form>
             </div>
         </div>
@@ -68,19 +72,15 @@
 
     <div class="col-lg-5 mt-3 mt-lg-0">
         <div class="card">
-            <div class="card-header">How buyers judge you here</div>
+            <div class="card-header">@L["How buyers judge you here"]</div>
             <div class="card-body small pm-muted">
                 @* There is no verified badge on this site, for anyone. Saying what DOES
                    count stops the absence of a badge reading as a black mark. *@
                 <p>
-                    There is no verification badge on PremiumMotors. Checking a registration
-                    number properly means checking it against the state register, and we have
-                    no route to that — so nobody gets a badge rather than a few people getting
-                    a meaningless one.
+                    @L["There is no verification badge on PremiumMotors. Checking a registration number properly means checking it against the state register, and we have no route to that - so nobody gets a badge rather than a few people getting a meaningless one."]
                 </p>
                 <p class="mb-0">
-                    What buyers actually see is your rating, and only someone who completed a
-                    purchase from you can leave one.
+                    @L["What buyers actually see is your rating, and only someone who completed a purchase from you can leave one."]
                 </p>
             </div>
         </div>

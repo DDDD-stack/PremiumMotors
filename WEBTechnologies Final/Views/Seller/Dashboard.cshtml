@@ -1,13 +1,13 @@
 @using WEBTechnologies_Final.Services.Marketplace
 @{
-    ViewData["Title"] = "Seller panel";
+    ViewData["Title"] = L["Seller panel"].Value;
     var d = ViewData["Dashboard"] as SellerDashboard;
     var pending = ViewData["Recent"] as List<Offer> ?? new();
 }
 
 <div class="pm-page-head">
-    <h1>Seller panel</h1>
-    <a asp-controller="Sell" asp-action="Create" class="btn btn-success">+ List a car</a>
+    <h1>@L["Seller panel"]</h1>
+    <a asp-controller="Sell" asp-action="Create" class="btn btn-success">@L["+ List a car"]</a>
 </div>
 
 <partial name="_ProfileNav" />
@@ -19,7 +19,7 @@
             <a class="card h-100 text-decoration-none" asp-action="Listings" asp-route-status="@ListingStatus.Active">
                 <div class="pm-stat">
                     <div class="pm-stat-value text-success">@d.ActiveListings</div>
-                    <div class="pm-stat-label">Live</div>
+                    <div class="pm-stat-label">@L["Live"]</div>
                 </div>
             </a>
         </div>
@@ -27,7 +27,7 @@
             <a class="card h-100 text-decoration-none" asp-action="Offers" asp-route-status="@OfferStatus.Pending">
                 <div class="pm-stat">
                     <div class="pm-stat-value text-primary">@d.PendingOffers</div>
-                    <div class="pm-stat-label">Offers to answer</div>
+                    <div class="pm-stat-label">@L["Offers to answer"]</div>
                 </div>
             </a>
         </div>
@@ -35,7 +35,7 @@
             <a class="card h-100 text-decoration-none" asp-action="Listings" asp-route-status="@ListingStatus.Reserved">
                 <div class="pm-stat">
                     <div class="pm-stat-value text-warning">@d.Reserved</div>
-                    <div class="pm-stat-label">Reserved</div>
+                    <div class="pm-stat-label">@L["Reserved"]</div>
                 </div>
             </a>
         </div>
@@ -43,7 +43,7 @@
             <a class="card h-100 text-decoration-none" asp-controller="Messages" asp-action="Index">
                 <div class="pm-stat">
                     <div class="pm-stat-value">@d.UnreadMessages</div>
-                    <div class="pm-stat-label">Unread messages</div>
+                    <div class="pm-stat-label">@L["Unread messages"]</div>
                 </div>
             </a>
         </div>
@@ -53,19 +53,19 @@
         <div class="col-sm-4">
             <div class="card h-100"><div class="pm-stat">
                 <div class="pm-stat-value">@d.Sold</div>
-                <div class="pm-stat-label">Sold</div>
+                <div class="pm-stat-label">@L["Sold"]</div>
             </div></div>
         </div>
         <div class="col-sm-4">
             <div class="card h-100"><div class="pm-stat">
                 <div class="pm-stat-value">@d.SoldValue.ToString("C0")</div>
-                <div class="pm-stat-label">Total sold value</div>
+                <div class="pm-stat-label">@L["Total sold value"]</div>
             </div></div>
         </div>
         <div class="col-sm-4">
             <div class="card h-100"><div class="pm-stat">
                 <div class="pm-stat-value">@d.Drafts</div>
-                <div class="pm-stat-label">Drafts</div>
+                <div class="pm-stat-label">@L["Drafts"]</div>
             </div></div>
         </div>
     </div>
@@ -73,14 +73,14 @@
 
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center">
-        <span>Offers waiting on you</span>
-        <a asp-action="Offers" class="small">See all</a>
+        <span>@L["Offers waiting on you"]</span>
+        <a asp-action="Offers" class="small">@L["See all"]</a>
     </div>
 
     @if (pending.Count == 0)
     {
         <div class="card-body pm-muted small">
-            Nothing to answer right now. New offers land here and in your messages.
+            @L["Nothing to answer right now. New offers land here and in your messages."]
         </div>
     }
     else
@@ -92,7 +92,7 @@
                     <div class="min-w-0">
                         <a asp-controller="Cars" asp-action="Details" asp-route-id="@offer.CarId"
                            class="fw-semibold text-decoration-none d-block text-truncate">
-                            @(offer.Car?.Title ?? "Listing")
+                            @(offer.Car?.Title ?? L["Listing"].Value)
                         </a>
                         <div class="small pm-muted text-truncate">
                             @offer.BuyerUsername · @AppTime.ToDisplay(offer.CreatedUtc).ToString("dd/MM HH:mm")
@@ -101,7 +101,7 @@
                     <div class="text-end flex-shrink-0">
                         <div class="pm-price">@offer.Amount.ToString("C")</div>
                         <a asp-action="Offers" asp-route-status="@OfferStatus.Pending"
-                           class="small">Review</a>
+                           class="small">@L["Review"]</a>
                     </div>
                 </li>
             }

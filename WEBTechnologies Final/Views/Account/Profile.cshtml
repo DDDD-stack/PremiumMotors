@@ -1,19 +1,19 @@
 @model ProfileViewModel
 @{
-    ViewData["Title"] = "My profile";
+    ViewData["Title"] = L["My profile"].Value;
 }
 
 <div class="pm-page-head">
     <div>
         <h1>@Model.Username</h1>
         <p class="pm-muted mb-0 small">
-            @(Model.IsBusiness ? "Business account" : "Personal account")
-            · member since @AppTime.ToDisplay(Model.RegisteredUtc).ToString("MMMM yyyy")
+            @(Model.IsBusiness ? L["Business account"] : L["Personal account"])
+            · @L["member since {0}", AppTime.ToDisplay(Model.RegisteredUtc).ToString("MMMM yyyy")]
         </p>
     </div>
     @if (Model.IsSeller)
     {
-        <a asp-controller="Sell" asp-action="Create" class="btn btn-success">+ List a car</a>
+        <a asp-controller="Sell" asp-action="Create" class="btn btn-success">@L["+ List a car"]</a>
     }
 </div>
 
@@ -23,7 +23,7 @@
     <div class="col-lg-7">
         <div class="card mb-3">
             <div class="card-body">
-                <h2 class="h6 mb-3">Profile picture</h2>
+                <h2 class="h6 mb-3">@L["Profile picture"]</h2>
 
                 <div class="pm-avatar-editor">
                     <partial name="_Avatar" model="@((Model.AvatarPath, Model.Initials, "lg"))" />
@@ -33,19 +33,18 @@
                     <form asp-action="Avatar" method="post" enctype="multipart/form-data"
                           class="pm-avatar-form">
                         @Html.AntiForgeryToken()
-                        <label class="form-label" for="avatar">Choose a picture</label>
+                        <label class="form-label" for="avatar">@L["Choose a picture"]</label>
                         <input type="file" id="avatar" name="avatar" class="form-control"
                                accept="image/*" />
                         <div class="form-text">
-                            JPEG, PNG, GIF or WebP. Square images look best; anything else is
-                            cropped to the centre.
+                            @L["JPEG, PNG, GIF or WebP. Square images look best; anything else is cropped to the centre."]
                         </div>
                         <div class="d-flex gap-2 mt-2">
-                            <button type="submit" class="btn btn-primary btn-sm">Save picture</button>
+                            <button type="submit" class="btn btn-primary btn-sm">@L["Save picture"]</button>
                             @if (!string.IsNullOrWhiteSpace(Model.AvatarPath))
                             {
                                 <button type="submit" name="remove" value="true"
-                                        class="btn btn-outline-danger btn-sm">Remove</button>
+                                        class="btn btn-outline-danger btn-sm">@L["Remove"]</button>
                             }
                         </div>
                     </form>
@@ -54,12 +53,11 @@
                 @if (Model.IsSeller)
                 {
                     <p class="small pm-muted mt-3 mb-0">
-                        This picture appears next to your name on every car you list.
+                        @L["This picture appears next to your name on every car you list."]
                         @if (Model.IsBusiness)
                         {
                             <text>
-                                Your dealership page uses its own logo, which you set in the
-                                <a asp-controller="Seller" asp-action="Dealership">dealership settings</a>.
+                                @L["Your dealership page uses its own logo, which you set in the <a href='{0}'>dealership settings</a>.", Url.Action("Dealership", "Seller") ?? "/Seller/Dealership"]
                             </text>
                         }
                     </p>
@@ -69,7 +67,7 @@
 
         <div class="card">
             <div class="card-body">
-                <h2 class="h6 mb-3">Contact details</h2>
+                <h2 class="h6 mb-3">@L["Contact details"]</h2>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
@@ -77,12 +75,12 @@
                     @Html.AntiForgeryToken()
 
                     <div class="mb-3">
-                        <label class="form-label">Username</label>
+                        <label class="form-label">@L["Username"]</label>
                         @* Username is the identity other people see on offers and messages, and
                            it is denormalized onto listings and offers — renaming it would need a
                            backfill, so it is deliberately not editable here. *@
                         <input class="form-control" value="@Model.Username" disabled />
-                        <div class="form-text">Your username cannot be changed.</div>
+                        <div class="form-text">@L["Your username cannot be changed."]</div>
                     </div>
 
                     <div class="mb-3">
@@ -92,14 +90,13 @@
                                    autocapitalize="none" spellcheck="false" />
                             @if (Model.EmailVerified)
                             {
-                                <span class="input-group-text text-success" title="Verified">✓</span>
+                                <span class="input-group-text text-success" title="@L["Verified"]">✓</span>
                             }
                         </div>
                         @if (!Model.EmailVerified)
                         {
                             <div class="form-text">
-                                Not verified yet. Verification emails go out once an email provider
-                                is configured.
+                                @L["Not verified yet. Verification emails go out once an email provider is configured."]
                             </div>
                         }
                         <span asp-validation-for="Email" class="text-danger"></span>
@@ -110,12 +107,12 @@
                         <input asp-for="Phone" class="form-control" type="tel" inputmode="tel"
                                autocomplete="tel" />
                         <div class="form-text">
-                            Shared with the other party only when an offer is accepted.
+                            @L["Shared with the other party only when an offer is accepted."]
                         </div>
                         <span asp-validation-for="Phone" class="text-danger"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Save changes</button>
+                    <button type="submit" class="btn btn-primary">@L["Save changes"]</button>
                 </form>
             </div>
         </div>
@@ -127,19 +124,19 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h2 class="h6 mb-0">Selling</h2>
-                        <span class="badge bg-success">Active</span>
+                        <h2 class="h6 mb-0">@L["Selling"]</h2>
+                        <span class="badge bg-success">@L["Active"]</span>
                     </div>
                     <p class="pm-muted small">
-                        Your seller panel is unlocked. Post cars, read offers and reply to buyers.
+                        @L["Your seller panel is unlocked. Post cars, read offers and reply to buyers."]
                     </p>
                     <div class="d-grid gap-2">
                         <a asp-controller="Seller" asp-action="Dashboard" class="btn btn-outline-primary btn-sm">
-                            Open seller panel
+                            @L["Open seller panel"]
                         </a>
                         @if (Model.IsBusiness)
                         {
-                            <a asp-action="Business" class="btn btn-outline-secondary btn-sm">Business details</a>
+                            <a asp-action="Business" class="btn btn-outline-secondary btn-sm">@L["Business details"]</a>
                         }
                     </div>
                 </div>
@@ -149,17 +146,16 @@
         {
             <div class="card mb-3 pm-choice-accent">
                 <div class="card-body">
-                    <h2 class="h6">Thinking of selling?</h2>
+                    <h2 class="h6">@L["Thinking of selling?"]</h2>
                     <p class="pm-muted small">
-                        Turn on selling to list your car and receive private offers. It takes one
-                        form and you keep everything you have as a buyer.
+                        @L["Turn on selling to list your car and receive private offers. It takes one form and you keep everything you have as a buyer."]
                     </p>
                     <div class="d-grid gap-2">
                         <a asp-controller="Seller" asp-action="Start" class="btn btn-success btn-sm">
-                            Start selling
+                            @L["Start selling"]
                         </a>
                         <a asp-action="RegisterBusiness" class="btn btn-link btn-sm">
-                            Selling as a dealer? Register a business account
+                            @L["Selling as a dealer? Register a business account"]
                         </a>
                     </div>
                 </div>
@@ -168,12 +164,12 @@
 
         <div class="card">
             <div class="card-body">
-                <h2 class="h6">Quick links</h2>
+                <h2 class="h6">@L["Quick links"]</h2>
                 <div class="list-group list-group-flush">
-                    <a asp-action="Offers" class="list-group-item list-group-item-action px-0">My offers</a>
-                    <a asp-action="Purchases" class="list-group-item list-group-item-action px-0">My purchases</a>
-                    <a asp-controller="Messages" asp-action="Index" class="list-group-item list-group-item-action px-0">Messages</a>
-                    <a asp-action="Security" class="list-group-item list-group-item-action px-0">Password &amp; devices</a>
+                    <a asp-action="Offers" class="list-group-item list-group-item-action px-0">@L["My offers"]</a>
+                    <a asp-action="Purchases" class="list-group-item list-group-item-action px-0">@L["My purchases"]</a>
+                    <a asp-controller="Messages" asp-action="Index" class="list-group-item list-group-item-action px-0">@L["Messages"]</a>
+                    <a asp-action="Security" class="list-group-item list-group-item-action px-0">@L["Password &amp; devices"]</a>
                 </div>
             </div>
         </div>

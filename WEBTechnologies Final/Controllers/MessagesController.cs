@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using WEBTechnologies_Final.Services;
 using WEBTechnologies_Final.Services.Marketplace;
 
@@ -17,9 +18,13 @@ namespace WEBTechnologies_Final.Controllers
     {
         private readonly ConversationService _conversations;
         private readonly ProfileNavService _nav;
+        private readonly IStringLocalizer<SharedResource> _text;
 
-        public MessagesController(ConversationService conversations, ProfileNavService nav)
+        public MessagesController(
+            ConversationService conversations, ProfileNavService nav,
+            IStringLocalizer<SharedResource> text)
         {
+            _text = text;
             _conversations = conversations;
             _nav = nav;
         }
@@ -58,7 +63,7 @@ namespace WEBTechnologies_Final.Controllers
             if (!result.Success)
             {
                 if (result.Code == MarketplaceCodes.NotFound) return NotFound();
-                TempData["Error"] = result.Error;
+                TempData["Error"] = _text[result.Error!].Value;
             }
 
             return RedirectToAction(nameof(Thread), new { id });

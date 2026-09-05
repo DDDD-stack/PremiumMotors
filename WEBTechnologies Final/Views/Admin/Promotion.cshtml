@@ -1,6 +1,6 @@
 @model Promotion
 @{
-    ViewData["Title"] = "Find a promotion";
+    ViewData["Title"] = L["Find a promotion"].Value;
     var typed = ViewData["Reference"] as string;
     var notFound = ViewData["NotFound"] is true;
     var history = ViewData["History"] as List<Promotion> ?? new();
@@ -9,31 +9,29 @@
 
 <div class="pm-page-head">
     <div>
-        <h1>Find a promotion</h1>
+        <h1>@L["Find a promotion"]</h1>
         <p class="pm-muted mb-0">
-            Paste the reference from the seller's receipt. Case, spaces and dashes do not
-            matter, and the PM prefix is optional.
+            @L["Paste the reference from the seller's receipt. Case, spaces and dashes do not matter, and the PM prefix is optional."]
         </p>
     </div>
-    <a asp-action="Promotions" class="btn btn-outline-secondary">All placements</a>
+    <a asp-action="Promotions" class="btn btn-outline-secondary">@L["All placements"]</a>
 </div>
 
 <div class="row g-4">
     <div class="col-lg-6">
         <form asp-action="Promotion" method="get" class="card">
             <div class="card-body">
-                <label class="form-label" for="reference">Reference</label>
+                <label class="form-label" for="reference">@L["Reference"]</label>
                 <div class="input-group">
                     <input type="search" id="reference" name="reference" value="@typed"
                            class="form-control" placeholder="PM-XXXX-XXXX" autocomplete="off"
                            spellcheck="false" />
-                    <button type="submit" class="btn btn-primary">Look up</button>
+                    <button type="submit" class="btn btn-primary">@L["Look up"]</button>
                 </div>
                 @if (notFound)
                 {
                     <div class="small text-danger mt-2">
-                        No placement with that reference. Check for a mistyped character —
-                        the code never contains O, 0, I, 1 or U.
+                        @L["No placement with that reference. Check for a mistyped character - the code never contains O, 0, I, 1 or U."]
                     </div>
                 }
             </div>
@@ -54,35 +52,35 @@
                 </div>
                 @if (live)
                 {
-                    <span class="badge bg-success">Running now</span>
+                    <span class="badge bg-success">@L["Running now"]</span>
                 }
                 else if (Model.EndedEarlyUtc is not null)
                 {
-                    <span class="badge bg-secondary">Ended early</span>
+                    <span class="badge bg-secondary">@L["Ended early"]</span>
                 }
                 else
                 {
-                    <span class="badge bg-secondary">Finished</span>
+                    <span class="badge bg-secondary">@L["Finished"]</span>
                 }
             </div>
 
             <dl class="row small mt-3 mb-0 pm-break">
-                <dt class="col-sm-4">Placement</dt>
+                <dt class="col-sm-4">@L["Placement"]</dt>
                 <dd class="col-sm-8">
-                    @(Model.Tier == PromotionTier.FrontPage ? "Front page" : "Promoted in the marketplace")
+                    @(Model.Tier == PromotionTier.FrontPage ? L["Front page"] : L["Promoted in the marketplace"])
                 </dd>
 
-                <dt class="col-sm-4">Started</dt>
+                <dt class="col-sm-4">@L["Started"]</dt>
                 <dd class="col-sm-8">@AppTime.ToDisplay(Model.StartedUtc).ToString("dd MMM yyyy, HH:mm")</dd>
 
-                <dt class="col-sm-4">Sold until</dt>
+                <dt class="col-sm-4">@L["Sold until"]</dt>
                 <dd class="col-sm-8">@AppTime.ToDisplay(Model.EndsUtc).ToString("dd MMM yyyy, HH:mm")</dd>
 
                 @if (Model.EndedEarlyUtc is DateTime cut)
                 {
                     @* The gap between what was sold and what ran is the first thing anybody
                        arguing about a refund needs, so it is stated rather than implied. *@
-                    <dt class="col-sm-4">Stopped early</dt>
+                    <dt class="col-sm-4">@L["Stopped early"]</dt>
                     <dd class="col-sm-8">
                         @AppTime.ToDisplay(cut).ToString("dd MMM yyyy, HH:mm")
                         @if (!string.IsNullOrWhiteSpace(Model.EndedReason))
@@ -92,7 +90,7 @@
                     </dd>
                 }
 
-                <dt class="col-sm-4">Paid</dt>
+                <dt class="col-sm-4">@L["Paid"]</dt>
                 <dd class="col-sm-8">
                     @if (Model.PriceEur is decimal paid)
                     {
@@ -100,19 +98,19 @@
                     }
                     else
                     {
-                        <span class="pm-muted">Not recorded — arranged off-site</span>
+                        <span class="pm-muted">@L["Not recorded - arranged off-site"]</span>
                     }
                 </dd>
 
-                <dt class="col-sm-4">Listing</dt>
+                <dt class="col-sm-4">@L["Listing"]</dt>
                 <dd class="col-sm-8">
                     @if (Model.CarId is int carId && Model.Car is not null)
                     {
-                        <a asp-controller="Cars" asp-action="Details" asp-route-id="@carId">Open the listing</a>
+                        <a asp-controller="Cars" asp-action="Details" asp-route-id="@carId">@L["Open the listing"]</a>
                     }
                     else
                     {
-                        <span class="pm-muted">Deleted since — the title above is the copy kept on the receipt</span>
+                        <span class="pm-muted">@L["Deleted since - the title above is the copy kept on the receipt"]</span>
                     }
                 </dd>
             </dl>
@@ -121,29 +119,29 @@
 
     @if (history.Count > 1)
     {
-        <h2 class="h6 mt-4">Everything sold on this listing</h2>
+        <h2 class="h6 mt-4">@L["Everything sold on this listing"]</h2>
         <div class="table-responsive">
             <table class="table table-sm align-middle pm-table-cards">
                 <thead>
                     <tr>
-                        <th scope="col">Reference</th>
-                        <th scope="col">Placement</th>
-                        <th scope="col">Started</th>
-                        <th scope="col">Ended</th>
+                        <th scope="col">@L["Reference"]</th>
+                        <th scope="col">@L["Placement"]</th>
+                        <th scope="col">@L["Started"]</th>
+                        <th scope="col">@L["Ended"]</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var p in history)
                     {
                         <tr class="@(p.Reference == Model.Reference ? "table-active" : null)">
-                            <td data-label="Reference">
+                            <td data-label="@L["Reference"]">
                                 <a asp-action="Promotion" asp-route-reference="@p.Reference">@p.Reference</a>
                             </td>
-                            <td data-label="Placement">
-                                @(p.Tier == PromotionTier.FrontPage ? "Front page" : "Promoted")
+                            <td data-label="@L["Placement"]">
+                                @(p.Tier == PromotionTier.FrontPage ? L["Front page"] : L["Promoted"])
                             </td>
-                            <td data-label="Started">@AppTime.ToDisplay(p.StartedUtc).ToString("dd MMM yyyy")</td>
-                            <td data-label="Ended">@AppTime.ToDisplay(p.EffectiveEnd).ToString("dd MMM yyyy")</td>
+                            <td data-label="@L["Started"]">@AppTime.ToDisplay(p.StartedUtc).ToString("dd MMM yyyy")</td>
+                            <td data-label="@L["Ended"]">@AppTime.ToDisplay(p.EffectiveEnd).ToString("dd MMM yyyy")</td>
                         </tr>
                     }
                 </tbody>

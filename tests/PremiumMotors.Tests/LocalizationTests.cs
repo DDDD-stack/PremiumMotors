@@ -89,7 +89,10 @@ public class LocalizationTests
         var sameInEveryLanguage = new HashSet<string>
         {
             "Admin", "CVT", "Chat", "Diesel", "Draft", "Email", "Hatchback", "Manual",
-            "Max", "Min", "Model", "Privacy", "SUV", "Sedan", "VIN"
+            "Max", "Min", "Model", "Privacy", "SUV", "Sedan", "VIN",
+
+            // A number and a unit symbol. "km" is km in all three.
+            "{0} km"
         };
 
         foreach (var culture in TranslatedLanguages())

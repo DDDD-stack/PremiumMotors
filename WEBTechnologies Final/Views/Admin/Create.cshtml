@@ -1,17 +1,17 @@
 @model Car
 @{
-    ViewData["Title"] = "Post a Car";
+    ViewData["Title"] = L["Post a car"].Value;
 }
 
-<div class="pm-page-head"><h1>Post a Car</h1></div>
+<div class="pm-page-head"><h1>@L["Post a car"]</h1></div>
 
 <div class="card shadow-sm">
     <div class="card-body">
         <form asp-action="Create" method="post" enctype="multipart/form-data">
             <partial name="_CarForm" model="Model" />
             <div class="mt-4 d-grid d-sm-flex gap-2">
-                <button type="submit" class="btn btn-success">Post listing</button>
-                <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                <button type="submit" class="btn btn-success">@L["Post listing"]</button>
+                <a asp-action="Index" class="btn btn-outline-secondary">@L["Cancel"]</a>
             </div>
         </form>
     </div>

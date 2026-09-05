@@ -18,15 +18,15 @@
         <button type="submit"
                 class="btn @(isFav ? "btn-danger" : "btn-outline-danger") @extra"
                 aria-pressed="@(isFav ? "true" : "false")"
-                title="@(isFav ? "Remove from favourites" : "Save to favourites")">
-            @(isFav ? "♥ Saved" : "♡ Favourite")
+                title="@(isFav ? L["Remove from favourites"] : L["Save to favourites"])">
+            @(isFav ? L["♥ Saved"] : L["♡ Favourite"])
         </button>
     </form>
 }
 else
 {
     <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@returnUrl"
-       class="btn btn-outline-danger @extra" title="Log in to save favourites">
-        ♡ Favourite
+       class="btn btn-outline-danger @extra" title="@L["Log in to save favourites"]">
+        @L["♡ Favourite"]
     </a>
 }

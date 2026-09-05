@@ -20,10 +20,10 @@
 }
 
 <div class="pm-subnav mb-3">
-    <a class="pm-subnav-link @On("Account", "Profile")" asp-controller="Account" asp-action="Profile">Profile</a>
+    <a class="pm-subnav-link @On("Account", "Profile")" asp-controller="Account" asp-action="Profile">@L["Profile"]</a>
 
     <a class="pm-subnav-link @On("Account", "Offers")" asp-controller="Account" asp-action="Offers">
-        My offers
+        @L["My offers"]
         @if (Count("CountOffers") > 0)
         {
             <span class="pm-subnav-count">@Count("CountOffers")</span>
@@ -31,7 +31,7 @@
     </a>
 
     <a class="pm-subnav-link @On("Account", "Purchases")" asp-controller="Account" asp-action="Purchases">
-        Purchases
+        @L["Purchases"]
         @if (Count("CountPurchases") > 0)
         {
             <span class="pm-subnav-count">@Count("CountPurchases")</span>
@@ -39,7 +39,7 @@
     </a>
 
     <a class="pm-subnav-link @On("Favorites")" asp-controller="Favorites" asp-action="Index">
-        Saved
+        @L["Saved"]
         @if (Count("CountFavorites") > 0)
         {
             <span class="pm-subnav-count">@Count("CountFavorites")</span>
@@ -47,7 +47,7 @@
     </a>
 
     <a class="pm-subnav-link @On("Messages")" asp-controller="Messages" asp-action="Index">
-        Messages
+        @L["Messages"]
         @if (Count("CountUnread") > 0)
         {
             <span class="pm-subnav-count is-alert">@Count("CountUnread")</span>
@@ -57,12 +57,12 @@
     @if (isSeller)
     {
         <span class="pm-subnav-divider" aria-hidden="true"></span>
-        <a class="pm-subnav-link @On("Seller", "Dashboard")" asp-controller="Seller" asp-action="Dashboard">Selling</a>
-        <a class="pm-subnav-link @On("Seller", "Listings", "Edit")" asp-controller="Seller" asp-action="Listings">My listings</a>
-        <a class="pm-subnav-link @On("Seller", "Offers")" asp-controller="Seller" asp-action="Offers">Offers received</a>
-        <a class="pm-subnav-link @On("Seller", "Analytics")" asp-controller="Seller" asp-action="Analytics">Analytics</a>
+        <a class="pm-subnav-link @On("Seller", "Dashboard")" asp-controller="Seller" asp-action="Dashboard">@L["Selling"]</a>
+        <a class="pm-subnav-link @On("Seller", "Listings", "Edit")" asp-controller="Seller" asp-action="Listings">@L["My listings"]</a>
+        <a class="pm-subnav-link @On("Seller", "Offers")" asp-controller="Seller" asp-action="Offers">@L["Offers received"]</a>
+        <a class="pm-subnav-link @On("Seller", "Analytics")" asp-controller="Seller" asp-action="Analytics">@L["Analytics"]</a>
         <a class="pm-subnav-link @On("Seller", "Reviews")" asp-controller="Seller" asp-action="Reviews">
-            Reviews
+            @L["Reviews"]
             @if (Count("CountReviews") > 0)
             {
                 <span class="pm-subnav-count">@Count("CountReviews")</span>
@@ -70,20 +70,20 @@
         </a>
         @if (isBusiness)
         {
-            <a class="pm-subnav-link @On("Seller", "Dealership")" asp-controller="Seller" asp-action="Dealership">Dealership page</a>
-            <a class="pm-subnav-link @On("Account", "Business")" asp-controller="Account" asp-action="Business">Business</a>
+            <a class="pm-subnav-link @On("Seller", "Dealership")" asp-controller="Seller" asp-action="Dealership">@L["Dealership page"]</a>
+            <a class="pm-subnav-link @On("Account", "Business")" asp-controller="Account" asp-action="Business">@L["Business"]</a>
         }
         else
         {
-            <a class="pm-subnav-link @On("Seller", "Profile")" asp-controller="Seller" asp-action="Profile">Seller profile</a>
+            <a class="pm-subnav-link @On("Seller", "Profile")" asp-controller="Seller" asp-action="Profile">@L["Seller profile"]</a>
         }
     }
     else
     {
         <span class="pm-subnav-divider" aria-hidden="true"></span>
-        <a class="pm-subnav-link @On("Seller", "Start")" asp-controller="Seller" asp-action="Start">Start selling</a>
+        <a class="pm-subnav-link @On("Seller", "Start")" asp-controller="Seller" asp-action="Start">@L["Start selling"]</a>
     }
 
     <span class="pm-subnav-divider" aria-hidden="true"></span>
-    <a class="pm-subnav-link @On("Account", "Security")" asp-controller="Account" asp-action="Security">Security</a>
+    <a class="pm-subnav-link @On("Account", "Security")" asp-controller="Account" asp-action="Security">@L["Security"]</a>
 </div>

@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Http.Json;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.RateLimiting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using WEBTechnologies_Final;
@@ -112,6 +114,12 @@ AppTime.Configure(builder.Configuration["App:DisplayTimeZone"]);
 // ---------------------------------------------------------------------------
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
+// See LocalizedValidationAdapterProvider: [Required] is the one validation message MVC
+// will not localize on its own, and it is the one users see most.
+builder.Services.AddSingleton<
+    Microsoft.AspNetCore.Mvc.DataAnnotations.IValidationAttributeAdapterProvider,
+    LocalizedValidationAdapterProvider>();
+
 builder.Services.AddControllersWithViews()
     .AddViewLocalization()
     // Validation messages and [Display] labels go to the SAME shared file as everything
@@ -127,6 +135,41 @@ builder.Services.AddControllersWithViews()
         // have to hardcode integers that silently change meaning if the enum is reordered.
         // Numbers are still accepted on input, so existing callers keep working.
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    });
+
+// The messages the MODEL BINDER writes, which are not DataAnnotations and do not go through
+// the localizer on their own. "The {0} field is required." is the most-seen validation
+// message on the site and it comes from here, not from [Required]: nullable reference types
+// are on, so a non-nullable string property gets an implicit required check whose wording is
+// owned by this provider. Without these lines the forms read half in one language.
+//
+// The accessors run per validation, and IStringLocalizer resolves against the request's
+// current culture at that moment, so one registration serves every language.
+builder.Services.AddOptions<MvcOptions>()
+    .Configure<IStringLocalizer<SharedResource>>((options, text) =>
+    {
+        var messages = options.ModelBindingMessageProvider;
+
+        messages.SetValueMustNotBeNullAccessor(
+            field => text["The {0} field is required.", field]);
+        messages.SetMissingKeyOrValueAccessor(
+            () => text["A value is required."]);
+        messages.SetMissingBindRequiredValueAccessor(
+            field => text["A value for the '{0}' parameter or property was not provided.", field]);
+        messages.SetAttemptedValueIsInvalidAccessor(
+            (value, field) => text["The value '{0}' is not valid for {1}.", value, field]);
+        messages.SetNonPropertyAttemptedValueIsInvalidAccessor(
+            value => text["The value '{0}' is not valid.", value]);
+        messages.SetUnknownValueIsInvalidAccessor(
+            field => text["The supplied value is invalid for {0}.", field]);
+        messages.SetNonPropertyUnknownValueIsInvalidAccessor(
+            () => text["The supplied value is invalid."]);
+        messages.SetValueIsInvalidAccessor(
+            value => text["The value {0} is invalid.", value]);
+        messages.SetValueMustBeANumberAccessor(
+            field => text["The field {0} must be a number.", field]);
+        messages.SetNonPropertyValueMustBeANumberAccessor(
+            () => text["The field must be a number."]);
     });
 
 builder.Services.AddEndpointsApiExplorer();

@@ -1,13 +1,13 @@
 @model LeaveReviewViewModel
 @{
-    ViewData["Title"] = "Review " + Model.SellerName;
+    ViewData["Title"] = L["Review {0}", Model.SellerName].Value;
 }
 
 <div class="pm-page-head">
     <div>
-        <h1>How was it?</h1>
+        <h1>@L["How was it?"]</h1>
         <p class="pm-muted mb-0 small">
-            Your review appears on @Model.SellerName's public profile, under your username.
+            @L["Your review appears on the public profile of {0}, under your username.", Model.SellerName]
         </p>
     </div>
 </div>
@@ -20,7 +20,7 @@
                 <input type="hidden" asp-for="CarId" />
 
                 <fieldset class="mb-4">
-                    <legend class="form-label">Your rating</legend>
+                    <legend class="form-label">@L["Your rating"]</legend>
 
                     @* Radio buttons rather than a JavaScript star widget: it works with the
                        keyboard, it works with a screen reader, and it works with JavaScript
@@ -30,9 +30,9 @@
                         {
                             var id = "star" + i;
                             <input type="radio" asp-for="Rating" value="@i" id="@id" />
-                            <label for="@id" title="@i out of 5">
+                            <label for="@id" title="@L["{0} out of 5", i]">
                                 <span aria-hidden="true">★</span>
-                                <span class="visually-hidden">@i star@(i == 1 ? "" : "s")</span>
+                                <span class="visually-hidden">@(i == 1 ? L["1 star"] : L["{0} stars", i])</span>
                             </label>
                         }
                     </div>
@@ -42,17 +42,16 @@
                 <div class="mb-3">
                     <label asp-for="Comment" class="form-label"></label>
                     <textarea asp-for="Comment" class="form-control" rows="5"
-                              placeholder="Was the car as described? How was the seller to deal with?"></textarea>
+                              placeholder="@L["Was the car as described? How was the seller to deal with?"]"></textarea>
                     <div class="form-text">
-                        Optional, but a rating with a sentence behind it is worth far more to
-                        the next buyer than a bare number.
+                        @L["Optional, but a rating with a sentence behind it is worth far more to the next buyer than a bare number."]
                     </div>
                     <span asp-validation-for="Comment" class="text-danger"></span>
                 </div>
 
                 <div class="d-flex gap-2">
-                    <button type="submit" class="btn btn-primary">Post review</button>
-                    <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Purchases">Cancel</a>
+                    <button type="submit" class="btn btn-primary">@L["Post review"]</button>
+                    <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="Purchases">@L["Cancel"]</a>
                 </div>
             </div>
         </form>
@@ -61,7 +60,7 @@
     <div class="col-lg-5">
         <div class="card shadow-sm pm-sticky-aside">
             <div class="card-body">
-                <h2 class="pm-section-title mb-3">What you bought</h2>
+                <h2 class="pm-section-title mb-3">@L["What you bought"]</h2>
                 <div class="d-flex gap-3">
                     <span class="pm-review-thumb pm-media">
                         <img src="@Model.CarImage" alt="" loading="lazy" decoding="async" />
@@ -69,8 +68,8 @@
                     <div>
                         <div class="fw-semibold">@Model.CarTitle</div>
                         <div class="small pm-muted">
-                            from @Model.SellerName
-                            (@(Model.SellerIsDealer ? "dealership" : "private seller"))
+                            @L["from {0}", Model.SellerName]
+                            (@(Model.SellerIsDealer ? L["Dealership"] : L["Private seller"]))
                         </div>
                         @if (Model.SoldPrice is decimal price)
                         {
@@ -83,8 +82,7 @@
                     </div>
                 </div>
                 <p class="small pm-muted mt-3 mb-0">
-                    You can review a seller once per car you bought from them. Reviews cannot
-                    be edited afterwards, so take a moment over it.
+                    @L["You can review a seller once per car you bought from them. Reviews cannot be edited afterwards, so take a moment over it."]
                 </p>
             </div>
         </div>

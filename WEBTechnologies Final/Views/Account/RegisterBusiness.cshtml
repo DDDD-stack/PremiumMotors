@@ -1,19 +1,22 @@
 @model RegisterBusinessViewModel
 @{
-    ViewData["Title"] = "Register a business";
+    ViewData["Title"] = L["Register a business"].Value;
+
+    @* One string, links inside - see Register.cshtml for why. *@
+    var termsUrl = Url.Action("Terms", "Home") ?? "/Home/Terms";
+    var privacyUrl = Url.Action("Privacy", "Home") ?? "/Home/Privacy";
 }
 
 <div class="row justify-content-center">
     <div class="col-lg-8">
         <div class="pm-page-head">
             <div>
-                <h1>Register a business</h1>
+                <h1>@L["Register a business"]</h1>
                 <p class="pm-muted mb-0 small">
-                    Everything a dealer account needs, collected once. Your seller panel is
-                    unlocked as soon as you finish.
+                    @L["Everything a dealer account needs, collected once. Your seller panel is unlocked as soon as you finish."]
                 </p>
             </div>
-            <a asp-action="Signup" class="btn btn-outline-secondary btn-sm">Not a business?</a>
+            <a asp-action="Signup" class="btn btn-outline-secondary btn-sm">@L["Not a business?"]</a>
         </div>
 
         <form asp-action="RegisterBusiness" method="post">
@@ -22,13 +25,13 @@
 
             <div class="card mb-3">
                 <div class="card-body">
-                    <h2 class="pm-section-title mb-3">Your business</h2>
+                    <h2 class="pm-section-title mb-3">@L["Your business"]</h2>
                     <div class="row g-3">
                         <div class="col-md-7">
                             <label asp-for="BusinessName" class="form-label"></label>
                             <input asp-for="BusinessName" class="form-control" autocapitalize="words"
-                                   placeholder="e.g. Adriatik Motors sh.p.k." />
-                            <div class="form-text">This is the name buyers see on your listings.</div>
+                                   placeholder="@L["e.g. Adriatik Motors sh.p.k."]" />
+                            <div class="form-text">@L["This is the name buyers see on your listings."]</div>
                             <span asp-validation-for="BusinessName" class="text-danger"></span>
                         </div>
                         <div class="col-md-5">
@@ -54,7 +57,7 @@
                         <div class="col-12">
                             <label asp-for="Address" class="form-label"></label>
                             <input asp-for="Address" class="form-control" autocapitalize="words"
-                                   placeholder="Street and number" />
+                                   placeholder="@L["Street and number"]" />
                             <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
                         <div class="col-md-6">
@@ -73,7 +76,7 @@
 
             <div class="card mb-3">
                 <div class="card-body">
-                    <h2 class="pm-section-title mb-3">Who we contact</h2>
+                    <h2 class="pm-section-title mb-3">@L["Who we contact"]</h2>
                     <div class="row g-3">
                         <div class="col-md-4">
                             <label asp-for="ContactName" class="form-label"></label>
@@ -89,19 +92,19 @@
                         <div class="col-md-4">
                             <label asp-for="Phone" class="form-label"></label>
                             <input asp-for="Phone" class="form-control" type="tel" inputmode="tel"
-                                   autocomplete="tel" placeholder="e.g. +355 69 123 4567" />
+                                   autocomplete="tel" placeholder="@L["e.g. +355 69 123 4567"]" />
                             <span asp-validation-for="Phone" class="text-danger"></span>
                         </div>
                     </div>
                     <div class="form-text mt-2">
-                        Shared with a buyer only when you accept their offer, so they can reach you.
+                        @L["Shared with a buyer only when you accept their offer, so they can reach you."]
                     </div>
                 </div>
             </div>
 
             <div class="card mb-3">
                 <div class="card-body">
-                    <h2 class="pm-section-title mb-3">Your login</h2>
+                    <h2 class="pm-section-title mb-3">@L["Your login"]</h2>
                     <div class="row g-3">
                         <div class="col-md-4">
                             <label asp-for="Username" class="form-label"></label>
@@ -126,27 +129,23 @@
             @* There is no verification on this site and there is no plan for one, so this
                must not hint that a check is coming. Removed 5 September 2026. *@
             <div class="alert alert-light border small">
-                <strong>We record these details; we do not check them.</strong>
-                Your registration number is held with your account. There is no verified badge
-                on PremiumMotors for anyone — buyers go on your rating, which only someone who
-                bought from you can leave.
+                <strong>@L["We record these details; we do not check them."]</strong>
+                @L["Your registration number is held with your account. There is no verified badge on PremiumMotors for anyone - buyers go on your rating, which only someone who bought from you can leave."]
             </div>
 
             <div class="form-check mb-3">
                 <input asp-for="AcceptTerms" class="form-check-input" type="checkbox" />
                 <label asp-for="AcceptTerms" class="form-check-label">
-                    I accept the <a asp-controller="Home" asp-action="Terms">Terms</a> and
-                    <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a>, and I confirm
-                    I am authorised to act for this business
+                    @L["I accept the <a href='{0}'>Terms</a> and the <a href='{1}'>Privacy Policy</a>, and I confirm I am authorised to act for this business", termsUrl, privacyUrl]
                 </label>
                 <span asp-validation-for="AcceptTerms" class="text-danger d-block"></span>
             </div>
 
-            <button type="submit" class="btn btn-dark w-100">Create my business account</button>
+            <button type="submit" class="btn btn-dark w-100">@L["Create my business account"]</button>
         </form>
 
         <p class="text-center mt-3 mb-0 small">
-            Already have an account? <a asp-action="Login">Log in</a>
+            @L["Already have an account?"] <a asp-action="Login">@L["Log in"]</a>
         </p>
     </div>
 </div>

@@ -1,45 +1,43 @@
 @model BecomeSellerViewModel
 @{
-    ViewData["Title"] = "Start selling";
+    ViewData["Title"] = L["Start selling"].Value;
 }
 
 <div class="row justify-content-center">
     <div class="col-md-9 col-lg-7">
         <div class="pm-page-head">
-            <h1>Start selling on PremiumMotors</h1>
+            <h1>@L["Start selling on PremiumMotors"]</h1>
         </div>
 
         <div class="card mb-3">
             <div class="card-body">
                 <p class="pm-muted mb-3">
-                    Turning on selling unlocks your seller panel: post cars, read the private
-                    offers buyers send you, chat with them, and accept or decline each one.
-                    You keep everything you have as a buyer.
+                    @L["Turning on selling unlocks your seller panel: post cars, read the private offers buyers send you, chat with them, and accept or decline each one. You keep everything you have as a buyer."]
                 </p>
 
                 <div class="row g-3 mb-1">
                     <div class="col-sm-6">
                         <div class="pm-feature">
                             <div class="pm-feature-icon" aria-hidden="true">🚗</div>
-                            <div><strong>List your cars</strong><div class="small pm-muted">Photos, full spec, service history.</div></div>
+                            <div><strong>@L["List your cars"]</strong><div class="small pm-muted">@L["Photos, full spec, service history."]</div></div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="pm-feature">
                             <div class="pm-feature-icon" aria-hidden="true">💶</div>
-                            <div><strong>Private offers</strong><div class="small pm-muted">Only you see what buyers offer.</div></div>
+                            <div><strong>@L["Private offers"]</strong><div class="small pm-muted">@L["Only you see what buyers offer."]</div></div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="pm-feature">
                             <div class="pm-feature-icon" aria-hidden="true">💬</div>
-                            <div><strong>Chat first</strong><div class="small pm-muted">Ask questions before you decide.</div></div>
+                            <div><strong>@L["Chat first"]</strong><div class="small pm-muted">@L["Ask questions before you decide."]</div></div>
                         </div>
                     </div>
                     <div class="col-sm-6">
                         <div class="pm-feature">
                             <div class="pm-feature-icon" aria-hidden="true">✅</div>
-                            <div><strong>You choose</strong><div class="small pm-muted">Accept or decline every offer.</div></div>
+                            <div><strong>@L["You choose"]</strong><div class="small pm-muted">@L["Accept or decline every offer."]</div></div>
                         </div>
                     </div>
                 </div>
@@ -56,21 +54,19 @@
                        "Register as a business", which collects the business record at signup.
                        Anyone on this form is by definition a private seller. *@
                     <div class="alert alert-light border small mb-3">
-                        Selling as a business? <a asp-action="RegisterBusiness" asp-controller="Account">
-                        Register a dealer account</a> instead — it collects your company details
-                        so you only enter them once.
+                        @L["Selling as a business? <a href='{0}'>Register a dealer account</a> instead - it collects your company details so you only enter them once.", Url.Action("RegisterBusiness", "Account") ?? "/Account/RegisterBusiness"]
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="DisplayName" class="form-label"></label>
                         <input asp-for="DisplayName" class="form-control" autocapitalize="words" />
-                        <div class="form-text">Shown on your listings. Leave blank to use your username.</div>
+                        <div class="form-text">@L["Shown on your listings. Leave blank to use your username."]</div>
                         <span asp-validation-for="DisplayName" class="text-danger"></span>
                     </div>
 
                     <div class="mb-3">
                         <label asp-for="Location" class="form-label"></label>
-                        <input asp-for="Location" class="form-control" placeholder="e.g. Tirana, Albania"
+                        <input asp-for="Location" class="form-control" placeholder="@L["e.g. Tirana, Albania"]"
                                autocapitalize="words" />
                         <span asp-validation-for="Location" class="text-danger"></span>
                     </div>
@@ -78,12 +74,12 @@
                     <div class="form-check mb-3">
                         <input asp-for="AcceptTerms" class="form-check-input" type="checkbox" />
                         <label asp-for="AcceptTerms" class="form-check-label">
-                            I accept the <a asp-controller="Home" asp-action="Terms">seller terms</a>
+                            @L["I accept the <a href='{0}'>seller terms</a>", Url.Action("Terms", "Home") ?? "/Home/Terms"]
                         </label>
                         <span asp-validation-for="AcceptTerms" class="text-danger d-block"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-success w-100">Unlock my seller panel</button>
+                    <button type="submit" class="btn btn-success w-100">@L["Unlock my seller panel"]</button>
                 </form>
             </div>
         </div>

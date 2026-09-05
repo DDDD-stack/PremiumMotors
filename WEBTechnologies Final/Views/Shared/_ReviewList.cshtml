@@ -30,8 +30,7 @@
                 </div>
 
                 <p class="small pm-muted mt-3 mb-0">
-                    Only buyers who completed a purchase from this seller can leave a review,
-                    and only once per car.
+                    @L["Only buyers who completed a purchase from this seller can leave a review, and only once per car."]
                 </p>
             </div>
         </div>
@@ -41,9 +40,9 @@
         @if (Model.Reviews.Count == 0)
         {
             <div class="pm-empty">
-                <h2 class="h5">No reviews yet</h2>
+                <h2 class="h5">@L["No reviews yet"]</h2>
                 <p class="pm-muted mb-0">
-                    Reviews appear here once someone has bought a car from this seller.
+                    @L["Reviews appear here once someone has bought a car from this seller."]
                 </p>
             </div>
         }
@@ -63,7 +62,7 @@
                                         }
                                     </span>
                                     <strong class="ms-2">@review.AuthorUsername</strong>
-                                    <span class="visually-hidden">@review.Rating out of 5</span>
+                                    <span class="visually-hidden">@L["{0} out of 5", review.Rating]</span>
                                 </div>
                                 <span class="small pm-muted">@review.CreatedUtc.ToString("d MMM yyyy")</span>
                             </div>
@@ -71,7 +70,7 @@
                             @if (review.Car is not null)
                             {
                                 <div class="small pm-muted mt-1">
-                                    Bought
+                                    @L["Bought"]
                                     <a asp-controller="Cars" asp-action="Details" asp-route-id="@review.Car.Id">
                                         @review.Car.Title
                                     </a>
@@ -87,7 +86,7 @@
                             {
                                 <div class="pm-review-reply mt-3">
                                     <div class="small fw-semibold">
-                                        Reply from @Model.DisplayName
+                                        @L["Reply from {0}", Model.DisplayName]
                                         <span class="pm-muted fw-normal">
                                             · @review.SellerRepliedUtc?.ToString("d MMM yyyy")
                                         </span>

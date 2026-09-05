@@ -1,12 +1,12 @@
 @model BusinessDetailsViewModel
 @{
-    ViewData["Title"] = "Business details";
+    ViewData["Title"] = L["Business details"].Value;
 }
 
 <div class="pm-page-head">
     <div>
-        <h1>Business details</h1>
-        <p class="pm-muted mb-0 small">What buyers see, and what we hold on record for your company.</p>
+        <h1>@L["Business details"]</h1>
+        <p class="pm-muted mb-0 small">@L["What buyers see, and what we hold on record for your company."]</p>
     </div>
 </div>
 
@@ -21,12 +21,12 @@
                 <form asp-action="Business" method="post">
                     @Html.AntiForgeryToken()
 
-                    <h2 class="pm-section-title mb-3">Company</h2>
+                    <h2 class="pm-section-title mb-3">@L["Company"]</h2>
                     <div class="row g-3 mb-3">
                         <div class="col-12">
                             <label asp-for="BusinessName" class="form-label"></label>
                             <input asp-for="BusinessName" class="form-control" autocapitalize="words" />
-                            <div class="form-text">Shown on every listing you post.</div>
+                            <div class="form-text">@L["Shown on every listing you post."]</div>
                             <span asp-validation-for="BusinessName" class="text-danger"></span>
                         </div>
                         <div class="col-md-6">
@@ -43,7 +43,7 @@
                         </div>
                     </div>
 
-                    <h2 class="pm-section-title mb-3">Where you trade</h2>
+                    <h2 class="pm-section-title mb-3">@L["Where you trade"]</h2>
                     <div class="row g-3 mb-3">
                         <div class="col-12">
                             <label asp-for="Address" class="form-label"></label>
@@ -53,8 +53,8 @@
                         <div class="col-md-6">
                             <label asp-for="Location" class="form-label"></label>
                             <input asp-for="Location" class="form-control" autocapitalize="words"
-                                   placeholder="e.g. Tirana, Albania" />
-                            <div class="form-text">Shown next to your listings.</div>
+                                   placeholder="@L["e.g. Tirana, Albania"]" />
+                            <div class="form-text">@L["Shown next to your listings."]</div>
                             <span asp-validation-for="Location" class="text-danger"></span>
                         </div>
                         <div class="col-md-6">
@@ -65,14 +65,14 @@
                         </div>
                     </div>
 
-                    <h2 class="pm-section-title mb-3">Responsible person</h2>
+                    <h2 class="pm-section-title mb-3">@L["Responsible person"]</h2>
                     <div class="mb-3">
                         <label asp-for="ContactName" class="form-label"></label>
                         <input asp-for="ContactName" class="form-control" autocapitalize="words" />
                         <span asp-validation-for="ContactName" class="text-danger"></span>
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Save business details</button>
+                    <button type="submit" class="btn btn-primary">@L["Save business details"]</button>
                 </form>
             </div>
         </div>
@@ -80,28 +80,25 @@
 
     <div class="col-lg-5">
         <div class="card mb-3">
-            <div class="card-header">What we do with these details</div>
+            <div class="card-header">@L["What we do with these details"]</div>
             <div class="card-body small pm-muted">
                 <p>
-                    Your registration number and company details are held on record with your
-                    account. We do not check them against the state business register, and
-                    there is no verified badge on this site for anyone.
+                    @L["Your registration number and company details are held on record with your account. We do not check them against the state business register, and there is no verified badge on this site for anyone."]
                 </p>
                 <p class="mb-0">
-                    Your rating is what buyers actually go on, and only someone who completed
-                    a purchase from you can leave one.
+                    @L["Your rating is what buyers actually go on, and only someone who completed a purchase from you can leave one."]
                 </p>
             </div>
         </div>
 
         <div class="card">
-            <div class="card-header">Coming for dealers</div>
+            <div class="card-header">@L["Coming for dealers"]</div>
             <div class="card-body small pm-muted">
                 <ul class="mb-0 ps-3">
-                    <li>A public page listing all your cars</li>
-                    <li>Bulk upload and stock feeds</li>
-                    <li>Listing view counts</li>
-                    <li>Paid listing boosts</li>
+                    @* Three of the four things this card promised have shipped: the public
+                       dealership page, view counts and paid placement all exist. Listing them
+                       as "coming" tells a dealer the site does less than it does. *@
+                    <li>@L["Bulk upload and stock feeds"]</li>
                 </ul>
             </div>
         </div>

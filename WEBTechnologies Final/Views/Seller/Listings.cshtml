@@ -1,39 +1,39 @@
 @using WEBTechnologies_Final.Services.Marketplace
 @model List<SellerListingRow>
 @{
-    ViewData["Title"] = "My listings";
+    ViewData["Title"] = L["My listings"].Value;
     var filter = ViewData["StatusFilter"] as ListingStatus?;
     var returnUrl = Context.Request.Path + Context.Request.QueryString;
 }
 
 <div class="pm-page-head">
-    <h1>My listings</h1>
-    <a asp-controller="Sell" asp-action="Create" class="btn btn-success">+ List a car</a>
+    <h1>@L["My listings"]</h1>
+    <a asp-controller="Sell" asp-action="Create" class="btn btn-success">@L["+ List a car"]</a>
 </div>
 
 <partial name="_ProfileNav" />
 
 <div class="pm-subnav mb-3 border-0">
-    <a class="pm-chip @(filter is null ? "is-active" : "")" asp-action="Listings">All</a>
+    <a class="pm-chip @(filter is null ? "is-active" : "")" asp-action="Listings">@L["All"]</a>
     <a class="pm-chip @(filter == ListingStatus.Active ? "is-active" : "")"
-       asp-action="Listings" asp-route-status="@ListingStatus.Active">Live</a>
+       asp-action="Listings" asp-route-status="@ListingStatus.Active">@L["Live"]</a>
     <a class="pm-chip @(filter == ListingStatus.Draft ? "is-active" : "")"
-       asp-action="Listings" asp-route-status="@ListingStatus.Draft">Drafts</a>
+       asp-action="Listings" asp-route-status="@ListingStatus.Draft">@L["Drafts"]</a>
     <a class="pm-chip @(filter == ListingStatus.Reserved ? "is-active" : "")"
-       asp-action="Listings" asp-route-status="@ListingStatus.Reserved">Reserved</a>
+       asp-action="Listings" asp-route-status="@ListingStatus.Reserved">@L["Reserved"]</a>
     <a class="pm-chip @(filter == ListingStatus.Sold ? "is-active" : "")"
-       asp-action="Listings" asp-route-status="@ListingStatus.Sold">Sold</a>
+       asp-action="Listings" asp-route-status="@ListingStatus.Sold">@L["Sold"]</a>
     <a class="pm-chip @(filter == ListingStatus.Archived ? "is-active" : "")"
-       asp-action="Listings" asp-route-status="@ListingStatus.Archived">Archived</a>
+       asp-action="Listings" asp-route-status="@ListingStatus.Archived">@L["Archived"]</a>
 </div>
 
 @if (Model.Count == 0)
 {
     <div class="pm-empty">
         <div class="pm-empty-icon" aria-hidden="true">🚗</div>
-        <h2 class="h5">Nothing here yet</h2>
-        <p class="pm-muted mb-3">List your first car and buyers can start sending you offers.</p>
-        <a asp-controller="Sell" asp-action="Create" class="btn btn-success">+ List a car</a>
+        <h2 class="h5">@L["Nothing here yet"]</h2>
+        <p class="pm-muted mb-3">@L["List your first car and buyers can start sending you offers."]</p>
+        <a asp-controller="Sell" asp-action="Create" class="btn btn-success">@L["+ List a car"]</a>
     </div>
 }
 else
@@ -56,22 +56,22 @@ else
                             <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id">@car.Title</a>
                         </h3>
                         <ul class="pm-spec-line">
-                            <li>@car.Mileage.ToString("N0") km</li>
-                            <li>@car.FuelType</li>
+                            <li>@L["{0} km", car.Mileage.ToString("N0")]</li>
+                            <li>@L[EnumText.Display(car.FuelType)]</li>
                         </ul>
 
                         <div class="d-flex justify-content-between align-items-end mb-2">
                             <div>
-                                <div class="small pm-muted">Asking</div>
+                                <div class="small pm-muted">@L["Asking"]</div>
                                 <div class="pm-price">@car.Price.ToString("C")</div>
                             </div>
                             <div class="text-end">
-                                <div class="small pm-muted">Offers</div>
+                                <div class="small pm-muted">@L["Offers"]</div>
                                 <div class="fw-bold">
                                     @row.OfferCount
                                     @if (row.PendingOffers > 0)
                                     {
-                                        <span class="badge bg-primary">@row.PendingOffers new</span>
+                                        <span class="badge bg-primary">@L["{0} new", row.PendingOffers]</span>
                                     }
                                 </div>
                             </div>
@@ -79,25 +79,25 @@ else
 
                         @if (row.BestPendingOffer is decimal best)
                         {
-                            <div class="small pm-muted mb-2">Best pending offer: <strong>@best.ToString("C")</strong></div>
+                            <div class="small pm-muted mb-2">@L["Best pending offer:"] <strong>@best.ToString("C")</strong></div>
                         }
                         @if (car.Status == ListingStatus.Sold && car.SoldPrice is decimal sold)
                         {
-                            <div class="small pm-muted mb-2">Sold for <strong>@sold.ToString("C")</strong> to @car.SoldTo</div>
+                            <div class="small pm-muted mb-2">@L["Sold for {0} to {1}", sold.ToString("C"), car.SoldTo ?? string.Empty]</div>
                         }
 
                         <div class="mt-auto d-flex flex-wrap gap-2">
                             <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id"
-                               class="btn btn-sm btn-outline-secondary flex-fill">View</a>
+                               class="btn btn-sm btn-outline-secondary flex-fill">@L["View"]</a>
                             <a asp-action="Edit" asp-route-id="@car.Id"
-                               class="btn btn-sm btn-outline-primary flex-fill">Edit</a>
+                               class="btn btn-sm btn-outline-primary flex-fill">@L["Edit"]</a>
 
                             @if (car.Status == ListingStatus.Active)
                             {
                                 <form asp-action="Archive" method="post" class="flex-fill d-grid">
                                     <input type="hidden" name="carId" value="@car.Id" />
                                     <input type="hidden" name="returnUrl" value="@returnUrl" />
-                                    <button type="submit" class="btn btn-sm btn-outline-secondary">Archive</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary">@L["Archive"]</button>
                                 </form>
                             }
                             else if (car.Status is ListingStatus.Archived or ListingStatus.Draft)
@@ -105,7 +105,7 @@ else
                                 <form asp-action="Relist" method="post" class="flex-fill d-grid">
                                     <input type="hidden" name="carId" value="@car.Id" />
                                     <input type="hidden" name="returnUrl" value="@returnUrl" />
-                                    <button type="submit" class="btn btn-sm btn-success">Publish</button>
+                                    <button type="submit" class="btn btn-sm btn-success">@L["Publish"]</button>
                                 </form>
                             }
                             else if (car.Status == ListingStatus.Reserved)
@@ -113,7 +113,7 @@ else
                                 <form asp-action="MarkSold" method="post" class="flex-fill d-grid">
                                     <input type="hidden" name="carId" value="@car.Id" />
                                     <input type="hidden" name="returnUrl" value="@returnUrl" />
-                                    <button type="submit" class="btn btn-sm btn-success">Mark sold</button>
+                                    <button type="submit" class="btn btn-sm btn-success">@L["Mark sold"]</button>
                                 </form>
                             }
                         </div>

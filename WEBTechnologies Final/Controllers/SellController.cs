@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using WEBTechnologies_Final.Data;
 using WEBTechnologies_Final.Models;
 using WEBTechnologies_Final.Services;
@@ -20,9 +21,12 @@ namespace WEBTechnologies_Final.Controllers
     {
         private readonly AppDbContext _context;
         private readonly IPhotoStorage _photos;
+        private readonly IStringLocalizer<SharedResource> _text;
 
-        public SellController(AppDbContext context, IPhotoStorage photos)
+        public SellController(
+            AppDbContext context, IPhotoStorage photos, IStringLocalizer<SharedResource> text)
         {
+            _text = text;
             _context = context;
             _photos = photos;
         }
@@ -53,7 +57,7 @@ namespace WEBTechnologies_Final.Controllers
             _context.Cars.Add(car);
             await _context.SaveChangesAsync();
 
-            TempData["Success"] = $"\"{car.Title}\" is now live.";
+            TempData["Success"] = _text["\"{0}\" is now live.", car.Title].Value;
             return RedirectToAction("Details", "Cars", new { id = car.Id });
         }
     }

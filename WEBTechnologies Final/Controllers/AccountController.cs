@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using WEBTechnologies_Final.Data;
 using WEBTechnologies_Final.Models;
 using WEBTechnologies_Final.Services;
@@ -18,10 +19,21 @@ namespace WEBTechnologies_Final.Controllers
         private readonly IPhotoStorage _photos;
         private readonly DealershipService _dealerships;
 
+        /// <summary>
+        /// Flash messages and validation errors are as much of the interface as the pages
+        /// they land on, so they go through the same translation file. The service layer
+        /// returns its errors as English sentences, and the English IS the key here, so
+        /// result.Error can be handed straight to the localizer: a translated sentence comes
+        /// back if there is one, and the original English if there is not.
+        /// </summary>
+        private readonly IStringLocalizer<SharedResource> _text;
+
         public AccountController(
             AccountService accounts, AppDbContext db, TokenService tokens, ProfileNavService nav,
-            IPhotoStorage photos, DealershipService dealerships)
+            IPhotoStorage photos, DealershipService dealerships,
+            IStringLocalizer<SharedResource> text)
         {
+            _text = text;
             _accounts = accounts;
             _db = db;
             _tokens = tokens;
@@ -49,7 +61,7 @@ namespace WEBTechnologies_Final.Controllers
             var result = await _accounts.ValidateAsync(model.Username, model.Password);
             if (!result.Succeeded)
             {
-                ModelState.AddModelError(string.Empty, result.Error ?? "Invalid username or password.");
+                ModelState.AddModelError(string.Empty, _text[result.Error ?? "Invalid username or password."].Value);
                 return View(model);
             }
 
@@ -85,12 +97,12 @@ namespace WEBTechnologies_Final.Controllers
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError(string.Empty, result.Error ?? "Registration failed.");
+                ModelState.AddModelError(string.Empty, _text[result.Error ?? "Registration failed."].Value);
                 return View(model);
             }
 
             SignIn(result.User!);
-            TempData["Success"] = $"Welcome, {result.User!.Username}. Your account is ready.";
+            TempData["Success"] = _text["Welcome, {0}. Your account is ready.", result.User!.Username].Value;
             return RedirectToAction("Index", "Cars");
         }
 
@@ -106,7 +118,7 @@ namespace WEBTechnologies_Final.Controllers
             var result = await _accounts.RegisterBusinessAsync(model);
             if (!result.Succeeded)
             {
-                ModelState.AddModelError(string.Empty, result.Error ?? "Registration failed.");
+                ModelState.AddModelError(string.Empty, _text[result.Error ?? "Registration failed."].Value);
                 return View(model);
             }
 
@@ -116,8 +128,9 @@ namespace WEBTechnologies_Final.Controllers
             await _dealerships.EnsureForAsync(result.User!);
 
             SignIn(result.User!);
-            TempData["Success"] =
-                $"Welcome, {result.User!.SellerName}. Your dealer account is ready — your seller panel and your dealership page are already live.";
+            TempData["Success"] = _text[
+                "Welcome, {0}. Your dealer account is ready - your seller panel and your dealership page are already live.",
+                result.User!.SellerName].Value;
             return RedirectToAction("Dashboard", "Seller");
         }
 
@@ -140,7 +153,7 @@ namespace WEBTechnologies_Final.Controllers
 
             if (user.IsBusiness)
             {
-                TempData["Error"] = "This account is already a business account.";
+                TempData["Error"] = _text["This account is already a business account."].Value;
                 return RedirectToAction("Dashboard", "Seller");
             }
 
@@ -182,7 +195,7 @@ namespace WEBTechnologies_Final.Controllers
             var result = await _accounts.ConvertToBusinessAsync(user.Id, model);
             if (!result.Succeeded)
             {
-                ModelState.AddModelError(string.Empty, result.Error ?? "Could not switch this account.");
+                ModelState.AddModelError(string.Empty, _text[result.Error ?? "Could not switch this account."].Value);
                 return View(model);
             }
 
@@ -195,9 +208,9 @@ namespace WEBTechnologies_Final.Controllers
             // screen until their next login.
             SignIn(result.User!);
 
-            TempData["Success"] =
-                $"{result.User!.SellerName} is now a business account. Your dealership page is live and " +
-                "your listings, offers and rating all came with you.";
+            TempData["Success"] = _text[
+                "{0} is now a business account. Your dealership page is live and your listings, offers and rating all came with you.",
+                result.User!.SellerName].Value;
             return RedirectToAction("Dealership", "Seller");
         }
 
@@ -244,12 +257,12 @@ namespace WEBTechnologies_Final.Controllers
             var result = await _accounts.UpdateProfileAsync(user.Id, model.Email, model.Phone);
             if (!result.Succeeded)
             {
-                ModelState.AddModelError(string.Empty, result.Error ?? "Could not save your details.");
+                ModelState.AddModelError(string.Empty, _text[result.Error ?? "Could not save your details."].Value);
                 await LoadProfileCountsAsync(user);
                 return View(model);
             }
 
-            TempData["Success"] = "Your details were saved.";
+            TempData["Success"] = _text["Your details were saved."].Value;
             return RedirectToAction(nameof(Profile));
         }
 
@@ -276,13 +289,13 @@ namespace WEBTechnologies_Final.Controllers
                 user.AvatarPath = null;
                 await _db.SaveChangesAsync();
                 if (previous is not null) await _photos.DeleteAsync(previous);
-                TempData["Success"] = "Your profile picture was removed.";
+                TempData["Success"] = _text["Your profile picture was removed."].Value;
                 return RedirectToAction(nameof(Profile));
             }
 
             if (avatar is null || avatar.Length == 0)
             {
-                TempData["Error"] = "Choose an image first.";
+                TempData["Error"] = _text["Choose an image first."].Value;
                 return RedirectToAction(nameof(Profile));
             }
 
@@ -292,9 +305,11 @@ namespace WEBTechnologies_Final.Controllers
             var upload = await _photos.SaveAsync(new[] { avatar });
             if (upload.Paths.Count == 0)
             {
+                // Upload errors are built in the storage layer and name the file, so they
+                // stay in English for now; anything else gets the translated sentence.
                 TempData["Error"] = upload.Errors.Count > 0
                     ? string.Join(" ", upload.Errors)
-                    : "That file could not be used as a picture.";
+                    : _text["That file could not be used as a picture."].Value;
                 return RedirectToAction(nameof(Profile));
             }
 
@@ -305,7 +320,7 @@ namespace WEBTechnologies_Final.Controllers
             // with no picture at all if the save failed.
             if (previous is not null) await _photos.DeleteAsync(previous);
 
-            TempData["Success"] = "Your profile picture was updated.";
+            TempData["Success"] = _text["Your profile picture was updated."].Value;
             return RedirectToAction(nameof(Profile));
         }
 
@@ -391,7 +406,7 @@ namespace WEBTechnologies_Final.Controllers
 
             if (!result.Succeeded)
             {
-                ModelState.AddModelError(string.Empty, result.Error ?? "Could not change your password.");
+                ModelState.AddModelError(string.Empty, _text[result.Error ?? "Could not change your password."].Value);
                 ViewData["Sessions"] = await _tokens.ListSessionsAsync(user.Id, null);
                 await LoadProfileCountsAsync(user);
                 return View(nameof(Security), model);
@@ -401,7 +416,7 @@ namespace WEBTechnologies_Final.Controllers
             // changing it after a scare.
             await _tokens.RevokeAllAsync(user.Id);
 
-            TempData["Success"] = "Your password was changed and every other device was signed out.";
+            TempData["Success"] = _text["Your password was changed and every other device was signed out."].Value;
             return RedirectToAction(nameof(Security));
         }
 
@@ -418,7 +433,7 @@ namespace WEBTechnologies_Final.Controllers
             // instead of rendering an empty form they cannot meaningfully fill in.
             if (!user.IsBusiness)
             {
-                TempData["Error"] = "This is a personal account. Business details apply to dealer accounts.";
+                TempData["Error"] = _text["This is a personal account. Business details apply to dealer accounts."].Value;
                 return RedirectToAction(nameof(Profile));
             }
 
@@ -453,12 +468,12 @@ namespace WEBTechnologies_Final.Controllers
             var result = await _accounts.UpdateBusinessAsync(user.Id, model);
             if (!result.Succeeded)
             {
-                ModelState.AddModelError(string.Empty, result.Error ?? "Could not save your business details.");
+                ModelState.AddModelError(string.Empty, _text[result.Error ?? "Could not save your business details."].Value);
                 await LoadProfileCountsAsync(user);
                 return View(model);
             }
 
-            TempData["Success"] = "Your business details were saved.";
+            TempData["Success"] = _text["Your business details were saved."].Value;
             return RedirectToAction(nameof(Business));
         }
 

@@ -7,7 +7,7 @@ namespace WEBTechnologies_Final.Models
     {
         [Required]
         [Display(Name = "Username")]
-        [StringLength(30, MinimumLength = 3, ErrorMessage = "Username must be 3–30 characters.")]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "Username must be 3-30 characters.")]
         public string Username { get; set; } = string.Empty;
 
         [Required]
@@ -100,7 +100,7 @@ namespace WEBTechnologies_Final.Models
 
         [Required]
         [Display(Name = "Username")]
-        [StringLength(30, MinimumLength = 3, ErrorMessage = "Username must be 3–30 characters.")]
+        [StringLength(30, MinimumLength = 3, ErrorMessage = "Username must be 3-30 characters.")]
         public string Username { get; set; } = string.Empty;
 
         [Required]

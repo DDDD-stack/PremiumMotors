@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using WEBTechnologies_Final.Data;
 using WEBTechnologies_Final.Models;
 using WEBTechnologies_Final.Services;
@@ -31,12 +32,15 @@ namespace WEBTechnologies_Final.Controllers
         private readonly DealershipService _dealerships;
         private readonly ReviewService _reviews;
         private readonly SellerAnalyticsService _analytics;
+        private readonly IStringLocalizer<SharedResource> _text;
 
         public SellerController(
             AppDbContext db, SellerService sellers, OfferService offers,
             ApiClient api, IPhotoStorage photos, ProfileNavService nav,
-            DealershipService dealerships, ReviewService reviews, SellerAnalyticsService analytics)
+            DealershipService dealerships, ReviewService reviews, SellerAnalyticsService analytics,
+            IStringLocalizer<SharedResource> text)
         {
+            _text = text;
             _db = db;
             _sellers = sellers;
             _offers = offers;
@@ -79,7 +83,7 @@ namespace WEBTechnologies_Final.Controllers
 
             if (!result.Success)
             {
-                TempData["Error"] = result.Error;
+                TempData["Error"] = _text[result.Error!].Value;
                 return RedirectToAction(nameof(Dashboard));
             }
 
@@ -91,7 +95,7 @@ namespace WEBTechnologies_Final.Controllers
             // what makes the "Register as a business" nav item appear for them straight away.
             HttpContext.Session.SetString(SessionKeys.IsDealer, "false");
 
-            TempData["Success"] = "Your seller panel is unlocked. Post your first car whenever you're ready.";
+            TempData["Success"] = _text["Your seller panel is unlocked. Post your first car whenever you are ready."].Value;
             return RedirectToAction(nameof(Dashboard));
         }
 
@@ -195,7 +199,7 @@ namespace WEBTechnologies_Final.Controllers
             car.Status = ListingStatus.Archived;
             await _db.SaveChangesAsync();
 
-            TempData["Success"] = "Listing archived. Buyers can no longer see it.";
+            TempData["Success"] = _text["Listing archived. Buyers can no longer see it."].Value;
             return Back(returnUrl);
         }
 
@@ -211,7 +215,7 @@ namespace WEBTechnologies_Final.Controllers
             car.PublishedUtc ??= DateTime.UtcNow;
             await _db.SaveChangesAsync();
 
-            TempData["Success"] = car.Title + " is live again.";
+            TempData["Success"] = _text["{0} is live again.", car.Title].Value;
             return Back(returnUrl);
         }
 
@@ -259,7 +263,7 @@ namespace WEBTechnologies_Final.Controllers
                 await _photos.DeleteAsync(path);
 
             if (upload.Errors.Count > 0) TempData["Error"] = string.Join(" ", upload.Errors);
-            TempData["Success"] = car.Title + " was updated.";
+            TempData["Success"] = _text["{0} was updated.", car.Title].Value;
             return RedirectToAction("Details", "Cars", new { id });
         }
 
@@ -314,7 +318,7 @@ namespace WEBTechnologies_Final.Controllers
 
         private IActionResult Denied(string? returnUrl)
         {
-            TempData["Error"] = "This is not your listing.";
+            TempData["Error"] = _text["This is not your listing."].Value;
             return Back(returnUrl);
         }
 
@@ -405,7 +409,7 @@ namespace WEBTechnologies_Final.Controllers
             if (user.SellerType != SellerType.Dealer)
             {
                 TempData["Error"] =
-                    "Dealership pages are for business accounts. Register a business account to get one.";
+                    _text["Dealership pages are for business accounts. Register a business account to get one."].Value;
                 return RedirectToAction("Profile", "Account");
             }
 
@@ -451,7 +455,7 @@ namespace WEBTechnologies_Final.Controllers
 
             await _db.SaveChangesAsync();
 
-            TempData["Success"] = "Your dealership page was updated.";
+            TempData["Success"] = _text["Your dealership page was updated."].Value;
             return RedirectToAction(nameof(Dealership));
         }
 

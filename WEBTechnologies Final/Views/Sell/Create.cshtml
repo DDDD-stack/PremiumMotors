@@ -1,14 +1,13 @@
 @model Car
 @{
-    ViewData["Title"] = "Sell your car";
+    ViewData["Title"] = L["Sell your car"].Value;
 }
 
-<div class="pm-page-head"><h1>Sell your car</h1></div>
+<div class="pm-page-head"><h1>@L["Sell your car"]</h1></div>
 @* "Currently free" invited the reading that a charge was coming. It is not: listing is free
    and commission is nothing, and advertising is the only thing anyone ever pays for here. *@
 <p class="text-muted">
-    List your car for buyers to make private offers. Listing is free, and we take nothing
-    when it sells.
+    @L["List your car for buyers to make private offers. Listing is free, and we take nothing when it sells."]
 </p>
 
 <div class="card shadow-sm">
@@ -17,9 +16,9 @@
             <partial name="_CarForm" model="Model" />
             <div class="mt-4 d-grid d-sm-flex gap-2">
                 <button type="submit" class="btn btn-success">
-                    Publish listing
+                    @L["Publish listing"]
                 </button>
-                <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-secondary">@L["Cancel"]</a>
             </div>
         </form>
     </div>

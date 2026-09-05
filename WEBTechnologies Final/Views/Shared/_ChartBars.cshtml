@@ -20,7 +20,7 @@
 
     @if (Model.IsEmpty)
     {
-        <div class="pm-chart-empty">Nothing to show yet.</div>
+        <div class="pm-chart-empty">@L["Nothing to show yet."]</div>
     }
     else
     {
@@ -41,7 +41,7 @@
 
         <table class="visually-hidden">
             <caption>@Model.Title</caption>
-            <thead><tr><th>Period</th><th>Value</th></tr></thead>
+            <thead><tr><th>@L["Period"]</th><th>@L["Value"]</th></tr></thead>
             <tbody>
                 @foreach (var point in Model.Points)
                 {

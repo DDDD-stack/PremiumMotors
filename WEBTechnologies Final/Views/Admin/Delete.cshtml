@@ -1,9 +1,9 @@
 @model Car
 @{
-    ViewData["Title"] = "Delete " + Model.Title;
+    ViewData["Title"] = L["Delete {0}", Model.Title].Value;
 }
 
-<div class="pm-page-head"><h1 class="text-danger">Delete Listing</h1></div>
+<div class="pm-page-head"><h1 class="text-danger">@L["Delete listing"]</h1></div>
 
 <div class="card overflow-hidden">
     <div class="row g-0">
@@ -15,19 +15,19 @@
         </div>
         <div class="col-md-8">
             <div class="card-body">
-                <p>Are you sure you want to permanently delete this listing?</p>
+                <p>@L["Are you sure you want to permanently delete this listing?"]</p>
                 <h2 class="h5">@Model.Title</h2>
                 <dl class="row small text-muted">
-                    <dt class="col-4">Type</dt><dd class="col-8">@Model.Type</dd>
-                    <dt class="col-4">Asking price</dt><dd class="col-8">@Model.Price.ToString("C")</dd>
-                    <dt class="col-4">Mileage</dt><dd class="col-8">@Model.Mileage.ToString("N0") km</dd>
-                    <dt class="col-4">Offers</dt><dd class="col-8">@Model.Offers.Count</dd>
+                    <dt class="col-4">@L["Type"]</dt><dd class="col-8">@L[EnumText.Display(Model.Type)]</dd>
+                    <dt class="col-4">@L["Asking price"]</dt><dd class="col-8">@Model.Price.ToString("C")</dd>
+                    <dt class="col-4">@L["Mileage"]</dt><dd class="col-8">@L["{0} km", Model.Mileage.ToString("N0")]</dd>
+                    <dt class="col-4">@L["Offers"]</dt><dd class="col-8">@Model.Offers.Count</dd>
                 </dl>
 
                 <form asp-action="Delete" asp-route-id="@Model.Id" method="post" class="d-grid d-sm-flex gap-2">
                     @Html.AntiForgeryToken()
-                    <button type="submit" class="btn btn-danger">Yes, delete</button>
-                    <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-danger">@L["Yes, delete"]</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary">@L["Cancel"]</a>
                 </form>
             </div>
         </div>

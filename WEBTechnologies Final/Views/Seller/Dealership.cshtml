@@ -1,22 +1,22 @@
 @model Dealership
 @{
-    ViewData["Title"] = "Dealership page";
+    ViewData["Title"] = L["Dealership page"].Value;
     var logoInitial = Model.Name.Length > 0 ? Model.Name[..1].ToUpperInvariant() : "?";
 }
 
 <div class="pm-page-head">
     <div>
-        <h1>Your dealership page</h1>
+        <h1>@L["Your dealership page"]</h1>
         <p class="pm-muted mb-0 small">
-            Live at
+            @L["Live at"]
             <a asp-controller="Dealerships" asp-action="Details" asp-route-slug="@Model.Slug">
                 /Dealerships/@Model.Slug
             </a>
-            — this is what buyers see when they click your name on a listing.
+            — @L["this is what buyers see when they click your name on a listing."]
         </p>
     </div>
     <a class="btn btn-outline-secondary"
-       asp-controller="Dealerships" asp-action="Details" asp-route-slug="@Model.Slug">Preview</a>
+       asp-controller="Dealerships" asp-action="Details" asp-route-slug="@Model.Slug">@L["Preview"]</a>
 </div>
 
 <partial name="_ProfileNav" />
@@ -28,7 +28,7 @@
     <div class="col-lg-7">
         <div class="card">
             <div class="card-body row g-3">
-                <h2 class="h6 mb-0">Details</h2>
+                <h2 class="h6 mb-0">@L["Details"]</h2>
 
                 <div class="col-12">
                     <label asp-for="Name" class="form-label"></label>
@@ -39,17 +39,17 @@
                 <div class="col-12">
                     <label asp-for="About" class="form-label"></label>
                     <textarea asp-for="About" class="form-control" rows="5"
-                              placeholder="What you specialise in, how long you have been trading, what a buyer can expect."></textarea>
+                              placeholder="@L["What you specialise in, how long you have been trading, what a buyer can expect."]"></textarea>
                     <span asp-validation-for="About" class="text-danger"></span>
                 </div>
 
                 <div class="col-md-6">
                     <label asp-for="City" class="form-label"></label>
-                    <input asp-for="City" class="form-control" placeholder="e.g. Tirana" />
+                    <input asp-for="City" class="form-control" placeholder="@L["e.g. Tirana"]" />
                 </div>
                 <div class="col-md-6">
                     <label asp-for="Country" class="form-label"></label>
-                    <input asp-for="Country" class="form-control" placeholder="e.g. Albania" />
+                    <input asp-for="Country" class="form-control" placeholder="@L["e.g. Albania"]" />
                 </div>
 
                 <div class="col-12">
@@ -69,7 +69,7 @@
                 <div class="col-12">
                     <label asp-for="OpeningHours" class="form-label"></label>
                     <input asp-for="OpeningHours" class="form-control"
-                           placeholder="Mon-Fri 9-18, Sat 9-14" />
+                           placeholder="@L["Mon-Fri 9-18, Sat 9-14"]" />
                 </div>
             </div>
         </div>
@@ -78,13 +78,13 @@
     <div class="col-lg-5">
         <div class="card mb-3">
             <div class="card-body">
-                <h2 class="h6 mb-3">Logo</h2>
+                <h2 class="h6 mb-3">@L["Logo"]</h2>
                 <div class="pm-avatar-editor">
                     <partial name="_Avatar" model="@((Model.LogoPath, logoInitial, "lg"))" />
                     <div class="pm-avatar-form">
                         <input type="file" name="logo" class="form-control" accept="image/*" />
                         <div class="form-text">
-                            Square works best. Shown on your listings and in the directory.
+                            @L["Square works best. Shown on your listings and in the directory."]
                         </div>
                         @if (!string.IsNullOrWhiteSpace(Model.LogoPath))
                         {
@@ -92,7 +92,7 @@
                                 <input class="form-check-input" type="checkbox" name="removeLogo"
                                        value="true" id="removeLogo" />
                                 <label class="form-check-label small" for="removeLogo">
-                                    Remove the current logo
+                                    @L["Remove the current logo"]
                                 </label>
                             </div>
                         }
@@ -103,7 +103,7 @@
 
         <div class="card mb-3">
             <div class="card-body">
-                <h2 class="h6 mb-3">Header image</h2>
+                <h2 class="h6 mb-3">@L["Header image"]</h2>
                 @if (!string.IsNullOrWhiteSpace(Model.BannerPath))
                 {
                     <div class="pm-banner-preview pm-media mb-2">
@@ -111,14 +111,14 @@
                     </div>
                 }
                 <input type="file" name="banner" class="form-control" accept="image/*" />
-                <div class="form-text">A wide photo of the forecourt or showroom.</div>
+                <div class="form-text">@L["A wide photo of the forecourt or showroom."]</div>
                 @if (!string.IsNullOrWhiteSpace(Model.BannerPath))
                 {
                     <div class="form-check mt-2">
                         <input class="form-check-input" type="checkbox" name="removeBanner"
                                value="true" id="removeBanner" />
                         <label class="form-check-label small" for="removeBanner">
-                            Remove the current header image
+                            @L["Remove the current header image"]
                         </label>
                     </div>
                 }
@@ -127,20 +127,17 @@
 
         <div class="card">
             <div class="card-body">
-                <h2 class="h6 mb-2">Your company record</h2>
+                <h2 class="h6 mb-2">@L["Your company record"]</h2>
                 <p class="mb-0 small pm-muted">
-                    Your registration number and trading details are on file with your account.
-                    We do not check them against the business register, and no dealership
-                    carries a verified badge — the thing buyers judge you on here is your
-                    rating, which only people who actually bought from you can leave.
+                    @L["Your registration number and trading details are on file with your account. We do not check them against the business register, and no dealership carries a verified badge - the thing buyers judge you on here is your rating, which only people who actually bought from you can leave."]
                 </p>
             </div>
         </div>
     </div>
 
     <div class="col-12 d-flex gap-2">
-        <button type="submit" class="btn btn-primary">Save page</button>
-        <a class="btn btn-outline-secondary" asp-action="Dashboard">Cancel</a>
+        <button type="submit" class="btn btn-primary">@L["Save page"]</button>
+        <a class="btn btn-outline-secondary" asp-action="Dashboard">@L["Cancel"]</a>
     </div>
 </form>
 
