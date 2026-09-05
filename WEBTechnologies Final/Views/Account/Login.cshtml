@@ -1,5 +1,4 @@
 @model LoginViewModel
-@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Env
 @{
     ViewData["Title"] = "Log In";
 }
@@ -37,14 +36,6 @@
                     New here? <a asp-action="Signup">Create an account</a>
                 </p>
 
-                @if (Env.IsDevelopment())
-                {
-                    @* Never rendered outside Development — the seeded admin
-                       password is generated and logged in production. *@
-                    <div class="alert alert-info small mt-3 mb-0">
-                        <strong>Dev seed:</strong> <code>admin</code> / <code>admin123</code>
-                    </div>
-                }
             </div>
         </div>
     </div>

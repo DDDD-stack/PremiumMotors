@@ -1,0 +1,92 @@
+@model IEnumerable<Car>
+@{
+    ViewData["Title"] = "Ready to deal";
+    var cars = Model.ToList();
+}
+
+@* The page is deliberately NOT called "Promoted listings". Nobody browses a page of
+   adverts, and naming it after the advertiser gives a buyer no reason to open it. It is
+   named after the two things that are true of every car on it - still available, and the
+   seller has money on the line - and the paid part is disclosed plainly rather than sold. *@
+<div class="pm-page-head">
+    <div>
+        <h1>Ready to deal</h1>
+        <p class="pm-muted mb-0">
+            Every car here is still available, and its seller has paid to be seen this week.
+        </p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-primary d-none d-md-inline-block">
+        Browse everything
+    </a>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="pm-promoted-note mb-4">
+            <strong>What this page is.</strong>
+            These are promoted listings — the sellers paid for the placement. That buys
+            position, and nothing else: it does not change a car's price, mileage, condition
+            or history, and we do not check any of those on this page or anywhere else.
+            <a asp-controller="Home" asp-action="ForBusiness">How promotion works</a>.
+        </div>
+    </div>
+</div>
+
+@if (cars.Count == 0)
+{
+    <div class="pm-empty">
+        <div class="pm-empty-icon" aria-hidden="true">📣</div>
+        <h2 class="h5">Nothing is promoted right now</h2>
+        <p class="pm-muted mb-3">
+            When sellers promote a car it appears here until their placement runs out.
+        </p>
+        <a asp-action="Index" class="btn btn-primary">Browse every listing instead</a>
+    </div>
+}
+else
+{
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="pm-why">
+                <h2 class="h6">Nothing here has already gone</h2>
+                <p>
+                    A promotion stops the moment a car is reserved or sold, so this page never
+                    shows you something you cannot still buy. That is enforced by the software,
+                    not by somebody remembering.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="pm-why">
+                <h2 class="h6">These sellers want to sell</h2>
+                <p>
+                    Paying to be seen is the closest thing to evidence that a seller is serious
+                    and will answer the phone. It is not proof, and it says nothing about the
+                    car — but a listing somebody forgot about six months ago is not on here.
+                </p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="pm-why">
+                <h2 class="h6">It is a short list, on purpose</h2>
+                <p>
+                    Placement is limited and dated. If this page ever becomes as long as the
+                    marketplace itself, it stops being worth reading — so it will not.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3 g-md-4 pm-stagger">
+        @foreach (var car in cars)
+        {
+            <div class="col">
+                <partial name="_CarCard" model="car" />
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-action="Index" class="btn btn-lg btn-primary fw-semibold">Browse every listing</a>
+    </div>
+}

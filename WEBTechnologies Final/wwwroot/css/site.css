@@ -1955,32 +1955,33 @@ html.pm-cta-on .pm-header-cta {
     box-shadow: var(--pm-shadow-sm);
 }
 
-/* --- The strip at the top of the marketplace ------------------------ */
+/* --- Advert disclosure on the results page --------------------------
+   Adverts used to sit in a fenced-off block at the top. They are mixed into the
+   grid now, so this one line carries the disclosure instead. It is deliberately
+   readable rather than fine print: undisclosed paid placement is unlawful, and
+   a disclosure nobody can read is the same thing with extra steps. */
 
-.pm-promoted-strip {
-    padding: 1rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid var(--pm-border);
-    border-radius: var(--pm-radius);
-    background: var(--pm-surface-sunken);
-}
-
-.pm-promoted-head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: .75rem;
-    flex-wrap: wrap;
-    margin-bottom: .85rem;
-}
-
-/* Never hidden, never shrunk to nothing: an advert that does not say it is an
-   advert is a search result that lies. */
 .pm-promoted-note {
-    font-size: .75rem;
-    color: var(--pm-ink-faint);
+    font-size: .85rem;
+    line-height: 1.5;
+    color: var(--pm-ink-soft);
+    background: var(--pm-surface-sunken);
+    border: 1px solid var(--pm-border);
+    border-radius: var(--pm-radius-sm);
+    padding: .6rem .8rem;
+}
+
+.pm-promoted-note-badge {
+    display: inline-block;
+    background: var(--pm-accent);
+    color: #23180a;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .04em;
     text-transform: uppercase;
-    letter-spacing: .06em;
+    padding: .12rem .4rem;
+    border-radius: 999px;
+    vertical-align: middle;
 }
 
 /* --- The front-page slot -------------------------------------------- */
@@ -2027,3 +2028,76 @@ html.pm-cta-on .pm-header-cta {
 }
 
 .pm-tier .pm-tick-list li { margin-bottom: .45rem; }
+
+/* === Listing status, made unmissable ============================ */
+
+/* The old treatment was a 0.68rem pill in the corner of the photo. Scanning a
+   grid, a sold car and an available one were near enough identical - and the one
+   moment a buyer needs to know is exactly while scanning. Two layers now: the
+   photo is drained and dimmed so the card reads as past-tense from across the
+   room, and the status is written across the middle where the eye already is. */
+
+.pm-status-wash {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    /* backdrop-filter rather than an overlay colour, so the photo is still
+       recognisably the car rather than a grey rectangle. */
+    backdrop-filter: grayscale(.85) brightness(.62);
+    -webkit-backdrop-filter: grayscale(.85) brightness(.62);
+}
+
+/* Reserved is not over: the car may come back if the sale falls through, so it
+   is dimmed far less than sold. */
+.pm-status-wash.pm-status-reserved {
+    backdrop-filter: grayscale(.35) brightness(.78);
+    -webkit-backdrop-filter: grayscale(.35) brightness(.78);
+}
+
+/* Safari on older iOS ignores backdrop-filter; without a fallback the band would
+   sit on a full-brightness photo and lose its contrast. */
+@supports not (backdrop-filter: grayscale(1)) {
+    .pm-status-wash { background: rgba(11, 18, 32, .45); }
+    .pm-status-wash.pm-status-reserved { background: rgba(11, 18, 32, .28); }
+}
+
+.pm-status-band {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    padding: .45rem .5rem;
+    background: rgba(11, 18, 32, .72);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, .12) inset,
+                0 -1px 0 rgba(255, 255, 255, .12) inset;
+}
+
+/* The badge inside the band carries the colour, so _ListingStatusBadge stays the
+   single place that decides what each status looks like. */
+.pm-status-band .badge {
+    font-size: .82rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: .4rem .9rem;
+}
+
+/* The detail page photo is several times the size of a card, so the band scales
+   with it rather than looking lost. */
+.pm-status-band-lg .badge {
+    font-size: 1.05rem;
+    padding: .55rem 1.5rem;
+}
+
+/* A draft or an archived listing is only ever seen by its own seller, and they
+   know what it is - no need to wreck the photo for them. */
+.pm-status-wash.pm-status-draft,
+.pm-status-wash.pm-status-archived {
+    backdrop-filter: grayscale(.5) brightness(.8);
+    -webkit-backdrop-filter: grayscale(.5) brightness(.8);
+}

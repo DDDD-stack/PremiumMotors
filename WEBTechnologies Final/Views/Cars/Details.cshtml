@@ -42,6 +42,17 @@
                             <img src="@images[i]" class="d-block w-100 detail-img" alt="@Model.Title"
                                  loading="@(i == 0 ? "eager" : "lazy")" decoding="async"
                                  @(i == 0 ? Html.Raw($"style=\"view-transition-name: car-photo-{Model.Id}\"") : null) />
+                            @* Same treatment as the grid card. The sidebar already says a car
+                               is sold, but somebody who arrives on a shared link looks at the
+                               photo first and may never reach the sidebar on a phone. *@
+                            @if (Model.Status != ListingStatus.Active)
+                            {
+                                <span class="pm-status-wash pm-status-@Model.Status.ToString().ToLowerInvariant()"
+                                      aria-hidden="true"></span>
+                                <span class="pm-status-band pm-status-band-lg pm-status-@Model.Status.ToString().ToLowerInvariant()">
+                                    <partial name="_ListingStatusBadge" model="Model.Status" />
+                                </span>
+                            }
                         </div>
                     </div>
                 }

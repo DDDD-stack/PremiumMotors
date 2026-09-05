@@ -7,11 +7,18 @@ namespace WEBTechnologies_Final.Models
         public IReadOnlyList<Car> Cars { get; set; } = new List<Car>();
 
         /// <summary>
-        /// Paid placement matching the current filters, page one only. These also appear in
-        /// <see cref="Cars"/> in their ordinary position — the seller bought extra exposure,
-        /// not a different set of search results.
+        /// How many of the cars on this page are paid placement. Used only to decide whether
+        /// the "some of these are adverts" note is worth showing; the promoted listings
+        /// themselves are mixed into <see cref="Cars"/> rather than kept apart.
         /// </summary>
-        public IReadOnlyList<Car> Promoted { get; set; } = new List<Car>();
+        public int PromotedOnPage { get; set; }
+
+        /// <summary>
+        /// Pages are computed from the FREE listings alone, because promoted ones are pinned
+        /// to page one rather than paginated. Counting them here as well would produce a
+        /// trailing empty page.
+        /// </summary>
+        public int FreeCount { get; set; }
 
         public string? Search { get; set; }
         public CarType? Type { get; set; }
@@ -34,7 +41,7 @@ namespace WEBTechnologies_Final.Models
         public int PageSize { get; set; } = 24;
         public int TotalCount { get; set; }
 
-        public int TotalPages => PageSize <= 0 ? 1 : Math.Max(1, (int)Math.Ceiling(TotalCount / (double)PageSize));
+        public int TotalPages => PageSize <= 0 ? 1 : Math.Max(1, (int)Math.Ceiling(FreeCount / (double)PageSize));
         public bool HasPreviousPage => Page > 1;
         public bool HasNextPage => Page < TotalPages;
 

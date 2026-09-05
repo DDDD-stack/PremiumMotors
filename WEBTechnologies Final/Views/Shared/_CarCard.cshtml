@@ -31,7 +31,14 @@
              style="view-transition-name: car-photo-@Model.Id" />
         @if (Model.Status != ListingStatus.Active)
         {
-            <span class="pm-badge-float">
+            @* A small pill in the corner was far too easy to miss: a sold car and an
+               available one looked near enough identical while scanning a grid, which is
+               exactly when it matters. The photo is now dimmed and drained of colour and
+               the status is written across it, so the state of a listing is legible at a
+               glance rather than on inspection. *@
+            <span class="pm-status-wash pm-status-@Model.Status.ToString().ToLowerInvariant()"
+                  aria-hidden="true"></span>
+            <span class="pm-status-band pm-status-@Model.Status.ToString().ToLowerInvariant()">
                 <partial name="_ListingStatusBadge" model="Model.Status" />
             </span>
         }

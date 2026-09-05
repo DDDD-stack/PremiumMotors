@@ -132,25 +132,22 @@
     </div>
 
     <div class="col-lg-9">
-        @* Paid placement, matching whatever the buyer has filtered to. Labelled as an advert
-           and visually fenced off from the results underneath, so nobody has to guess which
-           is which. These cars appear in the grid below as well. *@
-        @if (Model.Promoted.Count > 0)
+        @* Adverts are mixed into the results rather than fenced off above them, so this note
+           replaces the old block heading as the disclosure. Every promoted card still carries
+           its own "Promoted" badge - this just says it once in words, up front. *@
+        @if (Model.PromotedOnPage > 0)
         {
-            <section class="pm-promoted-strip" aria-label="Promoted listings">
-                <div class="pm-promoted-head">
-                    <h2 class="h6 mb-0">Promoted listings</h2>
-                    <span class="pm-promoted-note">Paid placement by the seller</span>
-                </div>
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3">
-                    @foreach (var car in Model.Promoted)
-                    {
-                        <div class="col">
-                            <partial name="_CarCard" model="car" />
-                        </div>
-                    }
-                </div>
-            </section>
+            @* Say exactly what the money buys. "Position only, never inclusion" is the honest
+               and checkable version: a promoted car still has to match the filters to appear
+               at all, so paying can move a car up but can never put a diesel estate in front
+               of somebody who asked for petrol hatchbacks. *@
+            <p class="pm-promoted-note mb-3">
+                Some listings on this page are marked
+                <span class="pm-promoted-note-badge">Promoted</span> — those sellers paid for a
+                higher position on the first page. They still have to match your filters to
+                show up at all, and paying never changes a car's price, mileage or condition.
+                <a asp-action="Featured">See them on their own page</a>.
+            </p>
         }
 
         @if (Model.Cars.Count == 0)

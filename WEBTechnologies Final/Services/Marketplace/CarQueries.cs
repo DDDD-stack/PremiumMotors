@@ -30,5 +30,38 @@ namespace WEBTechnologies_Final.Services.Marketplace
         /// </summary>
         public static IQueryable<Car> OrderByPromotion(this IQueryable<Car> query) =>
             query.OrderByDescending(c => c.PromotionTier).ThenByDescending(c => c.Id);
+        /// <summary>
+        /// Mixes paid listings into the free ones, one advert every
+        /// everyNth slots until the adverts run out, after which the
+        /// rest of the page is free listings in their ordinary order.
+        ///
+        /// Note this cannot make adverts a majority of the page, and deliberately so - that
+        /// would need the same few cars repeated down the grid, which reads as a broken page
+        /// rather than a busy one and buries exactly the sellers this is meant to protect.
+        /// </summary>
+        public static List<Car> MixPromoted(
+            IReadOnlyList<Car> free, IReadOnlyList<Car> promoted, int everyNth)
+        {
+            if (promoted.Count == 0) return free.ToList();
+
+            var mixed = new List<Car>(free.Count + promoted.Count);
+            var nextPromoted = 0;
+            var nextFree = 0;
+
+            while (nextPromoted < promoted.Count || nextFree < free.Count)
+            {
+                var slotWantsAnAdvert = mixed.Count % everyNth == 0;
+
+                if (slotWantsAnAdvert && nextPromoted < promoted.Count)
+                    mixed.Add(promoted[nextPromoted++]);
+                else if (nextFree < free.Count)
+                    mixed.Add(free[nextFree++]);
+                else
+                    mixed.Add(promoted[nextPromoted++]);
+            }
+
+            return mixed;
+        }
+
     }
 }

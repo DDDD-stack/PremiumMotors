@@ -27,6 +27,28 @@ namespace WEBTechnologies_Final.Controllers
             _views = views;
         }
 
+        /// <summary>
+        /// How many paid listings can be pinned to the first page of results.
+        ///
+        /// A ceiling exists because the value of promotion is relative: if every car on the
+        /// page is an advert, being an advert buys nothing, and the page stops being a
+        /// marketplace. Twelve is half a default page.
+        /// </summary>
+        private const int MaxPromotedPerPage = 12;
+
+        /// <summary>
+        /// Every Nth slot goes to a paid listing. One in two is the densest this should ever
+        /// be: it hands promotion a large, obvious advantage while guaranteeing that a free
+        /// listing sits between every pair of adverts.
+        ///
+        /// That guarantee is the point. Segregating adverts into their own block at the top
+        /// leaves free sellers looking like the consolation prize, and a free seller who
+        /// concludes the site is pay-to-be-seen simply lists elsewhere - taking their stock,
+        /// and the buyers who came for that stock, with them. Mixing keeps the grid worth
+        /// scrolling, which is what makes the adverts in it worth buying.
+        /// </summary>
+        private const int PromotedEveryNth = 2;
+
         public async Task<IActionResult> Index(
             string? search, CarType? type, string? make, string? model, int? year,
             decimal? minPrice, decimal? maxPrice, int? maxMileage,
@@ -72,22 +94,29 @@ namespace WEBTechnologies_Final.Controllers
             page = page < 1 ? 1 : page;
             pageSize = pageSize is < 1 or > 96 ? 24 : pageSize;
 
-            var totalCount = await query.CountAsync();
-            var cars = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
-
-            // Page one only. A promoted strip repeated above every page stops being placement
-            // and starts being furniture.
-            //
-            // These listings are NOT removed from the grid below. Taking them out would make
-            // TotalCount lie and would hide a matching car from the position a buyer expects
-            // to find it in; the seller paid for extra exposure, not for a different search.
+            // Paid placement matching the current filters. Pinned to page one and mixed into
+            // the results there rather than paginated with them, so the same car can never
+            // show up twice across two pages.
             var promoted = page == 1
                 ? await filtered
                     .WherePromoted(PromotionTier.Promoted, DateTime.UtcNow)
                     .OrderByPromotion()
-                    .Take(3)
+                    .Take(MaxPromotedPerPage)
                     .ToListAsync()
                 : new List<Car>();
+
+            // Everything that is not pinned. Excluded by id rather than by re-running the
+            // promotion conditions, so the two can never disagree about what is promoted.
+            var pinnedIds = promoted.Select(c => c.Id).ToList();
+            var freeQuery = query.Where(c => !pinnedIds.Contains(c.Id));
+
+            var freeCount = await freeQuery.CountAsync();
+            var free = await freeQuery.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var cars = CarQueries.MixPromoted(free, promoted, PromotedEveryNth);
+            var totalCount = freeCount + await filtered
+                .WherePromoted(PromotionTier.Promoted, DateTime.UtcNow)
+                .CountAsync();
 
             var listed = _context.Cars
                 .Where(c => c.Status != ListingStatus.Draft && c.Status != ListingStatus.Archived);
@@ -109,7 +138,8 @@ namespace WEBTechnologies_Final.Controllers
             var vm = new CarListViewModel
             {
                 Cars = cars,
-                Promoted = promoted,
+                PromotedOnPage = promoted.Count,
+                FreeCount = freeCount,
                 Search = search,
                 Type = type,
                 Make = make,
@@ -342,6 +372,36 @@ namespace WEBTechnologies_Final.Controllers
             }
 
             return RedirectToAction("Thread", "Messages", new { id = result.Value.Id });
+        }
+
+        /// <summary>
+        /// The promoted listings on a page of their own.
+        ///
+        /// A page whose subject is "these sellers paid us" has no reason to exist for a buyer,
+        /// and calling it that would make it less appealing rather than more. So the page is
+        /// sold on the two things that are actually TRUE of every listing on it, both of them
+        /// enforced rather than claimed:
+        ///
+        ///   1. It is Active. WherePromoted excludes sold and reserved cars, so nothing here
+        ///      has already gone - which is the single most annoying thing about browsing a
+        ///      used-car site.
+        ///   2. The seller paid money to be seen this week, which is the closest thing to
+        ///      evidence that they actually want to sell and will answer the phone.
+        ///
+        /// Neither is a quality claim about the car, and the page must never imply one.
+        /// </summary>
+        public async Task<IActionResult> Featured()
+        {
+            var cars = await _context.Cars.AsNoTracking()
+                .WherePromoted(PromotionTier.Promoted, DateTime.UtcNow)
+                .OrderByPromotion()
+                .Take(48)
+                .ToListAsync();
+
+            await LoadFavouritesAsync(cars.Select(c => c.Id));
+            await LoadExtrasAsync(cars);
+
+            return View(cars);
         }
 
         /// <summary>
