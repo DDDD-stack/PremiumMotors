@@ -38,8 +38,6 @@ namespace WEBTechnologies_Final.Models
         public List<Car> Promoted { get; set; } = new();
 
         public MarketplaceStats Stats { get; set; } = new();
-
-        public bool IsLoggedIn { get; set; }
     }
 
     /// <summary>
@@ -59,10 +57,5 @@ namespace WEBTechnologies_Final.Models
 
 
         public MarketplaceStats Stats { get; set; } = new();
-
-        public bool IsLoggedIn { get; set; }
-
-        /// <summary>A dealer who is already signed in gets sent to their tools, not to signup.</summary>
-        public bool IsBusinessAccount { get; set; }
     }
 }

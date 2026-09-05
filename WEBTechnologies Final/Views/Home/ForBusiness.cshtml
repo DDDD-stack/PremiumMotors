@@ -22,26 +22,13 @@
         </p>
 
         <div class="pm-hero-cta">
-            @if (Model.IsBusinessAccount)
-            {
-                <a asp-controller="Seller" asp-action="Dashboard"
-                   class="btn btn-lg btn-warning fw-semibold pm-cta-main" data-pm-cta-anchor>
-                    Open your dealer panel
-                </a>
-                <a asp-controller="Cars" asp-action="Index" class="btn btn-lg btn-outline-light">
-                    Browse the marketplace
-                </a>
-            }
-            else
-            {
-                <a asp-controller="Account" asp-action="RegisterBusiness"
-                   class="btn btn-lg btn-warning fw-semibold pm-cta-main" data-pm-cta-anchor>
-                    Register your dealership — free
-                </a>
-                <a asp-controller="Cars" asp-action="Index" class="btn btn-lg btn-outline-light">
-                    Browse the marketplace
-                </a>
-            }
+            <a asp-controller="Account" asp-action="RegisterBusiness"
+               class="btn btn-lg btn-warning fw-semibold pm-cta-main" data-pm-cta-anchor>
+                Register your dealership — free
+            </a>
+            <a asp-controller="Cars" asp-action="Index" class="btn btn-lg btn-outline-light">
+                Browse the marketplace
+            </a>
         </div>
 
         <p class="pm-hero-note">
@@ -218,22 +205,13 @@
             </ol>
             <p class="pm-muted small">VAT number and website are optional and can be added later.</p>
 
-            @if (Model.IsBusinessAccount)
-            {
-                <a asp-controller="Seller" asp-action="Dashboard" class="btn btn-lg btn-primary fw-semibold">
-                    Open your dealer panel
-                </a>
-            }
-            else
-            {
-                <a asp-controller="Account" asp-action="RegisterBusiness" class="btn btn-lg btn-primary fw-semibold">
-                    Register your dealership
-                </a>
-                <p class="small pm-muted mt-2 mb-0">
-                    Already have a business account?
-                    <a asp-controller="Account" asp-action="Login">Log in</a>.
-                </p>
-            }
+            <a asp-controller="Account" asp-action="RegisterBusiness" class="btn btn-lg btn-primary fw-semibold">
+                Register your dealership
+            </a>
+            <p class="small pm-muted mt-2 mb-0">
+                Already have a business account?
+                <a asp-controller="Account" asp-action="Login">Log in</a>.
+            </p>
         </div>
     </div>
 </section>

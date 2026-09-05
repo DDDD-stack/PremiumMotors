@@ -122,7 +122,9 @@
                         <li class="nav-item">
                             <a class="nav-link @CurrentPage("Home", "HowItWorks")" asp-controller="Home" asp-action="HowItWorks">How it works</a>
                         </li>
-                        @if (!isSellerAccount && !isAdmin)
+                        @* Guests only: a signed-in visitor is redirected off /business, so
+                           showing them the link would be showing them a bounce. *@
+                        @if (!isLoggedIn)
                         {
                             <li class="nav-item">
                                 <a class="nav-link @CurrentPage("Home", "ForBusiness")" asp-controller="Home" asp-action="ForBusiness">For businesses</a>
@@ -211,7 +213,10 @@
             </span>
             <span class="d-flex gap-3">
                 <a asp-controller="Home" asp-action="HowItWorks">How it works</a>
-                <a asp-controller="Home" asp-action="ForBusiness">For businesses</a>
+                @if (!isLoggedIn)
+                {
+                    <a asp-controller="Home" asp-action="ForBusiness">For businesses</a>
+                }
                 <a asp-controller="Home" asp-action="Terms">Terms</a>
                 <a asp-controller="Home" asp-action="Privacy">Privacy</a>
             </span>

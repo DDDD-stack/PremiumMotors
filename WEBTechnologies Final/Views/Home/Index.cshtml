@@ -26,18 +26,9 @@
                 Browse the marketplace
             </a>
 
-            @if (Model.IsLoggedIn)
-            {
-                <a asp-controller="Seller" asp-action="Start" class="btn btn-lg btn-outline-light">
-                    Sell your car
-                </a>
-            }
-            else
-            {
-                <a asp-controller="Account" asp-action="Signup" class="btn btn-lg btn-outline-light">
-                    Create a free account
-                </a>
-            }
+            <a asp-controller="Account" asp-action="Signup" class="btn btn-lg btn-outline-light">
+                Create a free account
+            </a>
         </div>
 
         <p class="pm-hero-note">
@@ -231,39 +222,36 @@
    discovering the limits one blocked click at a time is what makes a site
    feel like it is hiding something.
    --------------------------------------------------------------------------- *@
-@if (!Model.IsLoggedIn)
-{
-    <section class="pm-section pm-reveal">
-        <div class="pm-guest">
-            <div class="pm-guest-col">
-                <h2 class="h5">Looking around without an account</h2>
-                <p class="pm-muted">You get the whole marketplace. Just not the parts that need to know who you are.</p>
-                <ul class="pm-tick-list">
-                    <li>Browse and filter every listing</li>
-                    <li>Open any car and read the full specification</li>
-                    <li>Browse the dealership directory and seller ratings</li>
-                    <li>See what has recently sold</li>
-                    <li><strong>Ring the seller directly</strong> on the number shown in the listing</li>
-                </ul>
-            </div>
-            <div class="pm-guest-col">
-                <h2 class="h5">What an account adds</h2>
-                <p class="pm-muted">Free, and about a minute to set up.</p>
-                <ul class="pm-lock-list">
-                    <li>Make a private offer</li>
-                    <li>Message the seller in writing, with a record of it</li>
-                    <li>Save cars to favourites and get the price-drop flag</li>
-                    <li>Leave a rating once you have bought</li>
-                    <li>List your own car</li>
-                </ul>
-                <div class="d-flex flex-wrap gap-2 mt-3">
-                    <a asp-controller="Account" asp-action="Signup" class="btn btn-primary">Create a free account</a>
-                    <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary">Log in</a>
-                </div>
+<section class="pm-section pm-reveal">
+    <div class="pm-guest">
+        <div class="pm-guest-col">
+            <h2 class="h5">Looking around without an account</h2>
+            <p class="pm-muted">You get the whole marketplace. Just not the parts that need to know who you are.</p>
+            <ul class="pm-tick-list">
+                <li>Browse and filter every listing</li>
+                <li>Open any car and read the full specification</li>
+                <li>Browse the dealership directory and seller ratings</li>
+                <li>See what has recently sold</li>
+                <li><strong>Ring the seller directly</strong> on the number shown in the listing</li>
+            </ul>
+        </div>
+        <div class="pm-guest-col">
+            <h2 class="h5">What an account adds</h2>
+            <p class="pm-muted">Free, and about a minute to set up.</p>
+            <ul class="pm-lock-list">
+                <li>Make a private offer</li>
+                <li>Message the seller in writing, with a record of it</li>
+                <li>Save cars to favourites and get the price-drop flag</li>
+                <li>Leave a rating once you have bought</li>
+                <li>List your own car</li>
+            </ul>
+            <div class="d-flex flex-wrap gap-2 mt-3">
+                <a asp-controller="Account" asp-action="Signup" class="btn btn-primary">Create a free account</a>
+                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-primary">Log in</a>
             </div>
         </div>
-    </section>
-}
+    </div>
+</section>
 
 @* --------------------------------------------------------------------------- *@
 <section class="pm-band pm-bleed pm-reveal">

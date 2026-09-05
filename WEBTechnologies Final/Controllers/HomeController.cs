@@ -31,12 +31,33 @@ namespace WEBTechnologies_Final.Controllers
         }
 
         /// <summary>
+        /// Signed in already? Then the front pages have nothing to say to you.
+        ///
+        /// Both landing pages exist to answer "what is this and why should I use it", and
+        /// somebody who has an account has already answered that. Making them scroll past the
+        /// pitch every time they open the site is the thing that makes a marketplace feel like
+        /// a brochure. They get the marketplace instead.
+        ///
+        /// The check is the MVC session, which is the only login state these pages have: the
+        /// JWT is API-only and nothing sets an auth cookie. Sessions are stored in Postgres,
+        /// so this survives an app restart - a returning visitor stays "signed in" and keeps
+        /// skipping the pitch, which is the point.
+        /// </summary>
+        private bool IsSignedIn => HttpContext.Session.GetInt32(SessionKeys.UserId) is not null;
+
+        /// <summary>
         /// The consumer front page. Carries three separate routes into the marketplace: the
         /// hero button, the header button that takes over once the hero scrolls away, and the
         /// featured listings - both the cards themselves and the button underneath them.
+        ///
+        /// Signed-out visitors only - see <see cref="IsSignedIn"/>. That is also why the view
+        /// has no "if logged in" branches: they could never render.
         /// </summary>
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public async Task<IActionResult> Index()
         {
+            if (IsSignedIn) return RedirectToAction("Index", "Cars");
+
             // Newest first rather than "best", because there is no honest ranking signal yet
             // and pretending otherwise would just show the same six cars forever.
             var featured = await _db.Cars.AsNoTracking()
@@ -53,8 +74,7 @@ namespace WEBTechnologies_Final.Controllers
             {
                 Featured = featured,
                 Promoted = promoted,
-                Stats = await StatsAsync(),
-                IsLoggedIn = HttpContext.Session.GetInt32(SessionKeys.UserId) is not null
+                Stats = await StatsAsync()
             };
 
             ViewData["HeaderCta"] = true;
@@ -64,22 +84,23 @@ namespace WEBTechnologies_Final.Controllers
         /// <summary>
         /// The business front page. A dealer is buying a channel, not a philosophy, so this
         /// leads with margin, tooling and the fact that registering costs nothing.
+        ///
+        /// Signed-out visitors only, same as the consumer page.
+        ///
+        /// KNOWN TRADE-OFF: a signed-in private seller who wants to read the dealer pitch
+        /// before upgrading cannot get to it either - they are bounced to the marketplace like
+        /// everyone else. That is the instructed behaviour and it is deliberate, but it does
+        /// close the one path a private seller had to talk themselves into a business account.
+        /// If that conversion matters later, the fix is a bypass here, not a change of default.
         /// </summary>
         [Route("business")]
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public async Task<IActionResult> ForBusiness()
         {
+            if (IsSignedIn) return RedirectToAction("Index", "Cars");
+
             var (dealerships, _) = await _dealerships.DirectoryAsync(
                 search: null, city: null, sort: "stock", page: 1, pageSize: 4);
-
-            var userId = HttpContext.Session.GetInt32(SessionKeys.UserId);
-            var isBusiness = false;
-            if (userId is int id)
-            {
-                isBusiness = await _db.Users.AsNoTracking()
-                    .Where(u => u.Id == id)
-                    .Select(u => u.SellerType == SellerType.Dealer)
-                    .FirstOrDefaultAsync();
-            }
 
             var promoted = await FrontPagePromotionsAsync();
             await LoadCardExtrasAsync(promoted);
@@ -88,9 +109,7 @@ namespace WEBTechnologies_Final.Controllers
             {
                 Dealerships = dealerships,
                 Promoted = promoted,
-                Stats = await StatsAsync(),
-                IsLoggedIn = userId is not null,
-                IsBusinessAccount = isBusiness
+                Stats = await StatsAsync()
             };
 
             ViewData["HeaderCta"] = true;
