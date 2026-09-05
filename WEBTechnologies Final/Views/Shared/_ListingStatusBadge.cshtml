@@ -12,4 +12,6 @@
         _                      => ("bg-secondary", Model.ToString(), "")
     };
 }
-<span class="badge @css" title="@title">@label</span>
+@* The English above is the translation key, so the wording stays in one place and the
+   badge, its tooltip and every language of both are decided here rather than per view. *@
+<span class="badge @css" title="@L[title]">@L[label]</span>

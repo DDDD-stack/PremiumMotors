@@ -1,0 +1,48 @@
+@using System.Globalization
+@using Microsoft.AspNetCore.Localization
+@{
+    @* The picker offers the three region-specific languages from AppLanguages, NOT everything
+       the pipeline accepts. The supported list also carries the neutral forms ("sq", "it") so
+       that a browser sending a bare language code is understood, but offering a visitor both
+       "sq" and "sq-AL" as choices would be offering them the same language twice. *@
+    var current = Context.Features.Get<IRequestCultureFeature>()?.RequestCulture.UICulture
+                  ?? CultureInfo.CurrentUICulture;
+
+    @* Matches on the language rather than the exact name, so a visitor whose browser asked
+       for plain "sq" still sees Shqip ticked instead of nothing. *@
+    string Label(string code) =>
+        AppLanguages.Names.TryGetValue(code, out var n) ? n : code;
+
+    bool IsCurrent(string code) =>
+        string.Equals(code.Split('-')[0], current.TwoLetterISOLanguageName,
+                      StringComparison.OrdinalIgnoreCase);
+
+    var currentCode = AppLanguages.Offered.FirstOrDefault(IsCurrent) ?? AppLanguages.Offered[0];
+
+    @* Comes back to the page the visitor was on. A switcher that dumps you on the home page
+       makes you find your place again in a language you are still trying out. *@
+    var here = Context.Request.Path + Context.Request.QueryString;
+}
+
+<div class="dropdown pm-lang">
+    <button class="btn btn-sm btn-outline-light dropdown-toggle" type="button"
+            data-bs-toggle="dropdown" aria-expanded="false"
+            aria-label="@L["Change language. Current language: {0}", Label(currentCode)]">
+        <span aria-hidden="true">@Label(currentCode)</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+        @foreach (var code in AppLanguages.Offered)
+        {
+            <li>
+                <form asp-controller="Culture" asp-action="Set" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="culture" value="@code" />
+                    <input type="hidden" name="returnUrl" value="@here" />
+                    <button type="submit" class="dropdown-item @(IsCurrent(code) ? "active" : null)"
+                            aria-current="@(IsCurrent(code) ? "true" : null)"
+                            lang="@code.Split('-')[0]">@Label(code)</button>
+                </form>
+            </li>
+        }
+    </ul>
+</div>

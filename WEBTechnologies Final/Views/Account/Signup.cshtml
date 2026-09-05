@@ -1,14 +1,14 @@
 @{
-    ViewData["Title"] = "Create an account";
+    ViewData["Title"] = L["Create an account"].Value;
 }
 
 <div class="row justify-content-center">
     <div class="col-lg-9">
         <div class="pm-page-head">
             <div>
-                <h1>Create an account</h1>
+                <h1>@L["Create an account"]</h1>
                 <p class="pm-muted mb-0 small">
-                    Both kinds of account can browse, save cars and make offers.
+                    @L["Both kinds of account can browse, save cars and make offers."]
                 </p>
             </div>
         </div>
@@ -21,18 +21,17 @@
                 <div class="card h-100 pm-choice">
                     <div class="card-body d-flex flex-column">
                         <div class="pm-choice-icon" aria-hidden="true">👤</div>
-                        <h2 class="h5">Personal account</h2>
+                        <h2 class="h5">@L["Personal account"]</h2>
                         <p class="pm-muted small">
-                            For buying a car, and for selling your own. You can turn on selling
-                            any time from your profile — no company details needed.
+                            @L["For buying a car, and for selling your own. You can turn on selling any time from your profile — no company details needed."]
                         </p>
                         <ul class="pm-tick-list small">
-                            <li>Browse and save listings</li>
-                            <li>Make private offers</li>
-                            <li>Message sellers</li>
-                            <li>Sell your own car when you want to</li>
+                            <li>@L["Browse and save listings"]</li>
+                            <li>@L["Make private offers"]</li>
+                            <li>@L["Message sellers"]</li>
+                            <li>@L["Sell your own car when you want to"]</li>
                         </ul>
-                        <a asp-action="Register" class="btn btn-primary w-100 mt-auto">Register as a person</a>
+                        <a asp-action="Register" class="btn btn-primary w-100 mt-auto">@L["Register as a person"]</a>
                     </div>
                 </div>
             </div>
@@ -41,25 +40,27 @@
                 <div class="card h-100 pm-choice pm-choice-accent">
                     <div class="card-body d-flex flex-column">
                         <div class="pm-choice-icon" aria-hidden="true">🏢</div>
-                        <h2 class="h5">Business account</h2>
+                        <h2 class="h5">@L["Business account"]</h2>
                         <p class="pm-muted small">
-                            For dealers and garages selling regularly. Your seller panel is
-                            unlocked the moment you register.
+                            @L["For dealers and garages selling regularly. Your seller panel is unlocked the moment you register."]
                         </p>
                         <ul class="pm-tick-list small">
-                            <li>Everything in a personal account</li>
-                            <li>Seller panel from day one</li>
-                            <li>Trade under your business name</li>
-                            <li>Verification badge once document checks go live</li>
+                            <li>@L["Everything in a personal account"]</li>
+                            <li>@L["Seller panel from day one"]</li>
+                            <li>@L["Trade under your business name"]</li>
+                            @* Was "Verification badge once document checks go live" - a promise
+                               of a feature that was deliberately cancelled, left behind when
+                               verification was removed. Replaced with something true. *@
+                            <li>@L["A public dealership page buyers can browse"]</li>
                         </ul>
-                        <a asp-action="RegisterBusiness" class="btn btn-dark w-100 mt-auto">Register as a business</a>
+                        <a asp-action="RegisterBusiness" class="btn btn-dark w-100 mt-auto">@L["Register as a business"]</a>
                     </div>
                 </div>
             </div>
         </div>
 
         <p class="text-center mt-4 mb-0">
-            Already have an account? <a asp-action="Login">Log in</a>
+            @L["Already have an account?"] <a asp-action="Login">@L["Log in"]</a>
         </p>
     </div>
 </div>

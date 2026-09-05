@@ -1,13 +1,13 @@
 @model LoginViewModel
 @{
-    ViewData["Title"] = "Log In";
+    ViewData["Title"] = L["Log in"].Value;
 }
 
 <div class="row justify-content-center">
     <div class="col-sm-9 col-md-7 col-lg-5">
         <div class="card mt-2 mt-md-4">
             <div class="card-body p-4">
-                <h1 class="h4 mb-3">Log in</h1>
+                <h1 class="h4 mb-3">@L["Log in"]</h1>
 
                 <div asp-validation-summary="All" class="text-danger mb-2"></div>
 
@@ -29,11 +29,11 @@
                         <input asp-for="Password" class="form-control" autocomplete="current-password" />
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
-                    <button type="submit" class="btn btn-primary w-100">Log in</button>
+                    <button type="submit" class="btn btn-primary w-100">@L["Log in"]</button>
                 </form>
 
                 <p class="text-center mt-3 mb-0">
-                    New here? <a asp-action="Signup">Create an account</a>
+                    @L["New here?"] <a asp-action="Signup">@L["Create an account"]</a>
                 </p>
 
             </div>

@@ -6,14 +6,14 @@
     exist. Sold cars leaving the main grid is what made this worth building: "Recently
     sold" is now the only place that data surfaces from.
 *@
-<nav class="pm-view-tabs" aria-label="Marketplace views">
+<nav class="pm-view-tabs" aria-label="@L["Marketplace views"]">
     <a class="pm-view-tab @(Model == "Index" ? "is-current" : null)"
        asp-controller="Cars" asp-action="Index"
-       aria-current="@(Model == "Index" ? "page" : null)">All listings</a>
+       aria-current="@(Model == "Index" ? "page" : null)">@L["All listings"]</a>
     <a class="pm-view-tab @(Model == "Featured" ? "is-current" : null)"
        asp-controller="Cars" asp-action="Featured"
-       aria-current="@(Model == "Featured" ? "page" : null)">Ready to deal</a>
+       aria-current="@(Model == "Featured" ? "page" : null)">@L["Ready to deal"]</a>
     <a class="pm-view-tab @(Model == "Sold" ? "is-current" : null)"
        asp-controller="Cars" asp-action="Sold"
-       aria-current="@(Model == "Sold" ? "page" : null)">Recently sold</a>
+       aria-current="@(Model == "Sold" ? "page" : null)">@L["Recently sold"]</a>
 </nav>

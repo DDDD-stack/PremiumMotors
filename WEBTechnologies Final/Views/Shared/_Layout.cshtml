@@ -19,7 +19,10 @@
         && string.Equals(action, a, StringComparison.OrdinalIgnoreCase) ? "is-current" : "";
 }
 <!DOCTYPE html>
-<html lang="en">
+@* The document language, not a decoration: it tells a screen reader which voice to use
+   and a browser whether to offer a translation. Hard-coding "en" on an Albanian page
+   makes the whole page read out in an English accent. *@
+<html lang="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
 <head>
     <meta charset="utf-8" />
     @* viewport-fit=cover lets the safe-area insets in theme.css reach
@@ -36,7 +39,7 @@
     <link rel="icon" type="image/png" sizes="512x512" href="~/img/icon-512.png" asp-append-version="true" />
     <link rel="apple-touch-icon" sizes="180x180" href="~/img/icon-180.png" asp-append-version="true" />
     <meta name="color-scheme" content="light" />
-    <meta name="description" content="PremiumMotors - buy and sell cars. Browse listings and send private offers to sellers." />
+    <meta name="description" content="@L["PremiumMotors - buy and sell cars. Browse listings and send private offers to sellers."]" />
     <title>@ViewData["Title"] - PremiumMotors</title>
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
@@ -77,7 +80,7 @@
     </script>
 </head>
 <body>
-    <a class="pm-skip" href="#main">Skip to content</a>
+    <a class="pm-skip" href="#main">@L["Skip to content"]</a>
 
     @* First-visit curtain. Inert unless <html> carries data-pm-intro, and
        aria-hidden because it announces nothing a screen reader has not
@@ -104,36 +107,36 @@
                 {
                     <a class="btn btn-sm btn-warning fw-semibold pm-header-cta ms-auto me-2 order-lg-3"
                        asp-controller="Cars" asp-action="Index" data-pm-header-cta>
-                        Browse the marketplace
+                        @L["Browse the marketplace"]
                     </a>
                 }
 
                 <button class="navbar-toggler d-lg-none order-lg-4" type="button"
                         data-bs-toggle="collapse" data-bs-target="#mainNav"
-                        aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                        aria-controls="mainNav" aria-expanded="false" aria-label="@L["Toggle navigation"]">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
                 <div class="navbar-collapse collapse order-lg-2" id="mainNav">
                     <ul class="navbar-nav flex-grow-1 mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link @Current("Cars")" asp-controller="Cars" asp-action="Index">Browse cars</a>
+                            <a class="nav-link @Current("Cars")" asp-controller="Cars" asp-action="Index">@L["Browse cars"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @Current("Dealerships")" asp-controller="Dealerships" asp-action="Index">Dealerships</a>
+                            <a class="nav-link @Current("Dealerships")" asp-controller="Dealerships" asp-action="Index">@L["Dealerships"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @CurrentPage("Cars", "Sold")" asp-controller="Cars" asp-action="Sold">Recently sold</a>
+                            <a class="nav-link @CurrentPage("Cars", "Sold")" asp-controller="Cars" asp-action="Sold">@L["Recently sold"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @CurrentPage("Home", "HowItWorks")" asp-controller="Home" asp-action="HowItWorks">How it works</a>
+                            <a class="nav-link @CurrentPage("Home", "HowItWorks")" asp-controller="Home" asp-action="HowItWorks">@L["How it works"]</a>
                         </li>
                         @* Guests only: a signed-in visitor is redirected off /business, so
                            showing them the link would be showing them a bounce. *@
                         @if (!isLoggedIn)
                         {
                             <li class="nav-item">
-                                <a class="nav-link @CurrentPage("Home", "ForBusiness")" asp-controller="Home" asp-action="ForBusiness">For businesses</a>
+                                <a class="nav-link @CurrentPage("Home", "ForBusiness")" asp-controller="Home" asp-action="ForBusiness">@L["For businesses"]</a>
                             </li>
                         }
                         @if (isLoggedIn && !isAdmin)
@@ -141,13 +144,13 @@
                             @if (isSellerAccount)
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link @Current("Seller")" asp-controller="Seller" asp-action="Dashboard">Seller panel</a>
+                                    <a class="nav-link @Current("Seller")" asp-controller="Seller" asp-action="Dashboard">@L["Seller panel"]</a>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link @Current("Seller")" asp-controller="Seller" asp-action="Start">Start selling</a>
+                                    <a class="nav-link @Current("Seller")" asp-controller="Seller" asp-action="Start">@L["Start selling"]</a>
                                 </li>
                             }
                             @* Next to "Start selling" / "Seller panel" on purpose: a private
@@ -158,55 +161,60 @@
                             {
                                 <li class="nav-item">
                                     <a class="nav-link @CurrentPage("Account", "GoBusiness")"
-                                       asp-controller="Account" asp-action="GoBusiness">Register as a business</a>
+                                       asp-controller="Account" asp-action="GoBusiness">@L["Register as a business"]</a>
                                 </li>
                             }
                             <li class="nav-item">
-                                <a class="nav-link @Current("Messages")" asp-controller="Messages" asp-action="Index">Messages</a>
+                                <a class="nav-link @Current("Messages")" asp-controller="Messages" asp-action="Index">@L["Messages"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link @Current("Favorites")" asp-controller="Favorites" asp-action="Index">♥ Favourites</a>
+                                <a class="nav-link @Current("Favorites")" asp-controller="Favorites" asp-action="Index">♥ @L["Favourites"]</a>
                             </li>
                         }
                         @if (isAdmin)
                         {
                             <li class="nav-item">
-                                <a class="nav-link @CurrentPage("Admin", "Index")" asp-controller="Admin" asp-action="Index">Manage Listings</a>
+                                <a class="nav-link @CurrentPage("Admin", "Index")" asp-controller="Admin" asp-action="Index">@L["Manage listings"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link @CurrentPage("Admin", "Promotions")" asp-controller="Admin" asp-action="Promotions">Placement</a>
+                                <a class="nav-link @CurrentPage("Admin", "Promotions")" asp-controller="Admin" asp-action="Promotions">@L["Placement"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link @CurrentPage("Admin", "Create")" asp-controller="Admin" asp-action="Create">+ Post a Car</a>
+                                <a class="nav-link @CurrentPage("Admin", "Create")" asp-controller="Admin" asp-action="Create">+ @L["Post a car"]</a>
                             </li>
                         }
                     </ul>
 
                     <ul class="navbar-nav align-items-lg-center gap-2">
+                        @* Before the account controls rather than after: a visitor who cannot
+                           read the page needs this before anything it sits next to. *@
+                        <li class="nav-item">
+                            <partial name="_LanguagePicker" />
+                        </li>
                         @if (isLoggedIn)
                         {
                             <li class="nav-item">
                                 <a class="pm-user-chip @Current("Account")" asp-controller="Account" asp-action="Profile">
                                     @if (isAdmin)
                                     {
-                                        <span class="badge bg-warning text-dark">Admin</span>
+                                        <span class="badge bg-warning text-dark">@L["Admin"]</span>
                                     }
                                     <span><strong>@currentUser</strong></span>
                                 </a>
                             </li>
                             <li class="nav-item">
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-grid d-lg-inline">
-                                    <button type="submit" class="btn btn-sm btn-outline-light">Log out</button>
+                                    <button type="submit" class="btn btn-sm btn-outline-light">@L["Log out"]</button>
                                 </form>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link @CurrentPage("Account", "Login")" asp-controller="Account" asp-action="Login">Log in</a>
+                                <a class="nav-link @CurrentPage("Account", "Login")" asp-controller="Account" asp-action="Login">@L["Log in"]</a>
                             </li>
                             <li class="nav-item d-grid d-lg-block">
-                                <a class="btn btn-sm btn-warning fw-semibold" asp-controller="Account" asp-action="Signup">Register</a>
+                                <a class="btn btn-sm btn-warning fw-semibold" asp-controller="Account" asp-action="Signup">@L["Register"]</a>
                             </li>
                         }
                     </ul>
@@ -229,13 +237,13 @@
                 <span>&copy; 2026</span>
             </span>
             <span class="d-flex gap-3">
-                <a asp-controller="Home" asp-action="HowItWorks">How it works</a>
+                <a asp-controller="Home" asp-action="HowItWorks">@L["How it works"]</a>
                 @if (!isLoggedIn)
                 {
-                    <a asp-controller="Home" asp-action="ForBusiness">For businesses</a>
+                    <a asp-controller="Home" asp-action="ForBusiness">@L["For businesses"]</a>
                 }
-                <a asp-controller="Home" asp-action="Terms">Terms</a>
-                <a asp-controller="Home" asp-action="Privacy">Privacy</a>
+                <a asp-controller="Home" asp-action="Terms">@L["Terms"]</a>
+                <a asp-controller="Home" asp-action="Privacy">@L["Privacy"]</a>
             </span>
         </div>
     </footer>

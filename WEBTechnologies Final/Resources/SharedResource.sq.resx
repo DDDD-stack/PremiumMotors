@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Translations for one language, keyed on the English text.
+
+    Generated once and edited by hand from here on. A key missing from this file falls back
+    to the English key itself, so an untranslated string shows as readable English rather
+    than as a blank or a raw identifier - which is what makes it safe to add a language
+    before it is finished.
+
+    WHEN THE ENGLISH CHANGES, THE KEY CHANGES. Rewording a sentence in a .cshtml orphans
+    its translations silently: the page keeps working, in English, in every language. Grep
+    this directory whenever you reword user-facing text.
+  -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="1 car sold through PremiumMotors" xml:space="preserve">
+    <value>1 makinë e shitur përmes PremiumMotors</value>
+  </data>
+  <data name="1 listing" xml:space="preserve">
+    <value>1 shpallje</value>
+  </data>
+  <data name="A promotion stops the moment a car is reserved or sold, so this page never shows you something you cannot still buy. That is enforced by the software, not by somebody remembering." xml:space="preserve">
+    <value>Promovimi ndalet në momentin që një makinë rezervohet ose shitet, ndaj kjo faqe nuk ju shfaq kurrë diçka që nuk mund ta blini më. Këtë e siguron vetë sistemi, jo dikush që duhet ta mbajë mend.</value>
+  </data>
+  <data name="A public dealership page buyers can browse" xml:space="preserve">
+    <value>Një faqe publike biznesi që blerësit mund ta shfletojnë</value>
+  </data>
+  <data name="Accepting offers" xml:space="preserve">
+    <value>Pranon oferta</value>
+  </data>
+  <data name="Active" xml:space="preserve">
+    <value>Aktive</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="All listings" xml:space="preserve">
+    <value>Të gjitha shpalljet</value>
+  </data>
+  <data name="Already have an account?" xml:space="preserve">
+    <value>Keni tashmë një llogari?</value>
+  </data>
+  <data name="Any" xml:space="preserve">
+    <value>Çdo</value>
+  </data>
+  <data name="Any fuel" xml:space="preserve">
+    <value>Çdo karburant</value>
+  </data>
+  <data name="Any gearbox" xml:space="preserve">
+    <value>Çdo kambio</value>
+  </data>
+  <data name="Any make" xml:space="preserve">
+    <value>Çdo markë</value>
+  </data>
+  <data name="Any model" xml:space="preserve">
+    <value>Çdo model</value>
+  </data>
+  <data name="Any type" xml:space="preserve">
+    <value>Çdo tip</value>
+  </data>
+  <data name="Any year" xml:space="preserve">
+    <value>Çdo vit</value>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apliko</value>
+  </data>
+  <data name="Archived" xml:space="preserve">
+    <value>E arkivuar</value>
+  </data>
+  <data name="Asking price" xml:space="preserve">
+    <value>Çmimi i kërkuar</value>
+  </data>
+  <data name="Automatic" xml:space="preserve">
+    <value>Automatik</value>
+  </data>
+  <data name="Available" xml:space="preserve">
+    <value>E disponueshme</value>
+  </data>
+  <data name="Both kinds of account can browse, save cars and make offers." xml:space="preserve">
+    <value>Të dyja llojet e llogarive mund të shfletojnë, të ruajnë makina dhe të bëjnë oferta.</value>
+  </data>
+  <data name="Browse and save listings" xml:space="preserve">
+    <value>Shfletoni dhe ruani shpallje</value>
+  </data>
+  <data name="Browse cars" xml:space="preserve">
+    <value>Shfleto makinat</value>
+  </data>
+  <data name="Browse every listing" xml:space="preserve">
+    <value>Shfleto të gjitha shpalljet</value>
+  </data>
+  <data name="Browse every listing instead" xml:space="preserve">
+    <value>Shfleto më mirë të gjitha shpalljet</value>
+  </data>
+  <data name="Browse everything" xml:space="preserve">
+    <value>Shfleto gjithçka</value>
+  </data>
+  <data name="Browse the marketplace" xml:space="preserve">
+    <value>Shfleto tregun</value>
+  </data>
+  <data name="Business account" xml:space="preserve">
+    <value>Llogari biznesi</value>
+  </data>
+  <data name="CNG" xml:space="preserve">
+    <value>Metan (CNG)</value>
+  </data>
+  <data name="CVT" xml:space="preserve">
+    <value>CVT</value>
+  </data>
+  <data name="Cars for sale" xml:space="preserve">
+    <value>Makina në shitje</value>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Pastro</value>
+  </data>
+  <data name="Clear all filters" xml:space="preserve">
+    <value>Pastro të gjithë filtrat</value>
+  </data>
+  <data name="Clear filters" xml:space="preserve">
+    <value>Pastro filtrat</value>
+  </data>
+  <data name="Create an account" xml:space="preserve">
+    <value>Krijo një llogari</value>
+  </data>
+  <data name="Dealerships" xml:space="preserve">
+    <value>Autosallonet</value>
+  </data>
+  <data name="Diesel" xml:space="preserve">
+    <value>Naftë</value>
+  </data>
+  <data name="Draft" xml:space="preserve">
+    <value>Draft</value>
+  </data>
+  <data name="Electric" xml:space="preserve">
+    <value>Elektrik</value>
+  </data>
+  <data name="Every car here is still available, and its seller has paid to be seen this week." xml:space="preserve">
+    <value>Çdo makinë këtu është ende e disponueshme dhe shitësi i saj ka paguar për t'u parë këtë javë.</value>
+  </data>
+  <data name="Everything in a personal account" xml:space="preserve">
+    <value>Gjithçka që ka një llogari personale</value>
+  </data>
+  <data name="Favourites" xml:space="preserve">
+    <value>Të preferuarat</value>
+  </data>
+  <data name="For businesses" xml:space="preserve">
+    <value>Për bizneset</value>
+  </data>
+  <data name="For buying a car, and for selling your own. You can turn on selling any time from your profile — no company details needed." xml:space="preserve">
+    <value>Për të blerë një makinë dhe për të shitur tuajën. Shitjen mund ta aktivizoni në çdo kohë nga profili juaj — pa nevojë për të dhëna biznesi.</value>
+  </data>
+  <data name="For dealers and garages selling regularly. Your seller panel is unlocked the moment you register." xml:space="preserve">
+    <value>Për autosallonet dhe oficinat që shesin rregullisht. Paneli i shitësit hapet sapo të regjistroheni.</value>
+  </data>
+  <data name="Fuel" xml:space="preserve">
+    <value>Karburanti</value>
+  </data>
+  <data name="Gearbox" xml:space="preserve">
+    <value>Kambio</value>
+  </data>
+  <data name="How it works" xml:space="preserve">
+    <value>Si funksionon</value>
+  </data>
+  <data name="How promotion works" xml:space="preserve">
+    <value>Si funksionon promovimi</value>
+  </data>
+  <data name="Hybrid" xml:space="preserve">
+    <value>Hibrid</value>
+  </data>
+  <data name="Include cars already sold" xml:space="preserve">
+    <value>Përfshi makinat e shitura</value>
+  </data>
+  <data name="It is a short list, on purpose" xml:space="preserve">
+    <value>Është një listë e shkurtër, me qëllim</value>
+  </data>
+  <data name="LPG" xml:space="preserve">
+    <value>Gaz (LPG)</value>
+  </data>
+  <data name="Listing pages" xml:space="preserve">
+    <value>Faqet e shpalljeve</value>
+  </data>
+  <data name="Log in" xml:space="preserve">
+    <value>Hyr</value>
+  </data>
+  <data name="Log out" xml:space="preserve">
+    <value>Dil</value>
+  </data>
+  <data name="Make" xml:space="preserve">
+    <value>Marka</value>
+  </data>
+  <data name="Make private offers" xml:space="preserve">
+    <value>Bëni oferta private</value>
+  </data>
+  <data name="Make, model, keyword..." xml:space="preserve">
+    <value>Markë, model, fjalë kyçe...</value>
+  </data>
+  <data name="Manage listings" xml:space="preserve">
+    <value>Menaxho shpalljet</value>
+  </data>
+  <data name="Manual" xml:space="preserve">
+    <value>Manual</value>
+  </data>
+  <data name="Marketplace views" xml:space="preserve">
+    <value>Pamjet e tregut</value>
+  </data>
+  <data name="Max" xml:space="preserve">
+    <value>Maks</value>
+  </data>
+  <data name="Max mileage" xml:space="preserve">
+    <value>Kilometrazhi maksimal</value>
+  </data>
+  <data name="Message sellers" xml:space="preserve">
+    <value>Shkruani shitësve</value>
+  </data>
+  <data name="Messages" xml:space="preserve">
+    <value>Mesazhet</value>
+  </data>
+  <data name="Min" xml:space="preserve">
+    <value>Min</value>
+  </data>
+  <data name="Model" xml:space="preserve">
+    <value>Modeli</value>
+  </data>
+  <data name="Model year" xml:space="preserve">
+    <value>Viti i prodhimit</value>
+  </data>
+  <data name="New here?" xml:space="preserve">
+    <value>I ri këtu?</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Tjetra</value>
+  </data>
+  <data name="No cars match your search" xml:space="preserve">
+    <value>Asnjë makinë nuk përputhet me kërkimin tuaj</value>
+  </data>
+  <data name="Not visible to buyers yet" xml:space="preserve">
+    <value>Ende e padukshme për blerësit</value>
+  </data>
+  <data name="Nothing here has already gone" xml:space="preserve">
+    <value>Asgjë këtu nuk është shitur tashmë</value>
+  </data>
+  <data name="Nothing is promoted right now" xml:space="preserve">
+    <value>Asgjë nuk është e promovuar për momentin</value>
+  </data>
+  <data name="Nothing sold yet" xml:space="preserve">
+    <value>Ende asgjë e shitur</value>
+  </data>
+  <data name="Once cars start selling here they will be listed on this page, with what they actually went for." xml:space="preserve">
+    <value>Sapo makinat të fillojnë të shiten këtu, ato do të shfaqen në këtë faqe bashkë me çmimin real të shitjes.</value>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Tjetër</value>
+  </data>
+  <data name="Pages" xml:space="preserve">
+    <value>Faqet</value>
+  </data>
+  <data name="Paying to be seen is the closest thing to evidence that a seller is serious and will answer the phone. It is not proof, and it says nothing about the car — but a listing somebody forgot about six months ago is not on here." xml:space="preserve">
+    <value>Të paguash për t'u parë është gjëja më e afërt me një provë se shitësi është serioz dhe do të përgjigjet në telefon. Nuk është provë e plotë dhe nuk thotë asgjë për makinën — por një shpallje që dikush e ka harruar prej gjashtë muajsh nuk gjendet këtu.</value>
+  </data>
+  <data name="Personal account" xml:space="preserve">
+    <value>Llogari personale</value>
+  </data>
+  <data name="Petrol" xml:space="preserve">
+    <value>Benzinë</value>
+  </data>
+  <data name="Placement" xml:space="preserve">
+    <value>Pozicionimi</value>
+  </data>
+  <data name="Placement is limited and dated. If this page ever becomes as long as the marketplace itself, it stops being worth reading — so it will not." xml:space="preserve">
+    <value>Pozicionimi është i kufizuar dhe me afat. Nëse kjo faqe do të bëhej ndonjëherë aq e gjatë sa vetë tregu, nuk do të vlente më të lexohej — prandaj nuk do të bëhet.</value>
+  </data>
+  <data name="Plug-in hybrid" xml:space="preserve">
+    <value>Hibrid me prizë</value>
+  </data>
+  <data name="Post a car" xml:space="preserve">
+    <value>Shto një makinë</value>
+  </data>
+  <data name="PremiumMotors - buy and sell cars. Browse listings and send private offers to sellers." xml:space="preserve">
+    <value>PremiumMotors - blini dhe shisni makina. Shfletoni shpalljet dhe dërgoni oferta private te shitësit.</value>
+  </data>
+  <data name="Prev" xml:space="preserve">
+    <value>Para</value>
+  </data>
+  <data name="Price (EUR)" xml:space="preserve">
+    <value>Çmimi (EUR)</value>
+  </data>
+  <data name="Price drop" xml:space="preserve">
+    <value>Ulje çmimi</value>
+  </data>
+  <data name="Privacy" xml:space="preserve">
+    <value>Privatësia</value>
+  </data>
+  <data name="Promoted" xml:space="preserve">
+    <value>E promovuar</value>
+  </data>
+  <data name="Ready to deal" xml:space="preserve">
+    <value>Gati për marrëveshje</value>
+  </data>
+  <data name="Recently sold" xml:space="preserve">
+    <value>Shitur së fundmi</value>
+  </data>
+  <data name="Reduced from {0}" xml:space="preserve">
+    <value>Ulur nga {0}</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Regjistrohu</value>
+  </data>
+  <data name="Register as a business" xml:space="preserve">
+    <value>Regjistrohu si biznes</value>
+  </data>
+  <data name="Register as a person" xml:space="preserve">
+    <value>Regjistrohu si individ</value>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>E rezervuar</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Kërko</value>
+  </data>
+  <data name="Search &amp; filter" xml:space="preserve">
+    <value>Kërko dhe filtro</value>
+  </data>
+  <data name="See what they went for." xml:space="preserve">
+    <value>Shihni me sa u shitën.</value>
+  </data>
+  <data name="Sell your own car when you want to" xml:space="preserve">
+    <value>Shisni makinën tuaj kur të doni</value>
+  </data>
+  <data name="Seller panel" xml:space="preserve">
+    <value>Paneli i shitësit</value>
+  </data>
+  <data name="Seller panel from day one" xml:space="preserve">
+    <value>Paneli i shitësit që ditën e parë</value>
+  </data>
+  <data name="Semi-automatic" xml:space="preserve">
+    <value>Gjysmë-automatik</value>
+  </data>
+  <data name="Showing {0}–{1} of {2} listings" xml:space="preserve">
+    <value>Duke shfaqur {0}–{1} nga {2} shpallje</value>
+  </data>
+  <data name="Skip to content" xml:space="preserve">
+    <value>Kalo te përmbajtja</value>
+  </data>
+  <data name="Sold" xml:space="preserve">
+    <value>E shitur</value>
+  </data>
+  <data name="Sold for" xml:space="preserve">
+    <value>U shit për</value>
+  </data>
+  <data name="Sort by" xml:space="preserve">
+    <value>Rendit sipas</value>
+  </data>
+  <data name="Start selling" xml:space="preserve">
+    <value>Fillo të shesësh</value>
+  </data>
+  <data name="Taken off the market by the seller" xml:space="preserve">
+    <value>Hequr nga tregu prej shitësit</value>
+  </data>
+  <data name="Terms" xml:space="preserve">
+    <value>Kushtet</value>
+  </data>
+  <data name="The seller has accepted an offer" xml:space="preserve">
+    <value>Shitësi ka pranuar një ofertë</value>
+  </data>
+  <data name="The seller paid for this placement" xml:space="preserve">
+    <value>Shitësi ka paguar për këtë pozicionim</value>
+  </data>
+  <data name="These are promoted listings — the sellers paid for the placement. That buys position, and nothing else: it does not change a car's price, mileage, condition or history, and we do not check any of those on this page or anywhere else." xml:space="preserve">
+    <value>Këto janë shpallje të promovuara — shitësit kanë paguar për pozicionimin. Kjo blen vetëm pozicion dhe asgjë tjetër: nuk ndryshon çmimin, kilometrazhin, gjendjen apo historikun e një makine, dhe ne nuk i kontrollojmë ato as në këtë faqe as diku tjetër.</value>
+  </data>
+  <data name="These sellers want to sell" xml:space="preserve">
+    <value>Këta shitës duan të shesin</value>
+  </data>
+  <data name="This car has been sold" xml:space="preserve">
+    <value>Kjo makinë është shitur</value>
+  </data>
+  <data name="Toggle navigation" xml:space="preserve">
+    <value>Hap ose mbyll menunë</value>
+  </data>
+  <data name="Trade under your business name" xml:space="preserve">
+    <value>Tregtoni me emrin e biznesit tuaj</value>
+  </data>
+  <data name="Try raising your budget, allowing more mileage, or clearing a filter." xml:space="preserve">
+    <value>Provoni të rrisni buxhetin, të lejoni më shumë kilometra, ose të hiqni një filtër.</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Tipi</value>
+  </data>
+  <data name="Useful for judging a price." xml:space="preserve">
+    <value>E dobishme për të gjykuar një çmim.</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>Shiko</value>
+  </data>
+  <data name="View {0}" xml:space="preserve">
+    <value>Shiko {0}</value>
+  </data>
+  <data name="What cars actually sell for is usually more useful than what they are advertised at. These are completed sales, newest first." xml:space="preserve">
+    <value>Çmimi me të cilin shiten vërtet makinat është zakonisht më i dobishëm se çmimi me të cilin reklamohen. Këto janë shitje të përfunduara, më të rejat në fillim.</value>
+  </data>
+  <data name="What this page is." xml:space="preserve">
+    <value>Çfarë është kjo faqe.</value>
+  </data>
+  <data name="When sellers promote a car it appears here until their placement runs out." xml:space="preserve">
+    <value>Kur shitësit promovojnë një makinë, ajo shfaqet këtu derisa të mbarojë pozicionimi.</value>
+  </data>
+  <data name="page {0} of {1}" xml:space="preserve">
+    <value>faqja {0} nga {1}</value>
+  </data>
+  <data name="{0} cars sold through PremiumMotors" xml:space="preserve">
+    <value>{0} makina të shitura përmes PremiumMotors</value>
+  </data>
+  <data name="{0} listings" xml:space="preserve">
+    <value>{0} shpallje</value>
+  </data>
+</root>

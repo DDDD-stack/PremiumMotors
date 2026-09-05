@@ -5,6 +5,12 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UserSecretsId>premiummotors-webtech-final</UserSecretsId>
+		<!-- The assembly is called "WEBTechnologies Final" - with a space - but the code lives in
+		     WEBTechnologies_Final. Without this, embedded .resx files are named after the assembly
+		     and the localizer, which builds its lookup name from the namespace, never finds them:
+		     every page renders in English with no error anywhere. See RootNamespaceAttribute in
+		     SharedResource.cs, which tells the localizer the same thing at runtime. -->
+		<RootNamespace>WEBTechnologies_Final</RootNamespace>
 	</PropertyGroup>
 
 	<ItemGroup>

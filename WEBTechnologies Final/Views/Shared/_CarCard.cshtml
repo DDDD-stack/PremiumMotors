@@ -26,7 +26,7 @@
 
 <div class="card h-100 car-card @(promoted ? "is-promoted" : "")">
     <a asp-controller="Cars" asp-action="Details" asp-route-id="@Model.Id"
-       class="car-thumb pm-media" aria-label="View @Model.Title">
+       class="car-thumb pm-media" aria-label="@L["View {0}", Model.Title]">
         <img src="@Model.PrimaryImage" alt="@Model.Title" loading="lazy" decoding="async"
              style="view-transition-name: car-photo-@Model.Id" />
         @if (Model.Status != ListingStatus.Active)
@@ -44,15 +44,15 @@
         }
         @if (Model.Status == ListingStatus.Active && wasPrice != null)
         {
-            <span class="pm-badge-float pm-badge-drop">Price drop</span>
+            <span class="pm-badge-float pm-badge-drop">@L["Price drop"]</span>
         }
         @if (promoted)
         {
             @* Labelled, not disguised. Paid placement that does not say it is paid is an
                advert pretending to be a search result, and in most of Europe that is also
                illegal. The label is the cheap part; the prominence is what was bought. *@
-            <span class="pm-badge-promoted" title="The seller paid for this placement">
-                Promoted
+            <span class="pm-badge-promoted" title="@L["The seller paid for this placement"]">
+                @L["Promoted"]
             </span>
         }
     </a>
@@ -61,15 +61,15 @@
             <h3 class="h6 mb-0 car-title">
                 <a asp-controller="Cars" asp-action="Details" asp-route-id="@Model.Id">@Model.Title</a>
             </h3>
-            <span class="badge bg-secondary flex-shrink-0">@Model.Type</span>
+            <span class="badge bg-secondary flex-shrink-0">@L[EnumText.Display(Model.Type)]</span>
         </div>
 
         @* The spec line replaces the old description snippet: mileage, fuel and gearbox are
            what a buyer scans a results grid for. *@
         <ul class="pm-spec-line">
             <li>@Model.Mileage.ToString("N0") km</li>
-            <li>@Model.FuelType</li>
-            <li>@Model.Transmission</li>
+            <li>@L[EnumText.Display(Model.FuelType)]</li>
+            <li>@L[EnumText.Display(Model.Transmission)]</li>
             @if (!string.IsNullOrWhiteSpace(Model.City))
             {
                 <li>@Model.City</li>
@@ -85,19 +85,19 @@
         }
 
         <div class="mt-auto">
-            <div class="small pm-muted">Asking price</div>
+            <div class="small pm-muted">@L["Asking price"]</div>
             <div class="pm-price mb-2">
                 @Model.Price.ToString("C")
                 @if (wasPrice is decimal was)
                 {
-                    <span class="pm-price-was" title="Reduced from @was.ToString("C")">
+                    <span class="pm-price-was" title="@L["Reduced from {0}", was.ToString("C")]">
                         @was.ToString("C")
                     </span>
                 }
             </div>
             <div class="d-flex gap-2">
                 <a asp-controller="Cars" asp-action="Details" asp-route-id="@Model.Id"
-                   class="btn btn-sm btn-primary flex-grow-1">View</a>
+                   class="btn btn-sm btn-primary flex-grow-1">@L["View"]</a>
                 <partial name="_FavoriteButton" model="Model"
                          view-data='new ViewDataDictionary(ViewData) { ["FavBtnClass"] = favClass }' />
             </div>

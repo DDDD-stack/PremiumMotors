@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using WEBTechnologies_Final;
 using WEBTechnologies_Final.Data;
 using WEBTechnologies_Final.Models.Dtos;
 using WEBTechnologies_Final.Services;
@@ -94,8 +95,12 @@ if (!string.IsNullOrWhiteSpace(sentryDsn))
     });
 }
 
-var appCulture = new CultureInfo("en-GB");
-appCulture.NumberFormat.CurrencySymbol = "€";
+// Languages: English, Albanian and Italian, with more expected later. The list, the
+// display names and the euro-everywhere number format all live in AppLanguages, so
+// adding a language is one entry there plus one resx file.
+var supportedCultures = AppLanguages.Supported().ToArray();
+var appCulture = AppLanguages.Build(AppLanguages.Offered[0]);
+
 CultureInfo.DefaultThreadCurrentCulture = appCulture;
 CultureInfo.DefaultThreadCurrentUICulture = appCulture;
 
@@ -105,7 +110,15 @@ AppTime.Configure(builder.Configuration["App:DisplayTimeZone"]);
 // ---------------------------------------------------------------------------
 // MVC + API
 // ---------------------------------------------------------------------------
+builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+
 builder.Services.AddControllersWithViews()
+    .AddViewLocalization()
+    // Validation messages and [Display] labels go to the SAME shared file as everything
+    // else. The default sends them to a per-model resource file, which would scatter
+    // "Username" and "This field is required" across a dozen files that all have to agree.
+    .AddDataAnnotationsLocalization(options =>
+        options.DataAnnotationLocalizerProvider = (_, factory) => factory.Create(typeof(SharedResource)))
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
@@ -516,10 +529,21 @@ if (!app.Environment.IsDevelopment())
 var localizationOptions = new RequestLocalizationOptions
 {
     DefaultRequestCulture = new RequestCulture(appCulture),
-    SupportedCultures = new[] { appCulture },
-    SupportedUICultures = new[] { appCulture }
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
 };
-localizationOptions.RequestCultureProviders.Clear();
+
+// Order is the whole behaviour. An explicit choice from the language switcher wins
+// forever; failing that a browser that asks for Albanian gets Albanian on its first
+// visit, which is the only thing most visitors will ever do about language. The
+// query-string provider is dropped: ?culture=it on a shared link would silently
+// change the language for whoever opened it, with nothing on screen explaining why.
+localizationOptions.RequestCultureProviders = new List<IRequestCultureProvider>
+{
+    new CookieRequestCultureProvider(),
+    new AcceptLanguageHeaderRequestCultureProvider()
+};
+
 app.UseRequestLocalization(localizationOptions);
 
 app.UseHttpsRedirection();

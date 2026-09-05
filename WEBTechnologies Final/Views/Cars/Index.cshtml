@@ -1,20 +1,22 @@
 @model CarListViewModel
 @{
-    ViewData["Title"] = "Cars for sale";
+    ViewData["Title"] = L["Cars for sale"].Value;
     var activeFilters = Model.ActiveFilterCount;
 }
 
 <div class="pm-page-head">
     <div>
-        <h1>Cars for sale</h1>
+        <h1>@L["Cars for sale"]</h1>
         @* Sold cars are no longer browsable, but reserved ones are, so the count still is
            not a count of cars anyone can walk up and buy today. "Listings" keeps the
            heading and the number from disagreeing. *@
         <p class="pm-muted mb-0 small">
-            @Model.TotalCount listing@(Model.TotalCount == 1 ? "" : "s")
+            @* Two whole sentences rather than a stem plus an "s": plurals do not work the
+               same way in every language, and gluing a suffix on only ever works in English. *@
+            @(Model.TotalCount == 1 ? L["1 listing"] : L["{0} listings", Model.TotalCount])
             @if (Model.TotalPages > 1)
             {
-                <text>· page @Model.Page of @Model.TotalPages</text>
+                <text>· @L["page {0} of {1}", Model.Page, Model.TotalPages]</text>
             }
         </p>
     </div>
@@ -29,7 +31,7 @@
     <button class="btn btn-outline-secondary flex-grow-1" type="button"
             data-bs-toggle="collapse" data-bs-target="#filterPanel"
             aria-expanded="false" aria-controls="filterPanel">
-        Search &amp; filter
+        @L["Search & filter"]
         @if (activeFilters > 0)
         {
             <span class="pm-filter-count">@activeFilters</span>
@@ -37,7 +39,7 @@
     </button>
     @if (Model.HasActiveFilters)
     {
-        <a asp-action="Index" class="btn btn-link text-decoration-none">Clear</a>
+        <a asp-action="Index" class="btn btn-link text-decoration-none">@L["Clear"]</a>
     }
 </div>
 
@@ -48,74 +50,74 @@
         <div class="collapse d-lg-block" id="filterPanel">
             <form asp-action="Index" method="get" class="card w-100 pm-filter-rail">
                     <div class="card-body">
-                        <h2 class="pm-section-title d-none d-lg-block mb-3">Search &amp; filter</h2>
+                        <h2 class="pm-section-title d-none d-lg-block mb-3">@L["Search & filter"]</h2>
 
                         <div class="mb-3">
-                            <label class="form-label" for="search">Search</label>
+                            <label class="form-label" for="search">@L["Search"]</label>
                             <input type="search" id="search" name="search" value="@Model.Search"
-                                   class="form-control" placeholder="Make, model, keyword..." />
+                                   class="form-control" placeholder="@L["Make, model, keyword..."]" />
                         </div>
 
                         <div class="row g-2">
                             <div class="col-6 col-lg-12 mb-lg-3">
-                                <label class="form-label" for="type">Type</label>
+                                <label class="form-label" for="type">@L["Type"]</label>
                                 <select id="type" name="type" class="form-select" asp-items="Model.TypeOptions">
-                                    <option value="">Any type</option>
+                                    <option value="">@L["Any type"]</option>
                                 </select>
                             </div>
                             <div class="col-6 col-lg-12 mb-lg-3">
-                                <label class="form-label" for="make">Make</label>
+                                <label class="form-label" for="make">@L["Make"]</label>
                                 <select id="make" name="make" class="form-select" asp-items="Model.MakeOptions">
-                                    <option value="">Any make</option>
+                                    <option value="">@L["Any make"]</option>
                                 </select>
                             </div>
                             <div class="col-6 col-lg-12 mb-lg-3">
-                                <label class="form-label" for="model">Model</label>
+                                <label class="form-label" for="model">@L["Model"]</label>
                                 <select id="model" name="model" class="form-select" asp-items="Model.ModelOptions">
-                                    <option value="">Any model</option>
+                                    <option value="">@L["Any model"]</option>
                                 </select>
                             </div>
                             <div class="col-6 col-lg-12 mb-lg-3">
-                                <label class="form-label" for="year">Model Year</label>
+                                <label class="form-label" for="year">@L["Model year"]</label>
                                 <select id="year" name="year" class="form-select" asp-items="Model.YearOptions">
-                                    <option value="">Any year</option>
+                                    <option value="">@L["Any year"]</option>
                                 </select>
                             </div>
                             <div class="col-6 col-lg-12 mb-lg-3">
-                                <label class="form-label" for="fuel">Fuel</label>
+                                <label class="form-label" for="fuel">@L["Fuel"]</label>
                                 <select id="fuel" name="fuel" class="form-select" asp-items="Model.FuelOptions">
-                                    <option value="">Any fuel</option>
+                                    <option value="">@L["Any fuel"]</option>
                                 </select>
                             </div>
                             <div class="col-6 col-lg-12 mb-lg-3">
-                                <label class="form-label" for="gearbox">Gearbox</label>
+                                <label class="form-label" for="gearbox">@L["Gearbox"]</label>
                                 <select id="gearbox" name="gearbox" class="form-select" asp-items="Model.GearboxOptions">
-                                    <option value="">Any gearbox</option>
+                                    <option value="">@L["Any gearbox"]</option>
                                 </select>
                             </div>
 
                             <div class="col-12 mb-lg-3">
-                                <label class="form-label">Price (EUR)</label>
+                                <label class="form-label">@L["Price (EUR)"]</label>
                                 <div class="input-group">
                                     <input type="number" name="minPrice" value="@Model.MinPrice"
-                                           class="form-control" placeholder="Min" inputmode="numeric" min="0" />
+                                           class="form-control" placeholder="@L["Min"]" inputmode="numeric" min="0" />
                                     <span class="input-group-text">–</span>
                                     <input type="number" name="maxPrice" value="@Model.MaxPrice"
-                                           class="form-control" placeholder="Max" inputmode="numeric" min="0" />
+                                           class="form-control" placeholder="@L["Max"]" inputmode="numeric" min="0" />
                                 </div>
                             </div>
 
                             <div class="col-12 mb-lg-3">
-                                <label class="form-label" for="maxMileage">Max mileage</label>
+                                <label class="form-label" for="maxMileage">@L["Max mileage"]</label>
                                 <div class="input-group">
                                     <input type="number" id="maxMileage" name="maxMileage" value="@Model.MaxMileage"
-                                           class="form-control" placeholder="Any" inputmode="numeric" min="0" />
+                                           class="form-control" placeholder="@L["Any"]" inputmode="numeric" min="0" />
                                     <span class="input-group-text">km</span>
                                 </div>
                             </div>
 
                             <div class="col-12 mb-3">
-                                <label class="form-label" for="sortBy">Sort by</label>
+                                <label class="form-label" for="sortBy">@L["Sort by"]</label>
                                 <select id="sortBy" name="sortBy" class="form-select" asp-items="Model.SortOptions"></select>
                             </div>
 
@@ -129,21 +131,21 @@
                                            id="includeSold" name="includeSold"
                                            @(Model.IncludeSold ? "checked" : "") />
                                     <label class="form-check-label" for="includeSold">
-                                        Include cars already sold
+                                        @L["Include cars already sold"]
                                     </label>
                                 </div>
                                 <div class="form-text">
-                                    Useful for judging a price. See
-                                    <a asp-action="Sold">recently sold</a> for what they went for.
+                                    @L["Useful for judging a price."]
+                                    <a asp-action="Sold">@L["See what they went for."]</a>
                                 </div>
                             </div>
                         </div>
 
                         <div class="d-grid gap-2 mt-2">
-                            <button type="submit" class="btn btn-primary">Apply</button>
+                            <button type="submit" class="btn btn-primary">@L["Apply"]</button>
                             @if (Model.HasActiveFilters)
                             {
-                                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">Clear filters</a>
+                                <a asp-action="Index" class="btn btn-outline-secondary btn-sm">@L["Clear filters"]</a>
                             }
                         </div>
                     </div>
@@ -156,11 +158,11 @@
         {
             <div class="pm-empty">
                 <div class="pm-empty-icon" aria-hidden="true">🔎</div>
-                <h2 class="h5">No cars match your search</h2>
-                <p class="pm-muted mb-3">Try raising your budget, allowing more mileage, or clearing a filter.</p>
+                <h2 class="h5">@L["No cars match your search"]</h2>
+                <p class="pm-muted mb-3">@L["Try raising your budget, allowing more mileage, or clearing a filter."]</p>
                 @if (Model.HasActiveFilters)
                 {
-                    <a asp-action="Index" class="btn btn-primary">Clear all filters</a>
+                    <a asp-action="Index" class="btn btn-primary">@L["Clear all filters"]</a>
                 }
             </div>
         }
@@ -178,11 +180,13 @@
 
         @if (Model.TotalPages > 1)
         {
-            <nav aria-label="Listing pages" class="mt-4">
+            <nav aria-label="@L["Listing pages"]" class="mt-4">
                 <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2">
                     <div class="small pm-muted order-2 order-sm-1">
-                        Showing @(((Model.Page - 1) * Model.PageSize) + 1)–@(Math.Min(Model.Page * Model.PageSize, Model.TotalCount))
-                        of @Model.TotalCount listings
+                        @L["Showing {0}–{1} of {2} listings",
+                            ((Model.Page - 1) * Model.PageSize) + 1,
+                            Math.Min(Model.Page * Model.PageSize, Model.TotalCount),
+                            Model.TotalCount]
                     </div>
                     <ul class="pagination mb-0 order-1 order-sm-2">
                         <li class="page-item @(Model.HasPreviousPage ? "" : "disabled")">
@@ -205,7 +209,7 @@
                                asp-route-gearbox="@Model.Gearbox"
                                asp-route-includeSold="@Model.IncludeSold"
                                asp-route-sortBy="@Model.SortBy"
-                               asp-route-page="@(Model.Page - 1)">‹ Prev</a>
+                               asp-route-page="@(Model.Page - 1)">‹ @L["Prev"]</a>
                         </li>
                         <li class="page-item disabled">
                             <span class="page-link">@Model.Page / @Model.TotalPages</span>
@@ -230,7 +234,7 @@
                                asp-route-gearbox="@Model.Gearbox"
                                asp-route-includeSold="@Model.IncludeSold"
                                asp-route-sortBy="@Model.SortBy"
-                               asp-route-page="@(Model.Page + 1)">Next ›</a>
+                               asp-route-page="@(Model.Page + 1)">@L["Next"] ›</a>
                         </li>
                     </ul>
                 </div>
