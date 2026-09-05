@@ -166,6 +166,9 @@
   <data name="Cars for sale" xml:space="preserve">
     <value>Makina në shitje</value>
   </data>
+  <data name="Change language. Current language: {0}" xml:space="preserve">
+    <value>Ndrysho gjuhën. Gjuha aktuale: {0}</value>
+  </data>
   <data name="Clear" xml:space="preserve">
     <value>Pastro</value>
   </data>
@@ -177,6 +180,9 @@
   </data>
   <data name="Create an account" xml:space="preserve">
     <value>Krijo një llogari</value>
+  </data>
+  <data name="Dealership closed" xml:space="preserve">
+    <value>Biznesi ka mbyllur</value>
   </data>
   <data name="Dealerships" xml:space="preserve">
     <value>Autosallonet</value>
@@ -244,6 +250,9 @@
   <data name="Make" xml:space="preserve">
     <value>Marka</value>
   </data>
+  <data name="Make or model" xml:space="preserve">
+    <value>Marka ose modeli</value>
+  </data>
   <data name="Make private offers" xml:space="preserve">
     <value>Bëni oferta private</value>
   </data>
@@ -288,6 +297,9 @@
   </data>
   <data name="No cars match your search" xml:space="preserve">
     <value>Asnjë makinë nuk përputhet me kërkimin tuaj</value>
+  </data>
+  <data name="No sold cars match that" xml:space="preserve">
+    <value>Asnjë makinë e shitur nuk përputhet</value>
   </data>
   <data name="Not visible to buyers yet" xml:space="preserve">
     <value>Ende e padukshme për blerësit</value>
@@ -376,6 +388,9 @@
   <data name="Search &amp; filter" xml:space="preserve">
     <value>Kërko dhe filtro</value>
   </data>
+  <data name="Search sold cars" xml:space="preserve">
+    <value>Kërko te makinat e shitura</value>
+  </data>
   <data name="See what they went for." xml:space="preserve">
     <value>Shihni me sa u shitën.</value>
   </data>
@@ -390,6 +405,9 @@
   </data>
   <data name="Semi-automatic" xml:space="preserve">
     <value>Gjysmë-automatik</value>
+  </data>
+  <data name="Show everything sold recently" xml:space="preserve">
+    <value>Shfaq gjithçka të shitur së fundmi</value>
   </data>
   <data name="Showing {0}–{1} of {2} listings" xml:space="preserve">
     <value>Duke shfaqur {0}–{1} nga {2} shpallje</value>
@@ -430,6 +448,9 @@
   <data name="This car has been sold" xml:space="preserve">
     <value>Kjo makinë është shitur</value>
   </data>
+  <data name="This page only covers the last {0} days. Try a different make or model." xml:space="preserve">
+    <value>Kjo faqe mbulon vetëm {0} ditët e fundit. Provoni një markë ose model tjetër.</value>
+  </data>
   <data name="Toggle navigation" xml:space="preserve">
     <value>Hap ose mbyll menunë</value>
   </data>
@@ -451,8 +472,8 @@
   <data name="View {0}" xml:space="preserve">
     <value>Shiko {0}</value>
   </data>
-  <data name="What cars actually sell for is usually more useful than what they are advertised at. These are completed sales, newest first." xml:space="preserve">
-    <value>Çmimi me të cilin shiten vërtet makinat është zakonisht më i dobishëm se çmimi me të cilin reklamohen. Këto janë shitje të përfunduara, më të rejat në fillim.</value>
+  <data name="What cars actually sell for is usually more useful than what they are advertised at. These are completed sales from the last {0} days, newest first." xml:space="preserve">
+    <value>Çmimi me të cilin shiten vërtet makinat është zakonisht më i dobishëm se çmimi me të cilin reklamohen. Këto janë shitje të përfunduara nga {0} ditët e fundit, më të rejat në fillim.</value>
   </data>
   <data name="What this page is." xml:space="preserve">
     <value>Çfarë është kjo faqe.</value>

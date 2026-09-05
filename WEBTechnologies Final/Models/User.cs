@@ -66,6 +66,17 @@ namespace WEBTechnologies_Final.Models
         /// </summary>
         public string? PublicPhone { get; set; }
 
+        /// <summary>
+        /// When this account was erased, and null for every account that has not been.
+        ///
+        /// Needed for two different reasons. The pages need it: a car sold by somebody who has
+        /// since closed their account is still a real sale and still belongs in the sold
+        /// history, but it must not carry their photos or read as an account you could
+        /// contact. And accountability needs it: being able to show WHEN an erasure request
+        /// was carried out is part of being able to show that it was.
+        /// </summary>
+        public DateTime? AnonymizedUtc { get; set; }
+
         // Dealer verification was removed on 5 September 2026. Checking a NIPT means checking
         // it against the state business register, and there is no route to that; a badge that
         // is never granted is worse than no badge, because the absence of one reads as a

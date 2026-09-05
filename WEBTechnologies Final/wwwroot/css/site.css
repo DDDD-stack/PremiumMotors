@@ -1469,6 +1469,24 @@ h1, h2, h3, h4 {
     font-size: .82rem;
 }
 
+/* Sold by an account that has since been closed. The sale stays - it happened, and the
+   price is the reason anyone reads this page - but the seller's photographs went with
+   their account, so the card carries a plain label where the byline would be. */
+.pm-sold-closed {
+    margin-top: .35rem;
+    padding: .3rem .6rem;
+    border-radius: var(--pm-radius-sm);
+    background: var(--pm-surface-sunken);
+    color: var(--pm-ink-faint);
+    font-size: .78rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Deliberately narrow. It searches make and model only, and a full-width bar would
+   promise the filter rail from the browse page, which this page does not have. */
+.pm-sold-search { max-width: 26rem; }
+
 /* === Charts ===================================================== */
 
 /* Hand-rolled rather than a charting library: a library is 60-200 KB to draw

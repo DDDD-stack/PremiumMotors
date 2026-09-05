@@ -14,7 +14,7 @@ namespace WEBTechnologies_Final.Controllers.Api
     /// <summary>
     /// The "sell your car" flow for API clients, mirroring SellController on the website:
     /// create a draft, attach photos, then either publish free (launch mode / free relist) or
-    /// pay the listing fee before it goes live.
+    /// publish it. Listing is free and always will be.
     /// </summary>
     [ApiController]
     [Authorize]
@@ -25,21 +25,16 @@ namespace WEBTechnologies_Final.Controllers.Api
         private readonly AppDbContext _db;
         private readonly IPhotoStorage _photos;
         private readonly IMediaUrlResolver _urls;
-        private readonly IPaymentProvider _pay;
-        private readonly ListingOptions _listing;
         private readonly ICurrentUser _current;
         private readonly ILogger<ListingsApiController> _logger;
 
         public ListingsApiController(
-            AppDbContext db, IPhotoStorage photos, IPaymentProvider pay,
-            IOptions<ListingOptions> listing, ICurrentUser current,
+            AppDbContext db, IPhotoStorage photos, ICurrentUser current,
             IMediaUrlResolver urls, ILogger<ListingsApiController> logger)
         {
             _db = db;
             _photos = photos;
             _urls = urls;
-            _pay = pay;
-            _listing = listing.Value;
             _current = current;
             _logger = logger;
         }
@@ -58,47 +53,35 @@ namespace WEBTechnologies_Final.Controllers.Api
                 .OrderByDescending(c => c.Id)
                 .ToListAsync(ct);
 
-            var carIds = cars.Select(c => c.Id).ToList();
-            var payments = await _db.Payments
-                .Where(p => p.CarId != null && carIds.Contains(p.CarId!.Value))
-                .ToListAsync(ct);
-
-            var result = cars.Select(c =>
-            {
-                var payment = payments.FirstOrDefault(p => p.CarId == c.Id);
-                return new MyListingDto(
-                    CarSummaryDto.From(c, _urls),
-                    c.Status,
-                    c.Offers.Count,
-                    c.Offers.Count(o => o.Status == OfferStatus.Pending),
-                    c.Offers.Where(o => o.Status == OfferStatus.Pending)
-                        .Select(o => (decimal?)o.Amount).DefaultIfEmpty(null).Max(),
-                    c.SoldTo,
-                    c.SoldPrice,
-                    payment is null ? null : ToPaymentDto(payment));
-            }).ToList();
+            var result = cars.Select(c => new MyListingDto(
+                CarSummaryDto.From(c, _urls),
+                c.Status,
+                c.Offers.Count,
+                c.Offers.Count(o => o.Status == OfferStatus.Pending),
+                c.Offers.Where(o => o.Status == OfferStatus.Pending)
+                    .Select(o => (decimal?)o.Amount).DefaultIfEmpty(null).Max(),
+                c.SoldTo,
+                c.SoldPrice)).ToList();
 
             return Ok(result);
         }
 
         /// <summary>
-        /// Creates a draft listing and decides what has to happen before it is published:
-        /// a free relist token, free-listing mode, or a paid checkout the client must open.
+        /// Creates a listing and publishes it. Listing is free and always will be, so there
+        /// is nothing to settle first.
         /// </summary>
         [HttpPost]
         [ProducesResponseType(typeof(CreateListingResult), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiError), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create(
-            [FromBody] CreateListingRequest req,
-            [FromQuery] string? returnUrl,
-            [FromQuery] string? cancelUrl,
-            CancellationToken ct)
+            [FromBody] CreateListingRequest req, CancellationToken ct)
         {
             var car = new Car
             {
                 OwnerId = UserId,
                 OwnerUsername = UserName,
-                Status = ListingStatus.Draft,
+                Status = ListingStatus.Active,
+                PublishedUtc = DateTime.UtcNow,
                 CreatedUtc = DateTime.UtcNow
             };
 
@@ -111,68 +94,8 @@ namespace WEBTechnologies_Final.Controllers.Api
             _db.Cars.Add(car);
             await _db.SaveChangesAsync(ct);
 
-            // 1) A free relist: the seller has a paid token from a previous zero-offer auction.
-            var reusable = await _db.Payments
-                .Where(p => p.UserId == UserId
-                            && p.Status == PaymentStatus.Paid
-                            && !p.OfferConsumed
-                            && p.CarId == null
-                            && p.RelistCount < _listing.MaxFreeRelists)
-                .OrderBy(p => p.Id)
-                .FirstOrDefaultAsync(ct);
-
-            if (reusable is not null)
-            {
-                reusable.CarId = car.Id;
-                reusable.RelistCount++;
-                car.Status = ListingStatus.Active;
-                car.PublishedUtc ??= DateTime.UtcNow;
-                await _db.SaveChangesAsync(ct);
-
-                return Created($"/api/cars/{car.Id}", new CreateListingResult(
-                    "published", CarSummaryDto.From(car, _urls), reusable.Id,
-                    reusable.AmountCents, reusable.Currency, null,
-                    "Your earlier listing got no offers, so this relist was free."));
-            }
-
-            var payment = new Payment
-            {
-                UserId = UserId,
-                Username = UserName,
-                CarId = car.Id,
-                AmountCents = _listing.ListingFeeCents,
-                Currency = _listing.Currency,
-                Provider = "paypal"
-            };
-
-            // 2) Launch / free-listing mode: no fee configured, publish immediately.
-            if (_listing.ListingFeeCents <= 0)
-            {
-                payment.Status = PaymentStatus.Paid;
-                payment.PaidUtc = DateTime.UtcNow;
-                car.Status = ListingStatus.Active;
-                car.PublishedUtc ??= DateTime.UtcNow;
-                _db.Payments.Add(payment);
-                await _db.SaveChangesAsync(ct);
-
-                return Created($"/api/cars/{car.Id}", new CreateListingResult(
-                    "published", CarSummaryDto.From(car, _urls), payment.Id,
-                    payment.AmountCents, payment.Currency, null, "Your listing is now live."));
-            }
-
-            // 3) Paid listing: hand the client a checkout URL to open in a browser or web view.
-            _db.Payments.Add(payment);
-            await _db.SaveChangesAsync(ct);
-
-            var checkoutUrl = await StartCheckoutAsync(payment, car, returnUrl, cancelUrl, ct);
-
             return Created($"/api/cars/{car.Id}", new CreateListingResult(
-                checkoutUrl is null ? "payment_failed" : "payment_required",
-                CarSummaryDto.From(car, _urls), payment.Id,
-                payment.AmountCents, payment.Currency, checkoutUrl,
-                checkoutUrl is null
-                    ? "Your listing was saved as a draft, but we could not start the payment. Try again from your listings."
-                    : "Open the checkout URL to pay the listing fee and publish this listing."));
+                "published", CarSummaryDto.From(car, _urls), "Your listing is now live."));
         }
 
         /// <summary>Updates a draft. Published listings are frozen, as on the website.</summary>
@@ -232,11 +155,6 @@ namespace WEBTechnologies_Final.Controllers.Api
             if (car.Status != ListingStatus.Draft && !_current.IsAdmin)
                 return BadRequest(new ApiError("A published listing cannot be deleted.", "already_published"));
 
-            var pending = await _db.Payments
-                .Where(p => p.CarId == id && p.Status == PaymentStatus.Pending)
-                .ToListAsync(ct);
-            _db.Payments.RemoveRange(pending);
-
             // Captured before SaveChanges: once the row is gone nothing records where the
             // blobs were. See PhotoStorageExtensions.DeleteAllAsync for why the cleanup runs
             // after the delete and never before it.
@@ -247,111 +165,6 @@ namespace WEBTechnologies_Final.Controllers.Api
 
             await _photos.DeleteAllAsync(photos, ct);
             return NoContent();
-        }
-
-        /// <summary>
-        /// Starts (or restarts) the listing-fee checkout for a draft and returns the URL the
-        /// client should open. Mobile clients pass their own deep links as returnUrl/cancelUrl.
-        /// </summary>
-        [HttpPost("{id:int}/checkout")]
-        [ProducesResponseType(typeof(CreateListingResult), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Checkout(
-            int id, [FromQuery] string? returnUrl, [FromQuery] string? cancelUrl, CancellationToken ct)
-        {
-            var car = await FindOwnedAsync(id, ct);
-            if (car is null) return NotFound(new ApiError("Listing not found.", "not_found"));
-
-            if (car.Status != ListingStatus.Draft)
-                return BadRequest(new ApiError("This listing is already published.", "already_published"));
-
-            var payment = await _db.Payments
-                .Where(p => p.CarId == id && p.Status != PaymentStatus.Failed)
-                .OrderByDescending(p => p.Id)
-                .FirstOrDefaultAsync(ct);
-
-            if (payment is null)
-            {
-                payment = new Payment
-                {
-                    UserId = UserId,
-                    Username = UserName,
-                    CarId = car.Id,
-                    AmountCents = _listing.ListingFeeCents,
-                    Currency = _listing.Currency,
-                    Provider = "paypal"
-                };
-                _db.Payments.Add(payment);
-                await _db.SaveChangesAsync(ct);
-            }
-
-            if (payment.Status == PaymentStatus.Paid)
-            {
-                car.Status = ListingStatus.Active;
-                car.PublishedUtc ??= DateTime.UtcNow;
-                await _db.SaveChangesAsync(ct);
-                return Ok(new CreateListingResult(
-                    "published", CarSummaryDto.From(car, _urls), payment.Id,
-                    payment.AmountCents, payment.Currency, null, "This listing is already paid for and live."));
-            }
-
-            var checkoutUrl = await StartCheckoutAsync(payment, car, returnUrl, cancelUrl, ct);
-
-            return Ok(new CreateListingResult(
-                checkoutUrl is null ? "payment_failed" : "payment_required",
-                CarSummaryDto.From(car, _urls), payment.Id,
-                payment.AmountCents, payment.Currency, checkoutUrl,
-                checkoutUrl is null ? "We could not start the payment. Please try again." : null));
-        }
-
-        /// <summary>
-        /// Confirms a listing-fee payment after the client returns from the provider. The
-        /// redirect itself is never trusted: the capture call is what proves payment, exactly
-        /// as the website does it.
-        /// </summary>
-        [HttpPost("payments/{paymentId:int}/capture")]
-        [ProducesResponseType(typeof(ListingPaymentDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> CapturePayment(int paymentId, CancellationToken ct)
-        {
-            var payment = await _db.Payments.Include(p => p.Car)
-                .FirstOrDefaultAsync(p => p.Id == paymentId && p.UserId == UserId, ct);
-
-            if (payment is null) return NotFound(new ApiError("Payment not found.", "not_found"));
-
-            if (payment.Status != PaymentStatus.Paid && payment.ProviderOrderId is not null)
-            {
-                var captureId = await _pay.CaptureAsync(payment.ProviderOrderId);
-                if (captureId is not null)
-                {
-                    payment.Status = PaymentStatus.Paid;
-                    payment.PaidUtc = DateTime.UtcNow;
-                    payment.ProviderCaptureId = captureId;
-                    if (payment.Car is not null)
-                    {
-                        payment.Car.Status = ListingStatus.Active;
-                        payment.Car.PublishedUtc ??= DateTime.UtcNow;
-                    }
-                    await _db.SaveChangesAsync(ct);
-                }
-            }
-
-            return Ok(ToPaymentDto(payment));
-        }
-
-        /// <summary>Current fee status for a listing, for polling after a checkout redirect.</summary>
-        [HttpGet("{id:int}/payment")]
-        [ProducesResponseType(typeof(ListingPaymentDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetPaymentStatus(int id, CancellationToken ct)
-        {
-            var car = await FindOwnedAsync(id, ct);
-            if (car is null) return NotFound(new ApiError("Listing not found.", "not_found"));
-
-            var payment = await _db.Payments
-                .Where(p => p.CarId == id)
-                .OrderByDescending(p => p.Id)
-                .FirstOrDefaultAsync(ct);
-
-            if (payment is null) return NotFound(new ApiError("No payment for this listing.", "not_found"));
-            return Ok(ToPaymentDto(payment));
         }
 
         // ---------- helpers ----------
@@ -370,34 +183,5 @@ namespace WEBTechnologies_Final.Controllers.Api
                 ? car : null;
         }
 
-        private async Task<string?> StartCheckoutAsync(
-            Payment payment, Car car, string? returnUrl, string? cancelUrl, CancellationToken ct)
-        {
-            // Default to the website pages so a browser-based client works with no extra setup.
-            var success = string.IsNullOrWhiteSpace(returnUrl)
-                ? Url.Action("Success", "Sell", new { paymentId = payment.Id }, Request.Scheme)!
-                : returnUrl;
-
-            var cancel = string.IsNullOrWhiteSpace(cancelUrl)
-                ? Url.Action("Cancel", "Sell", new { carId = car.Id }, Request.Scheme)!
-                : cancelUrl;
-
-            try
-            {
-                var checkout = await _pay.CreateListingCheckoutAsync(payment, car, success, cancel);
-                payment.ProviderOrderId = checkout.OrderId;
-                await _db.SaveChangesAsync(ct);
-                return checkout.RedirectUrl;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Could not start listing checkout for payment {PaymentId}.", payment.Id);
-                return null;
-            }
-        }
-
-        private static ListingPaymentDto ToPaymentDto(Payment p) => new(
-            p.Id, p.CarId, p.AmountCents, p.Currency, p.Status.ToString(),
-            p.OfferConsumed, p.RelistCount, p.CreatedUtc, p.PaidUtc);
     }
 }

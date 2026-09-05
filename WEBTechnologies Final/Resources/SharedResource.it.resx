@@ -166,6 +166,9 @@
   <data name="Cars for sale" xml:space="preserve">
     <value>Auto in vendita</value>
   </data>
+  <data name="Change language. Current language: {0}" xml:space="preserve">
+    <value>Cambia lingua. Lingua attuale: {0}</value>
+  </data>
   <data name="Clear" xml:space="preserve">
     <value>Azzera</value>
   </data>
@@ -177,6 +180,9 @@
   </data>
   <data name="Create an account" xml:space="preserve">
     <value>Crea un account</value>
+  </data>
+  <data name="Dealership closed" xml:space="preserve">
+    <value>Attività chiusa</value>
   </data>
   <data name="Dealerships" xml:space="preserve">
     <value>Concessionarie</value>
@@ -244,6 +250,9 @@
   <data name="Make" xml:space="preserve">
     <value>Marca</value>
   </data>
+  <data name="Make or model" xml:space="preserve">
+    <value>Marca o modello</value>
+  </data>
   <data name="Make private offers" xml:space="preserve">
     <value>Fai offerte private</value>
   </data>
@@ -288,6 +297,9 @@
   </data>
   <data name="No cars match your search" xml:space="preserve">
     <value>Nessuna auto corrisponde alla tua ricerca</value>
+  </data>
+  <data name="No sold cars match that" xml:space="preserve">
+    <value>Nessuna auto venduta corrisponde</value>
   </data>
   <data name="Not visible to buyers yet" xml:space="preserve">
     <value>Non ancora visibile agli acquirenti</value>
@@ -376,6 +388,9 @@
   <data name="Search &amp; filter" xml:space="preserve">
     <value>Cerca e filtra</value>
   </data>
+  <data name="Search sold cars" xml:space="preserve">
+    <value>Cerca tra le auto vendute</value>
+  </data>
   <data name="See what they went for." xml:space="preserve">
     <value>Guarda a quanto sono state vendute.</value>
   </data>
@@ -390,6 +405,9 @@
   </data>
   <data name="Semi-automatic" xml:space="preserve">
     <value>Semiautomatico</value>
+  </data>
+  <data name="Show everything sold recently" xml:space="preserve">
+    <value>Mostra tutto il venduto di recente</value>
   </data>
   <data name="Showing {0}–{1} of {2} listings" xml:space="preserve">
     <value>Mostrati {0}–{1} di {2} annunci</value>
@@ -430,6 +448,9 @@
   <data name="This car has been sold" xml:space="preserve">
     <value>Questa auto è stata venduta</value>
   </data>
+  <data name="This page only covers the last {0} days. Try a different make or model." xml:space="preserve">
+    <value>Questa pagina copre solo gli ultimi {0} giorni. Prova con una marca o un modello diverso.</value>
+  </data>
   <data name="Toggle navigation" xml:space="preserve">
     <value>Apri o chiudi il menu</value>
   </data>
@@ -451,8 +472,8 @@
   <data name="View {0}" xml:space="preserve">
     <value>Vedi {0}</value>
   </data>
-  <data name="What cars actually sell for is usually more useful than what they are advertised at. These are completed sales, newest first." xml:space="preserve">
-    <value>Il prezzo a cui le auto vengono davvero vendute è di solito più utile di quello a cui sono pubblicizzate. Queste sono vendite concluse, dalle più recenti.</value>
+  <data name="What cars actually sell for is usually more useful than what they are advertised at. These are completed sales from the last {0} days, newest first." xml:space="preserve">
+    <value>Il prezzo a cui le auto vengono davvero vendute è di solito più utile di quello a cui sono pubblicizzate. Queste sono vendite concluse degli ultimi {0} giorni, dalle più recenti.</value>
   </data>
   <data name="What this page is." xml:space="preserve">
     <value>Che cos'è questa pagina.</value>

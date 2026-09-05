@@ -1,21 +1,14 @@
 @model Car
-@inject Microsoft.Extensions.Options.IOptions<WEBTechnologies_Final.Services.ListingOptions> ListingOpts
 @{
     ViewData["Title"] = "Sell your car";
-    var feeCents = ListingOpts.Value.ListingFeeCents;
-    var fee = (feeCents / 100m).ToString("C");
 }
 
 <div class="pm-page-head"><h1>Sell your car</h1></div>
+@* "Currently free" invited the reading that a charge was coming. It is not: listing is free
+   and commission is nothing, and advertising is the only thing anyone ever pays for here. *@
 <p class="text-muted">
-    @if (feeCents > 0)
-    {
-        <text>List your car for buyers to make private offers. A one-time listing fee of <strong>@fee</strong> is charged before your listing goes live. If your listing gets no offers, your next listing is free.</text>
-    }
-    else
-    {
-        <text>List your car for buyers to make private offers. Listings are currently free.</text>
-    }
+    List your car for buyers to make private offers. Listing is free, and we take nothing
+    when it sells.
 </p>
 
 <div class="card shadow-sm">
@@ -24,7 +17,7 @@
             <partial name="_CarForm" model="Model" />
             <div class="mt-4 d-grid d-sm-flex gap-2">
                 <button type="submit" class="btn btn-success">
-                    @(feeCents > 0 ? $"Continue to payment ({fee})" : "Publish listing")
+                    Publish listing
                 </button>
                 <a asp-controller="Cars" asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
             </div>

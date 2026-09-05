@@ -65,7 +65,6 @@ namespace WEBTechnologies_Final.Services.Marketplace
             };
 
             _db.Offers.Add(offer);
-            await ConsumeListingTokenAsync(carId, ct);
             await _db.SaveChangesAsync(ct);
 
             // A note attached to the offer starts the thread, so the seller can reply in place
@@ -235,16 +234,5 @@ namespace WEBTechnologies_Final.Services.Marketplace
         // of a user's listing, so they must stay able to make an offer on one.
         private static bool IsOwner(Car car, int userId) => car.OwnerId is not null && car.OwnerId == userId;
 
-        /// <summary>
-        /// The paid listing token is spent on the first offer and can no longer be reclaimed
-        /// for a free relist. Retained from the auction model because the listing-fee economics
-        /// still work that way.
-        /// </summary>
-        private async Task ConsumeListingTokenAsync(int carId, CancellationToken ct)
-        {
-            var token = await _db.Payments.FirstOrDefaultAsync(
-                p => p.CarId == carId && p.Status == PaymentStatus.Paid && !p.OfferConsumed, ct);
-            if (token is not null) token.OfferConsumed = true;
-        }
     }
 }

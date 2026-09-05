@@ -2,6 +2,7 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using WEBTechnologies_Final.Data;
 using WEBTechnologies_Final.Models;
+using WEBTechnologies_Final.Services.Storage;
 
 namespace WEBTechnologies_Final.Services.Auth
 {
@@ -16,11 +17,14 @@ namespace WEBTechnologies_Final.Services.Auth
     public class AccountDataService
     {
         private readonly AppDbContext _db;
+        private readonly IPhotoStorage _photos;
         private readonly ILogger<AccountDataService> _logger;
 
-        public AccountDataService(AppDbContext db, ILogger<AccountDataService> logger)
+        public AccountDataService(
+            AppDbContext db, IPhotoStorage photos, ILogger<AccountDataService> logger)
         {
             _db = db;
+            _photos = photos;
             _logger = logger;
         }
 
@@ -98,6 +102,7 @@ namespace WEBTechnologies_Final.Services.Auth
             // on every listing they had ever posted - the one piece of personal data on this
             // site that is deliberately public, and therefore the one that matters most.
             user.PublicPhone = null;
+            user.AnonymizedUtc = DateTime.UtcNow;
             user.EmailVerifiedUtc = null;
             user.IsActive = false;
             // Unusable random hash: no password can ever match, and no reset can be requested
@@ -120,15 +125,38 @@ namespace WEBTechnologies_Final.Services.Auth
             await _db.Offers.Where(o => o.BuyerId == null && o.BuyerUsername == oldUsername)
                 .ExecuteUpdateAsync(s => s.SetProperty(o => o.BuyerUsername, handle), ct);
 
+            // Every image this account ever uploaded, collected BEFORE the paths are cleared -
+            // once they are gone nothing records where the files were, and they would sit in
+            // storage forever with no way to find them again.
+            //
+            // Photographs of a person's car, taken outside their house, are personal data as
+            // surely as their phone number is. The listings themselves survive: a sale that
+            // happened is still a real sale and still belongs in the sold history. It just no
+            // longer carries their pictures.
+            var files = new List<string>();
+
+            var shopfront = await _db.Dealerships
+                .Where(d => d.OwnerUserId == userId)
+                .Select(d => new { d.LogoPath, d.BannerPath })
+                .ToListAsync(ct);
+
+            files.AddRange(shopfront.SelectMany(d => new[] { d.LogoPath, d.BannerPath })
+                .Where(path => !string.IsNullOrWhiteSpace(path))!);
+
+            var listingPhotos = await _db.Cars
+                .Where(c => c.OwnerId == userId)
+                .Select(c => c.ImagePaths)
+                .ToListAsync(ct);
+
+            files.AddRange(listingPhotos.SelectMany(p => p).Where(p => !string.IsNullOrWhiteSpace(p)));
+
+            await _db.Cars.Where(c => c.OwnerId == userId)
+                .ExecuteUpdateAsync(s => s.SetProperty(c => c.ImagePaths, new List<string>()), ct);
+
             // A dealership is a public shopfront carrying a name, an address, a phone number
             // and a website. For a sole trader all four are personal data, and none of them
             // survive an erasure request. The row itself is kept rather than deleted so that
             // listings pointing at it keep rendering; what made it identifiable does not.
-            //
-            // NOT cleared: the logo and banner images. A company mark is not obviously
-            // personal data, deleting the files needs the storage layer rather than the
-            // database, and getting it wrong in either direction is worse than asking. Open
-            // question in the LEGAL notepad.
             await _db.Dealerships.Where(d => d.OwnerUserId == userId)
                 .ExecuteUpdateAsync(s => s
                     .SetProperty(d => d.Name, handle)
@@ -136,7 +164,9 @@ namespace WEBTechnologies_Final.Services.Auth
                     .SetProperty(d => d.Address, (string?)null)
                     .SetProperty(d => d.Phone, (string?)null)
                     .SetProperty(d => d.Website, (string?)null)
-                    .SetProperty(d => d.OpeningHours, (string?)null), ct);
+                    .SetProperty(d => d.OpeningHours, (string?)null)
+                    .SetProperty(d => d.LogoPath, (string?)null)
+                    .SetProperty(d => d.BannerPath, (string?)null), ct);
 
             // Preferences and credentials carry no retention justification at all.
             await _db.UserFavoriteCars.Where(f => f.UserId == userId).ExecuteDeleteAsync(ct);
@@ -145,7 +175,15 @@ namespace WEBTechnologies_Final.Services.Auth
 
             await _db.SaveChangesAsync(ct);
 
-            _logger.LogInformation("Anonymized account {UserId} on user request.", userId);
+            // Files last, and only after the database commits. The other order would delete
+            // somebody's photos and then fail to save, leaving listings pointing at images
+            // that no longer exist. Deletion is best-effort by design - an orphaned blob is a
+            // cleanup problem, a half-erased account is not.
+            await _photos.DeleteAllAsync(files, ct);
+
+            _logger.LogInformation(
+                "Anonymized account {UserId} on user request; {FileCount} files removed.",
+                userId, files.Count);
             return true;
         }
     }

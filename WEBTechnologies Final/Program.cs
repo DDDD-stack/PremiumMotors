@@ -305,8 +305,6 @@ builder.Services.AddScoped<ListingViewService>();
 builder.Services.AddScoped<ListingExtrasService>();
 builder.Services.AddScoped<PromotionService>();
 
-builder.Services.Configure<PayPalOptions>(builder.Configuration.GetSection("PayPal"));
-builder.Services.Configure<ListingOptions>(builder.Configuration.GetSection("Listing"));
 builder.Services.Configure<StorageOptions>(builder.Configuration.GetSection("Storage"));
 builder.Services.Configure<EmailOptions>(builder.Configuration.GetSection("Email"));
 
@@ -334,7 +332,6 @@ else
     builder.Services.AddScoped<IEmailSender, LoggingEmailSender>();
 }
 
-builder.Services.AddHttpClient<IPaymentProvider, PayPalProvider>();
 
 builder.Services.AddHealthChecks()
     .AddCheck<DatabaseHealthCheck>("database", tags: new[] { "ready" });

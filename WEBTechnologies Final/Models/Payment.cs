@@ -15,6 +15,15 @@ namespace WEBTechnologies_Final.Models
     /// offer the token is consumed and cannot be reclaimed — which is what closes the
     /// "never declare a winner to relist forever" exploit.
     /// </summary>
+    /// LEGACY, AND NOTHING WRITES TO IT ANY MORE.
+    ///
+    /// This recorded a one-time listing fee taken through PayPal. Both are gone as of
+    /// 5 September 2026: listing is free and always will be, and PayPal was removed because
+    /// getting money out of it in Albania is the hard part. The table is kept rather than
+    /// dropped so no migration destroys rows, and because whatever payment provider is chosen
+    /// next will want somewhere very like this to record a charge.
+    ///
+    /// Paid ADVERTISING is recorded in Promotion, not here.
     public class Payment
     {
         public int Id { get; set; }

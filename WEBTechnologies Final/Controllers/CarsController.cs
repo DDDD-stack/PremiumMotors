@@ -429,23 +429,59 @@ namespace WEBTechnologies_Final.Controllers
         }
 
         /// <summary>
-        /// Cars that actually sold here, newest first.
+        /// How far back the sold page looks.
+        ///
+        /// Everything older stays in the database - it is the most valuable data this site
+        /// will ever hold, and nothing here deletes it - but it stops appearing on this page.
+        /// A sold list that grows without limit stops being a signal and becomes a scroll:
+        /// by the time it is a thousand cars long, nobody reads past the first screen and the
+        /// page has quietly become useless.
+        ///
+        /// Two weeks is enough that anything in real demand locally has turned over at least
+        /// once, so a buyer asking "what does one of these go for" still gets an answer.
+        /// </summary>
+        private const int SoldWindowDays = 14;
+
+        /// <summary>
+        /// Cars that actually sold here in the last fortnight, newest first.
         ///
         /// The strongest trust signal a young marketplace has: proof that transactions
         /// complete. Sale prices are shown because Car.SoldPrice is already public on the
         /// listing itself - hiding them here would be inconsistent rather than private.
         /// </summary>
-        public async Task<IActionResult> Sold(int page = 1, int pageSize = 24)
+        public async Task<IActionResult> Sold(string? search, int page = 1, int pageSize = 24)
         {
             page = page < 1 ? 1 : page;
             pageSize = pageSize is < 1 or > 96 ? 24 : pageSize;
 
-            var query = _context.Cars
-                .Where(c => c.Status == ListingStatus.Sold)
-                .OrderByDescending(c => c.SoldUtc);
+            var since = DateTime.UtcNow.AddDays(-SoldWindowDays);
 
-            var total = await query.CountAsync();
-            var cars = await query.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+            var query = _context.Cars
+                .Where(c => c.Status == ListingStatus.Sold
+                            && c.SoldUtc != null && c.SoldUtc >= since);
+
+            // The whole point of this page is "what did one like mine go for", and without a
+            // search that question is only answerable if the right car happens to be on
+            // screen. Make and model only - a description search would match the seller's
+            // prose rather than the car.
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var term = search.Trim();
+                query = query.Where(c => c.Make.Contains(term) || c.Model.Contains(term));
+            }
+
+            var ordered = query.OrderByDescending(c => c.SoldUtc);
+
+            var total = await ordered.CountAsync();
+            var cars = await ordered.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            // Sellers who have since closed their account. Their sales stay on the page - the
+            // sale happened - but the card must not show their photos or invite contact.
+            var ownerIds = cars.Select(c => c.OwnerId).OfType<int>().Distinct().ToList();
+            ViewData["ClosedSellers"] = await _context.Users
+                .Where(u => ownerIds.Contains(u.Id) && u.AnonymizedUtc != null)
+                .Select(u => u.Id)
+                .ToListAsync();
 
             await LoadFavouritesAsync(cars.Select(c => c.Id));
             await LoadExtrasAsync(cars);
@@ -453,6 +489,8 @@ namespace WEBTechnologies_Final.Controllers
             ViewData["Page"] = page;
             ViewData["PageSize"] = pageSize;
             ViewData["Total"] = total;
+            ViewData["Search"] = search;
+            ViewData["WindowDays"] = SoldWindowDays;
             return View(cars);
         }
 

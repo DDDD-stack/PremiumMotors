@@ -43,7 +43,7 @@ namespace WEBTechnologies_Final.Controllers
         {
             if (!ModelState.IsValid) return View(car);
             car.ImagePaths = (await _photos.SaveAsync(photos)).Paths.ToList();
-            // Admin "house" listings publish immediately, no listing fee.
+            // Admin "house" listings publish immediately, like everyone else's.
             car.Status = ListingStatus.Active;
             car.PublishedUtc = DateTime.UtcNow;
             await _api.CreateCarAsync(car);

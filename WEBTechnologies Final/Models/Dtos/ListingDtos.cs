@@ -70,29 +70,14 @@ namespace WEBTechnologies_Final.Models.Dtos
     public class UpdateListingRequest : CreateListingRequest { }
 
     /// <summary>
-    /// What happens next after creating a listing. <see cref="Status"/> is one of:
-    ///   published        — free-listing mode or a free relist; the listing is already live
-    ///   payment_required — the client must open <see cref="CheckoutUrl"/> to pay the fee
+    /// What happens after creating a listing. Status is always "published": listing is free
+    /// and always will be - advertising is the only thing anyone pays for here - so there is
+    /// nothing to settle before a listing goes live.
     /// </summary>
     public record CreateListingResult(
         string Status,
         CarSummaryDto Listing,
-        int? PaymentId,
-        long? AmountCents,
-        string? Currency,
-        string? CheckoutUrl,
         string? Message);
-
-    public record ListingPaymentDto(
-        int PaymentId,
-        int? CarId,
-        long AmountCents,
-        string Currency,
-        string Status,
-        bool OfferConsumed,
-        int RelistCount,
-        DateTime CreatedUtc,
-        DateTime? PaidUtc);
 
     /// <summary>A listing as its own seller sees it, including the private offer counts.</summary>
     public record MyListingDto(
@@ -102,8 +87,7 @@ namespace WEBTechnologies_Final.Models.Dtos
         int PendingOffers,
         decimal? BestPendingOffer,
         string? SoldTo,
-        decimal? SoldPrice,
-        ListingPaymentDto? Payment);
+        decimal? SoldPrice);
 
     /// <summary>An offer the signed-in user placed on someone else's listing.</summary>
     public record MyOfferDto(

@@ -106,8 +106,7 @@ namespace WEBTechnologies_Final.Controllers.Api
                 r.PendingOffers,
                 r.BestPendingOffer,
                 r.Car.SoldTo,
-                r.Car.SoldPrice,
-                null)).ToList());
+                r.Car.SoldPrice)).ToList());
         }
 
         [HttpGet("offers")]

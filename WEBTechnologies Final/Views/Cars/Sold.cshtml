@@ -5,6 +5,9 @@
     var pageSize = (int)(ViewData["PageSize"] ?? 24);
     var total = (int)(ViewData["Total"] ?? 0);
     var pages = (int)Math.Ceiling(total / (double)Math.Max(pageSize, 1));
+    var search = ViewData["Search"] as string;
+    var windowDays = (int)(ViewData["WindowDays"] ?? 14);
+    var closedSellers = ViewData["ClosedSellers"] as List<int> ?? new();
 }
 
 <div class="pm-page-head">
@@ -22,27 +25,61 @@
 
 <partial name="_MarketplaceTabs" model="@("Sold")" />
 
+@* The page answers one question - what does a car like mine actually go for - and without
+   a search it only answers it when the right car happens to be on screen. *@
+<form asp-action="Sold" method="get" class="pm-sold-search mb-4">
+    <div class="input-group">
+        <input type="search" name="search" value="@search" class="form-control"
+               placeholder="@L["Make or model"]" aria-label="@L["Search sold cars"]" />
+        <button type="submit" class="btn btn-primary">@L["Search"]</button>
+        @if (!string.IsNullOrWhiteSpace(search))
+        {
+            <a asp-action="Sold" class="btn btn-outline-secondary">@L["Clear"]</a>
+        }
+    </div>
+</form>
+
 @if (Model.Count == 0)
 {
     <div class="pm-empty">
-        <h2 class="h5">@L["Nothing sold yet"]</h2>
-        <p class="pm-muted mb-0">
-            @L["Once cars start selling here they will be listed on this page, with what they actually went for."]
-        </p>
+        @if (!string.IsNullOrWhiteSpace(search))
+        {
+            <h2 class="h5">@L["No sold cars match that"]</h2>
+            <p class="pm-muted mb-3">
+                @L["This page only covers the last {0} days. Try a different make or model.", windowDays]
+            </p>
+            <a asp-action="Sold" class="btn btn-primary">@L["Show everything sold recently"]</a>
+        }
+        else
+        {
+            <h2 class="h5">@L["Nothing sold yet"]</h2>
+            <p class="pm-muted mb-0">
+                @L["Once cars start selling here they will be listed on this page, with what they actually went for."]
+            </p>
+        }
     </div>
 }
 else
 {
     <p class="pm-muted small mb-3">
-        @L["What cars actually sell for is usually more useful than what they are advertised at. These are completed sales, newest first."]
+        @L["What cars actually sell for is usually more useful than what they are advertised at. These are completed sales from the last {0} days, newest first.", windowDays]
     </p>
 
     <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-3 g-md-4 pm-stagger">
         @foreach (var car in Model)
         {
+            @* A seller who has closed their account keeps their completed sales on this page -
+               the sale happened, and the price is the reason anyone reads this - but their
+               photographs went with the account, so the card renders without one. *@
+            var sellerClosed = car.OwnerId is int owner && closedSellers.Contains(owner);
+
             <div class="col">
-                <div class="pm-sold-wrap">
+                <div class="pm-sold-wrap @(sellerClosed ? "is-closed" : null)">
                     <partial name="_CarCard" model="car" />
+                    @if (sellerClosed)
+                    {
+                        <div class="pm-sold-closed">@L["Dealership closed"]</div>
+                    }
                     @if (car.SoldPrice is decimal sold)
                     {
                         <div class="pm-sold-strip">
@@ -63,8 +100,9 @@ else
         <nav class="pm-pager" aria-label="@L["Pages"]">
             @for (var p = 1; p <= pages; p++)
             {
+                @* The search has to survive paging, or page two silently widens the results. *@
                 <a class="pm-page @(p == pageNo ? "is-current" : "")"
-                   asp-action="Sold" asp-route-page="@p">@p</a>
+                   asp-action="Sold" asp-route-search="@search" asp-route-page="@p">@p</a>
             }
         </nav>
     }
