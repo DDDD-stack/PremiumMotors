@@ -22,6 +22,7 @@ namespace WEBTechnologies_Final.Data
         public DbSet<Dealership> Dealerships => Set<Dealership>();
         public DbSet<SellerReview> SellerReviews => Set<SellerReview>();
         public DbSet<CarPriceChange> CarPriceChanges => Set<CarPriceChange>();
+        public DbSet<Promotion> Promotions => Set<Promotion>();
         public DbSet<ListingViewDaily> ListingViewDaily => Set<ListingViewDaily>();
         public DbSet<SessionCacheEntry> SessionCache => Set<SessionCacheEntry>();
 
@@ -165,6 +166,30 @@ namespace WEBTechnologies_Final.Data
                     .WithMany()
                     .HasForeignKey(v => v.CarId)
                     .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<Promotion>(e =>
+            {
+                // Unique because the reference is what a seller quotes and an admin looks up.
+                // Two receipts sharing a code is the one failure this table cannot recover
+                // from, so the database enforces it rather than the code that generates it.
+                e.HasIndex(p => p.Reference).IsUnique();
+
+                // The admin screen's two questions: what is running on this listing, and what
+                // has run recently across the whole site.
+                e.HasIndex(p => new { p.CarId, p.StartedUtc });
+                e.HasIndex(p => p.StartedUtc);
+
+                e.Property(p => p.PriceEur).HasPrecision(18, 2);
+
+                // Deleting a listing must NOT delete the receipts for it. Listings are hard
+                // deleted here, and a seller can still ask what they were charged after
+                // deleting the car - "the row is gone" is not an answer to that. The link is
+                // dropped and Promotion.CarTitle keeps the receipt readable.
+                e.HasOne(p => p.Car)
+                    .WithMany()
+                    .HasForeignKey(p => p.CarId)
+                    .OnDelete(DeleteBehavior.SetNull);
             });
 
             modelBuilder.Entity<CarPriceChange>(e =>

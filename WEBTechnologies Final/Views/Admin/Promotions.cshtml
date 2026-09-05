@@ -4,6 +4,7 @@
     var cars = Model.ToList();
     var live = cars.Count(c => c.IsPromoted);
     var frontPage = cars.Count(c => c.IsFrontPagePromoted);
+    var references = ViewData["References"] as Dictionary<int, string> ?? new();
 }
 
 <div class="pm-page-head">
@@ -14,6 +15,7 @@
             arrange the money off-site, then grant the placement here.
         </p>
     </div>
+    <a asp-action="Promotion" class="btn btn-outline-secondary">Find by reference</a>
 </div>
 
 <div class="row g-3 mb-4">
@@ -57,6 +59,7 @@ else
                 <tr>
                     <th scope="col">Car</th>
                     <th scope="col">Seller</th>
+                    <th scope="col">Reference</th>
                     <th scope="col">Placement</th>
                     <th scope="col">Runs until</th>
                     <th scope="col" class="text-end">Set placement</th>
@@ -70,7 +73,19 @@ else
                             <a asp-controller="Cars" asp-action="Details" asp-route-id="@car.Id">@car.Title</a>
                             <div class="small pm-muted">@car.Price.ToString("C")</div>
                         </td>
-                        <td data-label="Seller">@(car.OwnerUsername ?? "—")</td>
+                        @* The code the seller was given. Shown here so an admin can read it
+                           off the list and quote it back, without opening the receipt. *@
+                        <td data-label="Reference">
+                            @if (references.TryGetValue(car.Id, out var reference))
+                            {
+                                <a asp-action="Promotion" asp-route-reference="@reference"
+                                   class="font-monospace small">@reference</a>
+                            }
+                            else
+                            {
+                                <span class="pm-muted small">—</span>
+                            }
+                        </td>
                         <td data-label="Placement">
                             @if (car.IsPromoted)
                             {

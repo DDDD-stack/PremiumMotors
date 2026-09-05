@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using WEBTechnologies_Final.Data;
 using WEBTechnologies_Final.Models;
 using WEBTechnologies_Final.Services;
+using WEBTechnologies_Final.Services.Marketplace;
 using WEBTechnologies_Final.Services.Storage;
 
 namespace WEBTechnologies_Final.Controllers
@@ -13,12 +14,15 @@ namespace WEBTechnologies_Final.Controllers
         private readonly ApiClient _api;
         private readonly IPhotoStorage _photos;
         private readonly AppDbContext _db;
+        private readonly PromotionService _promotions;
 
-        public AdminController(ApiClient api, IPhotoStorage photos, AppDbContext db)
+        public AdminController(
+            ApiClient api, IPhotoStorage photos, AppDbContext db, PromotionService promotions)
         {
             _api = api;
             _photos = photos;
             _db = db;
+            _promotions = promotions;
         }
 
         public async Task<IActionResult> Index()
@@ -135,7 +139,42 @@ namespace WEBTechnologies_Final.Controllers
                 .ThenByDescending(c => c.Id)
                 .ToListAsync();
 
+            // The reference for whatever is running on each listing, so the admin can read a
+            // code off this table without opening a receipt. One query for the page rather
+            // than one per row.
+            var now = DateTime.UtcNow;
+            var carIds = cars.Select(c => c.Id).ToList();
+            ViewData["References"] = await _db.Promotions
+                .AsNoTracking()
+                .Where(p => p.CarId != null && carIds.Contains(p.CarId.Value)
+                            && p.EndedEarlyUtc == null && p.EndsUtc > now)
+                .ToDictionaryAsync(p => p.CarId!.Value, p => p.Reference);
+
             return View(cars);
+        }
+
+        /// <summary>
+        /// Looks a placement up by the reference from the seller's receipt.
+        ///
+        /// This is the whole reason references exist: a seller writes in about "my promotion"
+        /// and the only thing they can reliably quote is that code. Searching by car title
+        /// fails as soon as they have two similar listings or have since renamed one.
+        /// </summary>
+        public async Task<IActionResult> Promotion(string? reference)
+        {
+            ViewData["Reference"] = reference;
+
+            if (string.IsNullOrWhiteSpace(reference))
+                return View((Promotion?)null);
+
+            var promotion = await _promotions.FindByReferenceAsync(reference);
+
+            if (promotion is null)
+                ViewData["NotFound"] = true;
+            else
+                ViewData["History"] = await _promotions.HistoryForCarAsync(promotion.CarId ?? 0);
+
+            return View(promotion);
         }
 
         /// <summary>
@@ -146,24 +185,21 @@ namespace WEBTechnologies_Final.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Promote(int id, PromotionTier tier, int days)
         {
-            var car = await _db.Cars.FirstOrDefaultAsync(c => c.Id == id);
-            if (car is null) return NotFound();
-
             if (tier == PromotionTier.None)
                 return RedirectToAction(nameof(EndPromotion), new { id });
 
-            // A year is far longer than anything anyone should be sold in one go, and it is
-            // here only to stop a typo in the days box parking a car on the front page
-            // indefinitely.
-            days = Math.Clamp(days, 1, 365);
+            var promotion = await _promotions.GrantAsync(
+                id, tier, days, HttpContext.Session.GetInt32(SessionKeys.UserId));
 
-            car.PromotionTier = tier;
-            car.PromotedUntilUtc = DateTime.UtcNow.AddDays(days);
-            await _db.SaveChangesAsync();
+            if (promotion is null) return NotFound();
 
+            // The reference is in the message because this is the moment somebody has to pass
+            // it on: there is no checkout and no automatic receipt yet, so an admin who cannot
+            // see the code here has no way to give it to the seller.
             TempData["Success"] =
-                $"\"{car.Title}\" is now {tier} placement until " +
-                $"{AppTime.ToDisplay(car.PromotedUntilUtc.Value):dd MMM yyyy}.";
+                $"\"{promotion.CarTitle}\" is now {tier} placement until " +
+                $"{AppTime.ToDisplay(promotion.EndsUtc):dd MMM yyyy}. " +
+                $"Reference {promotion.Reference} — send this to the seller.";
 
             return RedirectToAction(nameof(Promotions));
         }
@@ -176,14 +212,10 @@ namespace WEBTechnologies_Final.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EndPromotion(int id)
         {
-            var car = await _db.Cars.FirstOrDefaultAsync(c => c.Id == id);
-            if (car is null) return NotFound();
+            var ended = await _promotions.EndAsync(id, "Ended by an administrator");
+            if (!ended) return NotFound();
 
-            car.PromotionTier = PromotionTier.None;
-            car.PromotedUntilUtc = null;
-            await _db.SaveChangesAsync();
-
-            TempData["Success"] = $"Placement removed from \"{car.Title}\".";
+            TempData["Success"] = "Placement ended. The receipt is kept and records the date.";
             return RedirectToAction(nameof(Promotions));
         }
     }

@@ -59,7 +59,7 @@ namespace WEBTechnologies_Final.Controllers
         public async Task<IActionResult> Index(
             string? search, CarType? type, string? make, string? model, int? year,
             decimal? minPrice, decimal? maxPrice, int? maxMileage,
-            FuelType? fuel, TransmissionType? gearbox,
+            FuelType? fuel, TransmissionType? gearbox, bool includeSold = false,
             string sortBy = "newest", int page = 1, int pageSize = 24)
         {
             // Drafts and archived listings exist only for their seller. Sold cars are kept out
@@ -72,8 +72,14 @@ namespace WEBTechnologies_Final.Controllers
             // This hides sold cars from browsing only. Their listing page still resolves, so
             // saved links, favourites and a seller's own pages keep working.
             var query = _context.Cars.Where(c => c.Status != ListingStatus.Draft
-                                                 && c.Status != ListingStatus.Archived
-                                                 && c.Status != ListingStatus.Sold);
+                                                 && c.Status != ListingStatus.Archived);
+
+            // Off by default, because the default question a buyer is asking is "what can I
+            // buy". Available on demand, because the answer to "what did one like this go
+            // for" is worth more than any asking price and this is the only place a buyer
+            // can get it. /Cars/Sold is the same data with the sale prices attached.
+            if (!includeSold)
+                query = query.Where(c => c.Status != ListingStatus.Sold);
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -135,8 +141,9 @@ namespace WEBTechnologies_Final.Controllers
             // Same visibility rule as the grid, so the filter dropdowns cannot offer a make
             // whose only cars are sold and then return "no cars match your search".
             var listed = _context.Cars.Where(c => c.Status != ListingStatus.Draft
-                                                  && c.Status != ListingStatus.Archived
-                                                  && c.Status != ListingStatus.Sold);
+                                                  && c.Status != ListingStatus.Archived);
+            if (!includeSold)
+                listed = listed.Where(c => c.Status != ListingStatus.Sold);
             var makes = await listed.Select(c => c.Make).Distinct().OrderBy(m => m).ToListAsync();
             var models = await listed.Select(c => c.Model).Distinct().OrderBy(m => m).ToListAsync();
             var years = await listed.Select(c => c.Year).Distinct().OrderByDescending(y => y).ToListAsync();
@@ -155,7 +162,6 @@ namespace WEBTechnologies_Final.Controllers
             var vm = new CarListViewModel
             {
                 Cars = cars,
-                PromotedOnPage = promoted.Count,
                 FreeCount = freeCount,
                 Search = search,
                 Type = type,
@@ -167,6 +173,7 @@ namespace WEBTechnologies_Final.Controllers
                 MaxMileage = maxMileage,
                 Fuel = fuel,
                 Gearbox = gearbox,
+                IncludeSold = includeSold,
                 SortBy = sortBy,
                 Page = page,
                 PageSize = pageSize,

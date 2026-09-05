@@ -290,6 +290,7 @@ builder.Services.AddScoped<ReviewService>();
 builder.Services.AddScoped<SellerAnalyticsService>();
 builder.Services.AddScoped<ListingViewService>();
 builder.Services.AddScoped<ListingExtrasService>();
+builder.Services.AddScoped<PromotionService>();
 
 builder.Services.Configure<PayPalOptions>(builder.Configuration.GetSection("PayPal"));
 builder.Services.Configure<ListingOptions>(builder.Configuration.GetSection("Listing"));

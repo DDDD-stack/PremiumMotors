@@ -1,0 +1,153 @@
+@model Promotion
+@{
+    ViewData["Title"] = "Find a promotion";
+    var typed = ViewData["Reference"] as string;
+    var notFound = ViewData["NotFound"] is true;
+    var history = ViewData["History"] as List<Promotion> ?? new();
+    var now = DateTime.UtcNow;
+}
+
+<div class="pm-page-head">
+    <div>
+        <h1>Find a promotion</h1>
+        <p class="pm-muted mb-0">
+            Paste the reference from the seller's receipt. Case, spaces and dashes do not
+            matter, and the PM prefix is optional.
+        </p>
+    </div>
+    <a asp-action="Promotions" class="btn btn-outline-secondary">All placements</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <form asp-action="Promotion" method="get" class="card">
+            <div class="card-body">
+                <label class="form-label" for="reference">Reference</label>
+                <div class="input-group">
+                    <input type="search" id="reference" name="reference" value="@typed"
+                           class="form-control" placeholder="PM-XXXX-XXXX" autocomplete="off"
+                           spellcheck="false" />
+                    <button type="submit" class="btn btn-primary">Look up</button>
+                </div>
+                @if (notFound)
+                {
+                    <div class="small text-danger mt-2">
+                        No placement with that reference. Check for a mistyped character —
+                        the code never contains O, 0, I, 1 or U.
+                    </div>
+                }
+            </div>
+        </form>
+    </div>
+</div>
+
+@if (Model is not null)
+{
+    var live = Model.IsLive(now);
+
+    <div class="card mt-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start gap-2 flex-wrap">
+                <div>
+                    <h2 class="h5 mb-1">@Model.Reference</h2>
+                    <div class="pm-muted small">@Model.CarTitle</div>
+                </div>
+                @if (live)
+                {
+                    <span class="badge bg-success">Running now</span>
+                }
+                else if (Model.EndedEarlyUtc is not null)
+                {
+                    <span class="badge bg-secondary">Ended early</span>
+                }
+                else
+                {
+                    <span class="badge bg-secondary">Finished</span>
+                }
+            </div>
+
+            <dl class="row small mt-3 mb-0 pm-break">
+                <dt class="col-sm-4">Placement</dt>
+                <dd class="col-sm-8">
+                    @(Model.Tier == PromotionTier.FrontPage ? "Front page" : "Promoted in the marketplace")
+                </dd>
+
+                <dt class="col-sm-4">Started</dt>
+                <dd class="col-sm-8">@AppTime.ToDisplay(Model.StartedUtc).ToString("dd MMM yyyy, HH:mm")</dd>
+
+                <dt class="col-sm-4">Sold until</dt>
+                <dd class="col-sm-8">@AppTime.ToDisplay(Model.EndsUtc).ToString("dd MMM yyyy, HH:mm")</dd>
+
+                @if (Model.EndedEarlyUtc is DateTime cut)
+                {
+                    @* The gap between what was sold and what ran is the first thing anybody
+                       arguing about a refund needs, so it is stated rather than implied. *@
+                    <dt class="col-sm-4">Stopped early</dt>
+                    <dd class="col-sm-8">
+                        @AppTime.ToDisplay(cut).ToString("dd MMM yyyy, HH:mm")
+                        @if (!string.IsNullOrWhiteSpace(Model.EndedReason))
+                        {
+                            <span class="pm-muted">— @Model.EndedReason</span>
+                        }
+                    </dd>
+                }
+
+                <dt class="col-sm-4">Paid</dt>
+                <dd class="col-sm-8">
+                    @if (Model.PriceEur is decimal paid)
+                    {
+                        @paid.ToString("C")
+                    }
+                    else
+                    {
+                        <span class="pm-muted">Not recorded — arranged off-site</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-4">Listing</dt>
+                <dd class="col-sm-8">
+                    @if (Model.CarId is int carId && Model.Car is not null)
+                    {
+                        <a asp-controller="Cars" asp-action="Details" asp-route-id="@carId">Open the listing</a>
+                    }
+                    else
+                    {
+                        <span class="pm-muted">Deleted since — the title above is the copy kept on the receipt</span>
+                    }
+                </dd>
+            </dl>
+        </div>
+    </div>
+
+    @if (history.Count > 1)
+    {
+        <h2 class="h6 mt-4">Everything sold on this listing</h2>
+        <div class="table-responsive">
+            <table class="table table-sm align-middle pm-table-cards">
+                <thead>
+                    <tr>
+                        <th scope="col">Reference</th>
+                        <th scope="col">Placement</th>
+                        <th scope="col">Started</th>
+                        <th scope="col">Ended</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var p in history)
+                    {
+                        <tr class="@(p.Reference == Model.Reference ? "table-active" : null)">
+                            <td data-label="Reference">
+                                <a asp-action="Promotion" asp-route-reference="@p.Reference">@p.Reference</a>
+                            </td>
+                            <td data-label="Placement">
+                                @(p.Tier == PromotionTier.FrontPage ? "Front page" : "Promoted")
+                            </td>
+                            <td data-label="Started">@AppTime.ToDisplay(p.StartedUtc).ToString("dd MMM yyyy")</td>
+                            <td data-label="Ended">@AppTime.ToDisplay(p.EffectiveEnd).ToString("dd MMM yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

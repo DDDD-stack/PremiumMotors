@@ -1,0 +1,19 @@
+@model string
+@*
+    The three ways of looking at the same stock. They live together because they answer
+    three different questions - what can I buy, who is ready to deal, and what did these
+    actually go for - and a buyer who only ever sees the first never learns the other two
+    exist. Sold cars leaving the main grid is what made this worth building: "Recently
+    sold" is now the only place that data surfaces from.
+*@
+<nav class="pm-view-tabs" aria-label="Marketplace views">
+    <a class="pm-view-tab @(Model == "Index" ? "is-current" : null)"
+       asp-controller="Cars" asp-action="Index"
+       aria-current="@(Model == "Index" ? "page" : null)">All listings</a>
+    <a class="pm-view-tab @(Model == "Featured" ? "is-current" : null)"
+       asp-controller="Cars" asp-action="Featured"
+       aria-current="@(Model == "Featured" ? "page" : null)">Ready to deal</a>
+    <a class="pm-view-tab @(Model == "Sold" ? "is-current" : null)"
+       asp-controller="Cars" asp-action="Sold"
+       aria-current="@(Model == "Sold" ? "page" : null)">Recently sold</a>
+</nav>

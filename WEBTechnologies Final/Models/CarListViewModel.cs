@@ -7,13 +7,6 @@ namespace WEBTechnologies_Final.Models
         public IReadOnlyList<Car> Cars { get; set; } = new List<Car>();
 
         /// <summary>
-        /// How many of the cars on this page are paid placement. Used only to decide whether
-        /// the "some of these are adverts" note is worth showing; the promoted listings
-        /// themselves are mixed into <see cref="Cars"/> rather than kept apart.
-        /// </summary>
-        public int PromotedOnPage { get; set; }
-
-        /// <summary>
         /// Pages are computed from the FREE listings alone, because promoted ones are pinned
         /// to page one rather than paginated. Counting them here as well would produce a
         /// trailing empty page.
@@ -33,6 +26,13 @@ namespace WEBTechnologies_Final.Models
         public int? MaxMileage { get; set; }
         public FuelType? Fuel { get; set; }
         public TransmissionType? Gearbox { get; set; }
+
+        /// <summary>
+        /// Show cars that have already sold. Off by default: the default question is "what
+        /// can I buy", and a sold car cannot answer it. Counted as an active filter when on,
+        /// so "Clear" puts the page back to what a first-time visitor sees.
+        /// </summary>
+        public bool IncludeSold { get; set; }
 
         public string SortBy { get; set; } = "newest";
 
@@ -63,7 +63,8 @@ namespace WEBTechnologies_Final.Models
             MaxPrice.HasValue ||
             MaxMileage.HasValue ||
             Fuel.HasValue ||
-            Gearbox.HasValue;
+            Gearbox.HasValue ||
+            IncludeSold;
 
         public int ActiveFilterCount =>
             (string.IsNullOrWhiteSpace(Search) ? 0 : 1) +
@@ -74,6 +75,7 @@ namespace WEBTechnologies_Final.Models
             (MinPrice.HasValue || MaxPrice.HasValue ? 1 : 0) +
             (MaxMileage.HasValue ? 1 : 0) +
             (Fuel.HasValue ? 1 : 0) +
-            (Gearbox.HasValue ? 1 : 0);
+            (Gearbox.HasValue ? 1 : 0) +
+            (IncludeSold ? 1 : 0);
     }
 }

@@ -20,6 +20,8 @@
     </div>
 </div>
 
+<partial name="_MarketplaceTabs" model="@("Index")" />
+
 @* Small screens get a toggle that expands the filters inline, above the results.
    Leaving the whole panel permanently open pushed every listing off the first
    screen; a slide-in drawer fixed that but made the page feel like an app. *@
@@ -116,6 +118,25 @@
                                 <label class="form-label" for="sortBy">Sort by</label>
                                 <select id="sortBy" name="sortBy" class="form-select" asp-items="Model.SortOptions"></select>
                             </div>
+
+                            @* Off by default. A sold car cannot be bought, so it does not
+                               belong in the default answer to "what is for sale" - but what
+                               a car actually went for is the most useful number on this site
+                               and there is nowhere else to get it. *@
+                            <div class="col-12 mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="true"
+                                           id="includeSold" name="includeSold"
+                                           @(Model.IncludeSold ? "checked" : "") />
+                                    <label class="form-check-label" for="includeSold">
+                                        Include cars already sold
+                                    </label>
+                                </div>
+                                <div class="form-text">
+                                    Useful for judging a price. See
+                                    <a asp-action="Sold">recently sold</a> for what they went for.
+                                </div>
+                            </div>
                         </div>
 
                         <div class="d-grid gap-2 mt-2">
@@ -131,24 +152,6 @@
     </div>
 
     <div class="col-lg-9">
-        @* Adverts are mixed into the results rather than fenced off above them, so this note
-           replaces the old block heading as the disclosure. Every promoted card still carries
-           its own "Promoted" badge - this just says it once in words, up front. *@
-        @if (Model.PromotedOnPage > 0)
-        {
-            @* Say exactly what the money buys. "Position only, never inclusion" is the honest
-               and checkable version: a promoted car still has to match the filters to appear
-               at all, so paying can move a car up but can never put a diesel estate in front
-               of somebody who asked for petrol hatchbacks. *@
-            <p class="pm-promoted-note mb-3">
-                Some listings on this page are marked
-                <span class="pm-promoted-note-badge">Promoted</span> — those sellers paid for a
-                higher position on the first page. They still have to match your filters to
-                show up at all, and paying never changes a car's price, mileage or condition.
-                <a asp-action="Featured">See them on their own page</a>.
-            </p>
-        }
-
         @if (Model.Cars.Count == 0)
         {
             <div class="pm-empty">
@@ -200,6 +203,7 @@
                                asp-route-fuel="@Model.Fuel"
 
                                asp-route-gearbox="@Model.Gearbox"
+                               asp-route-includeSold="@Model.IncludeSold"
                                asp-route-sortBy="@Model.SortBy"
                                asp-route-page="@(Model.Page - 1)">‹ Prev</a>
                         </li>
@@ -224,6 +228,7 @@
                                asp-route-fuel="@Model.Fuel"
 
                                asp-route-gearbox="@Model.Gearbox"
+                               asp-route-includeSold="@Model.IncludeSold"
                                asp-route-sortBy="@Model.SortBy"
                                asp-route-page="@(Model.Page + 1)">Next ›</a>
                         </li>
