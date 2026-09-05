@@ -37,17 +37,24 @@ namespace WEBTechnologies_Final.Controllers
         private const int MaxPromotedPerPage = 12;
 
         /// <summary>
-        /// Every Nth slot goes to a paid listing. One in two is the densest this should ever
-        /// be: it hands promotion a large, obvious advantage while guaranteeing that a free
-        /// listing sits between every pair of adverts.
+        /// The mix on page one: two paid listings, then one free, repeating until the paid
+        /// ones run out - after which the rest of the page is free listings in their ordinary
+        /// order. Adverts are therefore two thirds of the top of the page and none of the
+        /// rest of it.
         ///
-        /// That guarantee is the point. Segregating adverts into their own block at the top
-        /// leaves free sellers looking like the consolation prize, and a free seller who
-        /// concludes the site is pay-to-be-seen simply lists elsewhere - taking their stock,
-        /// and the buyers who came for that stock, with them. Mixing keeps the grid worth
-        /// scrolling, which is what makes the adverts in it worth buying.
+        /// Mixing rather than fencing adverts off in a block above the results is the part
+        /// that matters. A separate advert block leaves free sellers looking like the
+        /// consolation prize, and a free seller who concludes the site is pay-to-be-seen
+        /// simply lists elsewhere - taking their stock, and the buyers who came for that
+        /// stock, with them.
+        ///
+        /// These two numbers are the site's most sensitive commercial dial. Raising the paid
+        /// share raises what promotion is worth right up until free sellers stop bothering,
+        /// at which point there is nothing left to advertise against. Change them here; the
+        /// interleaving itself is in CarQueries.MixPromoted and is covered by tests.
         /// </summary>
-        private const int PromotedEveryNth = 2;
+        private const int PromotedPerBlock = 2;
+        private const int FreePerBlock = 1;
 
         public async Task<IActionResult> Index(
             string? search, CarType? type, string? make, string? model, int? year,
@@ -55,11 +62,18 @@ namespace WEBTechnologies_Final.Controllers
             FuelType? fuel, TransmissionType? gearbox,
             string sortBy = "newest", int page = 1, int pageSize = 24)
         {
-            // Drafts and archived listings exist only for their seller. Reserved and sold cars
-            // stay browsable — a marketplace that hides sold stock looks empty and tells a
-            // buyer nothing about what actually moves.
-            var query = _context.Cars
-                .Where(c => c.Status != ListingStatus.Draft && c.Status != ListingStatus.Archived);
+            // Drafts and archived listings exist only for their seller. Sold cars are kept out
+            // of the browse grid too: nobody is shopping for a car they cannot buy, so a sold
+            // card is clutter between the ones a buyer can actually act on.
+            //
+            // Reserved stays. A reservation falls through often enough that hiding it would
+            // lose real sales, and the card says so loudly.
+            //
+            // This hides sold cars from browsing only. Their listing page still resolves, so
+            // saved links, favourites and a seller's own pages keep working.
+            var query = _context.Cars.Where(c => c.Status != ListingStatus.Draft
+                                                 && c.Status != ListingStatus.Archived
+                                                 && c.Status != ListingStatus.Sold);
 
             if (!string.IsNullOrEmpty(search))
             {
@@ -113,13 +127,16 @@ namespace WEBTechnologies_Final.Controllers
             var freeCount = await freeQuery.CountAsync();
             var free = await freeQuery.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
-            var cars = CarQueries.MixPromoted(free, promoted, PromotedEveryNth);
+            var cars = CarQueries.MixPromoted(free, promoted, PromotedPerBlock, FreePerBlock);
             var totalCount = freeCount + await filtered
                 .WherePromoted(PromotionTier.Promoted, DateTime.UtcNow)
                 .CountAsync();
 
-            var listed = _context.Cars
-                .Where(c => c.Status != ListingStatus.Draft && c.Status != ListingStatus.Archived);
+            // Same visibility rule as the grid, so the filter dropdowns cannot offer a make
+            // whose only cars are sold and then return "no cars match your search".
+            var listed = _context.Cars.Where(c => c.Status != ListingStatus.Draft
+                                                  && c.Status != ListingStatus.Archived
+                                                  && c.Status != ListingStatus.Sold);
             var makes = await listed.Select(c => c.Make).Distinct().OrderBy(m => m).ToListAsync();
             var models = await listed.Select(c => c.Model).Distinct().OrderBy(m => m).ToListAsync();
             var years = await listed.Select(c => c.Year).Distinct().OrderByDescending(y => y).ToListAsync();
