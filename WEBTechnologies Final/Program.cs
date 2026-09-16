@@ -121,8 +121,12 @@ builder.Services.AddSingleton<
     LocalizedValidationAdapterProvider>();
 
 builder.Services.AddControllersWithViews(options =>
-        // Signs out every browser of an account that has been erased or disabled.
-        options.Filters.Add<ActiveAccountFilter>())
+    {
+        // Order matters: an erased or disabled account is signed out before anything asks it
+        // to accept terms.
+        options.Filters.Add<ActiveAccountFilter>();
+        options.Filters.Add<TermsAcceptanceFilter>();
+    })
     .AddViewLocalization()
     // Validation messages and [Display] labels go to the SAME shared file as everything
     // else. The default sends them to a per-model resource file, which would scatter

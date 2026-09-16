@@ -187,6 +187,9 @@
   <data name="Accept an offer before marking the car sold." xml:space="preserve">
     <value>Accetta un'offerta prima di segnare l'auto come venduta.</value>
   </data>
+  <data name="Accept and continue" xml:space="preserve">
+    <value>Accetta e continua</value>
+  </data>
   <data name="Accept one." xml:space="preserve">
     <value>Accettane una.</value>
   </data>
@@ -198,6 +201,9 @@
   </data>
   <data name="Accepted" xml:space="preserve">
     <value>Accettata</value>
+  </data>
+  <data name="Accepting an offer reserves the car and shares both sides' contact details. It does not by itself make a binding sale." xml:space="preserve">
+    <value>Accettare un'offerta riserva l'auto e condivide i recapiti di entrambe le parti. Da solo non costituisce una vendita vincolante.</value>
   </data>
   <data name="Accepting offers" xml:space="preserve">
     <value>Accetta offerte</value>
@@ -757,6 +763,9 @@
   <data name="Download my data" xml:space="preserve">
     <value>Scarica i miei dati</value>
   </data>
+  <data name="Download or erase my data" xml:space="preserve">
+    <value>Scarica o cancella i miei dati</value>
+  </data>
   <data name="Download your data" xml:space="preserve">
     <value>Scarica i tuoi dati</value>
   </data>
@@ -867,6 +876,9 @@
   </data>
   <data name="Everything you have now" xml:space="preserve">
     <value>Tutto quello che hai adesso</value>
+  </data>
+  <data name="Exactly what is public, what we store, where it is stored and for how long." xml:space="preserve">
+    <value>Esattamente cosa è pubblico, cosa conserviamo, dove e per quanto tempo.</value>
   </data>
   <data name="Exterior colour" xml:space="preserve">
     <value>Colore esterno</value>
@@ -1041,6 +1053,9 @@
   </data>
   <data name="If you accept: the agreed price is published on Recently sold for 14 days, and you and the buyer each get the other's email and phone number." xml:space="preserve">
     <value>Se accetti: il prezzo concordato viene pubblicato su Vendute di recente per 14 giorni, e tu e l'acquirente ricevete ciascuno l'email e il numero di telefono dell'altro.</value>
+  </data>
+  <data name="If you do not want to accept, you can sign out. You can also download your data or erase your account without accepting." xml:space="preserve">
+    <value>Se non vuoi accettare, puoi uscire. Puoi anche scaricare i tuoi dati o cancellare il tuo account senza accettare.</value>
   </data>
   <data name="In stock" xml:space="preserve">
     <value>Disponibili</value>
@@ -1636,6 +1651,9 @@
   <data name="Placements running" xml:space="preserve">
     <value>Spazi attivi</value>
   </data>
+  <data name="Please read and accept them before carrying on. The current version is {0}." xml:space="preserve">
+    <value>Leggili e accettali prima di continuare. La versione attuale è la {0}.</value>
+  </data>
   <data name="Plug-in hybrid" xml:space="preserve">
     <value>Ibrido plug-in</value>
   </data>
@@ -1771,6 +1789,12 @@
   <data name="Read the full explanation" xml:space="preserve">
     <value>Leggi la spiegazione completa</value>
   </data>
+  <data name="Read the Privacy Policy" xml:space="preserve">
+    <value>Leggi l'Informativa sulla privacy</value>
+  </data>
+  <data name="Read the Terms of Service" xml:space="preserve">
+    <value>Leggi i Termini di servizio</value>
+  </data>
   <data name="Read your offers." xml:space="preserve">
     <value>Leggi le tue offerte.</value>
   </data>
@@ -1905,6 +1929,9 @@
   </data>
   <data name="Runs until" xml:space="preserve">
     <value>Attivo fino al</value>
+  </data>
+  <data name="Sign out" xml:space="preserve">
+    <value>Esci</value>
   </data>
   <data name="SUV" xml:space="preserve">
     <value>SUV</value>
@@ -2230,6 +2257,9 @@
   <data name="The" xml:space="preserve">
     <value>La pagina</value>
   </data>
+  <data name="The agreed price of a completed sale is shown publicly for 14 days." xml:space="preserve">
+    <value>Il prezzo concordato di una vendita conclusa viene mostrato pubblicamente per 14 giorni.</value>
+  </data>
   <data name="The asking price is where the conversation starts." xml:space="preserve">
     <value>Il prezzo richiesto è dove comincia la trattativa.</value>
   </data>
@@ -2268,6 +2298,9 @@
   </data>
   <data name="The latest cars listed. Click any of them to see the whole listing." xml:space="preserve">
     <value>Le ultime auto pubblicate. Clicca su una qualsiasi per vedere l'annuncio completo.</value>
+  </data>
+  <data name="The main points" xml:space="preserve">
+    <value>I punti principali</value>
   </data>
   <data name="The one thing you can pay us for is" xml:space="preserve">
     <value>L'unica cosa per cui puoi pagarci è</value>
@@ -2434,6 +2467,9 @@
   <data name="Tick ✕ on any photo to remove it when you save. New uploads are added to the end." xml:space="preserve">
     <value>Spunta ✕ su una foto per rimuoverla al salvataggio. I nuovi caricamenti vengono aggiunti in fondo.</value>
   </data>
+  <data name="Tick the box to accept the Terms and the Privacy Policy, or sign out." xml:space="preserve">
+    <value>Spunta la casella per accettare i Termini e l'Informativa sulla privacy, oppure esci.</value>
+  </data>
   <data name="Tick the box to confirm you understand what erasing your account does." xml:space="preserve">
     <value>Spunta la casella per confermare di aver capito cosa comporta la cancellazione dell'account.</value>
   </data>
@@ -2490,6 +2526,9 @@
   </data>
   <data name="Unread messages" xml:space="preserve">
     <value>Messaggi non letti</value>
+  </data>
+  <data name="Updated Terms and Privacy Policy" xml:space="preserve">
+    <value>Termini e Informativa sulla privacy aggiornati</value>
   </data>
   <data name="Used" xml:space="preserve">
     <value>Usata</value>
@@ -2565,6 +2604,9 @@
   </data>
   <data name="We ask for a registration number so that a business account is tied to a real registered business rather than to an address somebody made up this morning. We record it with your account and nothing else: we do not check it against any register, and no listing on this site carries a verified badge." xml:space="preserve">
     <value>Chiediamo un numero di registrazione perché un account aziendale sia legato a un'impresa realmente registrata e non a un indirizzo inventato stamattina. Lo registriamo insieme al tuo account e nulla più: non lo verifichiamo presso alcun registro, e nessun annuncio su questo sito porta un contrassegno di verifica.</value>
+  </data>
+  <data name="We have updated our Terms and Privacy Policy" xml:space="preserve">
+    <value>Abbiamo aggiornato i Termini e l'Informativa sulla privacy</value>
   </data>
   <data name="We hit an unexpected error while handling your request. Nothing you entered was lost - try again, or head back to the listings." xml:space="preserve">
     <value>Si è verificato un errore imprevisto durante la tua richiesta. Nulla di quanto hai inserito è andato perso: riprova, oppure torna agli annunci.</value>
@@ -2644,6 +2686,9 @@
   <data name="Where you trade" xml:space="preserve">
     <value>Dove operi</value>
   </data>
+  <data name="Who runs PremiumMotors, and one address for every kind of request." xml:space="preserve">
+    <value>Chi gestisce PremiumMotors, e un unico indirizzo per ogni tipo di richiesta.</value>
+  </data>
   <data name="Who we contact" xml:space="preserve">
     <value>Chi contattiamo</value>
   </data>
@@ -2698,6 +2743,9 @@
   <data name="You can download everything we hold about you, or ask for your account to be erased. Erasure anonymizes your listings and offers rather than deleting them, because a completed sale is a record the other party has an interest in." xml:space="preserve">
     <value>Puoi scaricare tutto ciò che conserviamo su di te, o chiedere la cancellazione del tuo account. La cancellazione rende anonimi i tuoi annunci e le tue offerte invece di eliminarli, perché una vendita conclusa è un documento su cui l'altra parte ha un interesse.</value>
   </data>
+  <data name="You can download your data and erase your account yourself, from the Security page." xml:space="preserve">
+    <value>Puoi scaricare i tuoi dati e cancellare il tuo account da solo, dalla pagina Sicurezza.</value>
+  </data>
   <data name="You can only review a seller you actually bought a car from." xml:space="preserve">
     <value>Puoi recensire solo un venditore da cui hai davvero comprato un'auto.</value>
   </data>
@@ -2731,6 +2779,9 @@
   <data name="You land on that page to add a logo, banner and opening hours." xml:space="preserve">
     <value>Vieni portato su quella pagina per aggiungere logotipo, banner e orari.</value>
   </data>
+  <data name="You last accepted version {0}." xml:space="preserve">
+    <value>L'ultima versione che hai accettato è la {0}.</value>
+  </data>
   <data name="You must accept the Terms and Privacy Policy to create an account." xml:space="preserve">
     <value>Devi accettare i Termini e l'Informativa sulla privacy per creare un account.</value>
   </data>
@@ -2740,8 +2791,14 @@
   <data name="You must accept the seller terms to continue." xml:space="preserve">
     <value>Devi accettare le condizioni per i venditori per continuare.</value>
   </data>
+  <data name="You must be 18 or over." xml:space="preserve">
+    <value>Devi avere almeno 18 anni.</value>
+  </data>
   <data name="Your account has been erased. Thank you for using PremiumMotors." xml:space="preserve">
     <value>Il tuo account è stato cancellato. Grazie per aver usato PremiumMotors.</value>
+  </data>
+  <data name="Your account was created before we recorded which version people accepted." xml:space="preserve">
+    <value>Il tuo account è stato creato prima che registrassimo quale versione veniva accettata.</value>
   </data>
   <data name="Your name, email address and phone numbers are removed, and you are signed out everywhere." xml:space="preserve">
     <value>Nome, indirizzo email e numeri di telefono vengono rimossi, e vieni disconnesso ovunque.</value>

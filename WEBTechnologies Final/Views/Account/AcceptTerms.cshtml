@@ -1,0 +1,72 @@
+@{
+    ViewData["Title"] = L["Updated Terms and Privacy Policy"].Value;
+    var returnUrl = ViewData["ReturnUrl"] as string;
+    var previous = ViewData["PreviousVersion"] as string;
+    var termsUrl = Url.Action("Terms", "Home") ?? "/Home/Terms";
+    var privacyUrl = Url.Action("Privacy", "Home") ?? "/Home/Privacy";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-7">
+        <div class="card mt-2 mt-md-4">
+            <div class="card-body p-4">
+                <h1 class="h4 mb-2">@L["We have updated our Terms and Privacy Policy"]</h1>
+                <p class="pm-muted">
+                    @L["Please read and accept them before carrying on. The current version is {0}.", LegalDocuments.Version]
+                    @if (string.IsNullOrEmpty(previous))
+                    {
+                        @L["Your account was created before we recorded which version people accepted."]
+                    }
+                    else
+                    {
+                        @L["You last accepted version {0}.", previous]
+                    }
+                </p>
+
+                @* A summary is not a substitute for the documents, and it says so by linking to
+                   them first. It is here because nobody reads two long pages to find out what
+                   changed, and the changes that matter most should not depend on that. *@
+                <h2 class="h6 mt-3">@L["The main points"]</h2>
+                <ul>
+                    <li>@L["Who runs PremiumMotors, and one address for every kind of request."]</li>
+                    <li>@L["You must be 18 or over."]</li>
+                    <li>@L["Accepting an offer reserves the car and shares both sides' contact details. It does not by itself make a binding sale."]</li>
+                    <li>@L["The agreed price of a completed sale is shown publicly for 14 days."]</li>
+                    <li>@L["Exactly what is public, what we store, where it is stored and for how long."]</li>
+                    <li>@L["You can download your data and erase your account yourself, from the Security page."]</li>
+                </ul>
+
+                <p class="mb-3">
+                    <a href="@termsUrl" target="_blank" rel="noopener">@L["Read the Terms of Service"]</a>
+                    ·
+                    <a href="@privacyUrl" target="_blank" rel="noopener">@L["Read the Privacy Policy"]</a>
+                </p>
+
+                <form asp-action="AcceptTerms" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="returnUrl" value="@returnUrl" />
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="accept" name="accept" value="true" required />
+                        <label class="form-check-label" for="accept">
+                            @L["I accept the <a href='{0}'>Terms</a> and the <a href='{1}'>Privacy Policy</a>", termsUrl, privacyUrl]
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">@L["Accept and continue"]</button>
+                </form>
+
+                <hr />
+
+                <p class="small pm-muted mb-2">
+                    @L["If you do not want to accept, you can sign out. You can also download your data or erase your account without accepting."]
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    <form asp-action="Logout" method="post">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-outline-secondary btn-sm">@L["Sign out"]</button>
+                    </form>
+                    <a asp-action="Security" class="btn btn-outline-secondary btn-sm">@L["Download or erase my data"]</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

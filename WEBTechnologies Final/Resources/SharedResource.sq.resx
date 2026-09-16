@@ -187,6 +187,9 @@
   <data name="Accept an offer before marking the car sold." xml:space="preserve">
     <value>Pranoni një ofertë para se ta shënoni makinën si të shitur.</value>
   </data>
+  <data name="Accept and continue" xml:space="preserve">
+    <value>Prano dhe vazhdo</value>
+  </data>
   <data name="Accept one." xml:space="preserve">
     <value>Pranoni njërën.</value>
   </data>
@@ -198,6 +201,9 @@
   </data>
   <data name="Accepted" xml:space="preserve">
     <value>Pranuar</value>
+  </data>
+  <data name="Accepting an offer reserves the car and shares both sides' contact details. It does not by itself make a binding sale." xml:space="preserve">
+    <value>Pranimi i një oferte e rezervon makinën dhe ndan të dhënat e kontaktit të të dyja palëve. Vetëm kjo nuk përbën një shitje detyruese.</value>
   </data>
   <data name="Accepting offers" xml:space="preserve">
     <value>Pranon oferta</value>
@@ -757,6 +763,9 @@
   <data name="Download my data" xml:space="preserve">
     <value>Shkarko të dhënat e mia</value>
   </data>
+  <data name="Download or erase my data" xml:space="preserve">
+    <value>Shkarko ose fshi të dhënat e mia</value>
+  </data>
   <data name="Download your data" xml:space="preserve">
     <value>Shkarkoni të dhënat tuaja</value>
   </data>
@@ -867,6 +876,9 @@
   </data>
   <data name="Everything you have now" xml:space="preserve">
     <value>Gjithçka që keni tani</value>
+  </data>
+  <data name="Exactly what is public, what we store, where it is stored and for how long." xml:space="preserve">
+    <value>Saktësisht çfarë është publike, çfarë ruajmë, ku ruhet dhe për sa kohë.</value>
   </data>
   <data name="Exterior colour" xml:space="preserve">
     <value>Ngjyra e jashtme</value>
@@ -1041,6 +1053,9 @@
   </data>
   <data name="If you accept: the agreed price is published on Recently sold for 14 days, and you and the buyer each get the other's email and phone number." xml:space="preserve">
     <value>Nëse pranoni: çmimi i rënë dakord publikohet te Shitjet e fundit për 14 ditë, dhe ju e blerësi merrni secili emailin dhe numrin e telefonit të tjetrit.</value>
+  </data>
+  <data name="If you do not want to accept, you can sign out. You can also download your data or erase your account without accepting." xml:space="preserve">
+    <value>Nëse nuk dëshironi të pranoni, mund të dilni. Mund edhe t'i shkarkoni të dhënat ose ta fshini llogarinë pa pranuar.</value>
   </data>
   <data name="In stock" xml:space="preserve">
     <value>Në stok</value>
@@ -1636,6 +1651,9 @@
   <data name="Placements running" xml:space="preserve">
     <value>Vendosje në ecuri</value>
   </data>
+  <data name="Please read and accept them before carrying on. The current version is {0}." xml:space="preserve">
+    <value>Ju lutemi lexojini dhe pranojini para se të vazhdoni. Versioni aktual është {0}.</value>
+  </data>
   <data name="Plug-in hybrid" xml:space="preserve">
     <value>Hibrid me prizë</value>
   </data>
@@ -1771,6 +1789,12 @@
   <data name="Read the full explanation" xml:space="preserve">
     <value>Lexoni shpjegimin e plotë</value>
   </data>
+  <data name="Read the Privacy Policy" xml:space="preserve">
+    <value>Lexoni Politikën e Privatësisë</value>
+  </data>
+  <data name="Read the Terms of Service" xml:space="preserve">
+    <value>Lexoni Kushtet e Shërbimit</value>
+  </data>
   <data name="Read your offers." xml:space="preserve">
     <value>Lexoni ofertat tuaja.</value>
   </data>
@@ -1905,6 +1929,9 @@
   </data>
   <data name="Runs until" xml:space="preserve">
     <value>Zgjat deri më</value>
+  </data>
+  <data name="Sign out" xml:space="preserve">
+    <value>Dil</value>
   </data>
   <data name="SUV" xml:space="preserve">
     <value>SUV</value>
@@ -2230,6 +2257,9 @@
   <data name="The" xml:space="preserve">
     <value>Faqja</value>
   </data>
+  <data name="The agreed price of a completed sale is shown publicly for 14 days." xml:space="preserve">
+    <value>Çmimi i rënë dakord i një shitjeje të përfunduar shfaqet publikisht për 14 ditë.</value>
+  </data>
   <data name="The asking price is where the conversation starts." xml:space="preserve">
     <value>Çmimi i kërkuar është aty ku nis biseda.</value>
   </data>
@@ -2268,6 +2298,9 @@
   </data>
   <data name="The latest cars listed. Click any of them to see the whole listing." xml:space="preserve">
     <value>Makinat e fundit të publikuara. Klikoni cilëndo për të parë shpalljen e plotë.</value>
+  </data>
+  <data name="The main points" xml:space="preserve">
+    <value>Pikat kryesore</value>
   </data>
   <data name="The one thing you can pay us for is" xml:space="preserve">
     <value>E vetmja gjë për të cilën mund të na paguani është</value>
@@ -2434,6 +2467,9 @@
   <data name="Tick ✕ on any photo to remove it when you save. New uploads are added to the end." xml:space="preserve">
     <value>Shënoni ✕ te çdo foto për ta hequr kur të ruani. Ngarkimet e reja shtohen në fund.</value>
   </data>
+  <data name="Tick the box to accept the Terms and the Privacy Policy, or sign out." xml:space="preserve">
+    <value>Shënoni kutinë për të pranuar Kushtet dhe Politikën e Privatësisë, ose dilni.</value>
+  </data>
   <data name="Tick the box to confirm you understand what erasing your account does." xml:space="preserve">
     <value>Shënoni kutinë për të konfirmuar që e kuptoni çfarë bën fshirja e llogarisë.</value>
   </data>
@@ -2490,6 +2526,9 @@
   </data>
   <data name="Unread messages" xml:space="preserve">
     <value>Mesazhe të palexuara</value>
+  </data>
+  <data name="Updated Terms and Privacy Policy" xml:space="preserve">
+    <value>Kushtet dhe Politika e Privatësisë të përditësuara</value>
   </data>
   <data name="Used" xml:space="preserve">
     <value>E përdorur</value>
@@ -2565,6 +2604,9 @@
   </data>
   <data name="We ask for a registration number so that a business account is tied to a real registered business rather than to an address somebody made up this morning. We record it with your account and nothing else: we do not check it against any register, and no listing on this site carries a verified badge." xml:space="preserve">
     <value>Ne kërkojmë një numër regjistrimi që një llogari biznesi të jetë e lidhur me një biznes real të regjistruar dhe jo me një adresë që dikush e shpiku sot në mëngjes. Ne e regjistrojmë me llogarinë tuaj dhe asgjë më shumë: nuk e kontrollojmë në asnjë regjistër dhe asnjë shpallje në këtë faqe nuk mban etiketë verifikimi.</value>
+  </data>
+  <data name="We have updated our Terms and Privacy Policy" xml:space="preserve">
+    <value>Kemi përditësuar Kushtet dhe Politikën e Privatësisë</value>
   </data>
   <data name="We hit an unexpected error while handling your request. Nothing you entered was lost - try again, or head back to the listings." xml:space="preserve">
     <value>Hasëm një gabim të papritur gjatë trajtimit të kërkesës suaj. Asgjë nga sa keni shkruar nuk humbi - provoni sërish, ose kthehuni te njoftimet.</value>
@@ -2644,6 +2686,9 @@
   <data name="Where you trade" xml:space="preserve">
     <value>Ku tregtoni</value>
   </data>
+  <data name="Who runs PremiumMotors, and one address for every kind of request." xml:space="preserve">
+    <value>Kush e drejton PremiumMotors, dhe një adresë e vetme për çdo lloj kërkese.</value>
+  </data>
   <data name="Who we contact" xml:space="preserve">
     <value>Kë kontaktojmë</value>
   </data>
@@ -2698,6 +2743,9 @@
   <data name="You can download everything we hold about you, or ask for your account to be erased. Erasure anonymizes your listings and offers rather than deleting them, because a completed sale is a record the other party has an interest in." xml:space="preserve">
     <value>Mund të shkarkoni gjithçka që mbajmë për ju, ose të kërkoni fshirjen e llogarisë suaj. Fshirja i anonimizon njoftimet dhe ofertat tuaja në vend që t'i fshijë, sepse një shitje e përfunduar është një e dhënë ku pala tjetër ka interes.</value>
   </data>
+  <data name="You can download your data and erase your account yourself, from the Security page." xml:space="preserve">
+    <value>Mund t'i shkarkoni të dhënat dhe ta fshini llogarinë vetë, nga faqja e Sigurisë.</value>
+  </data>
   <data name="You can only review a seller you actually bought a car from." xml:space="preserve">
     <value>Mund të vlerësoni vetëm një shitës nga i cili keni blerë vërtet një makinë.</value>
   </data>
@@ -2731,6 +2779,9 @@
   <data name="You land on that page to add a logo, banner and opening hours." xml:space="preserve">
     <value>Ju çoheni te ajo faqe për të shtuar logon, banerin dhe orarin.</value>
   </data>
+  <data name="You last accepted version {0}." xml:space="preserve">
+    <value>Herën e fundit pranuat versionin {0}.</value>
+  </data>
   <data name="You must accept the Terms and Privacy Policy to create an account." xml:space="preserve">
     <value>Duhet të pranoni Kushtet dhe Politikën e Privatësisë për të krijuar një llogari.</value>
   </data>
@@ -2740,8 +2791,14 @@
   <data name="You must accept the seller terms to continue." xml:space="preserve">
     <value>Duhet të pranoni kushtet e shitësit për të vazhduar.</value>
   </data>
+  <data name="You must be 18 or over." xml:space="preserve">
+    <value>Duhet të jeni 18 vjeç ose më shumë.</value>
+  </data>
   <data name="Your account has been erased. Thank you for using PremiumMotors." xml:space="preserve">
     <value>Llogaria juaj u fshi. Faleminderit që përdorët PremiumMotors.</value>
+  </data>
+  <data name="Your account was created before we recorded which version people accepted." xml:space="preserve">
+    <value>Llogaria juaj u krijua para se të regjistronim cilin version pranonin përdoruesit.</value>
   </data>
   <data name="Your name, email address and phone numbers are removed, and you are signed out everywhere." xml:space="preserve">
     <value>Emri, adresa e emailit dhe numrat e telefonit hiqen, dhe shkyçeni nga të gjitha pajisjet.</value>

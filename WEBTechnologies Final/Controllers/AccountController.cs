@@ -424,6 +424,51 @@ namespace WEBTechnologies_Final.Controllers
             return RedirectToAction(nameof(Security));
         }
 
+        // ---------------------------------------------------------------- terms
+
+        /// <summary>
+        /// Shown by TermsAcceptanceFilter when the version this account accepted is not the one
+        /// published now. Reachable directly too; a user who is already current is sent on.
+        /// </summary>
+        [HttpGet]
+        [LoggedInOnly]
+        public async Task<IActionResult> AcceptTerms(string? returnUrl)
+        {
+            var user = await _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == UserId);
+            if (user is null) return SignOutAndHome();
+
+            if (user.TermsVersion == LegalDocuments.Version)
+                return RedirectToLocalOr(returnUrl, "Cars", "Index");
+
+            ViewData["ReturnUrl"] = returnUrl;
+            ViewData["PreviousVersion"] = user.TermsVersion;
+            return View();
+        }
+
+        [HttpPost]
+        [LoggedInOnly]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AcceptTerms(string? returnUrl, bool accept)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == UserId);
+            if (user is null) return SignOutAndHome();
+
+            if (!accept)
+            {
+                TempData["Error"] = _text["Tick the box to accept the Terms and the Privacy Policy, or sign out."].Value;
+                return RedirectToAction(nameof(AcceptTerms), new { returnUrl });
+            }
+
+            // Same two fields registration writes, so "what did this person agree to, and
+            // when" has one answer however they came to agree to it.
+            user.TermsAcceptedUtc = DateTime.UtcNow;
+            user.TermsVersion = LegalDocuments.Version;
+            await _db.SaveChangesAsync();
+
+            HttpContext.Session.SetString(TermsAcceptanceFilter.AcceptedKey, LegalDocuments.Version);
+            return RedirectToLocalOr(returnUrl, "Cars", "Index");
+        }
+
         // ---------------------------------------------------------------- your data
 
         private static readonly JsonSerializerOptions ExportJson = new()
