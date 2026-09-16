@@ -1015,6 +1015,9 @@
   <data name="If they accept, you swap contact details and the car is reserved for you. Payment and handover happen directly between you — PremiumMotors never holds your money." xml:space="preserve">
     <value>Nëse pranojnë, shkëmbeni të dhënat e kontaktit dhe makina rezervohet për ju. Pagesa dhe dorëzimi bëhen drejtpërdrejt mes jush — PremiumMotors nuk i mban kurrë paratë tuaja.</value>
   </data>
+  <data name="If you accept: the agreed price is published on Recently sold for 14 days, and you and the buyer each get the other's email and phone number." xml:space="preserve">
+    <value>Nëse pranoni: çmimi i rënë dakord publikohet te Shitjet e fundit për 14 ditë, dhe ju e blerësi merrni secili emailin dhe numrin e telefonit të tjetrit.</value>
+  </data>
   <data name="In stock" xml:space="preserve">
     <value>Në stok</value>
   </data>

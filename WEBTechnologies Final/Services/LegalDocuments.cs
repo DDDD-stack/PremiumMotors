@@ -16,6 +16,12 @@ namespace WEBTechnologies_Final.Services
     /// </summary>
     public static class LegalDocuments
     {
-        public const string Version = "2026-09-05";
+        /// <summary>
+        /// 2026-09-16: the first real Terms and Privacy Policy. Replaced the placeholder
+        /// pages entirely - operator named, minimum age set, the legal effect of an accepted
+        /// offer settled, published sale prices disclosed, processors and regions named,
+        /// governing law and language stated.
+        /// </summary>
+        public const string Version = "2026-09-16";
     }
 }

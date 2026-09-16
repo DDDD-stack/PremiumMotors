@@ -1,88 +1,447 @@
 @{
     ViewData["Title"] = "Privacy Policy";
+
+    @* Kept in step with the Terms: registration stores ONE version against the account and
+       it covers both documents. See LegalDocuments.Version. *@
+    var version = LegalDocuments.Version;
+    var termsUrl = Url.Action("Terms", "Home") ?? "/Home/Terms";
+
+    @* SECTION 9 NAMES THE HOSTING PROVIDER AND ITS COUNTRY. If this application is deployed
+       anywhere other than Azure App Service in North Europe (Ireland), section 9.3 and the
+       transfers statement in section 10 are FALSE and must be corrected before the site is
+       reachable. A privacy policy that names the wrong country is not a small error. *@
 }
 
 <div class="row justify-content-center">
     <div class="col-lg-9">
         <h1 class="h3 mb-1">Privacy Policy</h1>
-        <p class="text-muted">Last updated: 9 June 2026</p>
-
-        <div class="alert alert-warning small">
-            <strong>Template notice:</strong> this policy is a starting point and must be reviewed by a
-            qualified lawyer, and the placeholders (operator name, address, contact email) completed,
-            before you collect real user data or take live payments.
-        </div>
-
-        <p>
-            PremiumMotors ("we", "us") operates an online platform where private sellers list cars and
-            registered users make private offers. The actual sale of any vehicle happens directly between
-            buyer and seller — we are an introduction service and never a party to the transaction. This
-            policy explains what personal data we collect and how we use it.
+        <p class="text-muted">
+            Version: @version · Last updated: 16 September 2026
         </p>
 
-        <h2 class="h5 mt-4">Who we are</h2>
-        <p>
-            The data controller is <strong>[Operator legal name]</strong>, <strong>[registered address,
-            Albania]</strong>. For any privacy question or request, contact us at
-            <strong>[contact email]</strong>.
+        <p class="small text-muted">
+            Published in English. Albanian and Italian versions are being prepared.
         </p>
 
-        <h2 class="h5 mt-4">What we collect</h2>
+        <p>
+            This policy explains what PremiumMotors does with personal data. It is written to
+            match what the software actually does. Where something is not built yet, it says so.
+        </p>
+
+        <h2 class="h5 mt-4">1. Who controls your data</h2>
+        <p>
+            <strong>Denis Robi</strong> is the data controller.<br />
+            Contact for any privacy question or request:
+            <a href="mailto:drobi840@gmail.com">drobi840@gmail.com</a>
+        </p>
+        <p>
+            No Data Protection Officer has been appointed. At this scale one is not required:
+            we are not a public body, and our core activity is not large-scale monitoring or
+            large-scale processing of special-category data.
+        </p>
+
+        <h2 class="h5 mt-4">2. What we collect</h2>
+
+        <h3 class="h6 mt-3">2.1 Account</h3>
+        <p>
+            Username, email address, telephone number, password, account role, whether the
+            account is active, registration date, last login, and email-verification date.
+        </p>
+        <p>
+            <strong>Passwords are never stored in readable form.</strong> They are hashed with
+            PBKDF2-HMAC-SHA256 using a unique salt per account and 210,000 iterations.
+        </p>
+
+        <h3 class="h6 mt-3">2.2 Acceptance and erasure records</h3>
+        <p>
+            The date you accepted the Terms and which version you accepted; and, if your
+            account is ever erased, the date that was carried out. These are kept as
+            accountability records — being able to show that a request was acted on is part of
+            having acted on it.
+        </p>
+
+        <h3 class="h6 mt-3">2.3 Seller profile</h3>
+        <p>
+            Whether the account sells, the date selling was enabled, private or dealer, display
+            name, town or region, profile picture, rating average and rating count.
+        </p>
+
+        <h3 class="h6 mt-3">2.4 Optional public telephone number</h3>
+        <p>
+            A seller may choose to publish a telephone number. If set, <strong>it appears on
+            every listing that seller owns and is visible to visitors who are not signed
+            in.</strong> It is optional, it starts empty, and clearing it removes it from the
+            site. Because it sits on a public page, it may be copied, indexed or scraped;
+            removing it here does not remove copies others have already taken.
+        </p>
+        <p>
+            This is deliberately separate from the telephone number on your account, which
+            stays private until you accept or make an offer (section 5.3).
+        </p>
+
+        <h3 class="h6 mt-3">2.5 Business accounts</h3>
+        <p>
+            Business registration number (NIPT), VAT number, trading address, website and
+            contact person. <strong>We do not check these against any register and there is no
+            verified badge on this site for anyone.</strong>
+        </p>
+
+        <h3 class="h6 mt-3">2.6 Dealership page</h3>
+        <p>
+            Name, page address, about text, logo, banner, city, country, address, telephone,
+            website and opening hours. All of it is public.
+        </p>
+
+        <h3 class="h6 mt-3">2.7 Listings</h3>
+        <p>
+            Everything the seller enters: vehicle details and specification, description,
+            asking price, photographs, location, and after a sale the buyer, the agreed price
+            and the date. A vehicle identification number (VIN), if the seller records one, is
+            <strong>stored but never published</strong>.
+        </p>
+
+        <h3 class="h6 mt-3">2.8 Offers</h3>
+        <p>
+            Buyer, amount, the buyer's optional message, status, timestamps and the seller's
+            written response. <strong>Offers are private to the seller who received them.</strong>
+        </p>
+
+        <h3 class="h6 mt-3">2.9 Messages</h3>
+        <p>
+            The full text of buyer–seller conversations, with the listing, sender and read
+            time. Administrators can access message threads where necessary to operate, secure
+            or support the service, or to deal with a report.
+        </p>
+
+        <h3 class="h6 mt-3">2.10 Reviews</h3>
+        <p>
+            Rating, comment, the reviewer's username, the listing, timestamps and the seller's
+            public reply. Reviews are public. A review is only possible where the listing sold,
+            the reviewer is the recorded buyer, and one review per sale. Removal is covered by
+            section 16 of the <a href="@termsUrl">Terms</a>.
+        </p>
+
+        <h3 class="h6 mt-3">2.11 Favourites, price history, view counts</h3>
+        <p>
+            Saved listings. Every price change on a listing, with the date — parts of which are
+            shown publicly as price-drop indicators. Listing views counted
+            <strong>in aggregate, per listing per day</strong>: we do not record who viewed a
+            listing. A browser session is used to avoid counting the same visit twice, and the
+            seller's own views are excluded.
+        </p>
+
+        <h3 class="h6 mt-3">2.12 Sessions and tokens</h3>
+        <p>
+            Server-side session state, held in our database and linked to an opaque cookie. It
+            may contain your user ID, username, seller or administrator flags, recently viewed
+            listing IDs and the markers used to avoid double-counting views.
+        </p>
+        <p>
+            For the mobile and API login, refresh-token records hold a
+            <strong>hash</strong> of the token, its creation, expiry and revocation times, and
+            a device label taken from the browser or app. Email-verification and password-reset
+            records hold a hash, the purpose, expiry and when it was used.
+            <strong>The token values themselves are never stored.</strong>
+        </p>
+
+        <h3 class="h6 mt-3">2.13 Logs and IP addresses</h3>
+        <p>
+            Application logs record the request method, path, response status and how long it
+            took. <strong>They do not record IP addresses.</strong>
+        </p>
+        <p>
+            For requests from visitors who are not signed in, an IP address is used in memory
+            as the key for rate limiting and is not stored by the application. Our hosting
+            provider may record IP addresses independently in its own infrastructure logs.
+        </p>
+
+        <h3 class="h6 mt-3">2.14 Advertising records</h3>
+        <p>
+            Where a paid placement is granted we keep a receipt: a reference code, the listing
+            title as it read at the time, the placement type, start and end dates, who granted
+            it and any price. These records survive the end of the placement and the deletion
+            of the listing, because they are transaction records.
+        </p>
+
+        <h2 class="h5 mt-4">3. What we do not collect</h2>
         <ul>
-            <li><strong>Account details</strong> — your username, email address, phone number, and the password you set.</li>
-            <li><strong>Listing content</strong> — the car details, description, photos, country, and asking price you publish.</li>
-            <li><strong>Offers</strong> — the amounts you offer on listings (visible only to that listing's seller).</li>
-            <li><strong>Advertising records</strong> — if you buy paid placement, the reference, dates and amount. There is no checkout on this site yet and we hold no card details of any kind.</li>
-            <li><strong>Technical data</strong> — an essential session cookie that keeps you logged in.</li>
+            <li>No card or bank details. There is no payment processor connected to this site.</li>
+            <li>No identity documents and no date of birth.</li>
+            <li>No advertising or analytics trackers, and no third-party cookies.</li>
+            <li>No cross-site tracking and no fingerprinting.</li>
+            <li>No location data beyond the town a user types in.</li>
+            <li>No scripts, fonts or stylesheets loaded from anyone else's domain — everything
+                the site serves comes from the site itself.</li>
+            <li>No special-category data.</li>
+        </ul>
+        <p class="text-muted small">
+            If any of this changes, this section changes before the new technology goes live.
+        </p>
+
+        <h2 class="h5 mt-4">4. Why we process it, and on what basis</h2>
+        <ul>
+            <li><strong>To perform our contract with you</strong> — creating and running your
+                account, publishing your listings, delivering offers and messages, running
+                favourites, dealership pages and reviews.</li>
+            <li><strong>Our legitimate interests</strong> — keeping the service secure,
+                preventing fraud and abuse, rate limiting, troubleshooting, publishing sold
+                prices and sold history so the marketplace is useful to buyers, and giving
+                sellers view and offer statistics about their own listings.</li>
+            <li><strong>Legal obligation and accountability</strong> — keeping records of
+                terms acceptance, of erasure requests, and of advertising transactions.</li>
+            <li><strong>Consent</strong> — only where we ask for it. We do not send marketing
+                email, and we would not do so without asking first.</li>
         </ul>
 
-        <h2 class="h5 mt-4">How we use it</h2>
+        <h2 class="h5 mt-4">5. What other people can see</h2>
+
+        <h3 class="h6 mt-3">5.1 Public to anyone, including signed-out visitors</h3>
         <ul>
-            <li>To operate your account, your listings, offers, and buyer/seller messaging.</li>
-            <li>To keep a record of any advertising you have bought from us.</li>
-            <li>
-                <strong>To connect a buyer and seller once an offer is accepted.</strong> When a seller
-                accepts your offer, your <strong>email and phone number are shared with that seller</strong>
-                and theirs are shared with you, so the two of you can arrange inspection, payment and
-                collection. If your offer is declined or withdrawn, no contact details are ever shared.
-            </li>
-            <li>
-                <strong>To carry your messages.</strong> Messages you send to a buyer or seller are stored
-                and shown to that person. Our administrators can read them for support and abuse handling.
-            </li>
-            <li>To keep the platform secure and prevent fraud and abuse.</li>
+            <li>Seller display name, or username where no display name is set</li>
+            <li>Whether the seller is private or a dealership</li>
+            <li>Profile photograph, dealership logo and banner</li>
+            <li>Rating average and review count</li>
+            <li>Reviews, their text, and each reviewer's username</li>
+            <li>The public telephone number, if the seller chose to publish one</li>
+            <li>Dealership name, address, telephone, website, opening hours and about text</li>
+            <li>Listings, photographs, specification and asking price</li>
+            <li>Price-change history and price-drop indicators</li>
+            <li><strong>Completed sales and the agreed sale price</strong>, for 14 days</li>
+            <li>Whether a listing is a paid placement</li>
+        </ul>
+        <p>
+            Anything public can be indexed by search engines and copied by third parties.
+        </p>
+
+        <h3 class="h6 mt-3">5.2 Private</h3>
+        <p>
+            Offer amounts and offer messages are visible only to the seller who received them,
+            and to administrators. Conversations are visible to their participants, and to
+            administrators where necessary. VINs, business registration and VAT numbers,
+            trading addresses and contact-person names are not published.
+        </p>
+
+        <h3 class="h6 mt-3">5.3 Contact details when an offer is accepted</h3>
+        <p>
+            <strong>When a seller accepts an offer, the buyer and the seller each receive the
+            other's email address and telephone number</strong> so they can arrange the sale.
+            This is a disclosure of your personal data to another user, triggered by an action
+            one of you takes. Declined and withdrawn offers release nothing.
+        </p>
+
+        <h2 class="h5 mt-4">6. Published sale prices</h2>
+        <p>
+            When a sale completes we publish the agreed price on the Recently sold page. The
+            seller is told this on the screen where they accept the offer, not only here.
+        </p>
+        <p>
+            That page shows the last 14 days. <strong>The 14 days is a display rule, not a
+            deletion rule</strong> — older sales stop appearing there but the record, the price
+            and the price history are kept.
+        </p>
+
+        <h2 class="h5 mt-4">7. Cookies and browser storage</h2>
+        <p>Only essential storage is used. There are three cookies and one browser flag.</p>
+        <ul>
+            <li><strong>Session cookie</strong> — an opaque identifier for your server-side
+                session. HttpOnly, SameSite=Lax, Secure over HTTPS, and it expires after about
+                two hours of inactivity.</li>
+            <li><strong>Anti-forgery cookie</strong> — protects forms against cross-site
+                request forgery.</li>
+            <li><strong>Language cookie</strong> — set only when you choose a language from the
+                picker. It holds a language code, lasts about a year, and is readable by the
+                page, which is why it is not HttpOnly.</li>
+            <li><strong>Browser sessionStorage</strong> — one flag, so the arrival animation
+                runs once per browser session. It stays in your browser and is never sent to us.</li>
+        </ul>
+        <p>
+            <strong>No analytics cookie, no advertising cookie, no third-party cookie, no
+            fingerprinting.</strong> That is why this site has no cookie banner: there is
+            nothing here to consent to beyond what is strictly necessary to make it work.
+        </p>
+
+        <h2 class="h5 mt-4">8. Who else processes your data</h2>
+        <p>
+            <strong>Supabase</strong> — hosts our PostgreSQL database and stores uploaded
+            photographs. Region: <strong>West EU (Ireland)</strong>.
+        </p>
+        <p>
+            <strong>Microsoft Azure App Service</strong> — hosts the application itself.
+            Region: <strong>North Europe (Ireland)</strong>. The hosting infrastructure may
+            record IP addresses and technical request information in its own logs.
+        </p>
+        <p>
+            <strong>Resend</strong> — would send verification and password-reset email.
+            <strong>Email is not switched on. No email provider is configured, so no email is
+            being sent to anyone and Resend currently receives no data about you.</strong> This
+            section will be updated before that changes.
+        </p>
+        <p>
+            <strong>Sentry</strong> — error monitoring. It is present in the code but
+            <strong>inactive</strong>: with no key configured it makes no network calls. If it
+            is ever switched on, it is configured not to send personal data or request bodies.
+        </p>
+        <p>
+            That is the complete list. <strong>No payment processor, no analytics provider, no
+            advertising network, no data broker.</strong>
+        </p>
+
+        <h2 class="h5 mt-4">9. International transfers</h2>
+        <p>
+            Our database, our file storage and our application hosting are all located in
+            <strong>Ireland, inside the European Economic Area</strong>. We do not transfer
+            your personal data outside the EEA.
+        </p>
+
+        <h2 class="h5 mt-4">10. How long we keep it</h2>
+        <p>
+            We do not run a general automatic deletion schedule, and we would rather say so
+            than publish a number the software does not enforce. What actually happens:
+        </p>
+        <ul>
+            <li><strong>Account and profile data</strong> — until you ask us to erase it.</li>
+            <li><strong>Listings, offers, messages, reviews, favourites and price history</strong>
+                — kept while the account exists, and subject to erasure as described in
+                section 11.</li>
+            <li><strong>Completed sales</strong> — kept indefinitely as transaction records.
+                Displayed on Recently sold for 14 days.</li>
+            <li><strong>Web sessions</strong> — two hours of inactivity, then removed
+                automatically.</li>
+            <li><strong>Refresh tokens</strong> — 30 days, and revoked immediately when you
+                change your password.</li>
+            <li><strong>Verification and password-reset tokens</strong> — until they expire or
+                are used.</li>
+            <li><strong>Application logs</strong> — 14 days, then overwritten.</li>
+            <li><strong>Advertising records</strong> — kept as long as accounting and tax rules
+                require.</li>
+            <li><strong>Terms acceptance and erasure timestamps</strong> — kept after
+                anonymisation, because they are the record that we acted correctly.</li>
         </ul>
 
-        <h2 class="h5 mt-4">Who we share it with</h2>
+        <h2 class="h5 mt-4">11. Erasing your account</h2>
         <p>
-            We do not sell your personal data. We share it only with: the seller of a listing you win (as
-            described above); the companies that host this site, store its photos and send its email; and
-            authorities where required by law. There is no payment processor, because there is no checkout.
+            Email <a href="mailto:drobi840@gmail.com">drobi840@gmail.com</a> and we will erase
+            your account. Being straight about what that means:
+        </p>
+        <ul>
+            <li>Your username, email, telephone number and public telephone number are cleared.</li>
+            <li>Dealership name, about text, address, telephone, website and opening hours are
+                blanked.</li>
+            <li><strong>Every image you uploaded is deleted</strong> — profile picture,
+                dealership logo and banner, and the photographs on every listing you posted.</li>
+            <li><strong>Completed sales remain</strong> on the sold history, without
+                photographs and without identifying you, labelled "Dealership closed". A sale
+                that happened is a record the other party has a legitimate interest in.</li>
+            <li>Reviews you wrote about other sellers remain, so that a seller's rating cannot
+                be rewritten by a departing buyer.</li>
+            <li>We record the date the erasure was carried out.</li>
+        </ul>
+        <p>
+            The right to erasure is subject to the exceptions the law allows, including where
+            we need to keep something to establish, exercise or defend a legal claim.
         </p>
 
-        <h2 class="h5 mt-4">Legal basis</h2>
+        <h2 class="h5 mt-4">12. Getting a copy of your data</h2>
         <p>
-            Where the EU/UK GDPR applies, we process your data to perform our contract with you (running your
-            account and listings), to meet legal obligations, and for our legitimate interests in operating a
-            safe marketplace.
+            Email us and we will send you a copy. It currently covers your account details,
+            your listings, the offers you made, your favourites and your login sessions.
+        </p>
+        <p>
+            <strong>Messages and reviews are not yet included in the automated export</strong>,
+            so if you want those, say so in your request and we will supply them separately. We
+            are extending the export to include them.
         </p>
 
-        <h2 class="h5 mt-4">Retention</h2>
+        <h2 class="h5 mt-4">13. Your rights</h2>
+        <p>Subject to the conditions in the law, you have the right to:</p>
+        <ul>
+            <li>access your personal data;</li>
+            <li>have inaccurate or incomplete data corrected;</li>
+            <li>have your data erased in the circumstances the law allows;</li>
+            <li>restrict or object to processing in some circumstances;</li>
+            <li>receive your data in a portable form;</li>
+            <li>withdraw consent, where we relied on consent; and</li>
+            <li>complain to the supervisory authority.</li>
+        </ul>
         <p>
-            We keep account and listing data while your account is active, and payment records for as long as
-            required by tax and accounting law. We delete or anonymise data when it is no longer needed.
+            Much of this you can do yourself: your email and telephone number are editable on
+            your profile, and your listings and dealership page are editable at any time. For
+            anything else, email
+            <a href="mailto:drobi840@gmail.com">drobi840@gmail.com</a>.
+            <strong>There is no button on the site for export or erasure yet</strong> — the
+            email route is the real one, and we answer within one month.
+        </p>
+        <p>
+            We may need to confirm who you are before acting on a request.
         </p>
 
-        <h2 class="h5 mt-4">Your rights</h2>
+        <h2 class="h5 mt-4">14. Complaining to the regulator</h2>
         <p>
-            Subject to applicable law, you may request access to, correction of, or deletion of your personal
-            data, object to or restrict certain processing, and request a copy of your data. To exercise any
-            of these, contact <strong>[contact email]</strong>.
+            You can complain to the Albanian supervisory authority, the
+            <strong>Commissioner for the Right to Information and Protection of Personal
+            Data</strong> — <a href="https://idp.al/" target="_blank" rel="noopener">idp.al</a>.
+        </p>
+        <p>
+            If you are in the European Union you may also complain to the supervisory authority
+            in your own country.
         </p>
 
-        <h2 class="h5 mt-4">Changes</h2>
-        <p>We may update this policy; we will revise the "last updated" date above when we do.</p>
+        <h2 class="h5 mt-4">15. Security</h2>
+        <p>We use measures appropriate to what we hold, including:</p>
+        <ul>
+            <li>passwords hashed, never stored readably;</li>
+            <li>refresh, verification and reset tokens stored only as hashes;</li>
+            <li>session state kept on the server, not in the browser;</li>
+            <li>HttpOnly, Secure and SameSite controls on cookies;</li>
+            <li>anti-forgery protection on forms;</li>
+            <li>rate limiting; and</li>
+            <li>administrative access restricted to accounts that need it.</li>
+        </ul>
+        <p>
+            No online service can promise absolute security, and we are not going to pretend
+            otherwise.
+        </p>
 
-        <p class="mt-4"><a asp-controller="Home" asp-action="Terms">View our Terms of Service →</a></p>
+        <h2 class="h5 mt-4">16. Data breaches</h2>
+        <p>
+            If a personal-data breach happens we will assess it and notify the supervisory
+            authority and, where the law requires, the people affected, within the time limits
+            the law sets.
+        </p>
+
+        <h2 class="h5 mt-4">17. Age</h2>
+        <p>
+            This site is for people aged <strong>18 or over</strong>. We do not knowingly
+            collect data about anyone younger. We do not verify age at registration; if we
+            learn that an account belongs to someone under 18 we will close it and delete the
+            data.
+        </p>
+
+        <h2 class="h5 mt-4">18. Automated decisions</h2>
+        <p>
+            We do not make decisions about you by automated means alone, and we do not profile
+            you.
+        </p>
+
+        <h2 class="h5 mt-4">19. Business users</h2>
+        <p>
+            Dealership accounts are responsible for the accuracy of their own business
+            information and for their own obligations as traders — listings, consumer sales,
+            advertising, invoicing, taxation and guarantees.
+        </p>
+
+        <h2 class="h5 mt-4">20. Changes to this policy</h2>
+        <p>
+            We update this policy when the service, the technology or the law changes. The
+            version number here is the same one recorded against your account when you
+            registered, and the two are always changed together. Where a change is material we
+            will notify you.
+        </p>
+
+        <h2 class="h5 mt-4">21. Contact</h2>
+        <p>
+            Denis Robi<br />
+            <a href="mailto:drobi840@gmail.com">drobi840@gmail.com</a>
+        </p>
     </div>
 </div>

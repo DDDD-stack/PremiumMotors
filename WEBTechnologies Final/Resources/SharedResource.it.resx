@@ -1015,6 +1015,9 @@
   <data name="If they accept, you swap contact details and the car is reserved for you. Payment and handover happen directly between you — PremiumMotors never holds your money." xml:space="preserve">
     <value>Se accetta, vi scambiate i contatti e l'auto viene prenotata per te. Pagamento e consegna avvengono direttamente tra voi — PremiumMotors non tiene mai i tuoi soldi.</value>
   </data>
+  <data name="If you accept: the agreed price is published on Recently sold for 14 days, and you and the buyer each get the other's email and phone number." xml:space="preserve">
+    <value>Se accetti: il prezzo concordato viene pubblicato su Vendute di recente per 14 giorni, e tu e l'acquirente ricevete ciascuno l'email e il numero di telefono dell'altro.</value>
+  </data>
   <data name="In stock" xml:space="preserve">
     <value>Disponibili</value>
   </data>

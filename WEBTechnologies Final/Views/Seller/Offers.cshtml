@@ -102,6 +102,15 @@ else
                                     </form>
                                 }
 
+                                @* Said HERE, not only in the terms. A private seller told
+                                   one buyer a number; publishing it without having said so
+                                   on the screen where they commit is the part that is not
+                                   defensible. Both legal pages state that this notice
+                                   exists, so it has to. *@
+                                <div class="small pm-muted mb-2">
+                                    @L["If you accept: the agreed price is published on Recently sold for 14 days, and you and the buyer each get the other's email and phone number."]
+                                </div>
+
                                 <div class="d-flex gap-2">
                                     <form asp-action="AcceptOffer" method="post" class="flex-fill d-grid">
                                         <input type="hidden" name="offerId" value="@offer.Id" />
