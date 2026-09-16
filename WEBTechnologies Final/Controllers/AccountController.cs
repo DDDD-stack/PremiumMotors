@@ -1,3 +1,5 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -27,13 +29,15 @@ namespace WEBTechnologies_Final.Controllers
         /// back if there is one, and the original English if there is not.
         /// </summary>
         private readonly IStringLocalizer<SharedResource> _text;
+        private readonly AccountDataService _data;
 
         public AccountController(
             AccountService accounts, AppDbContext db, TokenService tokens, ProfileNavService nav,
             IPhotoStorage photos, DealershipService dealerships,
-            IStringLocalizer<SharedResource> text)
+            IStringLocalizer<SharedResource> text, AccountDataService data)
         {
             _text = text;
+            _data = data;
             _accounts = accounts;
             _db = db;
             _tokens = tokens;
@@ -381,7 +385,7 @@ namespace WEBTechnologies_Final.Controllers
             var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == UserId);
             if (user is null) return SignOutAndHome();
 
-            ViewData["Sessions"] = await _tokens.ListSessionsAsync(user.Id, null);
+            ViewData["Sessions"] = await _tokens.ListSessionsAsync(user.Id, null); ViewData["IsAdmin"] = user.IsAdmin;
             await LoadProfileCountsAsync(user);
             return View(new ChangePasswordViewModel());
         }
@@ -396,7 +400,7 @@ namespace WEBTechnologies_Final.Controllers
 
             if (!ModelState.IsValid)
             {
-                ViewData["Sessions"] = await _tokens.ListSessionsAsync(user.Id, null);
+                ViewData["Sessions"] = await _tokens.ListSessionsAsync(user.Id, null); ViewData["IsAdmin"] = user.IsAdmin;
                 await LoadProfileCountsAsync(user);
                 return View(nameof(Security), model);
             }
@@ -407,7 +411,7 @@ namespace WEBTechnologies_Final.Controllers
             if (!result.Succeeded)
             {
                 ModelState.AddModelError(string.Empty, _text[result.Error ?? "Could not change your password."].Value);
-                ViewData["Sessions"] = await _tokens.ListSessionsAsync(user.Id, null);
+                ViewData["Sessions"] = await _tokens.ListSessionsAsync(user.Id, null); ViewData["IsAdmin"] = user.IsAdmin;
                 await LoadProfileCountsAsync(user);
                 return View(nameof(Security), model);
             }
@@ -418,6 +422,74 @@ namespace WEBTechnologies_Final.Controllers
 
             TempData["Success"] = _text["Your password was changed and every other device was signed out."].Value;
             return RedirectToAction(nameof(Security));
+        }
+
+        // ---------------------------------------------------------------- your data
+
+        private static readonly JsonSerializerOptions ExportJson = new()
+        {
+            WriteIndented = true,
+            // Enum names, not numbers: this file is read by the person it is about, and
+            // "Accepted" means something where "1" does not.
+            Converters = { new JsonStringEnumConverter() }
+        };
+
+        /// <summary>
+        /// Downloads everything held about the signed-in account as one JSON file. The same
+        /// export the API serves, so the website and the app can never disagree about what an
+        /// access request returns.
+        /// </summary>
+        [HttpGet]
+        [LoggedInOnly]
+        public async Task<IActionResult> ExportData(CancellationToken ct)
+        {
+            if (UserId is not int id) return SignOutAndHome();
+
+            var data = await _data.ExportAsync(id, ct);
+            if (data is null) return SignOutAndHome();
+
+            var bytes = JsonSerializer.SerializeToUtf8Bytes(data, ExportJson);
+            return File(bytes, "application/json",
+                $"premiummotors-my-data-{DateTime.UtcNow:yyyy-MM-dd}.json");
+        }
+
+        /// <summary>
+        /// Erases the signed-in account. Irreversible, so it asks for the password again - a
+        /// session left open on a shared computer must not be enough to destroy an account -
+        /// and for an explicit acknowledgement of what erasure does and does not remove.
+        /// </summary>
+        [HttpPost]
+        [LoggedInOnly]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAccount(string? password, bool understood, CancellationToken ct)
+        {
+            var user = await _db.Users.FirstOrDefaultAsync(u => u.Id == UserId, ct);
+            if (user is null) return SignOutAndHome();
+
+            if (user.IsAdmin)
+            {
+                TempData["Error"] = _text["An administrator account cannot be erased from this page."].Value;
+                return RedirectToAction(nameof(Security));
+            }
+
+            if (!understood)
+            {
+                TempData["Error"] = _text["Tick the box to confirm you understand what erasing your account does."].Value;
+                return RedirectToAction(nameof(Security));
+            }
+
+            if (string.IsNullOrEmpty(password)
+                || PasswordHasher.Verify(password, user.PasswordHash) == PasswordVerificationResult.Failed)
+            {
+                TempData["Error"] = _text["Your current password is incorrect."].Value;
+                return RedirectToAction(nameof(Security));
+            }
+
+            await _data.AnonymizeAsync(user.Id, ct);
+
+            HttpContext.Session.Clear();
+            TempData["Success"] = _text["Your account has been erased. Thank you for using PremiumMotors."].Value;
+            return RedirectToAction("Index", "Cars");
         }
 
         // ---------------------------------------------------------------- business

@@ -28,6 +28,21 @@ namespace WEBTechnologies_Final.Services.Auth
             _logger = logger;
         }
 
+        /// <summary>
+        /// Everything held about one account, as a single JSON document - the right of access
+        /// and the right to portability.
+        ///
+        /// COMPLETENESS IS THE POINT. This used to return account, listings, offers, favourites
+        /// and sessions, and silently left out messages, reviews, the seller and business
+        /// profile, the dealership page and the terms-acceptance record. An export that omits
+        /// categories is not a partial answer to an access request, it is a wrong one, and the
+        /// Privacy Policy lists every category below. If a new table holds personal data, it
+        /// belongs here in the same commit.
+        ///
+        /// Other people's personal data is deliberately NOT included beyond what this user can
+        /// already see in the product: the other party's username on an offer or a message is
+        /// shown to them on the site; the other party's email and phone are not repeated here.
+        /// </summary>
         public async Task<object?> ExportAsync(int userId, CancellationToken ct = default)
         {
             var user = await _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == userId, ct);
@@ -37,20 +52,98 @@ namespace WEBTechnologies_Final.Services.Auth
                 .Where(c => c.OwnerId == userId)
                 .Select(c => new
                 {
-                    c.Id, c.Make, c.Model, c.Year, c.Description, c.Price, c.Country, c.City,
-                    c.Mileage, c.ServiceHistory, c.FuelType, c.Transmission, c.Status,
-                    c.SoldPrice, c.SoldUtc, c.CreatedUtc, c.ImagePaths
+                    c.Id, c.Make, c.Model, c.Year, c.Type, c.Condition, c.Description, c.Price,
+                    c.Country, c.City, c.Mileage, c.FuelType, c.Transmission, c.Drivetrain,
+                    c.EngineSizeCc, c.PowerHp, c.Doors, c.Seats, c.PreviousOwners,
+                    c.ServiceHistory, c.ServiceHistoryNotes, c.FirstRegistration, c.Vin,
+                    c.HasAccidentHistory, c.ExteriorColour, c.Status, c.CreatedUtc,
+                    c.PublishedUtc, c.SoldPrice, c.SoldUtc, c.SoldTo, c.ImagePaths
                 })
                 .ToListAsync(ct);
 
-            var offers = await _db.Offers.AsNoTracking()
+            var listingIds = listings.Select(l => l.Id).ToList();
+
+            var priceHistory = await _db.CarPriceChanges.AsNoTracking()
+                .Where(p => listingIds.Contains(p.CarId))
+                .OrderBy(p => p.ChangedUtc)
+                .Select(p => new { p.CarId, p.PreviousPrice, p.Price, p.ChangedUtc })
+                .ToListAsync(ct);
+
+            var offersMade = await _db.Offers.AsNoTracking()
                 .Where(o => o.BuyerId == userId)
-                .Select(o => new { o.Id, o.CarId, o.Amount, o.Message, o.Status, o.CreatedUtc, o.RespondedUtc })
+                .Select(o => new
+                {
+                    o.Id, o.CarId, o.Amount, o.Message, o.Status, o.SellerResponse,
+                    o.CreatedUtc, o.RespondedUtc
+                })
+                .ToListAsync(ct);
+
+            // Offers other people made on this user's listings. The seller already sees every
+            // one of these, username and amount included, in their offer inbox.
+            var offersReceived = await _db.Offers.AsNoTracking()
+                .Where(o => listingIds.Contains(o.CarId))
+                .Select(o => new
+                {
+                    o.Id, o.CarId, o.BuyerUsername, o.Amount, o.Message, o.Status,
+                    o.SellerResponse, o.CreatedUtc, o.RespondedUtc
+                })
+                .ToListAsync(ct);
+
+            var conversations = await _db.Conversations.AsNoTracking()
+                .Where(c => c.BuyerId == userId || c.SellerId == userId)
+                .Select(c => new
+                {
+                    c.Id, c.CarId, c.CreatedUtc, c.LastMessageUtc, c.IsClosed,
+                    Role = c.BuyerId == userId ? "buyer" : "seller",
+                    Messages = c.Messages
+                        .OrderBy(m => m.SentUtc)
+                        .Select(m => new
+                        {
+                            From = m.SenderId == userId ? "you" : m.SenderUsername,
+                            m.Body, m.SentUtc, m.ReadUtc
+                        })
+                        .ToList()
+                })
+                .ToListAsync(ct);
+
+            var reviewsWritten = await _db.SellerReviews.AsNoTracking()
+                .Where(r => r.AuthorUserId == userId)
+                .Select(r => new
+                {
+                    r.Id, r.CarId, r.Rating, r.Comment, r.CreatedUtc, r.SellerReply, r.SellerRepliedUtc
+                })
+                .ToListAsync(ct);
+
+            var reviewsReceived = await _db.SellerReviews.AsNoTracking()
+                .Where(r => r.SellerUserId == userId)
+                .Select(r => new
+                {
+                    r.Id, r.CarId, r.AuthorUsername, r.Rating, r.Comment, r.CreatedUtc,
+                    r.SellerReply, r.SellerRepliedUtc
+                })
                 .ToListAsync(ct);
 
             var favourites = await _db.UserFavoriteCars.AsNoTracking()
                 .Where(f => f.UserId == userId)
                 .Select(f => new { f.CarId, f.CreatedUtc })
+                .ToListAsync(ct);
+
+            var dealership = await _db.Dealerships.AsNoTracking()
+                .Where(d => d.OwnerUserId == userId)
+                .Select(d => new
+                {
+                    d.Slug, d.Name, d.About, d.City, d.Country, d.Address, d.Phone,
+                    d.Website, d.OpeningHours, d.LogoPath, d.BannerPath, d.CreatedUtc
+                })
+                .FirstOrDefaultAsync(ct);
+
+            var promotions = await _db.Promotions.AsNoTracking()
+                .Where(p => p.SellerUserId == userId)
+                .Select(p => new
+                {
+                    p.Reference, p.CarId, p.CarTitle, p.Tier, p.StartedUtc, p.EndsUtc,
+                    p.EndedEarlyUtc, p.EndedReason, p.PriceEur
+                })
                 .ToListAsync(ct);
 
             var payments = await _db.Payments.AsNoTracking()
@@ -71,12 +164,34 @@ namespace WEBTechnologies_Final.Services.Auth
                 exportedUtc = DateTime.UtcNow,
                 account = new
                 {
-                    user.Id, user.Username, user.Email, user.Phone, user.Role,
-                    user.RegisteredUtc, user.LastLoginUtc, user.EmailVerifiedUtc
+                    user.Id, user.Username, user.Email, user.Phone, user.Role, user.IsActive,
+                    user.RegisteredUtc, user.LastLoginUtc, user.EmailVerifiedUtc, user.AvatarPath
                 },
+                legal = new { user.TermsAcceptedUtc, user.TermsVersion },
+                sellerProfile = user.IsSeller
+                    ? new
+                    {
+                        user.SellerSinceUtc, user.SellerType, user.SellerDisplayName,
+                        user.SellerLocation, user.PublicPhone, user.RatingAverage, user.RatingCount
+                    }
+                    : null,
+                business = user.IsBusiness
+                    ? new
+                    {
+                        user.BusinessRegistrationNumber, user.VatNumber, user.BusinessAddress,
+                        user.Website, user.ContactName
+                    }
+                    : null,
+                dealership,
                 listings,
-                offers,
+                priceHistory,
+                offersMade,
+                offersReceived,
+                conversations,
+                reviewsWritten,
+                reviewsReceived,
                 favourites,
+                promotions,
                 payments,
                 sessions
             };
@@ -118,6 +233,15 @@ namespace WEBTechnologies_Final.Services.Auth
                 .ExecuteUpdateAsync(s => s.SetProperty(o => o.BuyerUsername, handle), ct);
             await _db.Payments.Where(p => p.UserId == userId)
                 .ExecuteUpdateAsync(s => s.SetProperty(p => p.Username, handle), ct);
+
+            // Messages and reviews carry their own username copy too, and both are shown on the
+            // site: a review is public, and a message is read by the other party. These two were
+            // missed, which left an erased account's old username published on every review it
+            // had ever written - while the Privacy Policy said personal details were cleared.
+            await _db.Messages.Where(m => m.SenderId == userId)
+                .ExecuteUpdateAsync(s => s.SetProperty(m => m.SenderUsername, handle), ct);
+            await _db.SellerReviews.Where(r => r.AuthorUserId == userId)
+                .ExecuteUpdateAsync(s => s.SetProperty(r => r.AuthorUsername, handle), ct);
 
             // Any row still keyed on the old username (created before ids were recorded).
             await _db.Cars.Where(c => c.OwnerId == null && c.OwnerUsername == oldUsername)

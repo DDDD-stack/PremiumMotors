@@ -85,14 +85,43 @@
         <div class="card">
             <div class="card-header">@L["Your data"]</div>
             <div class="card-body small">
+                <h3 class="h6">@L["Download your data"]</h3>
                 <p class="pm-muted">
-                    @L["You can download everything we hold about you, or ask for your account to be erased. Erasure anonymizes your listings and offers rather than deleting them, because a completed sale is a record the other party has an interest in."]
+                    @L["One file with everything we hold about your account: profile, listings, offers, messages, reviews, favourites and sign-in history."]
                 </p>
-                @* The API implements both; the website screens for them are still to come.
-                   Saying so beats a button that does nothing. *@
-                <p class="mb-0 pm-muted">
-                    @L["Both are available on the API today (<code>/api/v1/me/export</code> and <code>/api/v1/me/delete</code>). Website screens for them are on the way - email us in the meantime."]
-                </p>
+                <a asp-action="ExportData" class="btn btn-outline-primary btn-sm mb-4">@L["Download my data"]</a>
+
+                <h3 class="h6">@L["Erase your account"]</h3>
+                @if (ViewData["IsAdmin"] is true)
+                {
+                    <p class="pm-muted mb-0">@L["An administrator account cannot be erased from this page."]</p>
+                }
+                else
+                {
+                    <p class="pm-muted">@L["This cannot be undone. What happens:"]</p>
+                    <ul class="pm-muted">
+                        <li>@L["Your name, email address and phone numbers are removed, and you are signed out everywhere."]</li>
+                        <li>@L["Every photo you uploaded is deleted."]</li>
+                        <li>@L["Completed sales stay in the sold history, without photos and without your name."]</li>
+                        <li>@L["Reviews and messages you wrote stay, under an anonymous name."]</li>
+                    </ul>
+                    <form asp-action="DeleteAccount" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="mb-2">
+                            <label class="form-label" for="erase-password">@L["Current password"]</label>
+                            <input type="password" id="erase-password" name="password" class="form-control"
+                                   autocomplete="current-password" required />
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="erase-understood"
+                                   name="understood" value="true" required />
+                            <label class="form-check-label" for="erase-understood">
+                                @L["I understand my account will be erased and this cannot be undone"]
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-outline-danger btn-sm">@L["Erase my account"]</button>
+                    </form>
+                }
             </div>
         </div>
     </div>

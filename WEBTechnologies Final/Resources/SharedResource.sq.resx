@@ -283,6 +283,9 @@
   <data name="An account with that email already exists." xml:space="preserve">
     <value>Ekziston tashmë një llogari me atë email.</value>
   </data>
+  <data name="An administrator account cannot be erased from this page." xml:space="preserve">
+    <value>Një llogari administratori nuk mund të fshihet nga kjo faqe.</value>
+  </data>
   <data name="An email address and a phone number" xml:space="preserve">
     <value>Një adresë emaili dhe një numër telefoni</value>
   </data>
@@ -483,6 +486,9 @@
   </data>
   <data name="CNG" xml:space="preserve">
     <value>Metan (CNG)</value>
+  </data>
+  <data name="Completed sales stay in the sold history, without photos and without your name." xml:space="preserve">
+    <value>Shitjet e përfunduara mbeten në historikun e shitjeve, pa foto dhe pa emrin tuaj.</value>
   </data>
   <data name="CVT" xml:space="preserve">
     <value>CVT</value>
@@ -748,6 +754,12 @@
   <data name="Doors" xml:space="preserve">
     <value>Dyert</value>
   </data>
+  <data name="Download my data" xml:space="preserve">
+    <value>Shkarko të dhënat e mia</value>
+  </data>
+  <data name="Download your data" xml:space="preserve">
+    <value>Shkarkoni të dhënat tuaja</value>
+  </data>
   <data name="Draft" xml:space="preserve">
     <value>Draft</value>
   </data>
@@ -811,6 +823,12 @@
   <data name="Enter your trading address." xml:space="preserve">
     <value>Vendosni adresën tuaj tregtare.</value>
   </data>
+  <data name="Erase my account" xml:space="preserve">
+    <value>Fshi llogarinë time</value>
+  </data>
+  <data name="Erase your account" xml:space="preserve">
+    <value>Fshini llogarinë tuaj</value>
+  </data>
   <data name="Every business account gets a" xml:space="preserve">
     <value>Çdo llogari biznesi merr një</value>
   </data>
@@ -831,6 +849,9 @@
   </data>
   <data name="Every listing names its seller and says plainly whether they are a private seller or a dealership." xml:space="preserve">
     <value>Çdo shpallje e emërton shitësin e saj dhe thotë qartë nëse është shitës privat apo autosallon.</value>
+  </data>
+  <data name="Every photo you uploaded is deleted." xml:space="preserve">
+    <value>Çdo foto që keni ngarkuar fshihet.</value>
   </data>
   <data name="Everything a dealer account needs, collected once. Your seller panel is unlocked as soon as you finish." xml:space="preserve">
     <value>Gjithçka që i duhet një llogarie tregtari, e mbledhur një herë. Paneli juaj i shitësit hapet sapo të mbaroni.</value>
@@ -1008,6 +1029,9 @@
   </data>
   <data name="I accept the seller terms" xml:space="preserve">
     <value>Pranoj kushtet e shitësit</value>
+  </data>
+  <data name="I understand my account will be erased and this cannot be undone" xml:space="preserve">
+    <value>E kuptoj që llogaria ime do të fshihet dhe kjo nuk mund të zhbëhet</value>
   </data>
   <data name="If a car has been reduced, the listing says so and shows what it used to cost. No quietly edited numbers." xml:space="preserve">
     <value>Nëse një makinë ka pësuar ulje çmimi, shpallja e thotë dhe tregon sa kushtonte më parë. Pa shifra të ndryshuara në heshtje.</value>
@@ -1462,6 +1486,9 @@
   <data name="Once cars start selling here they will be listed on this page, with what they actually went for." xml:space="preserve">
     <value>Sapo makinat të fillojnë të shiten këtu, ato do të shfaqen në këtë faqe bashkë me çmimin real të shitjes.</value>
   </data>
+  <data name="One file with everything we hold about your account: profile, listings, offers, messages, reviews, favourites and sign-in history." xml:space="preserve">
+    <value>Një skedar me gjithçka që mbajmë për llogarinë tuaj: profilin, njoftimet, ofertat, mesazhet, vlerësimet, të preferuarat dhe historikun e kyçjeve.</value>
+  </data>
   <data name="One form on your profile for a private sale, or register a business account if you are a dealer." xml:space="preserve">
     <value>Një formular në profilin tuaj për një shitje private, ose regjistroni një llogari biznesi nëse jeni tregtar.</value>
   </data>
@@ -1863,6 +1890,9 @@
   </data>
   <data name="Reviews ({0})" xml:space="preserve">
     <value>Vlerësimet ({0})</value>
+  </data>
+  <data name="Reviews and messages you wrote stay, under an anonymous name." xml:space="preserve">
+    <value>Vlerësimet dhe mesazhet që keni shkruar mbeten, nën një emër anonim.</value>
   </data>
   <data name="Reviews appear here once someone has bought a car from this seller." xml:space="preserve">
     <value>Vlerësimet shfaqen këtu sapo dikush të ketë blerë një makinë nga ky shitës.</value>
@@ -2338,6 +2368,9 @@
   <data name="This cannot be undone from the site." xml:space="preserve">
     <value>Kjo nuk mund të zhbëhet nga faqja.</value>
   </data>
+  <data name="This cannot be undone. What happens:" xml:space="preserve">
+    <value>Kjo nuk mund të zhbëhet. Çfarë ndodh:</value>
+  </data>
   <data name="This car has been sold" xml:space="preserve">
     <value>Kjo makinë është shitur</value>
   </data>
@@ -2400,6 +2433,9 @@
   </data>
   <data name="Tick ✕ on any photo to remove it when you save. New uploads are added to the end." xml:space="preserve">
     <value>Shënoni ✕ te çdo foto për ta hequr kur të ruani. Ngarkimet e reja shtohen në fund.</value>
+  </data>
+  <data name="Tick the box to confirm you understand what erasing your account does." xml:space="preserve">
+    <value>Shënoni kutinë për të konfirmuar që e kuptoni çfarë bën fshirja e llogarisë.</value>
   </data>
   <data name="Toggle navigation" xml:space="preserve">
     <value>Hap ose mbyll menunë</value>
@@ -2703,6 +2739,12 @@
   </data>
   <data name="You must accept the seller terms to continue." xml:space="preserve">
     <value>Duhet të pranoni kushtet e shitësit për të vazhduar.</value>
+  </data>
+  <data name="Your account has been erased. Thank you for using PremiumMotors." xml:space="preserve">
+    <value>Llogaria juaj u fshi. Faleminderit që përdorët PremiumMotors.</value>
+  </data>
+  <data name="Your name, email address and phone numbers are removed, and you are signed out everywhere." xml:space="preserve">
+    <value>Emri, adresa e emailit dhe numrat e telefonit hiqen, dhe shkyçeni nga të gjitha pajisjet.</value>
   </data>
   <data name="Your NIPT" xml:space="preserve">
     <value>NIPT-i juaj</value>

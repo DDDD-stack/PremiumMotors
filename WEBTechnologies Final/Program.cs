@@ -120,7 +120,9 @@ builder.Services.AddSingleton<
     Microsoft.AspNetCore.Mvc.DataAnnotations.IValidationAttributeAdapterProvider,
     LocalizedValidationAdapterProvider>();
 
-builder.Services.AddControllersWithViews()
+builder.Services.AddControllersWithViews(options =>
+        // Signs out every browser of an account that has been erased or disabled.
+        options.Filters.Add<ActiveAccountFilter>())
     .AddViewLocalization()
     // Validation messages and [Display] labels go to the SAME shared file as everything
     // else. The default sends them to a per-model resource file, which would scatter

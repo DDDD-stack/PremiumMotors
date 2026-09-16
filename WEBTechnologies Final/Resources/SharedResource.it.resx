@@ -283,6 +283,9 @@
   <data name="An account with that email already exists." xml:space="preserve">
     <value>Esiste già un account con quella email.</value>
   </data>
+  <data name="An administrator account cannot be erased from this page." xml:space="preserve">
+    <value>Un account amministratore non può essere cancellato da questa pagina.</value>
+  </data>
   <data name="An email address and a phone number" xml:space="preserve">
     <value>Un indirizzo email e un numero di telefono</value>
   </data>
@@ -483,6 +486,9 @@
   </data>
   <data name="CNG" xml:space="preserve">
     <value>Metano</value>
+  </data>
+  <data name="Completed sales stay in the sold history, without photos and without your name." xml:space="preserve">
+    <value>Le vendite concluse restano nello storico delle vendite, senza foto e senza il tuo nome.</value>
   </data>
   <data name="CVT" xml:space="preserve">
     <value>CVT</value>
@@ -748,6 +754,12 @@
   <data name="Doors" xml:space="preserve">
     <value>Porte</value>
   </data>
+  <data name="Download my data" xml:space="preserve">
+    <value>Scarica i miei dati</value>
+  </data>
+  <data name="Download your data" xml:space="preserve">
+    <value>Scarica i tuoi dati</value>
+  </data>
   <data name="Draft" xml:space="preserve">
     <value>Bozza</value>
   </data>
@@ -811,6 +823,12 @@
   <data name="Enter your trading address." xml:space="preserve">
     <value>Inserisci il tuo indirizzo commerciale.</value>
   </data>
+  <data name="Erase my account" xml:space="preserve">
+    <value>Cancella il mio account</value>
+  </data>
+  <data name="Erase your account" xml:space="preserve">
+    <value>Cancella il tuo account</value>
+  </data>
   <data name="Every business account gets a" xml:space="preserve">
     <value>Ogni account aziendale ottiene una</value>
   </data>
@@ -831,6 +849,9 @@
   </data>
   <data name="Every listing names its seller and says plainly whether they are a private seller or a dealership." xml:space="preserve">
     <value>Ogni annuncio indica il suo venditore e dice chiaramente se si tratta di un privato o di una concessionaria.</value>
+  </data>
+  <data name="Every photo you uploaded is deleted." xml:space="preserve">
+    <value>Ogni foto che hai caricato viene eliminata.</value>
   </data>
   <data name="Everything a dealer account needs, collected once. Your seller panel is unlocked as soon as you finish." xml:space="preserve">
     <value>Tutto ciò che serve a un account rivenditore, raccolto una volta sola. Il pannello venditore si sblocca appena hai finito.</value>
@@ -1008,6 +1029,9 @@
   </data>
   <data name="I accept the seller terms" xml:space="preserve">
     <value>Accetto le condizioni per i venditori</value>
+  </data>
+  <data name="I understand my account will be erased and this cannot be undone" xml:space="preserve">
+    <value>Capisco che il mio account verrà cancellato e che non è possibile tornare indietro</value>
   </data>
   <data name="If a car has been reduced, the listing says so and shows what it used to cost. No quietly edited numbers." xml:space="preserve">
     <value>Se un'auto è stata ribassata, l'annuncio lo dice e mostra quanto costava prima. Niente cifre modificate di nascosto.</value>
@@ -1462,6 +1486,9 @@
   <data name="Once cars start selling here they will be listed on this page, with what they actually went for." xml:space="preserve">
     <value>Quando le auto inizieranno a vendersi qui, appariranno in questa pagina con il prezzo a cui sono state effettivamente vendute.</value>
   </data>
+  <data name="One file with everything we hold about your account: profile, listings, offers, messages, reviews, favourites and sign-in history." xml:space="preserve">
+    <value>Un unico file con tutto ciò che conserviamo sul tuo account: profilo, annunci, offerte, messaggi, recensioni, preferiti e cronologia degli accessi.</value>
+  </data>
   <data name="One form on your profile for a private sale, or register a business account if you are a dealer." xml:space="preserve">
     <value>Un modulo nel tuo profilo per una vendita privata, oppure registra un account aziendale se sei un rivenditore.</value>
   </data>
@@ -1863,6 +1890,9 @@
   </data>
   <data name="Reviews ({0})" xml:space="preserve">
     <value>Recensioni ({0})</value>
+  </data>
+  <data name="Reviews and messages you wrote stay, under an anonymous name." xml:space="preserve">
+    <value>Le recensioni e i messaggi che hai scritto restano, con un nome anonimo.</value>
   </data>
   <data name="Reviews appear here once someone has bought a car from this seller." xml:space="preserve">
     <value>Le recensioni compaiono qui dopo che qualcuno ha comprato un'auto da questo venditore.</value>
@@ -2338,6 +2368,9 @@
   <data name="This cannot be undone from the site." xml:space="preserve">
     <value>Questa operazione non è annullabile dal sito.</value>
   </data>
+  <data name="This cannot be undone. What happens:" xml:space="preserve">
+    <value>Non è possibile tornare indietro. Cosa succede:</value>
+  </data>
   <data name="This car has been sold" xml:space="preserve">
     <value>Questa auto è stata venduta</value>
   </data>
@@ -2400,6 +2433,9 @@
   </data>
   <data name="Tick ✕ on any photo to remove it when you save. New uploads are added to the end." xml:space="preserve">
     <value>Spunta ✕ su una foto per rimuoverla al salvataggio. I nuovi caricamenti vengono aggiunti in fondo.</value>
+  </data>
+  <data name="Tick the box to confirm you understand what erasing your account does." xml:space="preserve">
+    <value>Spunta la casella per confermare di aver capito cosa comporta la cancellazione dell'account.</value>
   </data>
   <data name="Toggle navigation" xml:space="preserve">
     <value>Apri o chiudi il menu</value>
@@ -2703,6 +2739,12 @@
   </data>
   <data name="You must accept the seller terms to continue." xml:space="preserve">
     <value>Devi accettare le condizioni per i venditori per continuare.</value>
+  </data>
+  <data name="Your account has been erased. Thank you for using PremiumMotors." xml:space="preserve">
+    <value>Il tuo account è stato cancellato. Grazie per aver usato PremiumMotors.</value>
+  </data>
+  <data name="Your name, email address and phone numbers are removed, and you are signed out everywhere." xml:space="preserve">
+    <value>Nome, indirizzo email e numeri di telefono vengono rimossi, e vieni disconnesso ovunque.</value>
   </data>
   <data name="Your NIPT" xml:space="preserve">
     <value>Il tuo NIPT</value>
