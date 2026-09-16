@@ -7,7 +7,7 @@
     var pages = (int)Math.Ceiling(total / (double)Math.Max(pageSize, 1));
     var search = ViewData["Search"] as string;
     var windowDays = (int)(ViewData["WindowDays"] ?? 14);
-    var closedSellers = ViewData["ClosedSellers"] as List<int> ?? new();
+    var closedSellers = ViewData["ClosedSellers"] as Dictionary<int, bool> ?? new();
 }
 
 <div class="pm-page-head">
@@ -71,14 +71,15 @@ else
             @* A seller who has closed their account keeps their completed sales on this page -
                the sale happened, and the price is the reason anyone reads this - but their
                photographs went with the account, so the card renders without one. *@
-            var sellerClosed = car.OwnerId is int owner && closedSellers.Contains(owner);
+            var sellerClosed = car.OwnerId is int owner && closedSellers.ContainsKey(owner);
+            var closedDealer = sellerClosed && closedSellers[car.OwnerId!.Value];
 
             <div class="col">
                 <div class="pm-sold-wrap @(sellerClosed ? "is-closed" : null)">
                     <partial name="_CarCard" model="car" />
                     @if (sellerClosed)
                     {
-                        <div class="pm-sold-closed">@L["Dealership closed"]</div>
+                        <div class="pm-sold-closed">@(closedDealer ? L["Dealership closed"] : L["Seller account closed"])</div>
                     }
                     @if (car.SoldPrice is decimal sold)
                     {

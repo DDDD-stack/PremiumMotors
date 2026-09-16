@@ -1052,7 +1052,7 @@
     <value>Nëse pranojnë, shkëmbeni të dhënat e kontaktit dhe makina rezervohet për ju. Pagesa dhe dorëzimi bëhen drejtpërdrejt mes jush — PremiumMotors nuk i mban kurrë paratë tuaja.</value>
   </data>
   <data name="If you accept: the agreed price is published on Recently sold for 14 days, and you and the buyer each get the other's email and phone number." xml:space="preserve">
-    <value>Nëse pranoni: çmimi i rënë dakord publikohet te Shitjet e fundit për 14 ditë, dhe ju e blerësi merrni secili emailin dhe numrin e telefonit të tjetrit.</value>
+    <value>Nëse pranoni: çmimi i rënë dakord publikohet te Shitur së fundmi për 14 ditë, dhe ju e blerësi merrni secili emailin dhe numrin e telefonit të tjetrit.</value>
   </data>
   <data name="If you do not want to accept, you can sign out. You can also download your data or erase your account without accepting." xml:space="preserve">
     <value>Nëse nuk dëshironi të pranoni, mund të dilni. Mund edhe t'i shkarkoni të dhënat ose ta fshini llogarinë pa pranuar.</value>
@@ -1083,6 +1083,9 @@
   </data>
   <data name="JPEG, PNG, GIF or WebP. Square images look best; anything else is cropped to the centre." xml:space="preserve">
     <value>JPEG, PNG, GIF ose WebP. Fotot katrore duken më mirë; çdo gjë tjetër pritet nga qendra.</value>
+  </data>
+  <data name="Last updated: 16 September 2026" xml:space="preserve">
+    <value>Përditësuar më: 16 shtator 2026</value>
   </data>
   <data name="LPG" xml:space="preserve">
     <value>Gaz (LPG)</value>
@@ -1720,6 +1723,9 @@
   <data name="Privacy" xml:space="preserve">
     <value>Privatësia</value>
   </data>
+  <data name="Privacy Policy" xml:space="preserve">
+    <value>Politika e Privatësisë</value>
+  </data>
   <data name="Private offers" xml:space="preserve">
     <value>Oferta private</value>
   </data>
@@ -1929,6 +1935,9 @@
   </data>
   <data name="Runs until" xml:space="preserve">
     <value>Zgjat deri më</value>
+  </data>
+  <data name="Seller account closed" xml:space="preserve">
+    <value>Llogaria e shitësit është mbyllur</value>
   </data>
   <data name="Sign out" xml:space="preserve">
     <value>Dil</value>
@@ -2236,6 +2245,9 @@
   <data name="Terms" xml:space="preserve">
     <value>Kushtet</value>
   </data>
+  <data name="Terms of Service" xml:space="preserve">
+    <value>Kushtet e Shërbimit</value>
+  </data>
   <data name="Thanks - your review is now on the seller's profile." xml:space="preserve">
     <value>Faleminderit - vlerësimi juaj tani është në profilin e shitësit.</value>
   </data>
@@ -2422,6 +2434,9 @@
   <data name="This is a personal account. Business details apply to dealer accounts." xml:space="preserve">
     <value>Kjo është një llogari personale. Të dhënat e biznesit vlejnë për llogaritë e tregtarëve.</value>
   </data>
+  <data name="This is a translation. If it differs from the English version, the &lt;a href='{0}'&gt;English version&lt;/a&gt; governs." xml:space="preserve">
+    <value>Ky është përkthim. Nëse ndryshon nga versioni anglisht, mbizotëron &lt;a href='{0}'&gt;versioni anglisht&lt;/a&gt;.</value>
+  </data>
   <data name="This is already a business account." xml:space="preserve">
     <value>Kjo është tashmë një llogari biznesi.</value>
   </data>
@@ -2556,6 +2571,9 @@
   </data>
   <data name="VAT number and website are optional. We record these details; we do not check them against the business register, and no account on this site carries a verified badge." xml:space="preserve">
     <value>Numri i TVSH-së dhe faqja e internetit janë opsionale. Ne i regjistrojmë këto të dhëna; nuk i verifikojmë kundrejt regjistrit të biznesit, dhe asnjë llogari në këtë faqe nuk mban shenjë verifikimi.</value>
+  </data>
+  <data name="Version: {0}" xml:space="preserve">
+    <value>Versioni: {0}</value>
   </data>
   <data name="VIN" xml:space="preserve">
     <value>VIN</value>

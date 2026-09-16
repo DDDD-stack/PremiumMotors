@@ -1,0 +1,434 @@
+@{
+    @* PËRKTHIM SHQIP i Politikës së Privatësisë. Teksti që mbizotëron është ai anglisht,
+       _Privacy.en.cshtml, dhe ky ndryshon bashkë me të. Neni 8 emërton ofruesin e pritjes dhe
+       vendin; nëse aplikacioni vendoset gjetkë, nenet 8 dhe 9 duhen korrigjuar në të tri gjuhët.
+       Albanian translation of the English policy, which governs. *@
+    var termsUrl = Url.Action("Terms", "Home") ?? "/Home/Terms";
+    var securityUrl = Url.Action("Security", "Account") ?? "/Account/Security";
+}
+
+<p>
+    Kjo politikë shpjegon çfarë bën PremiumMotors me të dhënat personale. Është shkruar që të
+    përputhet me atë që programi bën në të vërtetë. Kur diçka nuk është ndërtuar ende, e thotë.
+</p>
+
+<h2 class="h5 mt-4">1. Kush kontrollon të dhënat tuaja</h2>
+<p>
+    <strong>Denis Robi</strong> është kontrolluesi i të dhënave.<br />
+    Kontakti për çdo pyetje ose kërkesë për privatësinë:
+    <a href="mailto:drobi840@gmail.com">drobi840@gmail.com</a>
+</p>
+<p>
+    Nuk është caktuar Zyrtar për Mbrojtjen e të Dhënave. Në këtë shkallë nuk kërkohet: nuk
+    jemi autoritet publik, dhe veprimtaria jonë kryesore nuk është monitorim në shkallë të
+    gjerë ose përpunim në shkallë të gjerë i të dhënave të kategorive të veçanta.
+</p>
+
+<h2 class="h5 mt-4">2. Çfarë mbledhim</h2>
+
+<h3 class="h6 mt-3">2.1 Llogaria</h3>
+<p>
+    Emrin e përdoruesit, adresën e emailit, numrin e telefonit, fjalëkalimin, rolin e
+    llogarisë, nëse llogaria është aktive, datën e regjistrimit, kyçjen e fundit dhe datën e
+    verifikimit të emailit.
+</p>
+<p>
+    <strong>Fjalëkalimet nuk ruhen kurrë në formë të lexueshme.</strong> Ato hash-ohen me
+    PBKDF2-HMAC-SHA256, me një kripë (salt) unike për çdo llogari dhe 210.000 përsëritje.
+</p>
+
+<h3 class="h6 mt-3">2.2 Të dhënat e pranimit dhe të fshirjes</h3>
+<p>
+    Datën kur pranuat Kushtet dhe cilin version pranuat; dhe, nëse llogaria juaj fshihet
+    ndonjëherë, datën kur u krye kjo. Këto ruhen si të dhëna llogaridhënieje — të mund të
+    tregosh se një kërkesë u zbatua është pjesë e zbatimit të saj.
+</p>
+
+<h3 class="h6 mt-3">2.3 Profili i shitësit</h3>
+<p>
+    Nëse llogaria shet, datën kur u aktivizua shitja, privat ose tregtar, emrin e shfaqur,
+    qytetin ose zonën, foton e profilit, mesataren e vlerësimeve dhe numrin e tyre.
+</p>
+
+<h3 class="h6 mt-3">2.4 Numri opsional i telefonit publik</h3>
+<p>
+    Shitësi mund të zgjedhë të publikojë një numër telefoni. Nëse vendoset, <strong>ai shfaqet
+    në çdo njoftim të atij shitësi dhe është i dukshëm për vizitorët që nuk janë të
+    kyçur.</strong> Është opsional, fillon bosh, dhe fshirja e tij e heq nga faqja. Meqë ndodhet
+    në një faqe publike, mund të kopjohet, indeksohet ose nxirret; heqja e tij këtu nuk heq
+    kopjet që të tjerët kanë marrë tashmë.
+</p>
+<p>
+    Ky është qëllimisht i ndarë nga numri i telefonit në llogarinë tuaj, i cili mbetet privat
+    derisa të pranohet një ofertë mes jush dhe një përdoruesi tjetër (neni 5.3).
+</p>
+
+<h3 class="h6 mt-3">2.5 Llogaritë e biznesit</h3>
+<p>
+    Numrin e regjistrimit të biznesit (NIPT), numrin e TVSH-së, adresën tregtare, faqen e
+    internetit dhe personin e kontaktit. <strong>Ne nuk i kontrollojmë këto kundrejt asnjë
+    regjistri dhe në këtë faqe nuk ka shenjë verifikimi për askënd.</strong>
+</p>
+
+<h3 class="h6 mt-3">2.6 Faqja e autosallonit</h3>
+<p>
+    Emrin, adresën e faqes, tekstin prezantues, logon, banerin, qytetin, shtetin, adresën,
+    telefonin, faqen e internetit dhe orarin. Të gjitha janë publike.
+</p>
+
+<h3 class="h6 mt-3">2.7 Njoftimet</h3>
+<p>
+    Gjithçka që vendos shitësi: të dhënat dhe specifikimin e automjetit, përshkrimin, çmimin e
+    kërkuar, fotot, vendndodhjen, dhe pas shitjes blerësin, çmimin e rënë dakord dhe datën.
+    Numri i identifikimit të automjetit (VIN), nëse shitësi e vendos, <strong>ruhet por nuk
+    publikohet kurrë</strong>.
+</p>
+
+<h3 class="h6 mt-3">2.8 Ofertat</h3>
+<p>
+    Blerësin, shumën, mesazhin opsional të blerësit, statusin, datat dhe përgjigjen me shkrim
+    të shitësit. <strong>Ofertat janë private për shitësin që i mori.</strong>
+</p>
+
+<h3 class="h6 mt-3">2.9 Mesazhet</h3>
+<p>
+    Tekstin e plotë të bisedave mes blerësit dhe shitësit, me njoftimin, dërguesin dhe kohën e
+    leximit. Administratorët mund të kenë qasje në biseda kur është e nevojshme për të operuar,
+    siguruar ose mbështetur shërbimin, ose për të trajtuar një raportim.
+</p>
+
+<h3 class="h6 mt-3">2.10 Vlerësimet</h3>
+<p>
+    Notën, komentin, emrin e përdoruesit të vlerësuesit, njoftimin, datat dhe përgjigjen
+    publike të shitësit. Vlerësimet janë publike. Një vlerësim është i mundur vetëm kur njoftimi
+    u shit, vlerësuesi është blerësi i regjistruar, dhe një vlerësim për shitje. Heqja
+    trajtohet në nenin 16 të <a href="@termsUrl">Kushteve</a>.
+</p>
+
+<h3 class="h6 mt-3">2.11 Të preferuarat, historiku i çmimeve, shikimet</h3>
+<p>
+    Njoftimet e ruajtura. Çdo ndryshim çmimi në një njoftim, me datën — pjesë të të cilave
+    shfaqen publikisht si tregues të uljes së çmimit. Shikimet e njoftimeve numërohen
+    <strong>në total, për njoftim dhe për ditë</strong>: ne nuk regjistrojmë kush e pa një
+    njoftim. Përdoret një sesion shfletuesi për të mos numëruar dy herë të njëjtën vizitë, dhe
+    shikimet e vetë shitësit përjashtohen.
+</p>
+
+<h3 class="h6 mt-3">2.12 Sesionet dhe tokenët</h3>
+<p>
+    Gjendjen e sesionit në server, të mbajtur në bazën tonë të të dhënave dhe të lidhur me një
+    cookie të errët. Mund të përmbajë ID-në e përdoruesit, emrin e përdoruesit, shenjat e
+    shitësit ose administratorit, ID-të e njoftimeve të para së fundmi dhe shenjat që
+    përdoren për të mos numëruar dy herë shikimet.
+</p>
+<p>
+    Për kyçjen nga aplikacioni celular dhe API-ja, të dhënat e refresh-token-ëve mbajnë një
+    <strong>hash</strong> të tokenit, kohën e krijimit, skadimit dhe revokimit, dhe një
+    etiketë pajisjeje të marrë nga shfletuesi ose aplikacioni. Të dhënat e verifikimit të
+    emailit dhe të rivendosjes së fjalëkalimit mbajnë një hash, qëllimin, skadimin dhe kur u
+    përdor. <strong>Vetë vlerat e tokenëve nuk ruhen kurrë.</strong>
+</p>
+
+<h3 class="h6 mt-3">2.13 Regjistrat (logs) dhe adresat IP</h3>
+<p>
+    Regjistrat e aplikacionit shënojnë metodën e kërkesës, adresën, statusin e përgjigjes dhe
+    sa zgjati. <strong>Ato nuk shënojnë adresa IP.</strong>
+</p>
+<p>
+    Për kërkesat nga vizitorë që nuk janë të kyçur, adresa IP përdoret në memorie si çelës për
+    kufizimin e shpeshtësisë së kërkesave dhe nuk ruhet nga aplikacioni. Ofruesi ynë i pritjes
+    mund të regjistrojë adresa IP në mënyrë të pavarur në regjistrat e vet të infrastrukturës.
+</p>
+
+<h3 class="h6 mt-3">2.14 Të dhënat e reklamave</h3>
+<p>
+    Kur jepet një vendosje me pagesë, ne ruajmë një faturë: një kod reference, titullin e
+    njoftimit siç ishte në atë kohë, llojin e vendosjes, datat e fillimit dhe mbarimit, kush e
+    dha dhe çmimin, nëse ka. Këto të dhëna mbeten edhe pas mbarimit të vendosjes dhe fshirjes
+    së njoftimit, sepse janë të dhëna transaksioni.
+</p>
+
+<h2 class="h5 mt-4">3. Çfarë nuk mbledhim</h2>
+<ul>
+    <li>Asnjë të dhënë karte ose bankare. Nuk ka ofrues pagesash të lidhur me këtë faqe.</li>
+    <li>Asnjë dokument identiteti dhe asnjë datëlindje.</li>
+    <li>Asnjë gjurmues reklamash ose analitike, dhe asnjë cookie të palëve të treta.</li>
+    <li>Asnjë gjurmim mes faqeve dhe asnjë "fingerprinting".</li>
+    <li>Asnjë të dhënë vendndodhjeje përtej qytetit që shkruan përdoruesi.</li>
+    <li>Asnjë skript, font ose stil të ngarkuar nga domeni i dikujt tjetër — gjithçka që
+        shërben faqja vjen nga vetë faqja.</li>
+    <li>Asnjë të dhënë të kategorive të veçanta.</li>
+</ul>
+<p class="text-muted small">
+    Nëse ndonjë nga këto ndryshon, ky nen ndryshon para se teknologjia e re të vihet në punë.
+</p>
+
+<h2 class="h5 mt-4">4. Pse i përpunojmë dhe mbi çfarë baze</h2>
+<ul>
+    <li><strong>Për të zbatuar kontratën tonë me ju</strong> — krijimi dhe mbajtja e llogarisë
+        suaj, publikimi i njoftimeve, dërgimi i ofertave dhe mesazheve, të preferuarat, faqet e
+        autosalloneve dhe vlerësimet.</li>
+    <li><strong>Interesat tona të ligjshme</strong> — mbajtja e shërbimit të sigurt,
+        parandalimi i mashtrimit dhe abuzimit, kufizimi i kërkesave, zgjidhja e problemeve,
+        publikimi i çmimeve dhe historikut të shitjeve që tregu të jetë i dobishëm për
+        blerësit, dhe dhënia e statistikave të shikimeve dhe ofertave për shitësit mbi
+        njoftimet e tyre.</li>
+    <li><strong>Detyrimi ligjor dhe llogaridhënia</strong> — mbajtja e të dhënave të pranimit
+        të kushteve, të kërkesave për fshirje dhe të transaksioneve të reklamave.</li>
+    <li><strong>Pëlqimi</strong> — vetëm kur e kërkojmë. Ne nuk dërgojmë email marketingu dhe
+        nuk do ta bënim pa pyetur më parë.</li>
+</ul>
+
+<h2 class="h5 mt-4">5. Çfarë mund të shohin të tjerët</h2>
+
+<h3 class="h6 mt-3">5.1 Publike për këdo, përfshirë vizitorët e pakyçur</h3>
+<ul>
+    <li>Emrin e shfaqur të shitësit, ose emrin e përdoruesit kur nuk ka emër të shfaqur</li>
+    <li>Nëse shitësi është privat apo autosallon</li>
+    <li>Foton e profilit, logon dhe banerin e autosallonit</li>
+    <li>Mesataren e vlerësimeve dhe numrin e tyre</li>
+    <li>Vlerësimet, tekstin e tyre dhe emrin e përdoruesit të çdo vlerësuesi</li>
+    <li>Numrin e telefonit publik, nëse shitësi zgjodhi ta publikojë</li>
+    <li>Emrin, adresën, telefonin, faqen e internetit, orarin dhe tekstin prezantues të autosallonit</li>
+    <li>Njoftimet, fotot, specifikimin dhe çmimin e kërkuar</li>
+    <li>Historikun e ndryshimeve të çmimit dhe treguesit e uljes së çmimit</li>
+    <li><strong>Shitjet e përfunduara dhe çmimin e rënë dakord</strong>, për 14 ditë</li>
+    <li>Nëse një njoftim është vendosje me pagesë</li>
+</ul>
+<p>
+    Çdo gjë publike mund të indeksohet nga motorët e kërkimit dhe të kopjohet nga palë të treta.
+</p>
+
+<h3 class="h6 mt-3">5.2 Private</h3>
+<p>
+    Shumat dhe mesazhet e ofertave janë të dukshme vetëm për shitësin që i mori, dhe për
+    administratorët. Bisedat janë të dukshme për pjesëmarrësit e tyre, dhe për administratorët
+    kur është e nevojshme. VIN-et, numrat e regjistrimit dhe të TVSH-së, adresat tregtare dhe
+    emrat e personave të kontaktit nuk publikohen.
+</p>
+
+<h3 class="h6 mt-3">5.3 Të dhënat e kontaktit kur pranohet një ofertë</h3>
+<p>
+    <strong>Kur shitësi pranon një ofertë, blerësi dhe shitësi marrin secili adresën e emailit
+    dhe numrin e telefonit të tjetrit</strong>, që të mund të rregullojnë shitjen. Kjo është
+    një dhënie e të dhënave tuaja personale një përdoruesi tjetër, e shkaktuar nga një veprim
+    që bën njëri prej jush. Ofertat e refuzuara dhe të tërhequra nuk lëshojnë asgjë.
+</p>
+
+<h2 class="h5 mt-4">6. Çmimet e publikuara të shitjes</h2>
+<p>
+    Kur një shitje përfundon, ne publikojmë çmimin e rënë dakord në faqen Shitur së fundmi.
+    Shitësi e mëson këtë në ekranin ku pranon ofertën, jo vetëm këtu.
+</p>
+<p>
+    Ajo faqe shfaq 14 ditët e fundit. <strong>14 ditët janë rregull shfaqjeje, jo rregull
+    fshirjeje</strong> — shitjet më të vjetra nuk shfaqen më atje, por e dhëna, çmimi dhe
+    historiku i çmimit ruhen.
+</p>
+
+<h2 class="h5 mt-4">7. Cookies dhe ruajtja në shfletues</h2>
+<p>Përdoret vetëm ruajtje thelbësore. Ka tre cookies dhe një shenjë në shfletues.</p>
+<ul>
+    <li><strong>Cookie e sesionit</strong> — një identifikues i errët për sesionin tuaj në
+        server. HttpOnly, SameSite=Lax, Secure mbi HTTPS, dhe skadon pas rreth dy orësh
+        mosveprimi.</li>
+    <li><strong>Cookie kundër falsifikimit</strong> — mbron formularët nga kërkesat e
+        falsifikuara mes faqeve.</li>
+    <li><strong>Cookie e gjuhës</strong> — vendoset vetëm kur zgjidhni një gjuhë nga
+        zgjedhësi. Mban një kod gjuhe, zgjat rreth një vit dhe lexohet nga faqja, prandaj nuk
+        është HttpOnly.</li>
+    <li><strong>sessionStorage i shfletuesit</strong> — një shenjë, që animacioni i hyrjes të
+        shfaqet një herë për sesion shfletuesi. Mbetet në shfletuesin tuaj dhe nuk na dërgohet kurrë.</li>
+</ul>
+<p>
+    <strong>Asnjë cookie analitike, asnjë cookie reklamash, asnjë cookie e palëve të treta,
+    asnjë "fingerprinting".</strong> Prandaj kjo faqe nuk ka banner për cookies: këtu nuk ka
+    asgjë për të dhënë pëlqim përtej asaj që është rreptësisht e nevojshme që faqja të punojë.
+</p>
+
+<h2 class="h5 mt-4">8. Kush tjetër i përpunon të dhënat tuaja</h2>
+<p>
+    <strong>Supabase</strong> — pret bazën tonë të të dhënave PostgreSQL dhe ruan fotot e
+    ngarkuara. Rajoni: <strong>Evropa Perëndimore (Irlandë)</strong>.
+</p>
+<p>
+    <strong>Microsoft Azure App Service</strong> — pret vetë aplikacionin. Rajoni:
+    <strong>Evropa Veriore (Irlandë)</strong>. Infrastruktura e pritjes mund të regjistrojë
+    adresa IP dhe informacion teknik të kërkesave në regjistrat e veta.
+</p>
+<p>
+    <strong>Resend</strong> — do të dërgonte emailet e verifikimit dhe të rivendosjes së
+    fjalëkalimit. <strong>Emaili nuk është i aktivizuar. Nuk është konfiguruar asnjë ofrues
+    emaili, kështu që nuk i dërgohet email askujt dhe Resend aktualisht nuk merr asnjë të
+    dhënë për ju.</strong> Ky nen do të përditësohet para se të ndryshojë kjo.
+</p>
+<p>
+    <strong>Sentry</strong> — monitorimi i gabimeve. Është i pranishëm në kod por
+    <strong>joaktiv</strong>: pa një çelës të konfiguruar nuk bën asnjë thirrje në rrjet. Nëse
+    aktivizohet ndonjëherë, është konfiguruar të mos dërgojë të dhëna personale ose përmbajtjen
+    e kërkesave.
+</p>
+<p>
+    Kjo është lista e plotë. <strong>Asnjë ofrues pagesash, asnjë ofrues analitike, asnjë rrjet
+    reklamash, asnjë tregtar të dhënash.</strong>
+</p>
+
+<h2 class="h5 mt-4">9. Transferimet ndërkombëtare</h2>
+<p>
+    Baza jonë e të dhënave, ruajtja e skedarëve dhe pritja e aplikacionit ndodhen të gjitha në
+    <strong>Irlandë, brenda Zonës Ekonomike Evropiane</strong>. Ne nuk i transferojmë të dhënat
+    tuaja personale jashtë ZEE-së.
+</p>
+
+<h2 class="h5 mt-4">10. Sa kohë i mbajmë</h2>
+<p>
+    Ne nuk kemi një plan të përgjithshëm fshirjeje automatike, dhe preferojmë ta themi këtë
+    sesa të publikojmë një numër që programi nuk e zbaton. Çfarë ndodh në të vërtetë:
+</p>
+<ul>
+    <li><strong>Të dhënat e llogarisë dhe profilit</strong> — derisa të na kërkoni t'i fshijmë.</li>
+    <li><strong>Njoftimet, ofertat, mesazhet, vlerësimet, të preferuarat dhe historiku i
+        çmimeve</strong> — ruhen sa ekziston llogaria, dhe fshihen siç përshkruhet në nenin 11.</li>
+    <li><strong>Shitjet e përfunduara</strong> — ruhen pa afat si të dhëna transaksioni.
+        Shfaqen te Shitur së fundmi për 14 ditë.</li>
+    <li><strong>Sesionet në web</strong> — dy orë mosveprim, pastaj hiqen automatikisht.</li>
+    <li><strong>Refresh-token-ët</strong> — 30 ditë, dhe revokohen menjëherë kur ndryshoni
+        fjalëkalimin.</li>
+    <li><strong>Tokenët e verifikimit dhe të rivendosjes së fjalëkalimit</strong> — derisa të
+        skadojnë ose të përdoren.</li>
+    <li><strong>Regjistrat e aplikacionit</strong> — 14 ditë, pastaj mbishkruhen.</li>
+    <li><strong>Të dhënat e reklamave</strong> — aq sa kërkojnë rregullat e kontabilitetit dhe
+        tatimeve.</li>
+    <li><strong>Datat e pranimit të kushteve dhe të fshirjes</strong> — ruhen pas
+        anonimizimit, sepse janë dëshmia që vepruam si duhet.</li>
+</ul>
+
+<h2 class="h5 mt-4">11. Fshirja e llogarisë</h2>
+<p>
+    Mund ta fshini vetë llogarinë nga faqja <a href="@securityUrl">Siguria</a> e profilit tuaj,
+    e cila ju kërkon sërish fjalëkalimin për të konfirmuar që jeni ju. Nëse nuk mund të kyçeni,
+    shkruani në <a href="mailto:drobi840@gmail.com">drobi840@gmail.com</a>. Sinqerisht, ja çfarë
+    do të thotë fshirja:
+</p>
+<ul>
+    <li>Emri i përdoruesit, emaili, numri i telefonit dhe numri i telefonit publik fshihen, dhe
+        shkyçeni nga të gjitha pajisjet.</li>
+    <li>Emri, teksti prezantues, adresa, telefoni, faqja e internetit dhe orari i autosallonit
+        boshatisen.</li>
+    <li><strong>Çdo imazh që keni ngarkuar fshihet</strong> — fotoja e profilit, logoja dhe
+        baneri i autosallonit, dhe fotot e çdo njoftimi që keni publikuar.</li>
+    <li><strong>Shitjet e përfunduara mbeten</strong> në historikun e shitjeve, pa foto dhe pa
+        ju identifikuar, të shënuara si llogari e mbyllur. Një shitje që ka ndodhur është një e
+        dhënë ku pala tjetër ka interes të ligjshëm.</li>
+    <li>Vlerësimet që keni shkruar për shitës të tjerë, dhe mesazhet që keni dërguar, mbeten nën
+        një emër anonim — kurrë emrin tuaj — që vlerësimi i një shitësi të mos rishkruhet nga
+        një blerës që largohet, dhe ana tjetër e bisedës të ketë ende kuptim.</li>
+    <li>Ne regjistrojmë datën kur u krye fshirja.</li>
+</ul>
+<p>
+    E drejta e fshirjes i nënshtrohet përjashtimeve që lejon ligji, përfshirë kur duhet të
+    mbajmë diçka për të vendosur, ushtruar ose mbrojtur një pretendim ligjor.
+</p>
+
+<h2 class="h5 mt-4">12. Marrja e një kopjeje të të dhënave tuaja</h2>
+<p>
+    Shkarkojeni vetë nga faqja <a href="@securityUrl">Siguria</a> e profilit tuaj: një skedar,
+    në një format të zakonshëm që lexohet nga kompjuteri, i disponueshëm menjëherë. Mund ta
+    kërkoni edhe me email.
+</p>
+<p>
+    Përmban llogarinë dhe historikun e kyçjeve, pranimin e kushteve, të dhënat e shitësit, të
+    biznesit dhe të autosallonit, njoftimet dhe historikun e çmimeve të tyre, ofertat që keni
+    bërë dhe ofertat e bëra për njoftimet tuaja, bisedat dhe mesazhet, vlerësimet që keni
+    shkruar dhe vlerësimet e shkruara për ju, të preferuarat dhe çdo të dhënë reklame. Të
+    dhënat e kontaktit të njerëzve të tjerë nuk përfshihen.
+</p>
+
+<h2 class="h5 mt-4">13. Të drejtat tuaja</h2>
+<p>Sipas kushteve të ligjit, ju keni të drejtë:</p>
+<ul>
+    <li>të keni qasje në të dhënat tuaja personale;</li>
+    <li>të korrigjohen të dhënat e pasakta ose të paplota;</li>
+    <li>të fshihen të dhënat tuaja në rrethanat që lejon ligji;</li>
+    <li>të kufizoni ose kundërshtoni përpunimin në disa rrethana;</li>
+    <li>të merrni të dhënat tuaja në një formë të bartshme;</li>
+    <li>të tërhiqni pëlqimin, kur jemi mbështetur te pëlqimi; dhe</li>
+    <li>të ankoheni te autoriteti mbikëqyrës.</li>
+</ul>
+<p>
+    Shumë prej tyre mund t'i bëni vetë: emaili dhe numri i telefonit ndryshohen te profili, dhe
+    njoftimet dhe faqja e autosallonit ndryshohen në çdo kohë. Për çdo gjë tjetër, shkruani në
+    <a href="mailto:drobi840@gmail.com">drobi840@gmail.com</a>. Shkarkimi i të dhënave dhe
+    fshirja e llogarisë mund të bëhen menjëherë nga faqja <a href="@securityUrl">Siguria</a>.
+    Kërkesave me email u përgjigjemi brenda një muaji.
+</p>
+<p>
+    Mund të na duhet të konfirmojmë identitetin tuaj para se të veprojmë mbi një kërkesë.
+</p>
+
+<h2 class="h5 mt-4">14. Ankimi te autoriteti</h2>
+<p>
+    Mund të ankoheni te autoriteti mbikëqyrës shqiptar, <strong>Komisioneri për të Drejtën e
+    Informimit dhe Mbrojtjen e të Dhënave Personale</strong> —
+    <a href="https://idp.al/" target="_blank" rel="noopener">idp.al</a>.
+</p>
+<p>
+    Nëse ndodheni në Bashkimin Evropian, mund të ankoheni edhe te autoriteti mbikëqyrës i
+    vendit tuaj.
+</p>
+
+<h2 class="h5 mt-4">15. Siguria</h2>
+<p>Ne përdorim masa të përshtatshme për atë që mbajmë, përfshirë:</p>
+<ul>
+    <li>fjalëkalime të hash-uara, kurrë të ruajtura në formë të lexueshme;</li>
+    <li>tokenë rifreskimi, verifikimi dhe rivendosjeje të ruajtur vetëm si hash;</li>
+    <li>gjendjen e sesionit në server, jo në shfletues;</li>
+    <li>kontrollet HttpOnly, Secure dhe SameSite për cookies;</li>
+    <li>mbrojtje kundër falsifikimit në formularë;</li>
+    <li>kufizimin e shpeshtësisë së kërkesave; dhe</li>
+    <li>qasje administrative të kufizuar te llogaritë që kanë nevojë.</li>
+</ul>
+<p>
+    Asnjë shërbim në internet nuk mund të premtojë siguri absolute, dhe ne nuk do të pretendojmë
+    të kundërtën.
+</p>
+
+<h2 class="h5 mt-4">16. Cenimet e të dhënave</h2>
+<p>
+    Nëse ndodh një cenim i të dhënave personale, ne do ta vlerësojmë dhe do të njoftojmë
+    autoritetin mbikëqyrës dhe, kur ligji e kërkon, personat e prekur, brenda afateve që
+    përcakton ligji.
+</p>
+
+<h2 class="h5 mt-4">17. Mosha</h2>
+<p>
+    Kjo faqe është për persona <strong>18 vjeç ose më shumë</strong>. Ne nuk mbledhim me dijeni
+    të dhëna për askënd më të ri. Nuk e verifikojmë moshën gjatë regjistrimit; nëse mësojmë se
+    një llogari i përket dikujt nën 18 vjeç, do ta mbyllim dhe do ta fshijmë siç përshkruhet
+    në nenin 11.
+</p>
+
+<h2 class="h5 mt-4">18. Vendimet e automatizuara</h2>
+<p>
+    Ne nuk marrim vendime për ju vetëm me mjete të automatizuara, dhe nuk ju profilizojmë.
+</p>
+
+<h2 class="h5 mt-4">19. Përdoruesit biznes</h2>
+<p>
+    Llogaritë e autosalloneve janë përgjegjëse për saktësinë e informacionit të tyre të biznesit
+    dhe për detyrimet e tyre si tregtarë — njoftimet, shitjet te konsumatorët, reklamat,
+    faturimin, tatimet dhe garancitë.
+</p>
+
+<h2 class="h5 mt-4">20. Ndryshimet e kësaj politike</h2>
+<p>
+    Ne e përditësojmë këtë politikë kur ndryshojnë shërbimi, teknologjia ose ligji. Numri i
+    versionit këtu është i njëjti që u regjistrua në llogarinë tuaj kur u regjistruat, dhe të
+    dy ndryshohen gjithmonë bashkë. Kur një ndryshim është thelbësor, do t'ju njoftojmë.
+</p>
+
+<h2 class="h5 mt-4">21. Kontakti</h2>
+<p>
+    Denis Robi<br />
+    <a href="mailto:drobi840@gmail.com">drobi840@gmail.com</a>
+</p>

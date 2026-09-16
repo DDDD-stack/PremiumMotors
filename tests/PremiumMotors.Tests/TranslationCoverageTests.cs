@@ -78,6 +78,38 @@ public class TranslationCoverageTests
         }
     }
 
+    [Theory]
+    [InlineData("Terms")]
+    [InlineData("Privacy")]
+    public void Every_language_has_the_whole_legal_document(string document)
+    {
+        // The Terms and the Privacy Policy are kept as one whole document per language, not as
+        // translation keys, so the coverage test above cannot see them. A translation that is
+        // missing, or has gained or lost a section, has drifted from the English that governs -
+        // which is two documents that disagree, and the reader of the shorter one agreed to less.
+        var folder = Path.Combine(ProjectDirectory(), "Views", "Home", "Legal");
+        var english = Sections(Path.Combine(folder, $"_{document}.en.cshtml"));
+
+        Assert.True(english.Count > 15, $"Found only {english.Count} sections in the English {document}.");
+
+        foreach (var language in new[] { "sq", "it" })
+        {
+            var path = Path.Combine(folder, $"_{document}.{language}.cshtml");
+            Assert.True(File.Exists(path), $"No {language} {document}: {path}");
+
+            var translated = Sections(path);
+            Assert.True(english.SequenceEqual(translated),
+                $"The {language} {document} has sections {string.Join(", ", translated)} " +
+                $"but the English has {string.Join(", ", english)}.");
+        }
+    }
+
+    /// <summary>The section numbers, in order: "1", "2", "2.1"... read from the headings.</summary>
+    private static List<string> Sections(string path) =>
+        Regex.Matches(File.ReadAllText(path), @"<h[23][^>]*>\s*(\d+(?:\.\d+)?)\.?\s")
+            .Select(m => m.Groups[1].Value)
+            .ToList();
+
     private static SortedSet<string> Placeholders(string text) =>
         new(Regex.Matches(text, @"\{\d+\}").Select(m => m.Value), StringComparer.Ordinal);
 

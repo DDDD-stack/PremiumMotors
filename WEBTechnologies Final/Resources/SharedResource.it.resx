@@ -1052,7 +1052,7 @@
     <value>Se accetta, vi scambiate i contatti e l'auto viene prenotata per te. Pagamento e consegna avvengono direttamente tra voi — PremiumMotors non tiene mai i tuoi soldi.</value>
   </data>
   <data name="If you accept: the agreed price is published on Recently sold for 14 days, and you and the buyer each get the other's email and phone number." xml:space="preserve">
-    <value>Se accetti: il prezzo concordato viene pubblicato su Vendute di recente per 14 giorni, e tu e l'acquirente ricevete ciascuno l'email e il numero di telefono dell'altro.</value>
+    <value>Se accetti: il prezzo concordato viene pubblicato su Venduti di recente per 14 giorni, e tu e l'acquirente ricevete ciascuno l'email e il numero di telefono dell'altro.</value>
   </data>
   <data name="If you do not want to accept, you can sign out. You can also download your data or erase your account without accepting." xml:space="preserve">
     <value>Se non vuoi accettare, puoi uscire. Puoi anche scaricare i tuoi dati o cancellare il tuo account senza accettare.</value>
@@ -1083,6 +1083,9 @@
   </data>
   <data name="JPEG, PNG, GIF or WebP. Square images look best; anything else is cropped to the centre." xml:space="preserve">
     <value>JPEG, PNG, GIF o WebP. Le immagini quadrate rendono meglio; il resto viene ritagliato al centro.</value>
+  </data>
+  <data name="Last updated: 16 September 2026" xml:space="preserve">
+    <value>Ultimo aggiornamento: 16 settembre 2026</value>
   </data>
   <data name="LPG" xml:space="preserve">
     <value>GPL</value>
@@ -1720,6 +1723,9 @@
   <data name="Privacy" xml:space="preserve">
     <value>Privacy</value>
   </data>
+  <data name="Privacy Policy" xml:space="preserve">
+    <value>Informativa sulla privacy</value>
+  </data>
   <data name="Private offers" xml:space="preserve">
     <value>Offerte private</value>
   </data>
@@ -1929,6 +1935,9 @@
   </data>
   <data name="Runs until" xml:space="preserve">
     <value>Attivo fino al</value>
+  </data>
+  <data name="Seller account closed" xml:space="preserve">
+    <value>Account del venditore chiuso</value>
   </data>
   <data name="Sign out" xml:space="preserve">
     <value>Esci</value>
@@ -2236,6 +2245,9 @@
   <data name="Terms" xml:space="preserve">
     <value>Termini</value>
   </data>
+  <data name="Terms of Service" xml:space="preserve">
+    <value>Termini di servizio</value>
+  </data>
   <data name="Thanks - your review is now on the seller's profile." xml:space="preserve">
     <value>Grazie: la tua recensione è ora sul profilo del venditore.</value>
   </data>
@@ -2422,6 +2434,9 @@
   <data name="This is a personal account. Business details apply to dealer accounts." xml:space="preserve">
     <value>Questo è un account personale. I dati aziendali riguardano gli account rivenditore.</value>
   </data>
+  <data name="This is a translation. If it differs from the English version, the &lt;a href='{0}'&gt;English version&lt;/a&gt; governs." xml:space="preserve">
+    <value>Questa è una traduzione. In caso di differenze con la versione inglese, prevale la &lt;a href='{0}'&gt;versione inglese&lt;/a&gt;.</value>
+  </data>
   <data name="This is already a business account." xml:space="preserve">
     <value>Questo è già un account aziendale.</value>
   </data>
@@ -2556,6 +2571,9 @@
   </data>
   <data name="VAT number and website are optional. We record these details; we do not check them against the business register, and no account on this site carries a verified badge." xml:space="preserve">
     <value>Partita IVA e sito web sono facoltativi. Registriamo questi dati; non li verifichiamo presso il registro delle imprese, e nessun account su questo sito porta un contrassegno di verifica.</value>
+  </data>
+  <data name="Version: {0}" xml:space="preserve">
+    <value>Versione: {0}</value>
   </data>
   <data name="VIN" xml:space="preserve">
     <value>Numero di telaio</value>

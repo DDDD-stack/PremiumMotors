@@ -1,0 +1,436 @@
+@{
+    @* TRADUZIONE ITALIANA dell'Informativa sulla privacy. Il testo che prevale è quello
+       inglese, _Privacy.en.cshtml, e questo cambia insieme a quello. L'articolo 8 indica il
+       fornitore di hosting e il paese; se l'applicazione viene distribuita altrove, gli
+       articoli 8 e 9 vanno corretti in tutte e tre le lingue.
+       Italian translation of the English policy, which governs. *@
+    var termsUrl = Url.Action("Terms", "Home") ?? "/Home/Terms";
+    var securityUrl = Url.Action("Security", "Account") ?? "/Account/Security";
+}
+
+<p>
+    Questa informativa spiega che cosa fa PremiumMotors con i dati personali. È scritta per
+    corrispondere a ciò che il software fa davvero. Quando qualcosa non è ancora stato
+    realizzato, lo dice.
+</p>
+
+<h2 class="h5 mt-4">1. Chi controlla i tuoi dati</h2>
+<p>
+    Il titolare del trattamento è <strong>Denis Robi</strong>.<br />
+    Contatto per qualsiasi domanda o richiesta sulla privacy:
+    <a href="mailto:drobi840@gmail.com">drobi840@gmail.com</a>
+</p>
+<p>
+    Non è stato nominato un Responsabile della protezione dei dati. A questa scala non è
+    obbligatorio: non siamo un ente pubblico, e la nostra attività principale non consiste nel
+    monitoraggio su larga scala né nel trattamento su larga scala di categorie particolari di dati.
+</p>
+
+<h2 class="h5 mt-4">2. Che cosa raccogliamo</h2>
+
+<h3 class="h6 mt-3">2.1 Account</h3>
+<p>
+    Nome utente, indirizzo email, numero di telefono, password, ruolo dell'account, se
+    l'account è attivo, data di registrazione, ultimo accesso e data di verifica dell'email.
+</p>
+<p>
+    <strong>Le password non sono mai conservate in forma leggibile.</strong> Sono sottoposte a
+    hash con PBKDF2-HMAC-SHA256, con un salt unico per ogni account e 210.000 iterazioni.
+</p>
+
+<h3 class="h6 mt-3">2.2 Registrazioni di accettazione e cancellazione</h3>
+<p>
+    La data in cui hai accettato i Termini e quale versione hai accettato; e, se il tuo account
+    viene cancellato, la data in cui è avvenuto. Sono conservate come registrazioni di
+    responsabilità: poter dimostrare di aver dato seguito a una richiesta fa parte del darle seguito.
+</p>
+
+<h3 class="h6 mt-3">2.3 Profilo venditore</h3>
+<p>
+    Se l'account vende, la data di attivazione della vendita, privato o professionista, nome
+    visualizzato, città o zona, foto del profilo, media delle valutazioni e numero di valutazioni.
+</p>
+
+<h3 class="h6 mt-3">2.4 Numero di telefono pubblico facoltativo</h3>
+<p>
+    Il venditore può scegliere di pubblicare un numero di telefono. Se impostato, <strong>compare
+    su ogni annuncio di quel venditore ed è visibile ai visitatori non connessi.</strong> È
+    facoltativo, parte vuoto, e svuotarlo lo rimuove dal sito. Poiché si trova su una pagina
+    pubblica, può essere copiato, indicizzato o estratto; rimuoverlo qui non rimuove le copie
+    che altri hanno già fatto.
+</p>
+<p>
+    È volutamente separato dal numero di telefono del tuo account, che resta privato finché non
+    viene accettata un'offerta tra te e un altro utente (articolo 5.3).
+</p>
+
+<h3 class="h6 mt-3">2.5 Account aziendali</h3>
+<p>
+    Numero di registrazione dell'impresa (NIPT), partita IVA, indirizzo commerciale, sito web e
+    persona di contatto. <strong>Non li verifichiamo presso alcun registro e su questo sito non
+    esiste un contrassegno di verifica per nessuno.</strong>
+</p>
+
+<h3 class="h6 mt-3">2.6 Pagina della concessionaria</h3>
+<p>
+    Nome, indirizzo della pagina, testo di presentazione, logo, banner, città, paese, indirizzo,
+    telefono, sito web e orari di apertura. È tutto pubblico.
+</p>
+
+<h3 class="h6 mt-3">2.7 Annunci</h3>
+<p>
+    Tutto ciò che inserisce il venditore: dati e scheda tecnica del veicolo, descrizione, prezzo
+    richiesto, fotografie, località, e dopo la vendita l'acquirente, il prezzo concordato e la
+    data. Il numero di identificazione del veicolo (VIN), se il venditore lo inserisce,
+    <strong>è conservato ma mai pubblicato</strong>.
+</p>
+
+<h3 class="h6 mt-3">2.8 Offerte</h3>
+<p>
+    Acquirente, importo, messaggio facoltativo dell'acquirente, stato, date e risposta scritta
+    del venditore. <strong>Le offerte sono private per il venditore che le ha ricevute.</strong>
+</p>
+
+<h3 class="h6 mt-3">2.9 Messaggi</h3>
+<p>
+    Il testo completo delle conversazioni tra acquirente e venditore, con l'annuncio, il mittente
+    e l'ora di lettura. Gli amministratori possono accedere alle conversazioni quando necessario
+    per far funzionare, proteggere o assistere il servizio, o per gestire una segnalazione.
+</p>
+
+<h3 class="h6 mt-3">2.10 Recensioni</h3>
+<p>
+    Voto, commento, nome utente di chi recensisce, annuncio, date e risposta pubblica del
+    venditore. Le recensioni sono pubbliche. Una recensione è possibile solo se l'annuncio è
+    stato venduto, chi recensisce è l'acquirente registrato, e una per vendita. La rimozione è
+    disciplinata dall'articolo 16 dei <a href="@termsUrl">Termini</a>.
+</p>
+
+<h3 class="h6 mt-3">2.11 Preferiti, storico dei prezzi, visualizzazioni</h3>
+<p>
+    Gli annunci salvati. Ogni variazione di prezzo di un annuncio, con la data — in parte
+    mostrata pubblicamente come indicatori di riduzione del prezzo. Le visualizzazioni degli
+    annunci sono contate <strong>in forma aggregata, per annuncio e per giorno</strong>: non
+    registriamo chi ha visto un annuncio. Una sessione del browser serve a non contare due volte
+    la stessa visita, e le visualizzazioni del venditore stesso sono escluse.
+</p>
+
+<h3 class="h6 mt-3">2.12 Sessioni e token</h3>
+<p>
+    Lo stato della sessione sul server, conservato nel nostro database e collegato a un cookie
+    opaco. Può contenere il tuo ID utente, il nome utente, gli indicatori di venditore o
+    amministratore, gli ID degli annunci visti di recente e i marcatori usati per non contare due
+    volte le visualizzazioni.
+</p>
+<p>
+    Per l'accesso dall'app e dall'API, i record dei refresh token contengono un
+    <strong>hash</strong> del token, gli orari di creazione, scadenza e revoca, e un'etichetta del
+    dispositivo presa dal browser o dall'app. I record di verifica dell'email e di reimpostazione
+    della password contengono un hash, lo scopo, la scadenza e quando sono stati usati.
+    <strong>I valori dei token non sono mai conservati.</strong>
+</p>
+
+<h3 class="h6 mt-3">2.13 Log e indirizzi IP</h3>
+<p>
+    I log dell'applicazione registrano il metodo della richiesta, il percorso, lo stato della
+    risposta e la durata. <strong>Non registrano indirizzi IP.</strong>
+</p>
+<p>
+    Per le richieste di visitatori non connessi, l'indirizzo IP viene usato in memoria come
+    chiave per limitare la frequenza delle richieste e non viene conservato dall'applicazione. Il
+    nostro fornitore di hosting può registrare indirizzi IP in modo autonomo nei propri log di
+    infrastruttura.
+</p>
+
+<h3 class="h6 mt-3">2.14 Registrazioni pubblicitarie</h3>
+<p>
+    Quando viene concesso uno spazio a pagamento conserviamo una ricevuta: un codice di
+    riferimento, il titolo dell'annuncio com'era in quel momento, il tipo di spazio, le date di
+    inizio e fine, chi lo ha concesso ed eventuale prezzo. Queste registrazioni restano dopo la
+    fine dello spazio e la cancellazione dell'annuncio, perché sono registrazioni di transazioni.
+</p>
+
+<h2 class="h5 mt-4">3. Che cosa non raccogliamo</h2>
+<ul>
+    <li>Nessun dato di carta o bancario. Non c'è alcun fornitore di pagamento collegato a questo sito.</li>
+    <li>Nessun documento d'identità e nessuna data di nascita.</li>
+    <li>Nessun tracker pubblicitario o di analisi, e nessun cookie di terze parti.</li>
+    <li>Nessun tracciamento tra siti e nessun fingerprinting.</li>
+    <li>Nessun dato di posizione oltre alla città che l'utente scrive.</li>
+    <li>Nessuno script, font o foglio di stile caricato dal dominio di altri — tutto ciò che il
+        sito serve proviene dal sito stesso.</li>
+    <li>Nessuna categoria particolare di dati.</li>
+</ul>
+<p class="text-muted small">
+    Se qualcosa di tutto questo cambia, questo articolo cambia prima che la nuova tecnologia entri in funzione.
+</p>
+
+<h2 class="h5 mt-4">4. Perché li trattiamo e su quale base</h2>
+<ul>
+    <li><strong>Per eseguire il contratto con te</strong> — creare e gestire il tuo account,
+        pubblicare i tuoi annunci, consegnare offerte e messaggi, gestire preferiti, pagine delle
+        concessionarie e recensioni.</li>
+    <li><strong>I nostri legittimi interessi</strong> — mantenere sicuro il servizio, prevenire
+        frodi e abusi, limitare le richieste, risolvere problemi, pubblicare i prezzi e lo storico
+        delle vendite perché il mercato sia utile agli acquirenti, e fornire ai venditori le
+        statistiche di visualizzazioni e offerte sui propri annunci.</li>
+    <li><strong>Obbligo legale e responsabilizzazione</strong> — conservare le registrazioni
+        dell'accettazione dei termini, delle richieste di cancellazione e delle transazioni
+        pubblicitarie.</li>
+    <li><strong>Consenso</strong> — solo quando lo chiediamo. Non inviamo email di marketing, e
+        non lo faremmo senza chiedere prima.</li>
+</ul>
+
+<h2 class="h5 mt-4">5. Che cosa possono vedere gli altri</h2>
+
+<h3 class="h6 mt-3">5.1 Pubblico per chiunque, compresi i visitatori non connessi</h3>
+<ul>
+    <li>Il nome visualizzato del venditore, o il nome utente se non c'è un nome visualizzato</li>
+    <li>Se il venditore è privato o una concessionaria</li>
+    <li>Foto del profilo, logo e banner della concessionaria</li>
+    <li>Media delle valutazioni e numero di recensioni</li>
+    <li>Le recensioni, il loro testo e il nome utente di ogni recensore</li>
+    <li>Il numero di telefono pubblico, se il venditore ha scelto di pubblicarlo</li>
+    <li>Nome, indirizzo, telefono, sito web, orari e testo di presentazione della concessionaria</li>
+    <li>Annunci, fotografie, scheda tecnica e prezzo richiesto</li>
+    <li>Storico delle variazioni di prezzo e indicatori di riduzione</li>
+    <li><strong>Le vendite concluse e il prezzo concordato</strong>, per 14 giorni</li>
+    <li>Se un annuncio è uno spazio a pagamento</li>
+</ul>
+<p>
+    Tutto ciò che è pubblico può essere indicizzato dai motori di ricerca e copiato da terzi.
+</p>
+
+<h3 class="h6 mt-3">5.2 Privato</h3>
+<p>
+    Gli importi e i messaggi delle offerte sono visibili solo al venditore che le ha ricevute e
+    agli amministratori. Le conversazioni sono visibili ai partecipanti, e agli amministratori
+    quando necessario. VIN, numeri di registrazione e partite IVA, indirizzi commerciali e nomi
+    delle persone di contatto non sono pubblicati.
+</p>
+
+<h3 class="h6 mt-3">5.3 Recapiti quando un'offerta viene accettata</h3>
+<p>
+    <strong>Quando il venditore accetta un'offerta, acquirente e venditore ricevono ciascuno
+    l'indirizzo email e il numero di telefono dell'altro</strong>, per organizzare la vendita.
+    Si tratta di una comunicazione dei tuoi dati personali a un altro utente, causata da
+    un'azione di uno di voi. Le offerte rifiutate o ritirate non rivelano nulla.
+</p>
+
+<h2 class="h5 mt-4">6. Prezzi di vendita pubblicati</h2>
+<p>
+    Quando una vendita si conclude pubblichiamo il prezzo concordato nella pagina Venduti di
+    recente. Il venditore ne viene informato nella schermata in cui accetta l'offerta, non solo qui.
+</p>
+<p>
+    Quella pagina mostra gli ultimi 14 giorni. <strong>I 14 giorni sono una regola di
+    visualizzazione, non di cancellazione</strong> — le vendite più vecchie non compaiono più lì,
+    ma il dato, il prezzo e lo storico dei prezzi sono conservati.
+</p>
+
+<h2 class="h5 mt-4">7. Cookie e memoria del browser</h2>
+<p>Usiamo solo memorizzazione essenziale. Ci sono tre cookie e un indicatore nel browser.</p>
+<ul>
+    <li><strong>Cookie di sessione</strong> — un identificatore opaco della tua sessione sul
+        server. HttpOnly, SameSite=Lax, Secure su HTTPS, e scade dopo circa due ore di inattività.</li>
+    <li><strong>Cookie anti-falsificazione</strong> — protegge i moduli dalle richieste
+        falsificate tra siti.</li>
+    <li><strong>Cookie della lingua</strong> — impostato solo quando scegli una lingua dal
+        selettore. Contiene un codice di lingua, dura circa un anno ed è leggibile dalla pagina,
+        motivo per cui non è HttpOnly.</li>
+    <li><strong>sessionStorage del browser</strong> — un indicatore, perché l'animazione
+        d'ingresso venga mostrata una volta per sessione del browser. Resta nel tuo browser e non
+        ci viene mai inviato.</li>
+</ul>
+<p>
+    <strong>Nessun cookie di analisi, nessun cookie pubblicitario, nessun cookie di terze parti,
+    nessun fingerprinting.</strong> Per questo il sito non ha un banner dei cookie: non c'è nulla
+    a cui acconsentire oltre a ciò che è strettamente necessario per farlo funzionare.
+</p>
+
+<h2 class="h5 mt-4">8. Chi altro tratta i tuoi dati</h2>
+<p>
+    <strong>Supabase</strong> — ospita il nostro database PostgreSQL e conserva le fotografie
+    caricate. Regione: <strong>Europa occidentale (Irlanda)</strong>.
+</p>
+<p>
+    <strong>Microsoft Azure App Service</strong> — ospita l'applicazione stessa. Regione:
+    <strong>Europa settentrionale (Irlanda)</strong>. L'infrastruttura di hosting può registrare
+    indirizzi IP e informazioni tecniche sulle richieste nei propri log.
+</p>
+<p>
+    <strong>Resend</strong> — invierebbe le email di verifica e di reimpostazione della password.
+    <strong>L'email non è attiva. Non è configurato alcun fornitore di posta, quindi non viene
+    inviata alcuna email a nessuno e Resend al momento non riceve alcun dato su di te.</strong>
+    Questo articolo sarà aggiornato prima che ciò cambi.
+</p>
+<p>
+    <strong>Sentry</strong> — monitoraggio degli errori. È presente nel codice ma
+    <strong>inattivo</strong>: senza una chiave configurata non effettua chiamate di rete. Se
+    venisse attivato, è configurato per non inviare dati personali né il contenuto delle richieste.
+</p>
+<p>
+    Questo è l'elenco completo. <strong>Nessun fornitore di pagamento, nessun fornitore di
+    analisi, nessuna rete pubblicitaria, nessun commerciante di dati.</strong>
+</p>
+
+<h2 class="h5 mt-4">9. Trasferimenti internazionali</h2>
+<p>
+    Il nostro database, l'archiviazione dei file e l'hosting dell'applicazione si trovano tutti in
+    <strong>Irlanda, all'interno dello Spazio economico europeo</strong>. Non trasferiamo i tuoi
+    dati personali al di fuori del SEE.
+</p>
+
+<h2 class="h5 mt-4">10. Per quanto tempo li conserviamo</h2>
+<p>
+    Non applichiamo un piano generale di cancellazione automatica, e preferiamo dirlo piuttosto
+    che pubblicare un numero che il software non rispetta. Ecco che cosa succede davvero:
+</p>
+<ul>
+    <li><strong>Dati dell'account e del profilo</strong> — finché non ci chiedi di cancellarli.</li>
+    <li><strong>Annunci, offerte, messaggi, recensioni, preferiti e storico dei prezzi</strong>
+        — conservati finché esiste l'account, e soggetti a cancellazione come descritto
+        all'articolo 11.</li>
+    <li><strong>Vendite concluse</strong> — conservate a tempo indeterminato come registrazioni
+        di transazioni. Mostrate in Venduti di recente per 14 giorni.</li>
+    <li><strong>Sessioni web</strong> — due ore di inattività, poi rimosse automaticamente.</li>
+    <li><strong>Refresh token</strong> — 30 giorni, e revocati immediatamente quando cambi la password.</li>
+    <li><strong>Token di verifica e di reimpostazione della password</strong> — finché non
+        scadono o vengono usati.</li>
+    <li><strong>Log dell'applicazione</strong> — 14 giorni, poi sovrascritti.</li>
+    <li><strong>Registrazioni pubblicitarie</strong> — per il tempo richiesto dalle norme
+        contabili e fiscali.</li>
+    <li><strong>Date di accettazione dei termini e di cancellazione</strong> — conservate dopo
+        l'anonimizzazione, perché dimostrano che abbiamo agito correttamente.</li>
+</ul>
+
+<h2 class="h5 mt-4">11. Cancellazione dell'account</h2>
+<p>
+    Puoi cancellare tu stesso l'account dalla pagina <a href="@securityUrl">Sicurezza</a> del tuo
+    profilo, che ti chiede di nuovo la password per confermare che sei tu. Se non riesci ad
+    accedere, scrivi a <a href="mailto:drobi840@gmail.com">drobi840@gmail.com</a>. In tutta
+    franchezza, ecco che cosa comporta la cancellazione:
+</p>
+<ul>
+    <li>Nome utente, email, numero di telefono e numero di telefono pubblico vengono cancellati,
+        e vieni disconnesso da tutti i dispositivi.</li>
+    <li>Nome, testo di presentazione, indirizzo, telefono, sito web e orari della concessionaria
+        vengono svuotati.</li>
+    <li><strong>Ogni immagine che hai caricato viene eliminata</strong> — foto del profilo, logo
+        e banner della concessionaria, e le fotografie di ogni annuncio che hai pubblicato.</li>
+    <li><strong>Le vendite concluse restano</strong> nello storico delle vendite, senza fotografie
+        e senza identificarti, contrassegnate come account chiuso. Una vendita avvenuta è un dato a
+        cui l'altra parte ha un interesse legittimo.</li>
+    <li>Le recensioni che hai scritto su altri venditori, e i messaggi che hai inviato, restano
+        con un nome anonimo — mai il tuo — così che la valutazione di un venditore non possa
+        essere riscritta da un acquirente che se ne va, e l'altra metà di una conversazione abbia
+        ancora senso.</li>
+    <li>Registriamo la data in cui è stata eseguita la cancellazione.</li>
+</ul>
+<p>
+    Il diritto alla cancellazione è soggetto alle eccezioni previste dalla legge, anche quando
+    dobbiamo conservare qualcosa per accertare, esercitare o difendere un diritto in sede giudiziaria.
+</p>
+
+<h2 class="h5 mt-4">12. Ottenere una copia dei tuoi dati</h2>
+<p>
+    Scaricala tu stesso dalla pagina <a href="@securityUrl">Sicurezza</a> del tuo profilo: un
+    unico file, in un formato comune leggibile da una macchina, disponibile subito. Puoi anche
+    chiederla via email.
+</p>
+<p>
+    Contiene account e cronologia degli accessi, accettazione dei termini, dati di venditore,
+    impresa e concessionaria, annunci e relativo storico dei prezzi, offerte che hai fatto e
+    offerte ricevute sui tuoi annunci, conversazioni e messaggi, recensioni che hai scritto e
+    recensioni scritte su di te, preferiti ed eventuali registrazioni pubblicitarie. I recapiti di
+    altre persone non sono inclusi.
+</p>
+
+<h2 class="h5 mt-4">13. I tuoi diritti</h2>
+<p>Alle condizioni previste dalla legge, hai il diritto di:</p>
+<ul>
+    <li>accedere ai tuoi dati personali;</li>
+    <li>ottenere la rettifica di dati inesatti o incompleti;</li>
+    <li>ottenere la cancellazione dei tuoi dati nei casi previsti dalla legge;</li>
+    <li>limitare il trattamento od opporti ad esso in alcuni casi;</li>
+    <li>ricevere i tuoi dati in un formato portabile;</li>
+    <li>revocare il consenso, quando ci siamo basati sul consenso; e</li>
+    <li>proporre reclamo all'autorità di controllo.</li>
+</ul>
+<p>
+    Molto puoi farlo da solo: email e numero di telefono si modificano nel profilo, e annunci e
+    pagina della concessionaria si modificano in qualsiasi momento. Per tutto il resto scrivi a
+    <a href="mailto:drobi840@gmail.com">drobi840@gmail.com</a>. Scaricare i tuoi dati e cancellare
+    l'account si possono fare subito dalla pagina <a href="@securityUrl">Sicurezza</a>. Alle
+    richieste via email rispondiamo entro un mese.
+</p>
+<p>
+    Potremmo dover verificare la tua identità prima di dare seguito a una richiesta.
+</p>
+
+<h2 class="h5 mt-4">14. Reclamo all'autorità</h2>
+<p>
+    Puoi proporre reclamo all'autorità di controllo albanese, il <strong>Commissario per il
+    Diritto all'Informazione e la Protezione dei Dati Personali</strong> —
+    <a href="https://idp.al/" target="_blank" rel="noopener">idp.al</a>.
+</p>
+<p>
+    Se ti trovi nell'Unione europea puoi rivolgerti anche all'autorità di controllo del tuo paese.
+</p>
+
+<h2 class="h5 mt-4">15. Sicurezza</h2>
+<p>Usiamo misure adeguate a ciò che conserviamo, tra cui:</p>
+<ul>
+    <li>password sottoposte a hash, mai conservate in forma leggibile;</li>
+    <li>refresh token e token di verifica e reimpostazione conservati solo come hash;</li>
+    <li>stato della sessione conservato sul server, non nel browser;</li>
+    <li>controlli HttpOnly, Secure e SameSite sui cookie;</li>
+    <li>protezione anti-falsificazione sui moduli;</li>
+    <li>limitazione della frequenza delle richieste; e</li>
+    <li>accesso amministrativo limitato agli account che ne hanno bisogno.</li>
+</ul>
+<p>
+    Nessun servizio online può garantire una sicurezza assoluta, e non fingeremo il contrario.
+</p>
+
+<h2 class="h5 mt-4">16. Violazioni dei dati</h2>
+<p>
+    Se si verifica una violazione dei dati personali la valuteremo e la notificheremo
+    all'autorità di controllo e, quando la legge lo richiede, alle persone interessate, entro i
+    termini previsti dalla legge.
+</p>
+
+<h2 class="h5 mt-4">17. Età</h2>
+<p>
+    Questo sito è destinato a persone di <strong>almeno 18 anni</strong>. Non raccogliamo
+    consapevolmente dati di persone più giovani. Non verifichiamo l'età alla registrazione; se
+    veniamo a sapere che un account appartiene a un minore di 18 anni lo chiuderemo e lo
+    cancelleremo come descritto all'articolo 11.
+</p>
+
+<h2 class="h5 mt-4">18. Decisioni automatizzate</h2>
+<p>
+    Non prendiamo decisioni che ti riguardano basate unicamente su mezzi automatizzati, e non ti
+    profiliamo.
+</p>
+
+<h2 class="h5 mt-4">19. Utenti aziendali</h2>
+<p>
+    Gli account delle concessionarie sono responsabili dell'esattezza delle proprie informazioni
+    aziendali e dei propri obblighi come professionisti — annunci, vendite ai consumatori,
+    pubblicità, fatturazione, fisco e garanzie.
+</p>
+
+<h2 class="h5 mt-4">20. Modifiche a questa informativa</h2>
+<p>
+    Aggiorniamo questa informativa quando cambiano il servizio, la tecnologia o la legge. Il
+    numero di versione indicato qui è lo stesso registrato sul tuo account al momento della
+    registrazione, e i due vengono sempre modificati insieme. Quando una modifica è sostanziale
+    ti informeremo.
+</p>
+
+<h2 class="h5 mt-4">21. Contatti</h2>
+<p>
+    Denis Robi<br />
+    <a href="mailto:drobi840@gmail.com">drobi840@gmail.com</a>
+</p>

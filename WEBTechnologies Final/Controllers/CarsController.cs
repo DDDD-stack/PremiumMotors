@@ -483,10 +483,11 @@ namespace WEBTechnologies_Final.Controllers
             // Sellers who have since closed their account. Their sales stay on the page - the
             // sale happened - but the card must not show their photos or invite contact.
             var ownerIds = cars.Select(c => c.OwnerId).OfType<int>().Distinct().ToList();
+            // Keyed to whether they were a dealer, because "Dealership closed" under a private
+            // seller's car is simply untrue.
             ViewData["ClosedSellers"] = await _context.Users
                 .Where(u => ownerIds.Contains(u.Id) && u.AnonymizedUtc != null)
-                .Select(u => u.Id)
-                .ToListAsync();
+                .ToDictionaryAsync(u => u.Id, u => u.SellerType == SellerType.Dealer);
 
             await LoadFavouritesAsync(cars.Select(c => c.Id));
             await LoadExtrasAsync(cars);
